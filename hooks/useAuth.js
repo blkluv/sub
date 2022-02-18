@@ -6,8 +6,7 @@ import {awsauth} from '../pages/helpers/awsauth';
 import Cookies from 'js-cookie';
 import gravatar from 'gravatar';
 import axios from 'axios';
-console.log(awsauth)
-console.log(awsconfig)
+import ky from 'ky';
 Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
 
@@ -68,6 +67,15 @@ export const logUserIn = async (email, password) => {
         localStorage.removeItem('pinata-avatar');
         // await Auth.federatedSignIn();
         const res = await Auth.signIn(email, password);
+        const { accessToken } = await fetchSession();
+        await ky("/api/users", null, {
+            method: "POST", 
+            headers: {
+                Authorization: `Bearer ${accessToken}`, 
+                source: "login"
+            }
+        });
+        
         return {
             success: true,
             user: res

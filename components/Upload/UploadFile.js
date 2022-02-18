@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-const UploadFile = ({ onFileChange, selectedFiles }) => {
+const UploadFile = ({ selectedFiles, onFileChange }) => {
   const [dragOverActive, setDragOverActive] = useState(false);
 
   const dragOverHandler = (ev) => {
@@ -34,7 +34,7 @@ const UploadFile = ({ onFileChange, selectedFiles }) => {
         }
       }
       ev.target.files = files;
-      onFileChange(ev);
+      onFileChange(ev, "submarine");
     } else {
       if(ev.dataTransfer.files.length > 1) {
         alert("Only one file allowed at a time");
@@ -44,10 +44,11 @@ const UploadFile = ({ onFileChange, selectedFiles }) => {
       for (var i = 0; i < ev.dataTransfer.files.length; i++) {
         console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
       }
-      onFileChange(ev);
+      onFileChange(ev, "submarine");
     }
   }
   const fileInput = useRef(null);
+  
   return (
     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
       <label
@@ -79,13 +80,13 @@ const UploadFile = ({ onFileChange, selectedFiles }) => {
             </svg>
             <div className="flex text-sm text-gray-600">
               <label
-                htmlFor="file-upload"
+                htmlFor="file-upload-main"
                 className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
               >
                 <span>Select a file</span>
                 <input
-                  id="file-upload"
-                  name="file-upload"
+                  id="file-upload-main"
+                  name="file-upload-main"
                   type="file"
                   className="sr-only"
                   ref={fileInput} 

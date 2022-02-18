@@ -13,6 +13,7 @@ export const mockData = () => {
         contract: "0xdb2448d266d311d35f56c46dd43884b7feeea76b", 
         network: "mainnet"
       }, 
+      shortId: "123gge", 
       created: makeDatePretty("01/01/2022")
     }
   ]

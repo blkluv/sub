@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     }    
   } else if(req.method === "GET") {
     try {
-      
+      res.json([]);
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error

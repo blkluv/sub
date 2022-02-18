@@ -1,4 +1,7 @@
-//  THIS FILE IS WHERE WE WILL POST THE METADATA ASSOCIATED WITH A USER'S SUBMARINED CONTENT: 
+//  THIS FILE IS WHERE WE WILL POST THE METADATA ASSOCIATED WITH A USER'S SUBMARINED CONTENT:
+
+//these are the things we need to return
+//we'll need to store this data for each file as well, and associate a customer with this data.
 //  * Name
 //  * Description 
 //  * Thumbnail CID

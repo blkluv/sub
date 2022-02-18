@@ -13,7 +13,7 @@ export const uploadSubmarinedContent = async (data) => {
   };
 
   const res = await ky(
-    `https://${process.env.NEXT_PUBLIC_MANAGED_API}/api/v1/content`,
+    `${process.env.NEXT_PUBLIC_MANAGED_API}/content`,
     {
       method: "POST",
       headers: headers,

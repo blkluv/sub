@@ -20,8 +20,8 @@ const UnlockType = () => {
     { id: 5, name: "Polygon - Mumbai" },
   ];
 
-  const { handleUpload, getHeaders, uploadJSON } = useSubmarine();
-  const { fetchSession } = useAuth();
+  const { handleUpload, submarineKey, getHeaders, uploadJSON } = useSubmarine();
+  const { fetchSession, loggedInUser } = useAuth();
   const router = useRouter();
   const { type } = router.query;
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -89,42 +89,49 @@ const UnlockType = () => {
   const handleUploadAndLinkGeneration = async (e) => {
     try {
       e.preventDefault();
-      setUploading(true);
-      const data = new FormData();
 
-      const identifier = short.generate();
+      // setUploading(true);
+      // const data = new FormData();
 
-      data.append("name", identifier);
-      Array.from(selectedFiles).forEach((file) => {
-        data.append("files", file);
-      });
-      data.append("pinToIPFS", false);
+      // const identifier = short.generate();
 
-      const res = await handleUpload(data);
-
-      const submarinedContent = {
-        id: identifier,
-        name: name,
-        thumbnail: thumbnailCid,
-        lockInfo: {
-          type, 
-          contract: contractAddress, 
-          network
-        },       
-        tweetUrl,
-        network,
-        cid: res.items[0].cid,
-      };
-
-      //  @TODO POST TO MATT's API
-      // const headers = await getHeaders();
-      // headers["content-type"] = "application/json";
-      // await ky(`/api/metadata`, {
-      //   method: "POST",
-      //   headers: headers,
-      //   body: JSON.stringify(submarinedContent),
-      //   timeout: 2147483647,
+      // data.append("name", identifier);
+      // Array.from(selectedFiles).forEach((file) => {
+      //   data.append("files", file);
       // });
+      // data.append("pinToIPFS", false);
+
+      // const res = await handleUpload(data);
+
+      // const submarineApiKey = await submarineKey();
+
+      // const submarinedContent = {
+      //   id: identifier,
+      //   name: name,
+      //   thumbnail: thumbnailCid,
+      //   lockInfo: {
+      //     type, 
+      //     contract: contractAddress, 
+      //     network
+      //   },       
+      //   tweetUrl,
+      //   network,
+      //   cid: res.items[0].cid,
+      //   submarineApiKey
+      // };
+
+      const headers = await getHeaders();
+
+      // //  @TODO POST TO MATT's API
+      await ky(`/api/metadata`, {
+        method: "POST",
+        headers: {
+          ...headers, 
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({}),
+        timeout: 2147483647,
+      });
 
       // setUploading(false);
       // clearFields();

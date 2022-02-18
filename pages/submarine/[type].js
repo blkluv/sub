@@ -90,35 +90,32 @@ const UnlockType = () => {
     try {
       e.preventDefault();
 
-      // setUploading(true);
-      // const data = new FormData();
+      setUploading(true);
+      const data = new FormData();
 
-      // const identifier = short.generate();
+      const identifier = short.generate();
 
-      // data.append("name", identifier);
-      // Array.from(selectedFiles).forEach((file) => {
-      //   data.append("files", file);
-      // });
-      // data.append("pinToIPFS", false);
+      data.append("name", identifier);
+      Array.from(selectedFiles).forEach((file) => {
+        data.append("files", file);
+      });
+      data.append("pinToIPFS", false);
 
-      // const res = await handleUpload(data);
+      const res = await handleUpload(data);
 
-      // const submarineApiKey = await submarineKey();
-
-      // const submarinedContent = {
-      //   id: identifier,
-      //   name: name,
-      //   thumbnail: thumbnailCid,
-      //   lockInfo: {
-      //     type, 
-      //     contract: contractAddress, 
-      //     network
-      //   },       
-      //   tweetUrl,
-      //   network,
-      //   cid: res.items[0].cid,
-      //   submarineApiKey
-      // };
+      const submarinedContent = {
+        id: identifier,
+        name: name,
+        thumbnail: thumbnailCid,
+        lockInfo: {
+          type, 
+          contract: contractAddress, 
+          network
+        },       
+        tweetUrl,
+        network,
+        cid: res.items[0].cid
+      };
 
       const headers = await getHeaders();
 
@@ -129,22 +126,22 @@ const UnlockType = () => {
           ...headers, 
           "content-type": "application/json"
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify(submarinedContent),
         timeout: 2147483647,
       });
 
-      // setUploading(false);
-      // clearFields();
-      // setMessage({
-      //   type: "success",
-      //   message: "Created locked content!",
-      // });
-      // setShowAlert(true);
-      // setTimeout(() => {
-      //   setShowAlert(false);
-      //   setMessage(null);
-      // }, 2500);
-      // router.push("/");
+      setUploading(false);
+      clearFields();
+      setMessage({
+        type: "success",
+        message: "Created locked content!",
+      });
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        setMessage(null);
+      }, 2500);
+      router.push("/");
     } catch (error) {
       console.log(error);
       setUploading(false);

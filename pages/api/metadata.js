@@ -2,6 +2,7 @@ import axios from 'axios';
 import models from '../../db/models/index' ;
 import Joi from 'joi';
 import { v4 as uuidv4 } from 'uuid';
+import { validate as uuidValidate } from 'uuid';
 
 //  THIS FILE IS WHERE WE WILL POST THE METADATA ASSOCIATED WITH A USER'S SUBMARINED CONTENT: 
 
@@ -72,7 +73,7 @@ export default async function handler(req, res) {
       }
 
       await models.content.create(theCreationObject);
-      res.status(200).json({ message: 'success' });
+      res.status(200).json({ result: 'success' });
 
     } catch (error) {
       console.log(error);
@@ -102,6 +103,23 @@ export default async function handler(req, res) {
       const { response: fetchResponse } = error
       res.status(fetchResponse?.status || 500).json(error.data)
     }
+  } else if(req.method === 'DELETE') {
+    const user = await getUserSession(req.headers.authorization);
+    if(!user) {
+      res.status(401).send("Unauthorized");
+    }
+    if(!req.body.id || !uuidValidate(req.body.id)) {
+      res.status(401).send("No valid id passed in");
+    } else {
+      await models.content.destroy({
+        where: {
+          id: req.body.id,
+          pinata_user_id: user.userInformation.id
+        }
+      });
+      res.status(200).json({ result: 'success' });
+    }
+
   } else {
     res.status(200).json({ message: 'This is the way...wait, no it is not. What are you doing here?' })
   }

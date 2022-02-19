@@ -8,26 +8,31 @@ module.exports = {
         type: Sequelize.UUID
       },
       name: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
       description: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       thumbnail: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       submarine_cid: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       unlock_info: {
+        allowNull: false,
         type: Sequelize.JSONB
       },
       short_id: {
-        unique: true,
+        unique: false,
         type: Sequelize.STRING
       },
       pinata_user_id: {
+        allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: 'users',
@@ -36,6 +41,10 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
+        type: Sequelize.DATE
+      },
+      deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {

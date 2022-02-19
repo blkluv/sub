@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   content.init({
-    id: DataTypes.UUID,
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     thumbnail: DataTypes.STRING,

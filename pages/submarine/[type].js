@@ -67,13 +67,14 @@ const UnlockType = () => {
         Source: 'login'
       }
     });
+
     setThumbnailCid(res.data.IpfsHash);
   };
 
   const canSubmit = () => {
     switch (type) {
       case "nft":
-        return selectedFiles.length > 0 && contractAddress && network;
+        return selectedFiles.length > 0 && contractAddress && network && name && description;
       default:
         return false;
     }
@@ -104,17 +105,16 @@ const UnlockType = () => {
       const res = await handleUpload(data);
 
       const submarinedContent = {
-        id: identifier,
-        name: name,
+        shortId: identifier,
+        name,
         thumbnail: thumbnailCid,
-        lockInfo: {
+        description,
+        unlockInfo: {
           type, 
           contract: contractAddress, 
-          network
-        },       
-        tweetUrl,
-        network,
-        cid: res.items[0].cid
+          network: network.name
+        },         
+        submarineCid: res.items[0].cid
       };
 
       const headers = await getHeaders();

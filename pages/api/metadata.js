@@ -1,6 +1,11 @@
 import axios from 'axios';
+import models from '../../db/models/index' ;
 
 //  THIS FILE IS WHERE WE WILL POST THE METADATA ASSOCIATED WITH A USER'S SUBMARINED CONTENT: 
+
+//these are the things we need to return
+//we'll need to store this data for each file as well, and associate a customer with this data.
+
 //  * Name
 //  * Description 
 //  * Thumbnail CID
@@ -31,6 +36,10 @@ export default async function handler(req, res) {
 
       console.log(req.body);
       //Example req.body: 
+
+      await models.content.create({
+
+      })
 
       // {
       //   id: 'e3xc8NnhTE541XRzBkiZoM',

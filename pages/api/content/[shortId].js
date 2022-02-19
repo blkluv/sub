@@ -2,13 +2,13 @@ import models from '../../../db/models/index' ;
 
 export default async function handler(req, res) {
   try {
-    const { id } = req.query
     if(!req.query.shortId) {
       res.status(401).send("Please provide a shortId");
     }
-    const theContent = await models.metadata.findOne({
+    console.log({id: req.query.shortId});
+    const theContent = await models.content.findOne({
       where: {
-        shortId: req.query.shortId
+        short_id: req.query.shortId
       }
     })
     const returnObject = {
@@ -17,9 +17,10 @@ export default async function handler(req, res) {
       description: theContent.description,
       thumbnail: theContent.thumbnail,
       submarineCID: theContent.submarine_cid,
-      unlockInfo: theContent.unlockInfo,
-      shortId: theContent.shortId
+      unlockInfo: theContent.unlock_info,
+      shortId: theContent.short_id
     }
+    
     res.status(200).json(returnObject);
   } catch (error) {
     console.log(error);

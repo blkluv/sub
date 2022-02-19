@@ -2,6 +2,7 @@ import axios from "axios";
 import {ethers} from "ethers";
 import { v4 as uuidv4 } from 'uuid';
 import { withIronSession } from 'next-iron-session'
+import * as util from "ethereumjs-util";
 import { json } from "../../erc721";
 const urlV2API = `https://managed.mypinata.cloud/api/v1`;
 const GATEWAY_URL = "https://opengateway.mypinata.cloud";
@@ -18,7 +19,7 @@ function withSession(handler) {
 export default withSession(async (req, res) => {
   if(req.method === "POST") {
     try {    
-      const { network, contractAddress, CID } = req.body;
+      const { network, contractAddress, CID, address, signature, params, shortId } = req.body;
       const networkMap =  {
         "ETH - Mainnet": process.env.ALCHEMY_MAINNET, 
         "ETH - Ropsten": process.env.ALCHEMY_ROPSTEN, 
@@ -26,18 +27,18 @@ export default withSession(async (req, res) => {
         "Polygon - Mainnet": process.env.ALCHEMY_POLYGON, 
         "Polygon - Mumbai": process.env.ALCHEMY_MUMBAI
       }
+      
+      const message = req.session.get('message-session');
+     // const provider = await new ethers.providers.JsonRpcProvider(networkMap[network]);
+      // const contract = await new ethers.Contract(contractAddress , json() , provider);     
+      let nonce = "\x19Ethereum Signed Message:\n" + JSON.stringify(message).length + JSON.stringify(message)
+      nonce = util.keccak(Buffer.from(nonce, "utf-8"))
+      const { v, r, s } = util.fromRpcSig(req.body.signature)
+      const pubKey = util.ecrecover(util.toBuffer(nonce), v, r, s)
+      const addrBuf = util.pubToAddress(pubKey)
+      const recoveredAddress = util.bufferToHex(addrBuf)
 
-      const provider = await new ethers.providers.JsonRpcProvider(networkMap[network]);
-      const contract = await new ethers.Contract(contractAddress , json() , provider);     
-      const recoveredAddress = ethers.utils.verifyTypedData(
-        domain,
-        types,
-        allowList,
-        signature
-      );
-
-      console.log(recoveredAddress);
-      if(req.body.address === recoveredAddress) {
+      if(address === recoveredAddress) {
         //  @TODO Get user's API Key
         const API_KEY = ""
         const balance = await contract.balanceOf(addr);

@@ -25,9 +25,7 @@ export default async function handler(req, res) {
       if(!user) {
         res.status(401).send("Unauthorized");
       }
-      //Example req.body:
 
-      console.log(models);
       const submarineMeUser = await models.users.findByPk(user.userInformation.id);
       if(!submarineMeUser) {
         const APIKeys = await findAPIKeys(req);
@@ -75,7 +73,6 @@ export default async function handler(req, res) {
       //   submarineApiKey: 'vhdhs8j274675753'
       // }
 
-      // const pinataUserId = user.userInformation.id;
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error

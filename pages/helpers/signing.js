@@ -21,7 +21,7 @@ export const getTypedData = (network, data) => {
   return { domain, types, proveOwnership };
 }
 
-export const signTypedData = async (network) => {
+export const signTypedData = async (address, network) => {  
   const from = "";
   const msgParams = getTypedData(network, nonce);
   var params = [from, msgParams];

@@ -28,6 +28,8 @@ export default async function handler(req, res) {
       if(!user) {
         res.status(401).send("Unauthorized");
       }
+
+      console.log(req.body);
       //Example req.body: 
 
       // {
@@ -42,11 +44,10 @@ export default async function handler(req, res) {
       //   tweetUrl: '',
       //   network: { id: 1, name: 'ETH - Mainnet' },
       //   cid: 'bafkreigxdzpom7s56nfw2etcuacy5mlfkwuz6uailsxcglnkjeqxsrjeze', 
-      //   submarineApiKey: 'vhdhs8j274675753'
       // }
 
       const pinataUserId = user.userInformation.id;
-
+      console.log(pinataUserId);
     } catch (error) {
       console.log(error);
       res.status(500).json(error);

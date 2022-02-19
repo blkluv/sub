@@ -68,8 +68,8 @@ export const logUserIn = async (email, password) => {
         // await Auth.federatedSignIn();
         const res = await Auth.signIn(email, password);
         const { accessToken } = await fetchSession();
-        await ky("/api/users", null, {
-            method: "POST", 
+        await ky("/api/users", {
+            method: "GET", 
             headers: {
                 Authorization: `Bearer ${accessToken}`, 
                 source: "login"

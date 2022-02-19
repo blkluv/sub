@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getTypedData } from '../pages/helpers/signing';
+import { getTypedData, signTypedData } from '../pages/helpers/signing';
 
 export const useMetamask = () => {
   const [ethereum, setEthereum] = useState(null);
@@ -21,11 +21,13 @@ export const useMetamask = () => {
     const messageToSign = await axios.get("/api/verify");
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     const account = accounts[0];
-    const signedData = getTypedData(network, messageToSign);
+    const typedData = getTypedData(network, messageToSign);    
+    const signature = signTypedData(accounts, network);
+    console.log(signature);
     try {
       const res = await axios.post("/api/verify", {
         address: account,
-        signature: signedData
+        signature
       });
       const url = res.data;
       

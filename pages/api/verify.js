@@ -36,6 +36,7 @@ export default withSession(async (req, res) => {
         signature
       );
 
+      console.log(recoveredAddress);
       if(req.body.address === recoveredAddress) {
         //  @TODO Get user's API Key
         const API_KEY = ""
@@ -71,7 +72,7 @@ export default withSession(async (req, res) => {
     }    
   } else if(req.method === "GET") {
     try {
-      const message = { contractAddress, id: uuidv4() }
+      const message = { contractAddress: null, id: uuidv4() }
       req.session.set('message-session', message)
       await req.session.save()
       res.json(message)

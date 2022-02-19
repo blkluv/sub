@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 .public-content-bg {
-  background: linear-gradient(180deg, #87E7CF 0%, #580098 100%);
+  background: linear-gradient(180deg, #B6ECE2 0%, #9C6BC3 100%);
+
 }

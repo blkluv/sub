@@ -6,16 +6,25 @@ import Alert from "../Alert";
 import { useSubmarine } from "../../hooks/useSubmarine";
 import { mockData } from "./mockData";
 import ky from "ky";
+import { useAuth } from "../../hooks/useAuth";
+import UpgradeModal from "./UpgradeModal";
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);
+  const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
 
   const { getHeaders } = useSubmarine();
+  const { plan } = useAuth();
   useEffect(() => {
-    loadLinks();
-  }, []);
+    console.log(plan);
+    if(plan && plan === 'PROFESSIONAL') {
+      loadLinks();
+    } else if(plan) {
+      setDisplayUpgradeModal(true)
+    }
+  }, [plan]);
 
   const loadLinks = async () => {
     // const res = await getSubmarinedContent()
@@ -52,6 +61,10 @@ const Dashboard = () => {
         type={message?.type}
         message={message?.message}
       />
+      {
+        displayUpgradeModal && 
+        <UpgradeModal />
+      }      
       <div className="h-screen bg-gray container w-full m-auto">
         <main className="pt-24 pb-8">
           <div className="flex flex-col">

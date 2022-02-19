@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 const Content = () => {
   const router = useRouter()
   useEffect(() => {
-    fetchContent();
+    // fetchContent();
   }, []);
 
   const fetchContent = async () => {

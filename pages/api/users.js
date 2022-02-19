@@ -1,15 +1,6 @@
 import axios from 'axios';
 import {createAPIKey, getUserSession, findAPIKeys} from '../helpers/user.helpers';
-//  THIS FILE IS WHERE WE WILL POST THE METADATA ASSOCIATED WITH A USER'S SUBMARINED CONTENT:
 const models = require('../../db/models/index');
-//these are the things we need to return
-//we'll need to store this data for each file as well, and associate a customer with this data.
-
-//  * Name
-//  * Description
-//  * Thumbnail CID
-//  * Unlock info
-//  * Customer API Key
 
 export default async function handler(req, res) {
   if(req.method === "POST") {
@@ -25,9 +16,7 @@ export default async function handler(req, res) {
       if(!user) {
         res.status(401).send("Unauthorized");
       }
-      //Example req.body:
-
-      console.log(models);
+      
       const submarineMeUser = await models.users.findById(user.userInformation.id);
       if(!submarineMeUser) {
         const APIKeys = await findAPIKeys(req);

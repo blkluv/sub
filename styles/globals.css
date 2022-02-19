@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.fake-class {
-    color: red;
+.public-content-bg {
+  background: linear-gradient(180deg, #87E7CF 0%, #580098 100%);
 }

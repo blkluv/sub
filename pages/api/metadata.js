@@ -90,6 +90,7 @@ export default async function handler(req, res) {
         limit: 10,
         offset: 0
       };
+
       if(req.query.offset && Number.isInteger(req.query.offset)){
         queryOptions.offset = req.query.offset
       }
@@ -107,6 +108,7 @@ export default async function handler(req, res) {
     if(!user) {
       res.status(401).send("Unauthorized");
     }
+    console.log({body: req.body.id});
     if(!req.body.id || !uuidValidate(req.body.id)) {
       res.status(401).send("No valid id passed in");
     } else {

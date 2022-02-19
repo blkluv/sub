@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeDatePretty } from "../../pages/helpers/makePrettyDate";
+import DeleteModal from "./DeleteModal";
 
-const LinkTable = ({ files, copyLink }) => {
+const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks }) => {
+  const [file, setFile] = useState(null);
+
+  const openDeleteModal = (thisFile) => {
+    setFile(thisFile);
+    setOpen(true);
+  }
 
   const getLink = (file) => {
     if (file?.metadata?.keyvalues?.unlockType === "retweet") {
@@ -9,7 +16,7 @@ const LinkTable = ({ files, copyLink }) => {
     } 
   };
   return (
-    <>
+    <div>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -76,15 +83,16 @@ const LinkTable = ({ files, copyLink }) => {
                 </button>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                <button onClick={() => openDeleteModal(file)} className="text-indigo-600 hover:text-indigo-900">
                   Delete
-                </a>
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </>
+      <DeleteModal file={file} handleDelete={handleDelete} open={open} setOpen={setOpen} loadLinks={loadLinks} />
+    </div>
   );
 };
 

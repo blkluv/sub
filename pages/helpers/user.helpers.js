@@ -1,4 +1,5 @@
 import axios from "axios";
+import models from "../../db/models";
 
 export const getUserSession = async (auth) => {
   try {
@@ -37,6 +38,20 @@ export const findAPIKeys = async (req) => {
       }
     });
     return hasKeyResults.data.items;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getGateways = async (req) => {
+  try {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_MANAGED_API}/gateways?page=1`, {
+      headers: {
+        authorization: req.headers.authorization,
+        source: 'login'
+      }
+    });
+    return res.data;
   } catch (error) {
     throw error;
   }

@@ -85,7 +85,9 @@ export default async function handler(req, res) {
         res.status(401).send("Unauthorized");
       }
       const queryOptions = {
-        pinata_user_id: user.userInformation.id,
+        where: {
+          pinata_user_id: user.userInformation.id
+        },
         order: [['createdAt', 'DESC']],
         limit: 10,
         offset: 0

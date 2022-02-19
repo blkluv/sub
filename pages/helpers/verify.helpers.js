@@ -3,7 +3,7 @@ import models from '../../db/models/index' ;
 
 // api will need to be updated to get specific gateways
 
-export const getGateways = async (shortId) => {
+export const getUserContentCombo = async (shortId) => {
   try {
     const contentWithUser = await models.content.findOne({
       where: {
@@ -15,14 +15,7 @@ export const getGateways = async (shortId) => {
         }
       ]
     });
-    const theAPIKey = contentWithUser.user.pinata_submarine_key;
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_MANAGED_API}/gateways?page=1`, {
-      headers: {
-        'x-api-key': theAPIKey,
-        'x-auth-token': theAPIKey
-      }
-    });
-    return res.data;
+    return contentWithUser;
   } catch (error) {
     throw error;
   }

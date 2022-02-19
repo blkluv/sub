@@ -4,8 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { withIronSession } from 'next-iron-session'
 import * as util from "ethereumjs-util";
 import { json } from "../../erc721";
-const urlV2API = `https://managed.mypinata.cloud/api/v1`;
+const urlV2API = process.env.MANAGED_API_URL;
 const GATEWAY_URL = "https://opengateway.mypinata.cloud";
+import models from '../../db/models/index' ;
+import {getGateways, getUserContentCombo} from '../helpers/verify.helpers';
+
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -19,7 +22,8 @@ function withSession(handler) {
 export default withSession(async (req, res) => {
   if(req.method === "POST") {
     try {    
-      const { network, contractAddress, CID, address, signature, params, shortId } = req.body;
+      const { network, contractAddress, CID, address, signature, params, shortId } = req.body;      
+      console.log(network);
       const networkMap =  {
         "ETH - Mainnet": process.env.ALCHEMY_MAINNET, 
         "ETH - Ropsten": process.env.ALCHEMY_ROPSTEN, 
@@ -29,37 +33,37 @@ export default withSession(async (req, res) => {
       }
       
       const message = req.session.get('message-session');
-     // const provider = await new ethers.providers.JsonRpcProvider(networkMap[network]);
-      // const contract = await new ethers.Contract(contractAddress , json() , provider);     
+      console.log(networkMap[network])
+     const provider = await new ethers.providers.JsonRpcProvider(networkMap[network]);
+      const contract = await new ethers.Contract(contractAddress , json() , provider);     
       let nonce = "\x19Ethereum Signed Message:\n" + JSON.stringify(message).length + JSON.stringify(message)
       nonce = util.keccak(Buffer.from(nonce, "utf-8"))
       const { v, r, s } = util.fromRpcSig(req.body.signature)
       const pubKey = util.ecrecover(util.toBuffer(nonce), v, r, s)
       const addrBuf = util.pubToAddress(pubKey)
       const recoveredAddress = util.bufferToHex(addrBuf)
-
-      if(address === recoveredAddress) {
-        //  @TODO Get user's API Key
-        const API_KEY = ""
-        const balance = await contract.balanceOf(addr);
-        if(balance.toString() !== "0") {
+      if(req.body.address === recoveredAddress) {
+        const balance = await contract.balanceOf(recoveredAddress);
+        if(balance.toString() !== "0") {          
+          const info = await getUserContentCombo(shortId);
+          const { pinata_submarine_key, pinata_gateway_subdomain } = info.dataValues.user.dataValues
           const config = {
             headers: {
-              "x-api-key": `${API_KEY}`, 
+              "x-api-key": `${pinata_submarine_key}`, 
               'Content-Type': 'application/json'
             }
           }
-
-          const content = await axios.get(`${urlV2API}/content`, config)
+          const content = await axios.get(`${process.env.NEXT_PUBLIC_MANAGED_API}/content`, config)
           
           const { data } = content;
           const { items } = data;
           const item = items.find(i => i.cid === CID);
           const body = {
-            timeoutInSeconds: 3600, 
+            timeoutSeconds: 3600, 
             contentIds: [item.id] 
           }
-          const token = await axios.post(`${urlV2API}/auth/content/jwt`, body, config);
+          const token = await axios.post(`${process.env.NEXT_PUBLIC_MANAGED_API}/auth/content/jwt`, body, config);
+          const GATEWAY_URL = `https://${pinata_gateway_subdomain}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`
           return res.send(`${GATEWAY_URL}/ipfs/${CID}?accessToken=${token.data}`);
         } else {
           return res.status(401).send("Token not found. Check your network.");
@@ -68,7 +72,7 @@ export default withSession(async (req, res) => {
         return res.status(401).send("Invalid signature");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       res.status(500).json(error);
     }    
   } else if(req.method === "GET") {

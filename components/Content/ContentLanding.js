@@ -4,10 +4,7 @@ import SubmarineLogoSvg from "../SubmarineLogoSvg";
 
 export default function ContentLanding({ pageData, loading, fileInfo }) {
   const { signData } = useMetamask();
-
-  console.log(loading);
   console.log(fileInfo);
-
   return (
     <div>
       <div className="absolute p-4 flex flex-row">
@@ -40,7 +37,7 @@ export default function ContentLanding({ pageData, loading, fileInfo }) {
               <div className="mt-10 flex justify-center">
                 <div className="inline-flex w-1/2">
                   <button
-                    onClick={() => signData(fileInfo.network)}
+                    onClick={() => signData(fileInfo.unlockInfo.network, fileInfo.shortId, fileInfo.unlockInfo.contract, fileInfo.submarineCID)}
                     className="w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                   >
                     Connect wallet

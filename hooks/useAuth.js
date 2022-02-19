@@ -335,12 +335,18 @@ export const useAuth = () => {
       setAccessToken(sessionData.accessToken);
       setRefreshToken(sessionData.refreshToken);
       setIdToken(sessionData.idToken);
-      const billing = await getUserBillingInfo();
+      if (!plan) {
+        const billing = await getUserBillingInfo();
         console.log(billing);
-      if (billing && billing.subscriptionItems && billing.subscriptionItems[0].type === 'PROFESSIONAL') {
-        setPlan("PROFESSIONAL");
-      } else {
-        setPlan("free");
+        if (
+          billing &&
+          billing.subscriptionItems &&
+          billing.subscriptionItems[0].type === "PROFESSIONAL"
+        ) {
+          setPlan("PROFESSIONAL");
+        } else {
+          setPlan("free");
+        }
       }
     }
   };

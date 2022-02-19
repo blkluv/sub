@@ -14,7 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   content.init({
-    firstName: DataTypes.STRING
+    id: DataTypes.UUID,
+    name: DataTypes.STRING,
+    description: DataTypes.STRING,
+    thumbnail: DataTypes.STRING,
+    submarine_cid: DataTypes.STRING,
+    unlock_info: DataTypes.JSONB,
+    short_id: DataTypes.STRING,
+    pinata_user_id: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'content',

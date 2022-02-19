@@ -24,6 +24,7 @@ module.exports = {
         type: Sequelize.JSONB
       },
       short_id: {
+        unique: true,
         type: Sequelize.STRING
       },
       pinata_user_id: {

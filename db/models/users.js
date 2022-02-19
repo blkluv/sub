@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   users.init({
-    id: DataTypes.UUID,
+    pinata_user_id: DataTypes.UUID,
     pinata_submarine_key: DataTypes.STRING
   }, {
     sequelize,

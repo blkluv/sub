@@ -1,4 +1,5 @@
 import axios from 'axios';
+import models from '../../db/models/index' ;
 
 //  THIS FILE IS WHERE WE WILL POST THE METADATA ASSOCIATED WITH A USER'S SUBMARINED CONTENT: 
 
@@ -33,6 +34,10 @@ export default async function handler(req, res) {
         res.status(401).send("Unauthorized");
       }
       //Example req.body: 
+
+      await models.content.create({
+
+      })
 
       // {
       //   id: 'e3xc8NnhTE541XRzBkiZoM',

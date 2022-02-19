@@ -3,8 +3,11 @@ import {ethers} from "ethers";
 import { v4 as uuidv4 } from 'uuid';
 import { withIronSession } from 'next-iron-session'
 import { json } from "../../erc721";
-const urlV2API = `https://managed.mypinata.cloud/api/v1`;
+const urlV2API = process.env.MANAGED_API_URL;
 const GATEWAY_URL = "https://opengateway.mypinata.cloud";
+import models from '../../db/models/index' ;
+import {getGateways, getUserContentCombo} from '../helpers/verify.helpers';
+
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -18,7 +21,11 @@ function withSession(handler) {
 export default withSession(async (req, res) => {
   if(req.method === "POST") {
     try {    
-      const { network, contractAddress, CID } = req.body;
+      const { network, contractAddress, CID, shortId } = req.body;
+
+      //TODO @JUSTIN -  MOVE ME WHEREVER
+      const gateways = await getUserContentCombo(shortId);
+      console.log(gateways);
       const networkMap =  {
         "ETH - Mainnet": process.env.ALCHEMY_MAINNET, 
         "ETH - Ropsten": process.env.ALCHEMY_ROPSTEN, 
@@ -38,6 +45,7 @@ export default withSession(async (req, res) => {
 
       console.log(recoveredAddress);
       if(req.body.address === recoveredAddress) {
+
         //  @TODO Get user's API Key
         const API_KEY = ""
         const balance = await contract.balanceOf(addr);

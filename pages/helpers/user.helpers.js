@@ -16,7 +16,7 @@ export const getUserSession = async (auth) => {
 
 export const createAPIKey = async (req) => {
   try {
-    const newKeyResults = await axios.post(`${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
+    const newKeyResults = await axios.post(`${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`,{}, {
         headers: {
           authorization: req.headers.authorization,
           source: 'login'

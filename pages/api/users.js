@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       //Example req.body:
 
       console.log(models);
-      const submarineMeUser = await models.users.findById(user.userInformation.id);
+      const submarineMeUser = await models.users.findByPk(user.userInformation.id);
       if(!submarineMeUser) {
         const APIKeys = await findAPIKeys(req);
         let theAPIKey;

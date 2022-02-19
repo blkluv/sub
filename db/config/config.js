@@ -12,6 +12,7 @@ const parseURL = (databaseURL) => {
     port: URLObj.port,
     database: URLObj.path.split('/')[1],
     dialect: 'postgres',
+    ssl: true
   };
 };
 

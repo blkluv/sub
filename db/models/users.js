@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   users.init({
-    pinata_user_id: DataTypes.UUID,
+    pinata_user_id: {
+      type: DataTypes.UUID,
+      primaryKey: true
+    },
     pinata_submarine_key: DataTypes.STRING
   }, {
     sequelize,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {createAPIKey, getUserSession, findAPIKeys} from '../helpers/user.helpers';
+import {createAPIKey, getGateways, getUserSession, findAPIKeys} from '../helpers/user.helpers';
 const models = require('../../db/models/index');
 
 export default async function handler(req, res) {
@@ -42,28 +42,22 @@ export default async function handler(req, res) {
           //we need to update the API key or else things won't work on submarine.me
           const newKey = await createAPIKey(req);
           await submarineMeUser.update({
-            pinata_submarine_key: newKey
+            pinata_submarine_key: newKey.key
           })
         }
       }
 
+      const gateways = await getGateways(req);
+      if(!gateways || !gateways.items || !gateways.items.rows || gateways.items.rows.length < 1) {
+        res.status(400).send("User Has No Gateways");
+      } else {
+        await submarineMeUser.update({
+          pinata_gateway_subdomain: gateways.items.rows[0].domain
+        })
+      }
+
       res.status(200).json({ message: 'user exists with valid key' })
-
-      // {
-      //   id: 'e3xc8NnhTE541XRzBkiZoM',
-      //   name: 'Zombie State Podcast',
-      //   thumbnail: 'QmZp1re5P9YzUo5v5zFhK2CdeskHyn8ZiwghUXTcSCNzAe',
-      //   lockInfo: {
-      //     type: 'nft',
-      //     contract: '0xdB2448d266d311D35f56c46dD43884B7FEeea76b',
-      //     network: { id: 1, name: 'ETH - Mainnet' }
-      //   },
-      //   tweetUrl: '',
-      //   network: { id: 1, name: 'ETH - Mainnet' },
-      //   cid: 'bafkreigxdzpom7s56nfw2etcuacy5mlfkwuz6uailsxcglnkjeqxsrjeze',
-      //   submarineApiKey: 'vhdhs8j274675753'
-      // }
-
+      
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error

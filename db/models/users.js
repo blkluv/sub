@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
     }
   }
   users.init({
@@ -18,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true
     },
-    pinata_submarine_key: DataTypes.STRING
+    pinata_submarine_key: DataTypes.STRING,
+    pinata_gateway_subdomain: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'users',

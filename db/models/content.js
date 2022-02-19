@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      content.hasOne(models.users, {
+        foreignKey: 'pinata_user_id',
+        sourceKey: 'pinata_user_id'
+      });
     }
   }
   content.init({

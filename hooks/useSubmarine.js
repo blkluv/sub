@@ -13,7 +13,7 @@ export const uploadSubmarinedContent = async (data) => {
   };
 
   const res = await ky(
-    `https://${process.env.NEXT_PUBLIC_MANAGED_API}/api/v1/content`,
+    `${process.env.NEXT_PUBLIC_MANAGED_API}/content`,
     {
       method: "POST",
       headers: headers,
@@ -30,6 +30,44 @@ export const useSubmarine = () => {
   const handleUpload = async (data) => {
     return await uploadSubmarinedContent(data);
   };
+
+  const getSubmarineApiKey = async () => {
+    const headers = await getHeaders();
+    const res = await ky( `${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
+      method: "GET",
+      headers: {
+        ...headers
+      }
+    }, );
+    const json = await res.json();
+    const { items } = json;
+    if(items.length > 0) {
+      return items[0].key
+    } else {
+      return null;
+    }
+  }
+
+  const createSubmarineKey = async () => {
+    const headers = await getHeaders();
+    await ky( `${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
+      method: "POST",
+      headers: {
+        ...headers
+      }
+    }, );
+  }
+
+  const submarineKey = async () => {
+    let key = await getSubmarineApiKey();
+    if(key) {
+      return key;
+    }
+
+    await createSubmarineKey(); 
+    key = await getSubmarineApiKey();
+    return key;
+  }
 
   const uploadJSON = async (json, id) => {
     try {
@@ -120,6 +158,7 @@ export const useSubmarine = () => {
     uploadJSON, 
     getSubmarinedContent, 
     getLockMetadata,
-    getContent
+    getContent, 
+    submarineKey
   };
 };

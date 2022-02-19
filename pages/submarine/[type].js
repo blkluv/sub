@@ -7,18 +7,21 @@ import NFT from "../../components/Submarine/SelectLockType/NFT";
 import ky from "ky";
 import Alert from "../../components/Alert";
 import { useSubmarine } from "../../hooks/useSubmarine";
+import axios from "axios";
+import { useAuth } from "../../hooks/useAuth";
 const short = require("short-uuid");
 
 const UnlockType = () => {
   const networks = [
-    { id: 1, name: 'ETH - Mainnet' },
-    { id: 2, name: 'ETH - Ropsten' },
-    { id: 3, name: 'ETH - Rinkeby' },
-    { id: 4, name: 'Polygon - Mainnet' },
-    { id: 5, name: 'Polygon - Mumbai' }
-  ]
+    { id: 1, name: "ETH - Mainnet" },
+    { id: 2, name: "ETH - Ropsten" },
+    { id: 3, name: "ETH - Rinkeby" },
+    { id: 4, name: "Polygon - Mainnet" },
+    { id: 5, name: "Polygon - Mumbai" },
+  ];
 
-  const { handleUpload, getHeaders, uploadJSON } = useSubmarine();
+  const { handleUpload, submarineKey, getHeaders, uploadJSON } = useSubmarine();
+  const { fetchSession, loggedInUser } = useAuth();
   const router = useRouter();
   const { type } = router.query;
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -31,8 +34,9 @@ const UnlockType = () => {
   const [name, setName] = useState("");
   const [thumbnail, setThumbnail] = useState([]);
   const [description, setDescription] = useState("");
+  const [thumbnailCid, setThumbnailCid] = useState("");
 
-  const onFileChange = (e) => {
+  const onFileChange = (e, type) => {
     const files = e.target.files;
     for (let i = 0; i < files.length; i++) {
       Object.assign(files[i], {
@@ -40,12 +44,12 @@ const UnlockType = () => {
         formattedSize: files[i].size,
       });
     }
+
     setSelectedFiles(files);
   };
 
-  const onThumbnailChange = (e) => {
+  const onThumbnailChange = async (e) => {
     const files = e.target.files;
-    console.log(files);
     for (let i = 0; i < files.length; i++) {
       Object.assign(files[i], {
         preview: URL.createObjectURL(files[i]),
@@ -53,6 +57,17 @@ const UnlockType = () => {
       });
     }
     setThumbnail(files);
+
+    const { accessToken }  = await fetchSession();
+    const data = new FormData();
+    data.append("file", files[0], files[0].name)
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`, data, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, 
+        Source: 'login'
+      }
+    });
+    setThumbnailCid(res.data.IpfsHash);
   };
 
   const canSubmit = () => {
@@ -74,6 +89,7 @@ const UnlockType = () => {
   const handleUploadAndLinkGeneration = async (e) => {
     try {
       e.preventDefault();
+
       setUploading(true);
       const data = new FormData();
 
@@ -89,22 +105,27 @@ const UnlockType = () => {
 
       const submarinedContent = {
         id: identifier,
-        name: name, 
-        thumbnail: "", 
-        unlockType: type,
+        name: name,
+        thumbnail: thumbnailCid,
+        lockInfo: {
+          type, 
+          contract: contractAddress, 
+          network
+        },       
         tweetUrl,
-        contractAddress,
-        network,        
+        network,
         cid: res.items[0].cid
       };
 
-      await uploadJSON(submarinedContent, submarinedContent.id);
-
       const headers = await getHeaders();
-      headers["content-type"] = "application/json";
-      await ky(`/api/lock`, {
+
+      // //  @TODO POST TO MATT's API
+      await ky(`/api/metadata`, {
         method: "POST",
-        headers: headers,
+        headers: {
+          ...headers, 
+          "content-type": "application/json"
+        },
         body: JSON.stringify(submarinedContent),
         timeout: 2147483647,
       });
@@ -142,27 +163,11 @@ const UnlockType = () => {
       case "nft":
         return (
           <NFT
-          name={name}
-          setName={setName}            
-          thumbnail={thumbnail}
-          setThumbnail={setThumbnail}
-          selectedFiles={selectedFiles}
-          onFileChange={onFileChange}
-          onThumbnailChange={onThumbnailChange}
-          contractAddress={contractAddress}
-          setContractAddress={setContractAddress}
-          network={network}
-          networks={networks}
-          setNetwork={setNetwork}
-          />
-        );
-      default:
-        return (
-          <NFT
             name={name}
-            setName={setName}            
+            setName={setName}
             thumbnail={thumbnail}
             setThumbnail={setThumbnail}
+            setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
             onFileChange={onFileChange}
             onThumbnailChange={onThumbnailChange}
@@ -171,6 +176,27 @@ const UnlockType = () => {
             network={network}
             networks={networks}
             setNetwork={setNetwork}
+            setDescription={setDescription}
+          />
+        );
+      default:
+        return (
+          <NFT
+            name={name}
+            setName={setName}
+            thumbnail={thumbnail}
+            setThumbnail={setThumbnail}
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            onFileChange={onFileChange}
+            onThumbnailChange={onThumbnailChange}
+            contractAddress={contractAddress}
+            setContractAddress={setContractAddress}
+            network={network}
+            networks={networks}
+            setNetwork={setNetwork}
+            description={description}
+            setDescription={setDescription}
           />
         );
     }

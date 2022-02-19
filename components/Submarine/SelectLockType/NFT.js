@@ -15,8 +15,11 @@ const NFT = ({
   setName,
   thumbnail,
   setThumbnail,
+  description,
+  setDescription,
   onThumbnailChange,
 }) => {
+
   return (
     <div>
       <div>
@@ -101,8 +104,8 @@ const NFT = ({
           <div className="mt-1 sm:mt-0 sm:col-span-2">
             <div className="max-w-lg flex">
               <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 type="text"
                 name="description"
                 id="description"
@@ -123,7 +126,11 @@ const NFT = ({
             <div className="flex items-center">
               <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
                 {thumbnail && thumbnail.length > 0 ? (
-                  <img className="h-12 w-12" src={thumbnail[0]?.preview} alt="preview for thumbnail" />
+                  <img
+                    className="h-12 w-12"
+                    src={thumbnail[0]?.preview}
+                    alt="preview for thumbnail"
+                  />
                 ) : (
                   <svg
                     className="h-full w-full text-gray-300"
@@ -134,12 +141,7 @@ const NFT = ({
                   </svg>
                 )}
               </span>
-              <button
-                type="button"
-                className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <UploadThumbnail onThumbnailChange={onThumbnailChange} />
-              </button>
+              <UploadThumbnail onThumbnailChange={onThumbnailChange} />
             </div>
           </div>
         </div>

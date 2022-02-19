@@ -5,21 +5,32 @@ import Link from "next/link";
 import Alert from "../Alert";
 import { useSubmarine } from "../../hooks/useSubmarine";
 import { mockData } from "./mockData";
+import ky from "ky";
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const { getSubmarinedContent } = useSubmarine();
+  const { getHeaders } = useSubmarine();
   useEffect(() => {
     loadLinks();
   }, []);
 
   const loadLinks = async () => {
     // const res = await getSubmarinedContent()
-    const res = mockData();
-    setFiles(res);
+    const headers = await getHeaders();
+    const res = await ky("/api/metadata",  {
+      method: "GET",
+      headers: {
+        ...headers
+      }
+    })
+
+    const json = await res.json();
+    setFiles(json);
+    // const res = mockData();
+    // setFiles(res);
   }
   const copyLink = (file) => {
     navigator.clipboard.writeText(`${window.location.origin}/${file.ipfs_pin_hash}`);

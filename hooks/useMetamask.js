@@ -19,29 +19,33 @@ export const useMetamask = () => {
   }, [ethereum]);
 
   const signData = async (network, shortId, contract, submarineCid) => {
-    const messageToSign = await axios.get("/api/verify");
-    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-    const account = accounts[0];
-    const signature = await ethereum.request({
-      method: "personal_sign",
-      params: [
-        JSON.stringify(messageToSign.data),
-        account,
-        messageToSign.data.id,
-      ],
-    });
-
-    const res = await axios.post("/api/verify", {
-      address: account,
-      signature,
-      network,
-      contractAddress: contract,
-      CID: submarineCid,
-      shortId: shortId
-    });
-    const url = res.data;
-    console.log(url);
-    setUrl(url);
+    try {
+      const messageToSign = await axios.get("/api/verify");
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+      const account = accounts[0];
+      const signature = await ethereum.request({
+        method: "personal_sign",
+        params: [
+          JSON.stringify(messageToSign.data),
+          account,
+          messageToSign.data.id,
+        ],
+      });
+  
+      const res = await axios.post("/api/verify", {
+        address: account,
+        signature,
+        network,
+        contractAddress: contract,
+        CID: submarineCid,
+        shortId: shortId
+      });
+      const url = res.data;
+      console.log(url);
+      return url; 
+    } catch (error) {
+      throw error;
+    }    
   };
 
   return {

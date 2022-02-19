@@ -4,30 +4,55 @@ import LinkTable from "./LinkTable";
 import Link from "next/link";
 import Alert from "../Alert";
 import { useSubmarine } from "../../hooks/useSubmarine";
-import { mockData } from "./mockData";
 import ky from "ky";
-import { useAuth } from "../../hooks/useAuth";
+import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
-import DeleteModal from "./DeleteModal";
 
-const Dashboard = () => {
+const Dashboard = ({plan}) => {
   const [files, setFiles] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
   const [offset, setOffset] = useState(0);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const { getHeaders } = useSubmarine();
-  const { plan } = useAuth();
   useEffect(() => {
-    if (plan && plan === "PROFESSIONAL") {
-      loadLinks();
-    } else if (plan) {
+    checkForPlan();
+  }, []);
+
+  const checkForPlan = async () => {
+    const userPlanInfo = await getUserBillingInfo();
+    if(!userPlanInfo) {
       setDisplayUpgradeModal(true);
+    } else if(userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL") {
+      setDisplayUpgradeModal(true);
+    } else {
+      loadLinks();
     }
-  }, [plan]);
+  }
+
+  const getUserBillingInfo = async () => {
+    const { accessToken } = await fetchSession();
+    try {
+      const res = await ky(
+        `${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/userStripeCustomer`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            source: "login",
+          },
+        }
+      );
+  
+      const userJson = await res.json();
+      return userJson;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
 
   const handleChangePage = (newPage) => {
     if (newPage >= 0) {

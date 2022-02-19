@@ -248,26 +248,26 @@ export const getAuthenticatedUser = async () => {
   return await Auth.currentAuthenticatedUser();
 };
 
-export const getUserBillingInfo = async () => {
-  const { accessToken } = await fetchSession();
-  try {
-    const res = await ky(
-      `${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/userStripeCustomer`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          source: "login",
-        },
-      }
-    );
+// export const getUserBillingInfo = async () => {
+//   const { accessToken } = await fetchSession();
+//   try {
+//     const res = await ky(
+//       `${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/userStripeCustomer`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//           source: "login",
+//         },
+//       }
+//     );
 
-    const userJson = await res.json();
-    return userJson;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
+//     const userJson = await res.json();
+//     return userJson;
+//   } catch (error) {
+//     console.log(error);
+//     return null;
+//   }
+// };
 
 export const useAuth = () => {
   const router = useRouter();
@@ -327,6 +327,7 @@ export const useAuth = () => {
   };
 
   const handleSession = async () => {
+
     const sessionData = await fetchSession();
 
     if (sessionData && sessionData.user && sessionData.session) {
@@ -335,19 +336,19 @@ export const useAuth = () => {
       setAccessToken(sessionData.accessToken);
       setRefreshToken(sessionData.refreshToken);
       setIdToken(sessionData.idToken);
-      if (!plan) {
-        const billing = await getUserBillingInfo();
-        console.log(billing);
-        if (
-          billing &&
-          billing.subscriptionItems &&
-          billing.subscriptionItems[0].type === "PROFESSIONAL"
-        ) {
-          setPlan("PROFESSIONAL");
-        } else {
-          setPlan("free");
-        }
-      }
+    //   if (!plan) {
+    //     const billing = await getUserBillingInfo();
+    //     console.log(billing);
+    //     if (
+    //       billing &&
+    //       billing.subscriptionItems &&
+    //       billing.subscriptionItems[0].type === "PROFESSIONAL"
+    //     ) {
+    //       setPlan("PROFESSIONAL");
+    //     } else {
+    //       setPlan("free");
+    //     }
+    //   }
     }
   };
 

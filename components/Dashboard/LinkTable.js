@@ -1,11 +1,12 @@
 import React from "react";
+import { makeDatePretty } from "../../pages/helpers/makePrettyDate";
 
 const LinkTable = ({ files, copyLink }) => {
 
   const getLink = (file) => {
     if (file?.metadata?.keyvalues?.unlockType === "retweet") {
       return file.metadata.keyvalues.tweetUrl;
-    }
+    } 
   };
   return (
     <>
@@ -54,7 +55,7 @@ const LinkTable = ({ files, copyLink }) => {
                 {file?.name}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {file?.cid}
+                {file?.submarine_cid}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <a
@@ -63,11 +64,11 @@ const LinkTable = ({ files, copyLink }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {file.lockInfo?.type}
+                  {file.unlock_info?.type}
                 </a>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {file.created}
+                {makeDatePretty(file.createdAt)}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <button onClick={() => copyLink(file)}>

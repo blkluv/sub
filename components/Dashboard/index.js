@@ -18,7 +18,6 @@ const Dashboard = () => {
   const { getHeaders } = useSubmarine();
   const { plan } = useAuth();
   useEffect(() => {
-    console.log(plan);
     if(plan && plan === 'PROFESSIONAL') {
       loadLinks();
     } else if(plan) {
@@ -37,12 +36,13 @@ const Dashboard = () => {
     })
 
     const json = await res.json();
+
     setFiles(json);
     // const res = mockData();
     // setFiles(res);
   }
   const copyLink = (file) => {
-    navigator.clipboard.writeText(`${window.location.origin}/${file.ipfs_pin_hash}`);
+    navigator.clipboard.writeText(`${window.location.origin}/${file.short_id}`);
     setMessage({
       type: "success", 
       message: "Share link copied!"

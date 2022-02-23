@@ -2,6 +2,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
 import Landing from '../components/Landing';
 import Dashboard from '../components/Dashboard';
+import Auth from '../components/Auth'
 import Head from 'next/head';
 export default function Home() {
   const { fetchSession, isAuthenticated, plan, confirmMFA, logUserIn } = useAuth();
@@ -25,7 +26,10 @@ export default function Home() {
       {
         isAuthenticated ?
         <Dashboard plan={plan} /> : 
-        <Landing logUserIn={logUserIn} confirmMFA={confirmMFA} />
+    
+        <Auth />
+    
+        
       }      
     </div>
   )

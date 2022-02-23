@@ -1,5 +1,5 @@
 import axios from "axios";
-import models from '../../db/models/index' ;
+import models from '../db/models/index' ;
 
 // api will need to be updated to get specific gateways
 

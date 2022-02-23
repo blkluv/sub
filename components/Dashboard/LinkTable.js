@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeDatePretty } from "../../pages/helpers/makePrettyDate";
+import { makeDatePretty } from "../../helpers/makePrettyDate";
 import DeleteModal from "./DeleteModal";
 
 const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks }) => {

@@ -14,7 +14,6 @@ const short = require("short-uuid");
 const UnlockType = () => {
   const networks = [
     { id: 1, name: "ETH - Mainnet" },
-    { id: 2, name: "ETH - Ropsten" },
     { id: 3, name: "ETH - Rinkeby" },
     { id: 4, name: "Polygon - Mainnet" },
     { id: 5, name: "Polygon - Mumbai" },

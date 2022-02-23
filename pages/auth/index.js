@@ -3,7 +3,7 @@ import Auth from '../../components/Auth'
 import { useAuth } from '../../hooks/useAuth'
 import { useRouter } from 'next/router'
 
-const index = () => {
+const AuthWrapper = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   useEffect(() => {
@@ -18,4 +18,4 @@ const index = () => {
   )
 }
 
-export default index
+export default AuthWrapper

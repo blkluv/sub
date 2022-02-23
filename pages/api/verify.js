@@ -7,7 +7,7 @@ import { json } from "../../erc721";
 const urlV2API = process.env.MANAGED_API_URL;
 const GATEWAY_URL = "https://opengateway.mypinata.cloud";
 import models from "../../db/models/index";
-import { getGateways, getUserContentCombo } from "../helpers/verify.helpers";
+import { getGateways, getUserContentCombo } from "../../helpers/verify.helpers";
 
 function withSession(handler) {
   return withIronSession(handler, {

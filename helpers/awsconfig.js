@@ -4,7 +4,7 @@ export const awsconfig = {
         userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID,
         userPoolWebClientId: process.env.NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID,
         cookieStorage: {
-            domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+            domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || "localhost",
             path: '/',
             expires: 20,
             secure: true

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {createAPIKey, getGateways, getUserSession, findAPIKeys} from '../helpers/user.helpers';
+import {createAPIKey, getGateways, getUserSession, findAPIKeys} from '../../helpers/user.helpers';
 const models = require('../../db/models/index');
 
 export default async function handler(req, res) {

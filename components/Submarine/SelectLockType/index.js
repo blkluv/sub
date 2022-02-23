@@ -14,8 +14,8 @@ const actions = [
     title: "NFT Ownership",
     href: "#",
     icon: ShoppingBagIcon,
-    iconForeground: "text-teal-700",
-    iconBackground: "bg-teal-50",
+    iconForeground: "text-pinata-purple",
+    iconBackground: "bg-grey-50",
     link: "/submarine/nft",
     text: "Require ownership of a particular ERC721 NFT to unlock your submarined content.",
   },
@@ -23,8 +23,8 @@ const actions = [
     title: "Retweet",
     href: "#",
     icon: RefreshIcon,
-    iconForeground: "text-teal-700",
-    iconBackground: "bg-teal-50",
+    iconForeground: "text-pinata-purple",
+    iconBackground: "bg-grey-50",
     link: "/submarine/retweet",
     text: "Require a retweet of a specific tweet in order to unlock your submarined content.",
     soon: true
@@ -33,8 +33,8 @@ const actions = [
     title: "Credit/Debit Card Payment",
     href: "#",
     icon: CashIcon,
-    iconForeground: "text-teal-700",
-    iconBackground: "bg-teal-50",
+    iconForeground: "text-pinata-purple",
+    iconBackground: "bg-grey-50",
     link: "/submarine/card",
     text: "Require a payment to unlock your submarined content",
     soon: true
@@ -43,8 +43,8 @@ const actions = [
     title: "Location",
     href: "#",
     icon: MapIcon,
-    iconForeground: "text-teal-700",
-    iconBackground: "bg-teal-50",
+    iconForeground: "text-pinata-purple",
+    iconBackground: "bg-grey-50",
     link: "/submarine/location",
     text: "Require a someone to verify their current location to unlock your submarined content.",
     soon: true
@@ -60,13 +60,12 @@ export default function SelectLockType() {
   return (
     <div>
       <h3 className="font-bold text-2xl mb-4">
-        Choose how you'd like your submarined content to be unlocked
+        {"Choose how you'd like your submarined content to be unlocked"}
       </h3>
       <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
         {actions.map((action, actionIdx) => (
-          <Link href={action.soon ? "/submarine/new" : action.link}>
-            <div
-              key={action.title}
+          <Link  key={action.title} href={action.soon ? "/submarine/new" : action.link}>
+            <div             
               className={classNames(
                 action.soon ? "cursor-not-allowed" : "cursor-pointer", 
                 actionIdx === 0

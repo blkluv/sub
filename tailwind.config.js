@@ -6,9 +6,14 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    minHeight: {
+      '1/2': '50%',
+      '3/4': '75%'
+    },
     extend: {
       colors: {
         'pinata-purple': '#8000DB',
+        'pinata-light-blue': '#E9FCFF',
         'muted': '#636363'
       },
     },

@@ -62,7 +62,7 @@ export default function Navigation() {
                 </Link>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <InfoDropDown />
+                
 
                 {isAuthenticated ? (
                   <ProfileDropDown avatar={avatar} />
@@ -70,7 +70,7 @@ export default function Navigation() {
                   <button
                     onClick={() => router.push("/auth")}
                     type="button"
-                    className="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-pinata-purple hover:bg-pinata-purple outline-none"
                   >
                     Sign In
                   </button>

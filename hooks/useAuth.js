@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Amplify, { Auth, Hub, Cache } from "aws-amplify";
 import router, { useRouter } from "next/router";
-import { awsconfig } from "../pages/helpers/awsconfig";
-import { awsauth } from "../pages/helpers/awsauth";
+import { awsconfig } from "../helpers/awsconfig";
+import { awsauth } from "../helpers/awsauth";
 import Cookies from "js-cookie";
 import gravatar from "gravatar";
 import axios from "axios";

@@ -1,4 +1,4 @@
-import { makeDatePretty } from "../../pages/helpers/makePrettyDate"
+import { makeDatePretty } from "../../helpers/makePrettyDate"
 
 export const mockData = () => {
   return [

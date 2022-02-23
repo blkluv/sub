@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getTypedData, signTypedData } from "../pages/helpers/signing";
+import { getTypedData, signTypedData } from "../helpers/signing";
 
 export const useMetamask = () => {
   const [ethereum, setEthereum] = useState(null);

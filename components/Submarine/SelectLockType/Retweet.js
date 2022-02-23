@@ -9,10 +9,10 @@ const Retweet = ({onFileChange, selectedFiles, tweetUrl, setTweetUrl }) => {
           Allow content to be unlocked with a retweet
         </h3>
         <p className="text-gray-600">
-          All you have to do is choose the tweet that you'd like retweeted,
+          {`All you have to do is choose the tweet that you'd like retweeted,
           provide the URL to the tweet, and anyone trying to access your file
           will not be able to access it unless they have retweeted the tweet in
-          question.
+          question.`}
         </p>
       </div>
 

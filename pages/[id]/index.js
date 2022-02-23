@@ -12,6 +12,7 @@ const Content = () => {
   const router = useRouter();
   useEffect(() => {
     fetchContent();
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

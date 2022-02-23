@@ -4,5 +4,30 @@
 
 .public-content-bg {
   background: linear-gradient(180deg, #B6ECE2 0%, #9C6BC3 100%);
+}
 
+.hero-content-bg {
+  background: linear-gradient(180deg, #B6ECE2 0%, #9C6BC3 100%);
+  background-image: url('../public/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero-heading-one {
+  position: absolute;
+  width: 598.8px;
+  height: 166.53px;
+  left: 221.21px;
+  top: 210.67px;
+
+  background: linear-gradient(95.71deg, #00BEDD 16.8%, #953BED 214.83%);
+  transform: rotate(9.86deg);
+}
+
+.landing-bg {
+  background: linear-gradient(180deg, #E3D1FF 0%, #3FD6EE 100%);
+}
+
+.special-background {
+  background: linear-gradient(180deg, #F1E8FF 7.81%, #E9FCFF 100%);
 }

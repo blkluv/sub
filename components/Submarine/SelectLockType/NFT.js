@@ -79,6 +79,7 @@ const NFT = ({
                 name="nft"
                 required
                 id="nft"
+                autoComplete="off"
                 placeholder="Contract address"
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-500 rounded-md p-2"
               />
@@ -117,6 +118,7 @@ const NFT = ({
                 onChange={(e) => setName(e.target.value)}
                 type="text"
                 name="name"
+                autoComplete="off"
                 required
                 id="name"
                 placeholder="Give your unlockable content a name"
@@ -140,6 +142,7 @@ const NFT = ({
                 type="text"
                 name="description"
                 id="description"
+                autoComplete="off"
                 required
                 placeholder="Describe the content"
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-500 rounded-md p-2"

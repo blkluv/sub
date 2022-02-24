@@ -16,6 +16,7 @@ const Dashboard = ({plan}) => {
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
   const [offset, setOffset] = useState(0);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { getHeaders } = useSubmarine();
   useEffect(() => {
@@ -25,8 +26,10 @@ const Dashboard = ({plan}) => {
   const checkForPlan = async () => {
     const userPlanInfo = await getUserBillingInfo();
     if(!userPlanInfo) {
+      setLoading(false);
       setDisplayUpgradeModal(true);
     } else if(userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL") {
+      setLoading(false);
       setDisplayUpgradeModal(true);
     } else {
       loadLinks();
@@ -73,8 +76,7 @@ const Dashboard = ({plan}) => {
     const json = await res.json();
 
     setFiles(json);
-    // const res = mockData();
-    // setFiles(res);
+    setLoading(false);
   };
   const copyLink = (file) => {
     navigator.clipboard.writeText(`${window.location.origin}/${file.short_id}`);
@@ -137,13 +139,22 @@ const Dashboard = ({plan}) => {
                   </button>
                 </Link>
                 <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                  <LinkTable copyLink={copyLink} files={files} handleDelete={handleDelete} open={open} setOpen={setOpen} loadLinks={loadLinks} />
+                  {
+                    loading ? 
+                    <div>
+                      <h3>Loading...</h3>
+                    </div>
+                    :
+                    <div>
+<LinkTable copyLink={copyLink} files={files} handleDelete={handleDelete} open={open} setOpen={setOpen} loadLinks={loadLinks} />
                   {files && files.length >= 10 && (
                     <Pagination
                       offset={offset}
                       handlePageChange={handleChangePage}
                     />
                   )}
+                    </div>
+                  }                  
                 </div>                
               </div>
             </div>

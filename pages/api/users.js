@@ -1,6 +1,10 @@
-import axios from 'axios';
 import {createAPIKey, getGateways, getUserSession, findAPIKeys} from '../../helpers/user.helpers';
-const models = require('../../db/models/index');
+import { v4 as uuidv4 } from "uuid";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
+const supabaseKey = process.env.SUPABASE_SECRET;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
   if(req.method === "POST") {
@@ -17,7 +21,17 @@ export default async function handler(req, res) {
         res.status(401).send("Unauthorized");
       }
 
-      const submarineMeUser = await models.users.findByPk(user.userInformation.id);
+
+      let { data: Users, error } = await supabase
+      .from('Users')
+      .select('*')
+      .eq('pinata_user_id', user.userInformation.id);
+      
+      if(error) {
+        throw error;
+      }
+
+      const submarineMeUser = Users[0];
       if(!submarineMeUser) {
         const APIKeys = await findAPIKeys(req);
         let theAPIKey;
@@ -27,23 +41,34 @@ export default async function handler(req, res) {
         } else {
           theAPIKey = APIKeys[0].key;
         }
-        await models.users.create({
-          pinata_user_id: user.userInformation.id,
-          pinata_submarine_key: theAPIKey
-        })
-      } else {
-        //we have a user, awesome. Now we need to check if the key is valid
+
+
+        const { data, error } = await supabase
+        .from('Users')
+        .insert([
+          { id: uuidv4(), pinata_user_id: user.userInformation.id, pinata_submarine_key: theAPIKey },
+        ])
+
+        if(error) {
+          throw error;
+        }
+      } else {        
         const existingKeys = await findAPIKeys(req);
         const currentAPIKey = submarineMeUser.key;
         const match = existingKeys.find(key => {
           return key === currentAPIKey
         });
-        if(!match) {
-          //we need to update the API key or else things won't work on submarine.me
+        if(!match) {          
           const newKey = await createAPIKey(req);
-          await submarineMeUser.update({
-            pinata_submarine_key: newKey.key
-          })
+
+          const { data, error } = await supabase
+          .from('Users')
+          .update({ 'pinata_submarine_key': newKey.key })
+          .eq('pinata_user_id', user.userInformation.id)
+          
+          if(error) {
+            throw error;
+          }
         }
       }
 
@@ -51,9 +76,15 @@ export default async function handler(req, res) {
       if(!gateways || !gateways.items || !gateways.items.rows || gateways.items.rows.length < 1) {
         res.status(400).send("User Has No Gateways");
       } else {
-        await submarineMeUser.update({
-          pinata_gateway_subdomain: gateways.items.rows[0].domain
-        })
+
+        const { data, error } = await supabase
+          .from('Users')
+          .update({ 'pinata_gateway_subdomain': gateways.items.rows[0].domain })
+          .eq('pinata_user_id', user.userInformation.id)
+          
+        if(error) {
+          throw error;
+        }
       }
 
       res.status(200).json({ message: 'user exists with valid key' })

@@ -4,10 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
 import * as util from "ethereumjs-util";
 import { json } from "../../erc721";
-const urlV2API = process.env.MANAGED_API_URL;
-const GATEWAY_URL = "https://opengateway.mypinata.cloud";
-import models from "../../db/models/index";
-import { getGateways, getUserContentCombo } from "../../helpers/verify.helpers";
+import { getUserContentCombo } from "../../helpers/verify.helpers";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -47,10 +44,15 @@ export default withSession(async (req, res) => {
         json(),
         provider
       );
-      let nonce =
-        "\x19Ethereum Signed Message:\n" +
-        JSON.stringify(message).length +
-        JSON.stringify(message);
+      const fullMessage = `To verify you own the NFT in question,
+you must sign this message. 
+The NFT contract address is:
+${contractAddress}
+The verification id is: 
+${message.id}`
+      let nonce = 
+        `\x19Ethereum Signed Message:
+${fullMessage.length}${fullMessage}`;
       nonce = util.keccak(Buffer.from(nonce, "utf-8"));
       const { v, r, s } = util.fromRpcSig(signature);
       const pubKey = util.ecrecover(util.toBuffer(nonce), v, r, s);
@@ -61,7 +63,7 @@ export default withSession(async (req, res) => {
         if (balance.toString() !== "0") {
           const info = await getUserContentCombo(shortId);
           const { pinata_submarine_key, pinata_gateway_subdomain } =
-            info.dataValues.user.dataValues;
+            info.Users
           const config = {
             headers: {
               "x-api-key": `${pinata_submarine_key}`,
@@ -102,7 +104,7 @@ export default withSession(async (req, res) => {
     }
   } else if (req.method === "GET") {
     try {
-      const message = { contractAddress: null, id: uuidv4() };
+      const message = { contract: req.query.contract, id: uuidv4() };
       req.session.set("message-session", message);
       await req.session.save();
       res.json(message);

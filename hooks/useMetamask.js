@@ -20,13 +20,18 @@ export const useMetamask = () => {
 
   const signData = async (network, shortId, contract, submarineCid) => {
     try {
-      const messageToSign = await axios.get("/api/verify");
+      const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       const account = accounts[0];
       const signature = await ethereum.request({
         method: "personal_sign",
         params: [
-          JSON.stringify(messageToSign.data),
+          `To verify you own the NFT in question,
+you must sign this message. 
+The NFT contract address is:
+${messageToSign.data.contract}
+The verification id is: 
+${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
           account,
           messageToSign.data.id,
         ],

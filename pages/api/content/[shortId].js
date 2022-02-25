@@ -1,16 +1,30 @@
-import models from '../../../db/models/index' ;
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
+const supabaseKey = process.env.SUPABASE_SECRET;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
   try {
     if(!req.query.shortId) {
       res.status(401).send("Please provide a shortId");
     }
-    console.log({id: req.query.shortId});
-    const theContent = await models.content.findOne({
-      where: {
-        short_id: req.query.shortId
-      }
-    })
+
+    let { data: Content, error } = await supabase
+    .from('Content')
+    .select('*')
+    .eq('short_id', req.query.shortId)
+
+    if(error) {
+      throw error;
+    }
+    
+    if(!Content || !Content[0]) {
+      throw "Couldn't find content"
+    }
+
+    const theContent = Content[0]
+
     const returnObject = {
       id: theContent.id,
       name: theContent.name,

@@ -72,19 +72,27 @@ export const logUserIn = async (email, password) => {
     localStorage.removeItem("pinata-avatar");
     // await Auth.federatedSignIn();
     const res = await Auth.signIn(email, password);
-    const { accessToken } = await fetchSession();
-    await ky("/api/users", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        source: "login",
-      },
-    });
-
-    return {
-      success: true,
-      user: res,
-    };
+    console.log(res);
+    if(res.challengeName) {
+      return {
+        success: true,
+        user: res,
+      };
+    } else {
+      const { accessToken } = await fetchSession();
+      await ky("/api/users", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          source: "login",
+        },
+      });
+  
+      return {
+        success: true,
+        user: res,
+      };
+    }    
   } catch (error) {
     console.log(error);
     return {

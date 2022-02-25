@@ -8,6 +8,7 @@ import ky from "ky";
 import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
+import Loading from "./Loading";
 
 const LIMIT = 10;
 
@@ -65,9 +66,9 @@ const Dashboard = () => {
     if (direction === "forward") {
       newOffset = offset + LIMIT;
     } else {
-      if(offset > 0) {
+      if (offset > 0) {
         newOffset = offset - LIMIT;
-      }      
+      }
     }
 
     const json = await loadLinks(newOffset);
@@ -154,30 +155,33 @@ const Dashboard = () => {
                     Submarine New File
                   </button>
                 </Link>
-                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                  {loading ? (
-                    <div>
-                      <h3>Loading...</h3>
-                    </div>
-                  ) : (
-                    <div>
-                      <LinkTable
-                        copyLink={copyLink}
-                        files={files}
-                        handleDelete={handleDelete}
-                        open={open}
-                        setOpen={setOpen}
-                        loadLinks={loadLinks}
-                      />
-
-                      <Pagination
-                        offset={offset}
-                        handlePageChange={handleChangePage}
-                        LIMIT={LIMIT}
-                      />
-                    </div>
-                  )}
-                </div>
+                {
+                  loading ? 
+<div className="flex flex-row w-full p-20 justify-center">
+                      <Loading />
+                    </div> : 
+                       <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                  
+                       <div>
+                         <LinkTable
+                           copyLink={copyLink}
+                           files={files}
+                           handleDelete={handleDelete}
+                           open={open}
+                           setOpen={setOpen}
+                           loadLinks={loadLinks}
+                         />
+                         {files.length >= LIMIT && (
+                           <Pagination
+                             offset={offset}
+                             handlePageChange={handleChangePage}
+                             LIMIT={LIMIT}
+                           />
+                         )}
+                       </div>
+                   </div>
+                }
+             
               </div>
             </div>
           </div>

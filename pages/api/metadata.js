@@ -97,7 +97,6 @@ export default async function handler(req, res) {
       if(error) {
         throw error;
       }
-      console.log(Content);
       res.status(200).json(Content);
     } catch (error) {
       console.log(error);

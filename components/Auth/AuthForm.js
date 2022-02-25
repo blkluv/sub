@@ -32,8 +32,7 @@ export default function AuthForm() {
         setAuthError(res.error.message);
       }
     } else {
-      const result = await logUserIn(email, password);
-      console.log(result);
+      const result = await logUserIn(email, password);      
       setSubmitting(false);
       if (result.user && result.user.challengeName) {
         //  Indicates the user has MFA enabled

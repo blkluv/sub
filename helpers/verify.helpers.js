@@ -1,12 +1,8 @@
-import axios from "axios";
-import models from '../db/models/index' ;
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
 const supabaseKey = process.env.SUPABASE_SECRET;
 const supabase = createClient(supabaseUrl, supabaseKey);
-
-// api will need to be updated to get specific gateways
 
 export const getUserContentCombo = async (shortId) => {
   try {
@@ -24,19 +20,7 @@ export const getUserContentCombo = async (shortId) => {
     if(!Content || !Content[0]) {
       throw "Couldn't find content";
     }
-
-    console.log(Content);
   
-    // const contentWithUser = await models.content.findOne({
-    //   where: {
-    //     short_id: shortId
-    //   },
-    //   include: [
-    //     {
-    //       model: models.users
-    //     }
-    //   ]
-    // });
     return Content[0];
   } catch (error) {
     throw error;

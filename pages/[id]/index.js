@@ -21,10 +21,7 @@ const Content = () => {
     }
   }, [fileInfo]);
 
-  const fetchContent = async () => {
-    const { asPath } = router;
-    console.log(window.location.pathname);
-    console.log(`/api/content${asPath}`);
+  const fetchContent = async () => {        
     const res = await ky(`/api/content${window.location.pathname}`, {
       method: "GET",
     });

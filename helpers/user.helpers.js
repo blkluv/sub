@@ -1,5 +1,4 @@
 import axios from "axios";
-import models from "../db/models";
 
 export const getUserSession = async (auth) => {
   try {

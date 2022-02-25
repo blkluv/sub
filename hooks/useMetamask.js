@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getTypedData, signTypedData } from "../helpers/signing";
 
 export const useMetamask = () => {
   const [ethereum, setEthereum] = useState(null);
   const [url, setUrl] = useState("");
   const [holdsNFT, setHoldsNFT] = useState(false);
-  const [checking, setChecking] = useState(false);
+
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -45,8 +44,7 @@ ${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
         CID: submarineCid,
         shortId: shortId
       });
-      const url = res.data;
-      console.log(url);
+      const url = res.data;     
       return url; 
     } catch (error) {
       throw error;

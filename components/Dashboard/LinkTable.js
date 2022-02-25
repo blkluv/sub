@@ -75,7 +75,7 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks }) 
                 </a>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {makeDatePretty(file.createdAt)}
+                {makeDatePretty(file.created_at)}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <button onClick={() => copyLink(file)}>

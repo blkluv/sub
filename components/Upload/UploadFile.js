@@ -9,8 +9,7 @@ const UploadFile = ({ selectedFiles, onFileChange }) => {
     setDragOverActive(true);
   }
 
-  const dragExitHandler = (ev) => {
-    console.log("LEAVING")
+  const dragExitHandler = (ev) => {    
     ev.preventDefault();
     setDragOverActive(false);
   }

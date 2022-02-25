@@ -9,7 +9,9 @@ import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 
-const Dashboard = ({plan}) => {
+const LIMIT = 5;
+
+const Dashboard = ({ plan }) => {
   const [files, setFiles] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);
@@ -25,16 +27,16 @@ const Dashboard = ({plan}) => {
 
   const checkForPlan = async () => {
     const userPlanInfo = await getUserBillingInfo();
-    if(!userPlanInfo) {
+    if (!userPlanInfo) {
       setLoading(false);
       setDisplayUpgradeModal(true);
-    } else if(userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL") {
+    } else if (userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL") {
       setLoading(false);
       setDisplayUpgradeModal(true);
     } else {
-      loadLinks();
+      loadLinks(offset);
     }
-  }
+  };
 
   const getUserBillingInfo = async () => {
     const { accessToken } = await fetchSession();
@@ -48,7 +50,7 @@ const Dashboard = ({plan}) => {
           },
         }
       );
-  
+
       const userJson = await res.json();
       return userJson;
     } catch (error) {
@@ -57,16 +59,27 @@ const Dashboard = ({plan}) => {
     }
   };
 
-  const handleChangePage = (newPage) => {
-    if (newPage >= 0) {
-      setOffset(newPage);
+  const handleChangePage = async (direction) => {
+    let newOffset = offset;
+
+    if (direction === "forward") {
+      newOffset = offset + LIMIT;
+    } else {
+      if(offset > 0) {
+        newOffset = offset - LIMIT;
+      }      
+    }
+
+    const json = await loadLinks(newOffset);
+    if (json && json.length > 0) {
+      setOffset(newOffset);
     }
   };
 
-  const loadLinks = async () => {
+  const loadLinks = async (newOffset) => {
     // const res = await getSubmarinedContent()
     const headers = await getHeaders();
-    const res = await ky("/api/metadata", {
+    const res = await ky(`/api/metadata?offset=${newOffset}`, {
       method: "GET",
       headers: {
         ...headers,
@@ -74,9 +87,12 @@ const Dashboard = ({plan}) => {
     });
 
     const json = await res.json();
+    if (json && json.length > 0) {
+      setFiles(json);
+    }
 
-    setFiles(json);
     setLoading(false);
+    return json;
   };
   const copyLink = (file) => {
     navigator.clipboard.writeText(`${window.location.origin}/${file.short_id}`);
@@ -98,9 +114,9 @@ const Dashboard = ({plan}) => {
         method: "DELETE",
         headers: {
           ...headers,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({id}),
+        body: JSON.stringify({ id }),
         timeout: 2147483647,
       });
     } catch (error) {
@@ -139,23 +155,29 @@ const Dashboard = ({plan}) => {
                   </button>
                 </Link>
                 <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                  {
-                    loading ? 
+                  {loading ? (
                     <div>
                       <h3>Loading...</h3>
                     </div>
-                    :
+                  ) : (
                     <div>
-<LinkTable copyLink={copyLink} files={files} handleDelete={handleDelete} open={open} setOpen={setOpen} loadLinks={loadLinks} />
-                  {files && files.length >= 10 && (
-                    <Pagination
-                      offset={offset}
-                      handlePageChange={handleChangePage}
-                    />
-                  )}
+                      <LinkTable
+                        copyLink={copyLink}
+                        files={files}
+                        handleDelete={handleDelete}
+                        open={open}
+                        setOpen={setOpen}
+                        loadLinks={loadLinks}
+                      />
+
+                      <Pagination
+                        offset={offset}
+                        handlePageChange={handleChangePage}
+                        LIMIT={LIMIT}
+                      />
                     </div>
-                  }                  
-                </div>                
+                  )}
+                </div>
               </div>
             </div>
           </div>

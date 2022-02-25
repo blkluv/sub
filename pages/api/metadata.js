@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       const schema = Joi.object({
         name: Joi.string().min(1).max(50).required(),
         description: Joi.string().min(1).max(256).required(),
-        thumbnail: Joi.string().min(1).max(100).optional(),
+        thumbnail: Joi.string().min(0).max(100).optional(),
         submarineCid: Joi.string().min(1).max(100).required(),
         unlockInfo: Joi.object({
           type: Joi.string().min(1).max(100).required(),
@@ -63,7 +63,8 @@ export default async function handler(req, res) {
         unlock_info: req.body.unlockInfo,
       };
 
-      if (req.body.thumbnail) {
+      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+        console.log("Adding thumbnail");
         theCreationObject.thumbnail = req.body.thumbnail;
       }
 
@@ -84,6 +85,7 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "GET") {
     try {
+      const { offset } = req.query;
       const user = await getUserSession(req.headers.authorization);
       if (!user) {
         res.status(401).send("Unauthorized");
@@ -93,7 +95,9 @@ export default async function handler(req, res) {
       .from('Content')
       .select('*')
       .eq('pinata_user_id', user.userInformation.id)
+      .range(offset, offset + 4);
       
+
       if(error) {
         throw error;
       }

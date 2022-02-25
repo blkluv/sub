@@ -10,7 +10,7 @@ export default function DeleteModal({ file, handleDelete, loadLinks, open, setOp
       throw "No file id"
     }
     await handleDelete(file.id);
-    loadLinks();
+    loadLinks(0);
     setOpen(false);
   }
 

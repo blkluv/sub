@@ -9,9 +9,9 @@ import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 
-const LIMIT = 5;
+const LIMIT = 10;
 
-const Dashboard = ({ plan }) => {
+const Dashboard = () => {
   const [files, setFiles] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);

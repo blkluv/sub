@@ -29,8 +29,8 @@ export default function Home() {
         />
         <meta name="theme-color" content="#000000" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="og:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC" />
-        <meta property="twitter:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC" />
+        <meta property="og:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC?filename=submarine.png" />
+        <meta property="twitter:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC?filename=submarine.png" />
         <title>Submarine Me</title>
         <script
           dangerouslySetInnerHTML={{

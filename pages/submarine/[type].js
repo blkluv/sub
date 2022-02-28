@@ -280,14 +280,14 @@ window['_fs_namespace'] = 'FS';
             )}
           </div>
 
-          <div className="pt-5">
+          <div className="pt-5 pb-8">
             <div className="flex justify-end">
               <button
                 type="submit"
                 disabled={!canSubmit() || uploading}
-                className={`ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white ${
-                  canSubmit() && "bg-indigo-600 hover:bg-indigo-700"
-                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                className={`ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full text-white ${
+                  canSubmit() && "bg-pinata-purple"
+                } outline-none focus:outline-none`}
               >
                 {uploading ? "Processing..." : "Upload and Continue"}
               </button>

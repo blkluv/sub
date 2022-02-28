@@ -16,8 +16,7 @@ export default function Home() {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <link rel="icon" href="/submarine.png"></link>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />        
         <meta
           name="description"
           content="Submarine Me - Unlock Exlusive Content With An NFT"
@@ -28,6 +27,10 @@ export default function Home() {
           property="og:description"
           content="Submarine Me - Unlock Exlusive Content With An NFT"
         />
+        <meta name="theme-color" content="#000000" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC" />
+        <meta property="twitter:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC" />
         <title>Submarine Me</title>
         <script
           dangerouslySetInnerHTML={{

@@ -32,6 +32,15 @@ export default function Home() {
         <meta property="og:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC?filename=submarine.png" />
         <meta property="twitter:image" content="https://polluterofminds.mypinata.cloud/ipfs/QmakU26S3om4X2p4WFVh5hgicfcjt4vAzMvjAoxLCKBDAC?filename=submarine.png" />
         <title>Submarine Me</title>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
+        <script dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'G-LDJ4RPGPGE');`
+        }} />  
         <script
           dangerouslySetInnerHTML={{
             __html: `

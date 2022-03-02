@@ -36,10 +36,15 @@ const UnlockType = () => {
   const [thumbnail, setThumbnail] = useState([]);
   const [description, setDescription] = useState("");
   const [thumbnailCid, setThumbnailCid] = useState("");
+  const FILE_SIZE_LIMIT = 500000000;
 
   const onFileChange = (e, type) => {
     const files = e.target.files;
     for (let i = 0; i < files.length; i++) {
+      if(files[i].size > FILE_SIZE_LIMIT) {
+        alert("File too large, limit is 500mb");
+        return;
+      } 
       Object.assign(files[i], {
         preview: URL.createObjectURL(files[i]),
         formattedSize: files[i].size,

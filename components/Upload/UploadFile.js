@@ -97,7 +97,7 @@ const UploadFile = ({ selectedFiles, onFileChange }) => {
             {
               selectedFiles.length > 0 ? 
               <p className="text-xs text-gray-500">{selectedFiles[0].name}</p> : 
-              <p className="text-xs text-gray-500">Any file up to 100MB</p>
+              <p className="text-xs text-gray-500">Any file up to 500MB</p>
             }            
           </div>
         </div>

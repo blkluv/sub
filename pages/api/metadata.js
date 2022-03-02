@@ -80,15 +80,17 @@ export default async function handler(req, res) {
 
       res.status(200).json({ result: "success" });
     } catch (error) {
+      console.log("Error for: ");
+      console.log(user);
       console.log(error);
-      res.status(500).json(error);
+      return res.status(500).json(error);
     }
   } else if (req.method === "GET") {
     try {
       const { offset } = req.query;
       const user = await getUserSession(req.headers.authorization);
       if (!user) {
-        res.status(401).send("Unauthorized");
+        return res.status(401).send("Unauthorized");
       }
 
       let { data: Content, error } = await supabase
@@ -101,20 +103,22 @@ export default async function handler(req, res) {
       if(error) {
         throw error;
       }
-      res.status(200).json(Content);
+      return res.status(200).json(Content);
     } catch (error) {
+      console.log("Error for: ");
+      console.log(user);
       console.log(error);
       const { response: fetchResponse } = error;
-      res.status(fetchResponse?.status || 500).json(error.data);
+      return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else if (req.method === "DELETE") {
     const user = await getUserSession(req.headers.authorization);
     if (!user) {
-      res.status(401).send("Unauthorized");
+      return res.status(401).send("Unauthorized");
     }
 
     if (!req.body.id || !uuidValidate(req.body.id)) {
-      res.status(401).send("No valid id passed in");
+      return res.status(401).send("No valid id passed in");
     } else {
 
       const { data, error } = await supabase
@@ -127,10 +131,10 @@ export default async function handler(req, res) {
         throw error;
       }
 
-      res.status(200).json({ result: "success" });
+      return res.status(200).json({ result: "success" });
     }
   } else {
-    res
+    return res
       .status(200)
       .json({
         message:

@@ -100,21 +100,21 @@ ${fullMessage.length}${fullMessage}`;
     } catch (error) {
       console.log(error);
       console.log(error.response);
-      res.status(500).json(error);
+      return res.status(500).json(error);
     }
   } else if (req.method === "GET") {
     try {
       const message = { contract: req.query.contract, id: uuidv4() };
       req.session.set("message-session", message);
       await req.session.save();
-      res.json(message);
+      return res.json(message);
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;
-      res.status(fetchResponse?.status || 500).json(error.data);
+      return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {
-    res
+    return res
       .status(200)
       .json({
         message:

@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export default async function handler(req, res) {
   try {
     if(!req.query.shortId) {
-      res.status(401).send("Please provide a shortId");
+      return res.status(401).send("Please provide a shortId");
     }
 
     let { data: Content, error } = await supabase
@@ -35,10 +35,10 @@ export default async function handler(req, res) {
       shortId: theContent.short_id
     }
     
-    res.status(200).json(returnObject);
+    return res.status(200).json(returnObject);
   } catch (error) {
     console.log(error);
     const { response: fetchResponse } = error;
-    res.status(fetchResponse?.status || 500).json(error.data);
+    return res.status(fetchResponse?.status || 500).json(error.data);
   }
 }

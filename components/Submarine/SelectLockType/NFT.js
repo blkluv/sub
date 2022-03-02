@@ -23,7 +23,7 @@ const NFT = ({
     <div>
       <div>
         <h3 className="text-gray-900 font-bold text-2xl">
-          Allow content to be unlocked with ownership of an ERC721 NFT
+          Allow content to be unlocked with ownership of a Solana or ERC721 NFT
         </h3>
         <p className="text-gray-600">
           All you have to do is provide the NFT contract address, provide the

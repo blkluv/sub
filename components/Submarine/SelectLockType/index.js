@@ -13,15 +13,17 @@ const actions = [
   {
     title: "NFT Ownership",
     href: "#",
+    id: "nft",
     icon: ShoppingBagIcon,
     iconForeground: "text-pinata-purple",
     iconBackground: "bg-grey-50",
     link: "/submarine/nft",
-    text: "Require ownership of a particular ERC721 NFT to unlock your submarined content.",
+    text: "Require ownership of a particular Solana or ERC721 NFT to unlock your submarined content.",
   },
   {
     title: "Retweet",
     href: "#",
+    id: "retweet",
     icon: RefreshIcon,
     iconForeground: "text-pinata-purple",
     iconBackground: "bg-grey-50",
@@ -32,6 +34,7 @@ const actions = [
   {
     title: "Credit/Debit Card Payment",
     href: "#",
+    id: "payment",
     icon: CashIcon,
     iconForeground: "text-pinata-purple",
     iconBackground: "bg-grey-50",
@@ -42,6 +45,7 @@ const actions = [
   {
     title: "Location",
     href: "#",
+    id: "location",
     icon: MapIcon,
     iconForeground: "text-pinata-purple",
     iconBackground: "bg-grey-50",
@@ -59,12 +63,13 @@ function classNames(...classes) {
 export default function SelectLockType() {
   return (
     <div>
+
       <h3 className="font-bold text-2xl mb-4">
         {"Choose how you'd like your submarined content to be unlocked"}
       </h3>
       <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
         {actions.map((action, actionIdx) => (
-          <Link  key={action.title} href={action.soon ? "/submarine/new" : action.link}>
+          <Link  id={action.id} key={action.title} href={action.soon ? "/submarine/new" : action.link}>
             <div             
               className={classNames(
                 action.soon ? "cursor-not-allowed" : "cursor-pointer", 

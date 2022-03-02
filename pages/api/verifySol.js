@@ -5,6 +5,10 @@ import { withIronSession } from "next-iron-session";
 import * as util from "ethereumjs-util";
 import { json } from "../../erc721";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
+import {
+  resolveToWalletAddress,
+  getParsedNftAccountsByOwner,
+} from "@nfteyez/sol-rayz";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -19,14 +23,8 @@ function withSession(handler) {
 export default withSession(async (req, res) => {
   if (req.method === "POST") {
     try {
-      const {
-        network,
-        contractAddress,
-        CID,
-        address,
-        signature,        
-        shortId,
-      } = req.body;
+      const { network, contractAddress, CID, address, signature, shortId } =
+        req.body;
       const networkMap = {
         "ETH - Mainnet": process.env.ALCHEMY_MAINNET,
         "ETH - Ropsten": process.env.ALCHEMY_ROPSTEN,
@@ -49,9 +47,8 @@ you must sign this message.
 The NFT contract address is:
 ${contractAddress}
 The verification id is: 
-${message.id}`
-      let nonce = 
-        `\x19Ethereum Signed Message:
+${message.id}`;
+      let nonce = `\x19Ethereum Signed Message:
 ${fullMessage.length}${fullMessage}`;
       nonce = util.keccak(Buffer.from(nonce, "utf-8"));
       const { v, r, s } = util.fromRpcSig(signature);
@@ -62,8 +59,7 @@ ${fullMessage.length}${fullMessage}`;
         const balance = await contract.balanceOf(recoveredAddress);
         if (balance.toString() !== "0") {
           const info = await getUserContentCombo(shortId);
-          const { pinata_submarine_key, pinata_gateway_subdomain } =
-            info.Users
+          const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
           const config = {
             headers: {
               "x-api-key": `${pinata_submarine_key}`,
@@ -98,28 +94,36 @@ ${fullMessage.length}${fullMessage}`;
         return res.status(401).send("Invalid signature");
       }
     } catch (error) {
-    
       console.log(error);
       console.log(error.response);
       res.status(500).json(error);
     }
   } else if (req.method === "GET") {
     try {
-      const message = { contract: req.query.contract, id: uuidv4() };
-      req.session.set("message-session", message);
-      await req.session.save();
-      res.json(message);
+      // const message = { contract: req.query.contract, id: uuidv4() };
+      // req.session.set("message-session", message);
+      // await req.session.save();
+      // res.json(message);
+      const address = "4mUrPtCmERXbTDFPDPkReFcqKnmArd9HqrPBXopCjYrD";
+
+      const publicAddress = await resolveToWalletAddress({
+        text: address,
+      });
+      console.log({publicAddress});
+
+      const nftArray = await getParsedNftAccountsByOwner({
+        publicAddress,
+      });
+      console.log(nftArray.map(a => a.data).map(d => d.creators));
+      res.json({ success: true });
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;
       res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {
-    res
-      .status(200)
-      .json({
-        message:
-          "This is the way...wait, no it is not. What are you doing here?",
-      });
+    res.status(200).json({
+      message: "This is the way...wait, no it is not. What are you doing here?",
+    });
   }
 });

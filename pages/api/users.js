@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     try {
       const user = await getUserSession(req.headers.authorization);
       if(!user) {
-        res.status(401).send("Unauthorized");
+        return res.status(401).send("Unauthorized");
       }
 
 
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 
       const gateways = await getGateways(req);
       if(!gateways || !gateways.items || !gateways.items.rows || gateways.items.rows.length < 1) {
-        res.status(400).send("User Has No Gateways");
+        return res.status(400).send("User Has No Gateways");
       } else {
 
         const { data, error } = await supabase
@@ -87,14 +87,16 @@ export default async function handler(req, res) {
         }
       }
 
-      res.status(200).json({ message: 'user exists with valid key' })
+      return res.status(200).json({ message: 'user exists with valid key' })
       
     } catch (error) {
+      console.log("Error for: ");
+      console.log(user);
       console.log(error);
       const { response: fetchResponse } = error
-      res.status(fetchResponse?.status || 500).json(error.data)
+      return res.status(fetchResponse?.status || 500).json(error.data)
     }
   } else {
-    res.status(200).json({ message: 'This is the way...wait, no it is not. What are you doing here?' })
+    return res.status(200).json({ message: 'This is the way...wait, no it is not. What are you doing here?' })
   }
 }

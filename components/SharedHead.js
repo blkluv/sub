@@ -24,7 +24,7 @@ const SharedHead = () => {
         property="og:image"
         content="https://gateway.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
       />
-      <title>Submarine Me</title>
+      <title>Submarine Me - By Pinata</title>
       <script
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"

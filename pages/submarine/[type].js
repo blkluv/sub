@@ -13,7 +13,7 @@ import Head from "next/head";
 import SharedHead from "../../components/SharedHead";
 const short = require("short-uuid");
 
-const blockchainOptions = ["Ethereum", "Polygon", "Avalanche", "Solana"];
+const blockchainOptions = ["Ethereum", "Polygon", "Avalanche"];
 
 const UnlockType = () => {
   const networks = [

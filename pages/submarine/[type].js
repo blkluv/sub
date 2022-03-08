@@ -13,6 +13,8 @@ import Head from "next/head";
 import SharedHead from "../../components/SharedHead";
 const short = require("short-uuid");
 
+const blockchainOptions = ["Ethereum", "Polygon", "Avalanche", "Solana"];
+
 const UnlockType = () => {
   const networks = [
     { id: 1, name: "ETH - Mainnet" },
@@ -28,7 +30,9 @@ const UnlockType = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [tweetUrl, setTweetUrl] = useState("");
   const [contractAddress, setContractAddress] = useState("");
-  const [network, setNetwork] = useState(networks[0]);
+  const [blockchain, setBlockchain] = useState(blockchainOptions[0]);
+  const [network, setNetwork] = useState(null);
+  const [tokenId, setTokenId] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);
@@ -41,10 +45,10 @@ const UnlockType = () => {
   const onFileChange = (e, type) => {
     const files = e.target.files;
     for (let i = 0; i < files.length; i++) {
-      if(files[i].size > FILE_SIZE_LIMIT) {
+      if (files[i].size > FILE_SIZE_LIMIT) {
         alert("File too large, limit is 500mb");
         return;
-      } 
+      }
       Object.assign(files[i], {
         preview: URL.createObjectURL(files[i]),
         formattedSize: files[i].size,
@@ -64,15 +68,19 @@ const UnlockType = () => {
     }
     setThumbnail(files);
 
-    const { accessToken }  = await fetchSession();
+    const { accessToken } = await fetchSession();
     const data = new FormData();
-    data.append("file", files[0], files[0].name)
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`, data, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`, 
-        Source: 'login'
+    data.append("file", files[0], files[0].name);
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Source: "login",
+        },
       }
-    });
+    );
 
     setThumbnailCid(res.data.IpfsHash);
   };
@@ -80,7 +88,13 @@ const UnlockType = () => {
   const canSubmit = () => {
     switch (type) {
       case "nft":
-        return selectedFiles.length > 0 && contractAddress && network && name && description;
+        return (
+          selectedFiles.length > 0 &&
+          contractAddress &&
+          network &&
+          name &&
+          description
+        );
       default:
         return false;
     }
@@ -116,21 +130,22 @@ const UnlockType = () => {
         thumbnail: thumbnailCid,
         description,
         unlockInfo: {
-          type, 
-          contract: contractAddress, 
-          network: network.name
-        },         
-        submarineCid: res.items[0].cid
+          type,
+          contract: contractAddress,
+          network: network,
+          blockchain, 
+          tokenId
+        },
+        submarineCid: res.items[0].cid,
       };
 
       const headers = await getHeaders();
 
-      // //  @TODO POST TO MATT's API
       await ky(`/api/metadata`, {
         method: "POST",
         headers: {
-          ...headers, 
-          "content-type": "application/json"
+          ...headers,
+          "content-type": "application/json",
         },
         body: JSON.stringify(submarinedContent),
         timeout: 2147483647,
@@ -167,24 +182,6 @@ const UnlockType = () => {
   const renderUnlockType = () => {
     switch (type) {
       case "nft":
-        return (
-          <NFT
-            name={name}
-            setName={setName}
-            thumbnail={thumbnail}
-            setThumbnail={setThumbnail}
-            setSelectedFiles={setSelectedFiles}
-            selectedFiles={selectedFiles}
-            onFileChange={onFileChange}
-            onThumbnailChange={onThumbnailChange}
-            contractAddress={contractAddress}
-            setContractAddress={setContractAddress}
-            network={network}
-            networks={networks}
-            setNetwork={setNetwork}
-            setDescription={setDescription}
-          />
-        );
       default:
         return (
           <NFT
@@ -192,8 +189,8 @@ const UnlockType = () => {
             setName={setName}
             thumbnail={thumbnail}
             setThumbnail={setThumbnail}
-            selectedFiles={selectedFiles}
             setSelectedFiles={setSelectedFiles}
+            selectedFiles={selectedFiles}
             onFileChange={onFileChange}
             onThumbnailChange={onThumbnailChange}
             contractAddress={contractAddress}
@@ -201,8 +198,12 @@ const UnlockType = () => {
             network={network}
             networks={networks}
             setNetwork={setNetwork}
-            description={description}
             setDescription={setDescription}
+            blockchainOptions={blockchainOptions}
+            blockchain={blockchain}
+            setBlockchain={setBlockchain}
+            tokenId={tokenId}
+            setTokenId={setTokenId}
           />
         );
     }

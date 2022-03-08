@@ -4,13 +4,13 @@ import Pinnie from "../Pinnie";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import axios from 'axios';
 
-export default function ContentLanding({ pageData, loading, fileInfo }) {
+export default function ContentLanding({ loading, fileInfo }) {
   const [signing, setSigning] = useState(false);
   const { signData } = useMetamask();
   const handleSign = async () => {
     try {
       setSigning(true);
-      const url = await signData(fileInfo.unlockInfo.network, fileInfo.shortId, fileInfo.unlockInfo.contract, fileInfo.submarineCID);
+      const url = await signData(fileInfo);
       if(url) {
         setSigning(false);
         window.location.replace(url);

@@ -29,7 +29,6 @@ const Content = () => {
     setFileInfo(json);
   };
 
-  const pageData = mockData();
   return (
     <div>
       <Head>
@@ -89,7 +88,6 @@ window['_fs_namespace'] = 'FS';
         />
       </Head>
       <ContentLanding
-        pageData={pageData}
         loading={loading}
         fileInfo={fileInfo}
       />

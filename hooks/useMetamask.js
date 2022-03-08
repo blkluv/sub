@@ -17,8 +17,10 @@ export const useMetamask = () => {
     }
   }, [ethereum]);
 
-  const signData = async (network, shortId, contract, submarineCid) => {
+  const signData = async (metadata) => {
     try {
+      const { shortId, submarineCID, unlockInfo } = metadata;
+      const { contract, blockchain, tokenId, network } = unlockInfo;
       const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       const account = accounts[0];
@@ -41,7 +43,9 @@ ${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
         signature,
         network,
         contractAddress: contract,
-        CID: submarineCid,
+        blockchain, 
+        tokenId,
+        CID: submarineCID,
         shortId: shortId
       });
       const url = res.data;     

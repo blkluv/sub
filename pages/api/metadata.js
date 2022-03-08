@@ -28,8 +28,9 @@ const getUserSession = async (auth) => {
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
+    let user = null;
     try {
-      const user = await getUserSession(req.headers.authorization);
+      user = await getUserSession(req.headers.authorization);
       if (!user) {
         res.status(401).send("Unauthorized");
       }
@@ -42,6 +43,8 @@ export default async function handler(req, res) {
           type: Joi.string().min(1).max(100).required(),
           contract: Joi.string().min(1).max(100).required(),
           network: Joi.string().min(1).max(100).required(),
+          blockchain: Joi.string().min(1).max(100).required(), 
+          tokenId: Joi.string().min(1).max(100).optional().allow(null, '')
         }).required(),
         shortId: Joi.string().min(1).max(100).required(),
       });
@@ -97,7 +100,8 @@ export default async function handler(req, res) {
       .from('Content')
       .select('*')
       .eq('pinata_user_id', user.userInformation.id)
-      .range(offset, offset + 4);
+      .range(offset, offset + 4)
+      .order('created_at', { ascending: false })
       
 
       if(error) {

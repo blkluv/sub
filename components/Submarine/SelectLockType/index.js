@@ -17,7 +17,7 @@ const actions = [
     iconForeground: "text-pinata-purple",
     iconBackground: "bg-grey-50",
     link: "/submarine/nft",
-    text: "Require ownership of a particular ERC721 NFT to unlock your submarined content.",
+    text: "Require ownership of a particular NFT to unlock your submarined content.",
   },
   {
     title: "Retweet",

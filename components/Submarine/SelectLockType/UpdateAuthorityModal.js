@@ -46,7 +46,7 @@ export default function UpdateAuthorityModal({ updateAuthorityModalOpen, setUpda
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500 mb-4">
-                      You can find this on most Solana explorers by looking up the specific mint address for an NFT in the collection. Here's an example from Solscan.                      
+                      {"You can find this on most Solana explorers by looking up the specific mint address for an NFT in the collection. Here's an example from Solscan."} 
                     </p>
                     <Image src={authority} layout="responsive" />
                   </div>

@@ -80,7 +80,7 @@ const UploadFile = ({ selectedFiles, onFileChange }) => {
             <div className="flex text-sm text-gray-600">
               <label
                 htmlFor="file-upload-main"
-                className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                className="relative cursor-pointer bg-white rounded-md font-medium text-pinata-purple hover:text-pinata-purple focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pinata-purple"
               >
                 <span>Select a file</span>
                 <input
@@ -97,7 +97,7 @@ const UploadFile = ({ selectedFiles, onFileChange }) => {
             {
               selectedFiles.length > 0 ? 
               <p className="text-xs text-gray-500">{selectedFiles[0].name}</p> : 
-              <p className="text-xs text-gray-500">Any file up to 100MB</p>
+              <p className="text-xs text-gray-500">Any file up to 500MB</p>
             }            
           </div>
         </div>

@@ -8,8 +8,8 @@ import Head from "next/head";
 const Content = () => {
   const [fileInfo, setFileInfo] = useState();
   const [loading, setLoading] = useState(true);
+  const [missing, set404] = useState(false);
 
-  const router = useRouter();
   useEffect(() => {
     fetchContent();
     //eslint-disable-next-line
@@ -21,15 +21,19 @@ const Content = () => {
     }
   }, [fileInfo]);
 
-  const fetchContent = async () => {        
-    const res = await ky(`/api/content${window.location.pathname}`, {
-      method: "GET",
-    });
-    const json = await res.json();
-    setFileInfo(json);
+  const fetchContent = async () => { 
+    try {
+      const res = await ky(`/api/content${window.location.pathname}`, {
+        method: "GET",
+      });
+      const json = await res.json();
+      setFileInfo(json);
+    } catch (error) {
+      set404(true);
+      setLoading(false);
+    }      
   };
 
-  const pageData = mockData();
   return (
     <div>
       <Head>
@@ -89,7 +93,7 @@ window['_fs_namespace'] = 'FS';
         />
       </Head>
       <ContentLanding
-        pageData={pageData}
+        missing={missing}
         loading={loading}
         fileInfo={fileInfo}
       />

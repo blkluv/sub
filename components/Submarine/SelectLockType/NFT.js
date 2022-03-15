@@ -1,7 +1,15 @@
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
-import UploadFile from "../../Upload/UploadFile";
-import UploadThumbnail from "../../Upload/UploadThumbnail";
-import NetworkSelection from "./NFTNetworkSelection";
+import NFTDetail from "./NFTDetail";
+import TokenIdModal from "./TokenIdModal";
+import UpdateAuthorityModal from "./UpdateAuthorityModal";
+
+const networkOptions = {
+  Ethereum: ["Mainnet", "Rinkeby"],
+  Polygon: ["Mainnet", "Mumbai"],
+  Avalanche: ["Mainnet", "Fuji"],
+  Solana: ["Mainnet-Beta", "Devnet"],
+};
 
 const NFT = ({
   onFileChange,
@@ -18,139 +26,200 @@ const NFT = ({
   description,
   setDescription,
   onThumbnailChange,
+  blockchain,
+  setBlockchain,
+  blockchainOptions,
+  tokenId, 
+  setTokenId, 
+  updateAuthority, 
+  setUpdateAuthority
 }) => {
+  const [nftLockType, setNftLockType] = useState(blockchainOptions ? blockchainOptions[0] : null);
+  const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
+  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
+
+  const renderBlockchainSelector = () => {
+    if(blockchainOptions) {
+      return (
+        <div>
+          <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+            <label
+              htmlFor="blockchain"
+              className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+            >
+              Blockchain*
+            </label>
+            <div className="mt-1 sm:mt-0 sm:col-span-2">
+              <div className="max-w-lg flex">
+                <select
+                  id="blockchain"
+                  name="blockchain"
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-200 focus:outline-none focus:ring-pinata-purple focus:border-pinata-purple sm:text-sm rounded-md"
+                  value={blockchain}
+                  onChange={(e) => setBlockchain(e.target.value)}
+                >
+                  {blockchainOptions.map((o) => {
+                    return <option key={o}>{o}</option>;
+                  })}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+  };
+
+  const renderNetworkSelector = () => {
+    if (blockchain) {
+      return (
+        <div>
+          <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+            <label
+              htmlFor="network"
+              className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+            >
+              Network*
+            </label>
+            <div className="mt-1 sm:mt-0 sm:col-span-2">
+              <div className="max-w-lg flex">
+                <select
+                  id="network"
+                  name="network"
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-200 focus:outline-none focus:ring-pinata-purple focus:border-pinata-purple sm:text-sm rounded-md"
+                  value={network || "Select one..."}
+                  onChange={(e) => setNetwork(e.target.value)}
+                >
+                  <option>Select One...</option>
+                  {networkOptions[blockchain].map((o) => {
+                    return <option key={o}>{o}</option>;
+                  })}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return <div />;
+    }
+  };
+
+  const renderContractAddress = () => {
+    if (blockchain && network) {
+      switch (blockchain) {
+        case "Solana":
+          return (
+            <div>
+            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
+                Update Authority* <button onClick={() => setUpdateAuthorityModalOpen(true)}><InformationCircleIcon className="h-4 w-4 text-black" aria-hidden="true" /></button>
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <div className="max-w-lg flex">
+                  <input
+                    value={updateAuthority}
+                    onChange={(e) => setUpdateAuthority(e.target.value)}
+                    type="text"
+                    name="nft"
+                    required
+                    id="nft"
+                    autoComplete="off"
+                    placeholder="Update authority"
+                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                  />
+                </div>
+              </div>
+            </div>
+            <UpdateAuthorityModal updateAuthorityModalOpen={updateAuthorityModalOpen} setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen} />                 
+            </div>
+          )
+        default:
+          return (
+            <div>
+            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
+                Contract Address*
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <div className="max-w-lg flex">
+                  <input
+                    value={contractAddress}
+                    onChange={(e) => setContractAddress(e.target.value)}
+                    type="text"
+                    name="nft"
+                    required
+                    id="nft"
+                    autoComplete="off"
+                    placeholder="Contract address"
+                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
+                Token ID (Optional) <button onClick={() => setTokenIdModalOpen(true)}><InformationCircleIcon className="h-4 w-4 text-black" aria-hidden="true" /></button>
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <div className="max-w-lg flex">
+                  <input
+                    value={tokenId}
+                    onChange={(e) => setTokenId(e.target.value)}
+                    type="text"
+                    name="tokenId"
+                    id="tokenId"
+                    autoComplete="off"
+                    placeholder="Token ID"
+                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                  />
+                </div>
+              </div>
+            </div>
+            <TokenIdModal open={tokenIdModalOpen} setOpen={setTokenIdModalOpen} />
+            </div>
+          );
+      }
+    }
+  };
+
   return (
     <div>
       <div>
         <h3 className="text-gray-900 font-bold text-2xl">
-          Allow content to be unlocked with ownership of a Solana or ERC721 NFT
+          Allow content to be unlocked with ownership of an NFT
         </h3>
         <p className="text-gray-600">
-          All you have to do is provide the NFT contract address, provide the
-          network, and anyone trying to access your file will not be able to
-          access it unless they own an NFT minted from that contract.
+          Provide details about the NFT to be used to unlock the content, and
+          anyone trying to access your file will not be able to access it unless
+          they own the NFT specified.
         </p>
       </div>
 
       <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:pt-5">
-          <label
-            htmlFor="photo"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Thumbnail
-          </label>
-          <div className="mt-1 sm:mt-0 sm:col-span-2">
-            <div className="flex items-center">
-              <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                {thumbnail && thumbnail.length > 0 ? (
-                  <img
-                    className="h-12 w-12"
-                    src={thumbnail[0]?.preview}
-                    alt="preview for thumbnail"
-                  />
-                ) : (
-                  <svg
-                    className="h-full w-full text-gray-300"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                )}
-              </span>
-              <UploadThumbnail onThumbnailChange={onThumbnailChange} />
-            </div>
-          </div>
-        </div>
-        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-          >
-            Contract Address
-          </label>
-          <div className="mt-1 sm:mt-0 sm:col-span-2">
-            <div className="max-w-lg flex">
-              <input
-                value={contractAddress}
-                onChange={(e) => setContractAddress(e.target.value)}
-                type="text"
-                name="nft"
-                required
-                id="nft"
-                autoComplete="off"
-                placeholder="Contract address"
-                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-500 rounded-md p-2"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-          >
-            Network Name
-          </label>
-          <div className="mt-1 sm:mt-0 sm:col-span-2">
-            <div className="max-w-lg flex rounded-md shadow-sm">
-              <NetworkSelection
-                selected={network}
-                setSelected={setNetwork}
-                networks={networks}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-          >
-            Name
-          </label>
-          <div className="mt-1 sm:mt-0 sm:col-span-2">
-            <div className="max-w-lg flex">
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-                name="name"
-                autoComplete="off"
-                required
-                id="name"
-                placeholder="Give your unlockable content a name"
-                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-500 rounded-md p-2"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-          >
-            Description
-          </label>
-          <div className="mt-1 sm:mt-0 sm:col-span-2">
-            <div className="max-w-lg flex">
-              <input
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                type="text"
-                name="description"
-                id="description"
-                autoComplete="off"
-                required
-                placeholder="Describe the content"
-                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-500 rounded-md p-2"
-              />
-            </div>
-          </div>
-        </div>
-        <UploadFile onFileChange={onFileChange} selectedFiles={selectedFiles} />
+        {renderBlockchainSelector()}
+        {renderNetworkSelector()}
+        {renderContractAddress()}
+        <NFTDetail
+          onThumbnailChange={onThumbnailChange}
+          thumbnail={thumbnail}
+          name={name}
+          setName={setName}
+          description={description}
+          setDescription={setDescription}
+          onFileChange={onFileChange}
+          selectedFiles={selectedFiles}
+        />
       </div>
     </div>
   );

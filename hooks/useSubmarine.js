@@ -137,7 +137,6 @@ export const useSubmarine = () => {
         },         
     );  
     const json = await res.json();
-    console.log(json);
     } catch (error) {
       throw error;
     }

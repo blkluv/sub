@@ -31,3 +31,21 @@
 .special-background {
   background: linear-gradient(180deg, #F1E8FF 7.81%, #E9FCFF 100%);
 }
+
+.wallet-adapter-button  {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 200px;
+}
+
+.wallet-adapter-button i {
+  width: 50px;
+  margin-right: 10px;
+}
+
+.wallet-adapter-button span{
+  margin-left: 5px;
+  color: rgb(153, 153, 153);
+}

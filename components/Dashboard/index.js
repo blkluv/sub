@@ -10,7 +10,7 @@ import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
@@ -171,13 +171,13 @@ const Dashboard = () => {
                            setOpen={setOpen}
                            loadLinks={loadLinks}
                          />
-                         {files.length >= LIMIT && (
+                         
                            <Pagination
                              offset={offset}
                              handlePageChange={handleChangePage}
                              LIMIT={LIMIT}
                            />
-                         )}
+                     
                        </div>
                    </div>
                 }

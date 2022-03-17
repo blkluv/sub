@@ -37,6 +37,7 @@ export default withSession(async (req, res) => {
         signature,
         shortId,
         message,
+        mintAddress
       } = req.body;
 
       const savedMessage = req.session.get("message-session");
@@ -74,9 +75,14 @@ ${savedMessage.id}`);
         return res.status(401).send("NFT not associated with your public key.");
       }
 
-      const foundUpdateAuthority = nftArray.filter(
+      let foundUpdateAuthority = nftArray.filter(
         (n) => n.updateAuthority === savedMessage.updateAuthority
       );
+
+      if(mintAddress) {        
+        let filteredByMintAddress = foundUpdateAuthority.filter(f => f.mint === mintAddress);
+        foundUpdateAuthority = filteredByMintAddress;
+      }
 
       if (!foundUpdateAuthority || foundUpdateAuthority.length === 0) {
         return res.status(401).send("NFT not associated with your public key.");

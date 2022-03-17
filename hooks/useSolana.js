@@ -18,7 +18,7 @@ export const useSolana = () => {
   const signData = async (metadata) => {
     try {
       const { shortId, submarineCID, unlockInfo } = metadata;
-      const { updateAuthority, blockchain, tokenId, network } = unlockInfo;
+      const { updateAuthority, blockchain, tokenId, network, mintAddress } = unlockInfo;
 
       if (!signMessage) alert('Wallet does not support message signing!');
       const messageToSign = await axios.get(`/api/verifySol?updateAuthority=${updateAuthority}`);      
@@ -37,6 +37,7 @@ ${messageToSign.data.id}`);
         signature,
         network,
         updateAuthority,
+        mintAddress, 
         blockchain, 
         tokenId,
         CID: submarineCID,

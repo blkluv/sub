@@ -1,5 +1,6 @@
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
+import MintAddressModal from "./MintAddressModal";
 import NFTDetail from "./NFTDetail";
 import TokenIdModal from "./TokenIdModal";
 import UpdateAuthorityModal from "./UpdateAuthorityModal";
@@ -32,11 +33,14 @@ const NFT = ({
   tokenId, 
   setTokenId, 
   updateAuthority, 
-  setUpdateAuthority
+  setUpdateAuthority, 
+  mintAddress, 
+  setMintAddress
 }) => {
   const [nftLockType, setNftLockType] = useState(blockchainOptions ? blockchainOptions[0] : null);
   const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
   const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
+  const [mintAddressModalOpen, setMintAddressModalOpen] = useState(false);
 
   const renderBlockchainSelector = () => {
     if(blockchainOptions) {
@@ -135,7 +139,29 @@ const NFT = ({
                 </div>
               </div>
             </div>
+            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+              <label
+                htmlFor="mintAddress"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
+                Mint Address (optional) <button onClick={() => setMintAddressModalOpen(true)}><InformationCircleIcon className="h-4 w-4 text-black" aria-hidden="true" /></button>
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <div className="max-w-lg flex">
+                  <input
+                    value={mintAddress}
+                    onChange={(e) => setMintAddress(e.target.value)}
+                    type="text"        
+                    id="mintAddress"
+                    autoComplete="off"
+                    placeholder="Mint Address"
+                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                  />
+                </div>
+              </div>
+            </div>
             <UpdateAuthorityModal updateAuthorityModalOpen={updateAuthorityModalOpen} setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen} />                 
+            <MintAddressModal mintAddressModalOpen={mintAddressModalOpen} setMintAddressModalOpen={setMintAddressModalOpen} />
             </div>
           )
         default:

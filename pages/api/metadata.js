@@ -43,6 +43,7 @@ export default async function handler(req, res) {
           type: Joi.string().min(1).max(100).required(),
           contract: Joi.string().min(1).max(100).optional().allow(null, ''),
           updateAuthority: Joi.string().min(1).max(100).optional().allow(null, ''),
+          mintAddress: Joi.string().min(1).max(100).optional().allow(null, ''),
           network: Joi.string().min(1).max(100).required(),
           blockchain: Joi.string().min(1).max(100).required(), 
           tokenId: Joi.string().min(1).max(100).optional().allow(null, '')

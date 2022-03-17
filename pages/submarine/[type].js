@@ -31,6 +31,7 @@ const UnlockType = () => {
   const [tweetUrl, setTweetUrl] = useState("");
   const [contractAddress, setContractAddress] = useState("");
   const [updateAuthority, setUpdateAuthority] = useState("");
+  const [mintAddress, setMintAddress] = useState("");
   const [blockchain, setBlockchain] = useState(blockchainOptions[0]);
   const [network, setNetwork] = useState(null);
   const [tokenId, setTokenId] = useState("");
@@ -123,7 +124,7 @@ const UnlockType = () => {
       });
       data.append("pinToIPFS", false);
 
-      const res = await handleUpload(data);
+      const res = await handleUpload(data);      
 
       const submarinedContent = {
         shortId: identifier,
@@ -134,9 +135,10 @@ const UnlockType = () => {
           type,
           contract: contractAddress,
           updateAuthority,
+          mintAddress,
           network: network,
-          blockchain, 
-          tokenId
+          blockchain,
+          tokenId,
         },
         submarineCid: res.items[0].cid,
       };
@@ -166,7 +168,6 @@ const UnlockType = () => {
       }, 2500);
       router.push("/");
     } catch (error) {
-      console.log(error);
       setUploading(false);
       clearFields();
       setMessage({
@@ -208,6 +209,8 @@ const UnlockType = () => {
             setTokenId={setTokenId}
             updateAuthority={updateAuthority}
             setUpdateAuthority={setUpdateAuthority}
+            mintAddress={mintAddress}
+            setMintAddress={setMintAddress}
           />
         );
     }

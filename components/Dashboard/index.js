@@ -160,7 +160,7 @@ const Dashboard = () => {
 <div className="flex flex-row w-full p-20 justify-center">
                       <Loading />
                     </div> : 
-                       <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                       <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
                   
                        <div>
                          <LinkTable

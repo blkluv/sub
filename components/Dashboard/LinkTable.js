@@ -1,24 +1,33 @@
 import React, { useState } from "react";
 import { makeDatePretty } from "../../helpers/makePrettyDate";
 import DeleteModal from "./DeleteModal";
+import MobileTable from "./MobileTable";
 
-const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks }) => {
+const LinkTable = ({
+  files,
+  copyLink,
+  setOpen,
+  open,
+  handleDelete,
+  loadLinks,
+}) => {
   const [file, setFile] = useState(null);
 
   const openDeleteModal = (thisFile) => {
     setFile(thisFile);
     setOpen(true);
-  }
+  };
 
   const getLink = (file) => {
     if (file?.metadata?.keyvalues?.unlockType === "retweet") {
       return file.metadata.keyvalues.tweetUrl;
-    } 
+    }
   };
+
   return (
     <div>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-gray-200 border-t-2 border-gray-200">
+      <thead className="hidden sm:block bg-gray-50">
           <tr>
           <th
               scope="col"
@@ -55,7 +64,7 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks }) 
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="hidden sm:block bg-white divide-y divide-gray-200">
           {files.map((file) => (
             <tr key={file.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -89,9 +98,16 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks }) 
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody> 
+       <MobileTable files={files} copyLink={copyLink} openDeleteModal={openDeleteModal} />
       </table>
-      <DeleteModal file={file} handleDelete={handleDelete} open={open} setOpen={setOpen} loadLinks={loadLinks} />
+      <DeleteModal
+        file={file}
+        handleDelete={handleDelete}
+        open={open}
+        setOpen={setOpen}
+        loadLinks={loadLinks}
+      />
     </div>
   );
 };

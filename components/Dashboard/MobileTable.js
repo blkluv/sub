@@ -3,21 +3,13 @@ import React from 'react'
 import { makeDatePretty } from '../../helpers/makePrettyDate';
 import Image from "next/image";
 
-const MobileTable = ({ files, copyLink, openDeleteModal }) => {
-  const getThumbnail = (file) => {
-    if (file.thumbnail) {
-      return `https://opengateway.mypinata.cloud/ipfs/${file.thumbnail}?img-width=100&img-height=100`;
-    } else {
-      return "./camera.png";
-    }
-  };
-
-
+const MobileTable = ({ files, copyLink, openDeleteModal, getThumbnail }) => {
   return (
-    <tbody className="sm:hidden block bg-white divide-y divide-gray-200">
+    <table className="min-w-full divide-y divide-gray-200 border-t-2 border-gray-200">
+    <tbody className="sm:hidden flex align-center flex-col block bg-white divide-y divide-gray-200">
     {files.map((file) => (
       <tr key={file.id}>
-        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+        <td className="w-screen px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
           <div className="flex flex-row justify-left align-center w-full">
             <div className="w-12">
               <Image src={getThumbnail(file)} height={50} width={50} />
@@ -25,7 +17,7 @@ const MobileTable = ({ files, copyLink, openDeleteModal }) => {
 
             <div className="ml-4">
               <p className="text-lg">{file?.name}</p>
-              <p className="text-md">{file?.unlock_info?.type}</p>
+              <p className="text-md">{file?.unlock_info?.type} {file?.unlock_info?.type === "nft" && ` - ${file?.unlock_info?.blockchain}`}</p>
               <p className="text-md font-light">
                 {makeDatePretty(file.created_at)}
               </p>
@@ -37,7 +29,7 @@ const MobileTable = ({ files, copyLink, openDeleteModal }) => {
             </button>
             <button
               onClick={() => openDeleteModal(file)}
-              className="text-indigo-600 hover:text-indigo-900"
+              className="text-red"
             >
               <TrashIcon className="w-6" />
             </button>
@@ -46,6 +38,7 @@ const MobileTable = ({ files, copyLink, openDeleteModal }) => {
       </tr>
     ))}
   </tbody>
+  </table>
   )
 }
 

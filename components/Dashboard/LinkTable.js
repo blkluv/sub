@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeDatePretty } from "../../helpers/makePrettyDate";
 import DeleteModal from "./DeleteModal";
+import DesktopTable from "./DesktopTable";
 import MobileTable from "./MobileTable";
 
 const LinkTable = ({
@@ -10,6 +11,7 @@ const LinkTable = ({
   open,
   handleDelete,
   loadLinks,
+  getThumbnail
 }) => {
   const [file, setFile] = useState(null);
 
@@ -26,81 +28,20 @@ const LinkTable = ({
 
   return (
     <div>
-      <table className="min-w-full divide-y divide-gray-200 border-t-2 border-gray-200">
-      <thead className="hidden sm:block bg-gray-50">
-          <tr>
-          <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              CID
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Lock Type
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Created
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              <span className="sr-only">Share</span>
-            </th>
-            <th scope="col" className="relative px-6 py-3">
-              <span className="sr-only">Delete</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="hidden sm:block bg-white divide-y divide-gray-200">
-          {files.map((file) => (
-            <tr key={file.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {file?.name}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {file?.submarine_cid}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <a
-                  className="text-indigo-600 hover:text-indigo-900"
-                  href={getLink(file)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {file.unlock_info?.type}
-                </a>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {makeDatePretty(file.created_at)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <button onClick={() => copyLink(file)}>
-                  Copy Share Link
-                </button>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button onClick={() => openDeleteModal(file)} className="text-indigo-600 hover:text-indigo-900">
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody> 
-       <MobileTable files={files} copyLink={copyLink} openDeleteModal={openDeleteModal} />
-      </table>
+
+        <DesktopTable
+          files={files}
+          copyLink={copyLink}
+          getThumbnail={getThumbnail}
+          openDeleteModal={openDeleteModal}
+        />
+        <MobileTable
+          files={files}
+          copyLink={copyLink}
+          openDeleteModal={openDeleteModal}
+          getThumbnail={getThumbnail}
+        />
+
       <DeleteModal
         file={file}
         handleDelete={handleDelete}

@@ -9,6 +9,7 @@ import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
+import placeholder from "../../public/submarine.png";
 
 const LIMIT = 5;
 
@@ -70,11 +71,12 @@ const Dashboard = () => {
         newOffset = offset - LIMIT;
       }
     }
-
+    setLoading(true);
     const json = await loadLinks(newOffset);
     if (json && json.length > 0) {
       setOffset(newOffset);
     }
+    setLoading(false);
   };
 
   const loadLinks = async (newOffset) => {
@@ -133,6 +135,14 @@ const Dashboard = () => {
     }
   };
 
+  const getThumbnail = (file) => {
+    if (file.thumbnail) {
+      return `https://opengateway.mypinata.cloud/ipfs/${file.thumbnail}`;
+    } else {
+      return placeholder;
+    }
+  };
+
   return (
     <div>
       <Navigation />
@@ -143,11 +153,12 @@ const Dashboard = () => {
       />
       {displayUpgradeModal && <UpgradeModal />}
       <div className="h-screen bg-gray container w-full m-auto">
-        <main className="pt-24 pb-8">
+        <main className="sm:w-4/5 sm:m-auto pt-12 sm:pt-24 pb-8">
           <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <Link href="/submarine/new">
+                <div className="text-center sm:text-left pb-4">
+                <Link href="/submarine/new">                  
                   <button
                     type="button"
                     className="mb-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-pinata-purple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -155,12 +166,13 @@ const Dashboard = () => {
                     Submarine New File
                   </button>
                 </Link>
+                </div>
                 {
                   loading ? 
 <div className="flex flex-row w-full p-20 justify-center">
                       <Loading />
                     </div> : 
-                       <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                       <div className="overflow-hidden sm:rounded-lg">
                   
                        <div>
                          <LinkTable
@@ -170,6 +182,7 @@ const Dashboard = () => {
                            open={open}
                            setOpen={setOpen}
                            loadLinks={loadLinks}
+                           getThumbnail={getThumbnail}
                          />
                          
                            <Pagination

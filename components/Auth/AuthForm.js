@@ -148,9 +148,9 @@ export default function AuthForm() {
              <div className="mt-4">
                   <button
                     type="submit"
-                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
+                    className="group relative w-full flex-row justify-center align-center sm:h-auto h-16 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
                   >
-                    {submitting ? "Signing in..." : "Sign in"}
+                    <span>{submitting ? "Signing in..." : "Sign in"}</span>
                   </button>
                 </div>
           </form>

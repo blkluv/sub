@@ -11,7 +11,7 @@ const SubmarineNew = () => {
     <div>
       <SharedHead />
       <Navigation />
-      <div className="container w-full m-auto mt-10">        
+      <div className="w-4/5 m-auto mt-10 mb-12">        
       <Link href="/">
           <div className="h-8 w-8 cursor-pointer mb-8">
             <ArrowLeftIcon />

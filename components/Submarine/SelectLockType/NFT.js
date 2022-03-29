@@ -119,9 +119,9 @@ const NFT = ({
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
               >
-                Update Authority* <button onClick={() => setUpdateAuthorityModalOpen(true)}><InformationCircleIcon className="h-4 w-4 text-black" aria-hidden="true" /></button>
+                <span>Update Authority*</span> <span className="cursor" aria-label="button" onClick={() => setUpdateAuthorityModalOpen(true)}><InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" /></span>
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
                 <div className="max-w-lg flex">
@@ -142,9 +142,9 @@ const NFT = ({
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
               <label
                 htmlFor="mintAddress"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 mt-4 flex flex-row"
               >
-                Mint Address (optional) <button onClick={() => setMintAddressModalOpen(true)}><InformationCircleIcon className="h-4 w-4 text-black" aria-hidden="true" /></button>
+                <span>Mint Address (optional)</span> <span className="cursor" aria-label="button" onClick={() => setMintAddressModalOpen(true)}><InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" /></span>
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
                 <div className="max-w-lg flex">
@@ -193,9 +193,9 @@ const NFT = ({
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row mt-4"
               >
-                Token ID (Optional) <button onClick={() => setTokenIdModalOpen(true)}><InformationCircleIcon className="h-4 w-4 text-black" aria-hidden="true" /></button>
+                <span>Token ID (Optional)</span> <span className="cursor" aria-label="button" onClick={() => setTokenIdModalOpen(true)}><InformationCircleIcon className="ml-2 h-6 w-6 text-black -mt-2" /></span>
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
                 <div className="max-w-lg flex">

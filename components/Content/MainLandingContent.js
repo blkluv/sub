@@ -6,7 +6,7 @@ import {
   WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import { useSolana } from '../../hooks/useSolana';
+import { useSolana } from "../../hooks/useSolana";
 import { useWallet } from "@solana/wallet-adapter-react";
 // import '@solana/wallet-adapter-react-ui/styles.css';
 
@@ -20,19 +20,17 @@ const MainLandingContent = ({ loading, handleSign, fileInfo, signing }) => {
     try {
       setSolSigning(true);
       const url = await signData(fileInfo);
-      if(url) {
+      if (url) {
         setSolSigning(false);
         window.location.replace(url);
       } else {
-        alert("No content found!")
+        alert("No content found!");
       }
     } catch (error) {
       setSolSigning(false);
-      alert(error.message)
+      alert(error.message);
     }
-   
-
-  }
+  };
 
   return (
     <div>
@@ -45,18 +43,20 @@ const MainLandingContent = ({ loading, handleSign, fileInfo, signing }) => {
         <Pinnie />
       </div>
       <div className="public-content-bg h-screen w-screen flex flex-col justify-center align-center">
-        <div className="p-10 md:w-1/2 w-3/4 h-auto text-center flex flex-col justify-center align-center m-auto bg-white overflow-hidden shadow-lg rounded-lg">
+        <div className="p-10 md:w-1/2 w-5/6 h-auto text-center flex flex-col justify-center align-center m-auto bg-white overflow-hidden shadow-lg rounded-lg">
           {loading ? (
             <div>
               <h1>Loading...</h1>
             </div>
           ) : (
             <div>
-              <img
-                className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-                src={`https://opengateway.mypinata.cloud/ipfs/${fileInfo.thumbnail}?img-width=200&img-height=200`}
-                alt={`${fileInfo.name} preview`}
-              />
+              {fileInfo.thumbnail && (
+                <img                  
+                  className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
+                  src={`https://opengateway.mypinata.cloud/ipfs/${fileInfo.thumbnail}`}
+                  alt={`${fileInfo.name} preview`}
+                />
+              )}
               <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                 <span className="block">{fileInfo.name}</span>
               </h2>

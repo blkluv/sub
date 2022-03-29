@@ -11,7 +11,7 @@ const ProfileDropDown = ({ avatar }) => {
   return (
     <Menu as="div" className="ml-3 relative">
       <div>
-        <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <Menu.Button className="bg-white rounded-full flex text-sm outline-none">
           <span className="sr-only">Open user menu</span>
           <img
             className="h-8 w-8 rounded-full"
@@ -30,7 +30,7 @@ const ProfileDropDown = ({ avatar }) => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <Menu.Item>
+          {/* <Menu.Item>
             {({ active }) => (
               <a
                 href="#"
@@ -55,7 +55,7 @@ const ProfileDropDown = ({ avatar }) => {
                 Settings
               </a>
             )}
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item>
             {({ active }) => (
               <button

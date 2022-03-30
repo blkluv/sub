@@ -8,9 +8,20 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { useSolana } from "../../hooks/useSolana";
 import { useWallet } from "@solana/wallet-adapter-react";
+import Gallery from "./Gallery";
 // import '@solana/wallet-adapter-react-ui/styles.css';
 
-const MainLandingContent = ({ loading, handleSign, fileInfo, signing }) => {
+const MainLandingContent = ({
+  setGallery,
+  setFullResponse,
+  loading,
+  handleSign,
+  fileInfo,
+  signing,
+  gallery,
+  fullResponse,
+  handleChangePage
+}) => {
   const [solSigning, setSolSigning] = useState(false);
   const { signData } = useSolana();
 
@@ -19,12 +30,20 @@ const MainLandingContent = ({ loading, handleSign, fileInfo, signing }) => {
   const hanldeSolSign = async () => {
     try {
       setSolSigning(true);
-      const url = await signData(fileInfo);
-      if (url) {
+      const res = await signData(fileInfo);
+      if (res && !res.directory) {
         setSolSigning(false);
-        window.location.replace(url);
+        window.location.replace(
+          `${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`
+        );
+      } else if (res && res.html) {
+        setSolSigning(false);
+        window.location.replace(
+          `${res.gateway}/ipfs/${res.cid}/index.html?accessToken=${res.token}`
+        );
       } else {
-        alert("No content found!");
+        setFullResponse(res);
+        setGallery(true);
       }
     } catch (error) {
       setSolSigning(false);
@@ -43,15 +62,17 @@ const MainLandingContent = ({ loading, handleSign, fileInfo, signing }) => {
         <Pinnie />
       </div>
       <div className="public-content-bg h-screen w-screen flex flex-col justify-center align-center">
-        <div className="p-10 md:w-1/2 w-5/6 h-auto text-center flex flex-col justify-center align-center m-auto bg-white overflow-hidden shadow-lg rounded-lg">
+        <div className="p-10 md:w-1/2 w-5/6 h-auto max-h-3/4 text-center flex flex-col align-center m-auto bg-white overflow-scroll shadow-lg rounded-lg">
           {loading ? (
             <div>
               <h1>Loading...</h1>
             </div>
+          ) : gallery ? (
+            <Gallery name={fileInfo.name} fullResponse={fullResponse} handleChangePage={handleChangePage} />
           ) : (
             <div>
               {fileInfo.thumbnail && (
-                <img                  
+                <img
                   className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
                   src={`https://opengateway.mypinata.cloud/ipfs/${fileInfo.thumbnail}`}
                   alt={`${fileInfo.name} preview`}

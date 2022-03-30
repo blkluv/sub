@@ -6,10 +6,15 @@ import axios from 'axios';
 import Solana from './Solana';
 import Ethereum from './Ethereum';
 import Missing from './Missing';
+import Gallery from './Gallery';
 
 export default function ContentLanding({ loading, fileInfo, missing }) {
-  console.log(fileInfo);
   const [signing, setSigning] = useState(false);
+  const [gallery, setGallery] = useState(false);
+  const [fullResponse, setFullResponse] = useState(null);
+  const [offset, setOffset] = useState(0);
+  const [limit] = useState(10);
+
   const { signData } = useMetamask();
   const handleSign = async () => {
     try {
@@ -21,11 +26,18 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
           window.location.replace(url);
         } 
       } else {
-        const url = await signData(fileInfo);
-        if(url) {
+        const res = await signData(fileInfo);
+        if(res && !res.directory) {
           setSigning(false);
-          window.location.replace(url);
-        } 
+          window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);
+        } else if(res && res.html) {
+          setSigning(false);
+          window.location.replace(`${res.gateway}/ipfs/${res.cid}/index.html?accessToken=${res.token}`);
+        } else {
+          setFullResponse(res);
+          setOffset(0);
+          setGallery(true);
+        }
       }          
     } catch (error) {
       setSigning(false)
@@ -33,16 +45,45 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
     }    
   }
 
+  const handleChangePage = async (dir) => { 
+    let newOffset;   
+    if(dir === "forward") {
+      newOffset = offset + limit;      
+      setOffset(newOffset);      
+    } else {
+      newOffset = offset - limit;
+      if(newOffset < 0) {
+        setOffset(0);   
+        newOffset = 0;
+      } else {
+        setOffset(newOffset);
+      }           
+    }
+
+    const res = await axios.post(`/api/content`, {
+      accessToken: fullResponse.token, 
+      gatewayURL: `${fullResponse.gateway}${fullResponse.childContent[0].uri}`, 
+      offset: newOffset, 
+      shortId: window.location.pathname.split("/")[1]
+    });
+
+    if(res.data.childContent.length === 0) {
+      setOffset(newOffset - limit);
+    } else {
+      setFullResponse(res.data);
+    }    
+  }
+
   return (
     <div>
       {
         missing ? 
-        <Missing /> :
+        <Missing /> :     
         <div>
 {
         fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.blockchain && fileInfo.unlockInfo.blockchain === "Solana" ? 
-        <Solana fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
-        <Ethereum fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
+        <Solana handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
+        <Ethereum handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
       }
         </div>
       }

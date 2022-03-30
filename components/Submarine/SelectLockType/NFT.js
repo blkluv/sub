@@ -35,7 +35,9 @@ const NFT = ({
   updateAuthority, 
   setUpdateAuthority, 
   mintAddress, 
-  setMintAddress
+  setMintAddress, 
+  file, 
+  setFile
 }) => {
   const [nftLockType, setNftLockType] = useState(blockchainOptions ? blockchainOptions[0] : null);
   const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
@@ -245,6 +247,8 @@ const NFT = ({
           setDescription={setDescription}
           onFileChange={onFileChange}
           selectedFiles={selectedFiles}
+          file={file}
+          setFile={setFile}
         />
       </div>
     </div>

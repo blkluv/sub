@@ -32,6 +32,12 @@
   background: linear-gradient(180deg, #F1E8FF 7.81%, #E9FCFF 100%);
 }
 
+.wallet-adapter-modal {
+  max-width: 60%!important;
+  max-height: 50%!important;
+  margin-top: 15%!important;
+}
+
 .wallet-adapter-button  {
   margin-bottom: 10px;
   display: flex;
@@ -48,4 +54,12 @@
 .wallet-adapter-button span{
   margin-left: 5px;
   color: rgb(153, 153, 153);
+}
+
+@media only screen and (max-width: 600px) {
+  .wallet-adapter-modal {
+    max-width: 90%!important;
+    max-height: 50%!important;
+    margin-top: 20%!important;
+  }
 }

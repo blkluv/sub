@@ -10,6 +10,9 @@ module.exports = {
       '1/2': '50%',
       '3/4': '75%'
     },
+    maxHeight: {
+      "3/4": '75%',
+    },
     extend: {
       colors: {
         'pinata-purple': '#8000DB',

@@ -42,8 +42,8 @@ const UnlockType = () => {
   const [thumbnail, setThumbnail] = useState([]);
   const [description, setDescription] = useState("");
   const [thumbnailCid, setThumbnailCid] = useState("");
+  const [file, setFile] = useState(true);
   const FILE_SIZE_LIMIT = 500000000;
-
   const onFileChange = (e, type) => {
     const files = e.target.files;
     for (let i = 0; i < files.length; i++) {
@@ -211,6 +211,8 @@ const UnlockType = () => {
             setUpdateAuthority={setUpdateAuthority}
             mintAddress={mintAddress}
             setMintAddress={setMintAddress}
+            file={file}
+            setFile={setFile}
           />
         );
     }

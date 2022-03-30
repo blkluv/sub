@@ -17,7 +17,7 @@ import { clusterApiUrl } from "@solana/web3.js";
 
 import MainLandingContent from "./MainLandingContent";
 
-const Solana = ({ signing, loading, handleSign, fileInfo }) => {
+const Solana = ({ signing, loading, handleSign, fileInfo, gallery, fullResponse, setGallery, setFullResponse, handleChangePage }) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
 
@@ -43,7 +43,7 @@ const Solana = ({ signing, loading, handleSign, fileInfo }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <MainLandingContent fileInfo={fileInfo} signing={signing} loading={loading} handleSign={handleSign} />        
+        <MainLandingContent handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} signing={signing} loading={loading} handleSign={handleSign} />        
       </WalletProvider>
     </ConnectionProvider>
   );

@@ -6,6 +6,7 @@ import * as util from "ethereumjs-util";
 import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
+import { getSubmarinedContent } from "../../helpers/submarine";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -113,34 +114,11 @@ ${fullMessage.length}${fullMessage}`;
         
         if (balance && balance.toString() !== "0") {
           const info = await getUserContentCombo(shortId);
+          const { submarine_cid } = info;
           const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
-          const config = {
-            headers: {
-              "x-api-key": `${pinata_submarine_key}`,
-              "Content-Type": "application/json",
-            },
-          };
-          const content = await axios.get(
-            `${process.env.NEXT_PUBLIC_MANAGED_API}/content`,
-            config
-          );
-
-          const { data } = content;
-          const { items } = data;
-          const item = items.find((i) => i.cid === CID);
-
-          const body = {
-            timeoutSeconds: 3600,
-            contentIds: [item.id],
-          };
-          const token = await axios.post(
-            `${process.env.NEXT_PUBLIC_MANAGED_API}/auth/content/jwt`,
-            body,
-            config
-          );
-          const GATEWAY_URL = `https://${pinata_gateway_subdomain}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
-          return res.send(
-            `${GATEWAY_URL}/ipfs/${CID}?accessToken=${token.data}`
+          const responseObj = await getSubmarinedContent(pinata_submarine_key, submarine_cid, pinata_gateway_subdomain);
+          return res.json(
+           responseObj
           );
         } else {
           return res.status(401).send("Token not found. Check your network.");

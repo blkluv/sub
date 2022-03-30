@@ -1,10 +1,10 @@
 import React from 'react'
 import MainLandingContent from './MainLandingContent'
 
-const Ethereum = ({ signing, loading, handleSign, fileInfo }) => {
+const Ethereum = ({ signing, loading, handleSign, fileInfo, gallery, fullResponse, handleChangePage }) => {
   return (
     <div>
-      <MainLandingContent fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
+      <MainLandingContent handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
     </div>
   )
 }

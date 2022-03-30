@@ -2,12 +2,11 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
-import {
-  getParsedNftAccountsByOwner,
-} from "@nfteyez/sol-rayz";
+import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import bs58 from "bs58";
 import { sign } from "tweetnacl";
-import { clusterApiUrl, Connection } from '@solana/web3.js';
+import { clusterApiUrl, Connection } from "@solana/web3.js";
+import { getSubmarinedContent } from "../../helpers/submarine";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -19,8 +18,12 @@ function withSession(handler) {
   });
 }
 
-function createConnectionConfig (network, clusterApi = clusterApiUrl('mainnet-beta'), commitment = 'confirmed') {
-  if(network === "Devnet") {
+function createConnectionConfig(
+  network,
+  clusterApi = clusterApiUrl("mainnet-beta"),
+  commitment = "confirmed"
+) {
+  if (network === "Devnet") {
     clusterApi = clusterApiUrl("devnet");
   }
   return new Connection(clusterApi, commitment);
@@ -37,7 +40,7 @@ export default withSession(async (req, res) => {
         signature,
         shortId,
         message,
-        mintAddress
+        mintAddress,
       } = req.body;
 
       const savedMessage = req.session.get("message-session");
@@ -68,8 +71,8 @@ ${savedMessage.id}`);
 
       const nftArray = await getParsedNftAccountsByOwner({
         publicAddress: address,
-        connection: createConnectionConfig(network)
-      });      
+        connection: createConnectionConfig(network),
+      });
 
       if (!nftArray || nftArray.length === 0) {
         return res.status(401).send("NFT not associated with your public key.");
@@ -79,8 +82,10 @@ ${savedMessage.id}`);
         (n) => n.updateAuthority === savedMessage.updateAuthority
       );
 
-      if(mintAddress) {        
-        let filteredByMintAddress = foundUpdateAuthority.filter(f => f.mint === mintAddress);
+      if (mintAddress) {
+        let filteredByMintAddress = foundUpdateAuthority.filter(
+          (f) => f.mint === mintAddress
+        );
         foundUpdateAuthority = filteredByMintAddress;
       }
 
@@ -89,34 +94,10 @@ ${savedMessage.id}`);
       }
 
       const info = await getUserContentCombo(shortId);
+      const { submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
-      const config = {
-        headers: {
-          "x-api-key": `${pinata_submarine_key}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const content = await axios.get(
-        `${process.env.NEXT_PUBLIC_MANAGED_API}/content`,
-        config
-      );
-
-      const { data } = content;
-      const { items } = data;
-      const item = items.find((i) => i.cid === CID);
-      const body = {
-        timeoutSeconds: 3600,
-        contentIds: [item.id],
-      };
-      const token = await axios.post(
-        `${process.env.NEXT_PUBLIC_MANAGED_API}/auth/content/jwt`,
-        body,
-        config
-      );
-      const GATEWAY_URL = `https://${pinata_gateway_subdomain}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
-      return res.send(
-        `${GATEWAY_URL}/ipfs/${CID}?accessToken=${token.data}`
-      );
+      const responseObj = await getSubmarinedContent(pinata_submarine_key, submarine_cid, pinata_gateway_subdomain);
+      return res.json(responseObj);
     } catch (error) {
       console.log(error);
       console.log(error.response);

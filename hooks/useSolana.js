@@ -44,8 +44,9 @@ ${messageToSign.data.id}`);
         shortId: shortId, 
         message: messageToSign.data
       });
-      const url = res.data;     
-      return url; 
+      const data = res.data; 
+      data.signature = signature;    
+      return data; 
     } catch (error) {
       throw error;
     }    

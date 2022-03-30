@@ -48,8 +48,9 @@ ${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
         CID: submarineCID,
         shortId: shortId
       });
-      const url = res.data;     
-      return url; 
+      const data = res.data;  
+      data.signature = signature;   
+      return data; 
     } catch (error) {
       throw error;
     }    

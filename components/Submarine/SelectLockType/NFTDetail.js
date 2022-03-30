@@ -1,8 +1,8 @@
 import React from 'react'
-import UploadFile from '../../Upload/UploadFile'
+import UploadMedia from '../../Upload/UploadMedia'
 import UploadThumbnail from '../../Upload/UploadThumbnail'
 
-const NFTDetail = ({ onThumbnailChange, thumbnail, name, setName, description, setDescription, onFileChange, selectedFiles }) => {
+const NFTDetail = ({ onThumbnailChange, thumbnail, name, setName, description, setDescription, onFileChange, selectedFiles, file, setFile }) => {
   return (
     <div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
@@ -81,7 +81,7 @@ const NFTDetail = ({ onThumbnailChange, thumbnail, name, setName, description, s
             </div>
           </div>
         </div>
-        <UploadFile onFileChange={onFileChange} selectedFiles={selectedFiles} />
+        <UploadMedia onFileChange={onFileChange} selectedFiles={selectedFiles} file={file} setFile={setFile} />
     </div>
   )
 }

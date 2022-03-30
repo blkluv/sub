@@ -13,7 +13,7 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
   const [gallery, setGallery] = useState(false);
   const [fullResponse, setFullResponse] = useState(null);
   const [offset, setOffset] = useState(0);
-  const [limit] = useState(10);
+  const [limit] = useState(50);
 
   const { signData } = useMetamask();
   const handleSign = async () => {

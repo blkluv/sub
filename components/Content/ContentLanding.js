@@ -7,6 +7,7 @@ import Solana from './Solana';
 import Ethereum from './Ethereum';
 import Missing from './Missing';
 import Gallery from './Gallery';
+import RetweetLanding from './RetweetLanding';
 
 export default function ContentLanding({ loading, fileInfo, missing }) {
   const [signing, setSigning] = useState(false);
@@ -81,6 +82,8 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
         <Missing /> :     
         <div>
 {
+        fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type === "retweet" ? 
+        <RetweetLanding handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} /> :
         fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.blockchain && fileInfo.unlockInfo.blockchain === "Solana" ? 
         <Solana handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
         <Ethereum handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />

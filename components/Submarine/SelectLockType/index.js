@@ -29,7 +29,6 @@ const actions = [
     iconBackground: "bg-grey-50",
     link: "/submarine/retweet",
     text: "Require a retweet of a specific tweet in order to unlock your submarined content.",
-    soon: true
   },
   {
     title: "Credit/Debit Card Payment",

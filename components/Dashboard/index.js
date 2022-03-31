@@ -32,7 +32,7 @@ const Dashboard = () => {
     if (!userPlanInfo) {
       setLoading(false);
       setDisplayUpgradeModal(true);
-    } else if (userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL") {
+    } else if (userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL" && userPlanInfo?.subscriptionItems[0]?.type !== "EXTRA_MANAGED_GATEWAY") {
       setLoading(false);
       setDisplayUpgradeModal(true);
     } else {

@@ -7,6 +7,7 @@ import bs58 from "bs58";
 import { sign } from "tweetnacl";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
+import { Sentry } from "../../helpers/sentry";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -101,6 +102,7 @@ ${savedMessage.id}`);
     } catch (error) {
       console.log(error);
       console.log(error.response);
+      Sentry.captureException(error);
       res.status(500).json(error);
     }
   } else if (req.method === "GET") {

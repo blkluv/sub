@@ -7,6 +7,7 @@ import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../helpers/submarine";
+import { Sentry } from "../../helpers/sentry";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -141,6 +142,7 @@ ${fullMessage.length}${fullMessage}`;
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;
+      Sentry.captureException(error);
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {

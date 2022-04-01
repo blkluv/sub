@@ -1,21 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 export const useMetamask = () => {
   const [ethereum, setEthereum] = useState(null);
   const [url, setUrl] = useState("");
   const [holdsNFT, setHoldsNFT] = useState(false);
-
-
-  useEffect(() => {
-    if (typeof window.ethereum !== "undefined") {
-      console.log("MetaMask is installed!");
-      setEthereum(window.ethereum);
-    }
-    if (ethereum) {
-      ethereum.request({ method: "eth_requestAccounts" });
-    }
-  }, [ethereum]);
 
   const signData = async (metadata) => {
     try {
@@ -61,6 +50,7 @@ ${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
     ethereum,
     url,
     holdsNFT,
-    url
+    url, 
+    setEthereum
   };
 };

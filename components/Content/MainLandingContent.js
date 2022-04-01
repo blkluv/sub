@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Pinnie from "../Pinnie";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import {
@@ -10,7 +10,8 @@ import { useSolana } from "../../hooks/useSolana";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Gallery from "./Gallery";
 import { Tweet } from "react-twitter-widgets";
-// import '@solana/wallet-adapter-react-ui/styles.css';
+import { useTwitter } from "../../hooks/useTwitter";
+import { useRouter } from 'next/router'
 
 const MainLandingContent = ({
   setGallery,
@@ -22,9 +23,17 @@ const MainLandingContent = ({
   gallery,
   fullResponse,
   handleChangePage,
+  verifying
 }) => {
   const [solSigning, setSolSigning] = useState(false);
+
+  const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
+
+
+  // let { oauth_token, oauth_verifier } = queryString.parse(
+  //   window.location.search
+  // );
 
   const wallet = useWallet();
 
@@ -51,7 +60,7 @@ const MainLandingContent = ({
       alert(error.message);
     }
   };
-  console.log(fileInfo);
+
   return (
     <div>
       <div className="absolute p-4 flex flex-row">
@@ -133,10 +142,10 @@ const MainLandingContent = ({
                       <Tweet tweetId={fileInfo.unlockInfo.tweetUrl.split("status/")[1]} />
                       <p className="text-muted text-sm">Make sure you have retweeted the above Tweet.</p>
                   <button
-                      onClick={() => handleSign()}
+                      onClick={() => twitterAuth()}
                       className="mt-4 w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                     >
-                      Connect Your Twitter
+                      {verifying ? "Verifying retweet..." : "Connect Your Twitter"}
                     </button>
                   </div>
                 ) : (

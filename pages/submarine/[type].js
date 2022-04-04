@@ -11,6 +11,7 @@ import axios from "axios";
 import { useAuth } from "../../hooks/useAuth";
 import Head from "next/head";
 import SharedHead from "../../components/SharedHead";
+import Twitter from "../../components/Submarine/SelectLockType/Twitter";
 const short = require("short-uuid");
 
 const blockchainOptions = ["Ethereum", "Polygon", "Avalanche", "Solana"];
@@ -89,6 +90,8 @@ const UnlockType = () => {
 
   const canSubmit = () => {
     switch (type) {
+      case "retweet": 
+        return tweetUrl.length > 5;
       case "nft":
         return (
           selectedFiles.length > 0 &&
@@ -139,6 +142,7 @@ const UnlockType = () => {
           network: network,
           blockchain,
           tokenId,
+          tweetUrl
         },
         submarineCid: res.items[0].cid,
       };
@@ -184,6 +188,22 @@ const UnlockType = () => {
 
   const renderUnlockType = () => {
     switch (type) {
+      case "retweet": 
+        return <Twitter 
+            name={name}
+            setName={setName}
+            thumbnail={thumbnail}
+            setThumbnail={setThumbnail}
+            setSelectedFiles={setSelectedFiles}
+            selectedFiles={selectedFiles}
+            onFileChange={onFileChange}
+            onThumbnailChange={onThumbnailChange}
+            setDescription={setDescription}
+            file={file}
+            setFile={setFile}
+            tweetUrl={tweetUrl}
+            setTweetUrl={setTweetUrl}
+        />
       case "nft":
       default:
         return (

@@ -29,6 +29,7 @@ const Dashboard = () => {
 
   const checkForPlan = async () => {
     const userPlanInfo = await getUserBillingInfo();
+    console.log(userPlanInfo);
     if (!userPlanInfo) {
       setLoading(false);
       setDisplayUpgradeModal(true);

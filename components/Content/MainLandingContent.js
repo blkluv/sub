@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Pinnie from "../Pinnie";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import {
@@ -9,7 +9,8 @@ import {
 import { useSolana } from "../../hooks/useSolana";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Gallery from "./Gallery";
-// import '@solana/wallet-adapter-react-ui/styles.css';
+import { Tweet } from "react-twitter-widgets";
+import { useTwitter } from "../../hooks/useTwitter";
 
 const MainLandingContent = ({
   setGallery,
@@ -20,10 +21,18 @@ const MainLandingContent = ({
   signing,
   gallery,
   fullResponse,
-  handleChangePage
+  handleChangePage,
+  verifying
 }) => {
   const [solSigning, setSolSigning] = useState(false);
+
+  const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
+
+
+  // let { oauth_token, oauth_verifier } = queryString.parse(
+  //   window.location.search
+  // );
 
   const wallet = useWallet();
 
@@ -68,7 +77,11 @@ const MainLandingContent = ({
               <h1>Loading...</h1>
             </div>
           ) : gallery ? (
-            <Gallery name={fileInfo.name} fullResponse={fullResponse} handleChangePage={handleChangePage} />
+            <Gallery
+              name={fileInfo.name}
+              fullResponse={fullResponse}
+              handleChangePage={handleChangePage}
+            />
           ) : (
             <div>
               {fileInfo.thumbnail && (
@@ -85,11 +98,12 @@ const MainLandingContent = ({
                 {fileInfo.description}
               </h4>
               <div className="mt-10 flex justify-center">
-                <div className="inline-flex w-1/2">
-                  {fileInfo &&
-                  fileInfo.unlockInfo &&
-                  fileInfo.unlockInfo.blockchain &&
-                  fileInfo.unlockInfo.blockchain === "Solana" ? (
+                {fileInfo &&
+                fileInfo.unlockInfo &&
+                fileInfo.unlockInfo.type === "nft" &&
+                fileInfo.unlockInfo.blockchain &&
+                fileInfo.unlockInfo.blockchain === "Solana" ? (
+                  <div className="inline-flex w-1/2">
                     <WalletModalProvider className="fixed z-10 inset-0 overflow-y-auto inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6 m-auto">
                       {!wallet.connected ? (
                         <WalletMultiButton className="w-full m-auto inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple" />
@@ -105,20 +119,54 @@ const MainLandingContent = ({
                         </div>
                       )}
                     </WalletModalProvider>
-                  ) : (
+                  </div>
+                ) : fileInfo &&
+                  fileInfo.unlockInfo &&
+                  fileInfo.unlockInfo.type === "nft" &&
+                  fileInfo.unlockInfo.blockchain &&
+                  fileInfo.unlockInfo.blockchain === "Ethereum" ? (
+                  <div className="inline-flex w-1/2">
                     <button
                       onClick={() => handleSign()}
                       className="w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                     >
                       {signing ? "Unlocking..." : "Connect wallet"}
                     </button>
-                  )}
-                </div>
+                  </div>
+                ) : fileInfo &&
+                  fileInfo.unlockInfo &&
+                  fileInfo.unlockInfo.type === "retweet" ? (
+                    <div className="max-w-full m-auto text-center">
+                      {/* <a className="text-sm underline" href={fileInfo.unlockInfo.tweetUrl} target="_blank" rel="noopener noreferrer">Make sure you have retweeted this tweet</a> */}
+                      <Tweet tweetId={fileInfo.unlockInfo.tweetUrl.split("status/")[1]} />
+                      <p className="text-muted text-sm">Make sure you have retweeted the above Tweet.</p>
+                  <button
+                      onClick={() => twitterAuth()}
+                      className="mt-4 w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
+                    >
+                      {verifying ? "Verifying retweet..." : "Connect Your Twitter"}
+                    </button>             
+                  </div>
+                ) : (
+                  <div />
+                )}
               </div>
-              <p className="mt-4 mb-4 text-md text-muted">
-                Unlock this content by connecting your wallet to verify you have
-                the required NFT.
-              </p>
+              {fileInfo &&
+                fileInfo.unlockInfo &&
+                fileInfo.unlockInfo.type === "nft" && (
+                  <p className="mt-4 mb-4 text-md text-muted">
+                    Unlock this content by connecting your wallet to verify you
+                    have the required NFT.
+                  </p>
+                )}
+
+              {fileInfo.unlockInfo &&
+                fileInfo.unlockInfo.type === "retweet" && (
+                  <p className="mt-4 mb-4 text-md text-muted">
+                    Unlock this content by retweeting the above tweet and
+                    signing in with your Twitter account.
+                  </p>
+                )}
             </div>
           )}
         </div>

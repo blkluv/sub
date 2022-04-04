@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMetamask } from "../../hooks/useMetamask";
-import Pinnie from "../Pinnie";
-import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import axios from 'axios';
 import Solana from './Solana';
 import Ethereum from './Ethereum';
 import Missing from './Missing';
-import Gallery from './Gallery';
+import RetweetLanding from './RetweetLanding';
+import { useRouter } from 'next/router';
+import { useTwitter } from '../../hooks/useTwitter';
 
 export default function ContentLanding({ loading, fileInfo, missing }) {
   const [signing, setSigning] = useState(false);
@@ -14,8 +14,41 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
   const [fullResponse, setFullResponse] = useState(null);
   const [offset, setOffset] = useState(0);
   const [limit] = useState(50);
+  const [verifying, setVerifying] = useState(false);
 
-  const { signData } = useMetamask();
+  const { verifyRetweet } = useTwitter();
+  const router = useRouter();
+
+  useEffect(() => {
+    const { oauth_token, oauth_verifier } = router.query;    
+    if(oauth_token && oauth_verifier) {
+      setVerifying(true);
+      handleVerification(oauth_token, oauth_verifier);      
+    }
+  }, [router.query]);
+
+  const handleVerification = async (oauth_token, oauth_verifier) => {
+    try {      
+      const res = await verifyRetweet(oauth_token, oauth_verifier);   
+      if(res && !res.directory) {
+        setVerifying(false);
+        window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);
+      } else if(res && res.html) {
+        setVerifying(false);
+        window.location.replace(`${res.gateway}/ipfs/${res.cid}/index.html?accessToken=${res.token}`);
+      } else {
+        setFullResponse(res);
+        setOffset(0);
+        setGallery(true);
+        router.push(window.location.pathname.split("/")[1].split("?")[0]);
+      }    
+    } catch (error) {
+      alert(error.response.data);
+      router.push(window.location.pathname.split("/")[1].split("?")[0]);      
+    }        
+  }
+
+  const { signData, ethereum, setEthereum } = useMetamask();
   const handleSign = async () => {
     try {
       setSigning(true);
@@ -81,9 +114,11 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
         <Missing /> :     
         <div>
 {
+        fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type === "retweet" ? 
+        <RetweetLanding verifying={verifying} handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} /> :
         fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.blockchain && fileInfo.unlockInfo.blockchain === "Solana" ? 
         <Solana handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
-        <Ethereum handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
+        <Ethereum ethereum={ethereum} setEthereum={setEthereum} handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
       }
         </div>
       }

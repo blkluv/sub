@@ -11,7 +11,6 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Gallery from "./Gallery";
 import { Tweet } from "react-twitter-widgets";
 import { useTwitter } from "../../hooks/useTwitter";
-import { useRouter } from 'next/router'
 
 const MainLandingContent = ({
   setGallery,
@@ -146,7 +145,7 @@ const MainLandingContent = ({
                       className="mt-4 w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                     >
                       {verifying ? "Verifying retweet..." : "Connect Your Twitter"}
-                    </button>
+                    </button>             
                   </div>
                 ) : (
                   <div />

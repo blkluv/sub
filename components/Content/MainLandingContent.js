@@ -11,6 +11,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Gallery from "./Gallery";
 import { Tweet } from "react-twitter-widgets";
 import { useTwitter } from "../../hooks/useTwitter";
+import { EVMChains } from "../../hooks/useMetamask";
 
 const MainLandingContent = ({
   setGallery,
@@ -28,11 +29,6 @@ const MainLandingContent = ({
 
   const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
-
-
-  // let { oauth_token, oauth_verifier } = queryString.parse(
-  //   window.location.search
-  // );
 
   const wallet = useWallet();
 
@@ -124,7 +120,7 @@ const MainLandingContent = ({
                   fileInfo.unlockInfo &&
                   fileInfo.unlockInfo.type === "nft" &&
                   fileInfo.unlockInfo.blockchain &&
-                  fileInfo.unlockInfo.blockchain === "Ethereum" ? (
+                  EVMChains.includes(fileInfo.unlockInfo.blockchain) ? (
                   <div className="inline-flex w-1/2">
                     <button
                       onClick={() => handleSign()}

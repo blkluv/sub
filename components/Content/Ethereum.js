@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import { useMetamask } from '../../hooks/useMetamask';
+import { EVMChains } from '../../hooks/useMetamask';
 import MainLandingContent from './MainLandingContent'
 
 const Ethereum = ({ signing, loading, handleSign, fileInfo, gallery, fullResponse, handleChangePage, ethereum, setEthereum }) => {
   useEffect(() => {    
-    if (typeof window.ethereum !== "undefined" && fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.blockchain === "Ethereum") {
+    if (typeof window.ethereum !== "undefined" && fileInfo && fileInfo.unlockInfo && EVMChains.includes(fileInfo.unlockInfo.blockchain)) {
   
       console.log("MetaMask is installed!");
       setEthereum(window.ethereum);

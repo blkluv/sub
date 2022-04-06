@@ -1,13 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
 
+export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
+
 export const useMetamask = () => {
   const [ethereum, setEthereum] = useState(null);
   const [url, setUrl] = useState("");
   const [holdsNFT, setHoldsNFT] = useState(false);
 
   const signData = async (metadata) => {
-    try {
+    try {      
       const { shortId, submarineCID, unlockInfo } = metadata;
       const { contract, blockchain, tokenId, network } = unlockInfo;
       const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
@@ -51,6 +53,7 @@ ${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
     url,
     holdsNFT,
     url, 
-    setEthereum
+    setEthereum, 
+    EVMChains
   };
 };

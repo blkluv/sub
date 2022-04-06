@@ -49,7 +49,7 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
   }
 
   const { signData, ethereum, setEthereum } = useMetamask();
-  const handleSign = async () => {
+  const handleSign = async () => {    
     try {
       setSigning(true);
       if(fileInfo.unlockInfo.blockchain === "Solana") {

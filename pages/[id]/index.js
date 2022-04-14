@@ -5,6 +5,40 @@ import { mockData } from "../../components/Dashboard/mockData";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
+import { Provider, chain, defaultChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { WalletLinkConnector } from "wagmi/connectors/walletLink";
+
+const infuraId = "80f214d8bfdb44a8a95217f902393d6d"//process.env.NEXTJS_PUBLIC_INFURA_ID;
+
+const chains = defaultChains;
+
+// Set up connectors
+const connectors = ({ chainId }) => {
+  const rpcUrl =
+    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
+    chain.mainnet.rpcUrls[0];
+  return [
+    new InjectedConnector({
+      chains,
+      options: { shimDisconnect: true },
+    }),
+    new WalletConnectConnector({
+      options: {
+        infuraId,
+        qrcode: true,
+      },
+    }),
+    new WalletLinkConnector({
+      options: {
+        appName: "My wagmi app",
+        jsonRpcUrl: `${rpcUrl}/${infuraId}`,
+      },
+    }),
+  ];
+};
+
 const Content = () => {
   const [fileInfo, setFileInfo] = useState();
   const [loading, setLoading] = useState(true);
@@ -21,7 +55,7 @@ const Content = () => {
     }
   }, [fileInfo]);
 
-  const fetchContent = async () => { 
+  const fetchContent = async () => {
     try {
       const res = await ky(`/api/content${window.location.pathname}`, {
         method: "GET",
@@ -31,38 +65,65 @@ const Content = () => {
     } catch (error) {
       set404(true);
       setLoading(false);
-    }      
+    }
   };
 
   return (
     <div>
       <Head>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-        <link rel="icon" href={fileInfo && fileInfo.thumbnail ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}` : "/submarine.png"}></link>
+        <link
+          rel="icon"
+          href={
+            fileInfo && fileInfo.thumbnail
+              ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}`
+              : "/submarine.png"
+          }
+        ></link>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <meta
-          name="description"
-          content={fileInfo?.description}
-        />
+        <meta name="description" content={fileInfo?.description} />
         <meta property="og:type" content="Web application" />
-        <meta property="og:title" content={fileInfo && fileInfo.name ? fileInfo?.name : "Submarine Me"} />
+        <meta
+          property="og:title"
+          content={fileInfo && fileInfo.name ? fileInfo?.name : "Submarine Me"}
+        />
         <meta
           property="og:description"
-          content={fileInfo && fileInfo.name ? fileInfo?.description : "Locked content powered by Pinata's Submarine Me"}
+          content={
+            fileInfo && fileInfo.name
+              ? fileInfo?.description
+              : "Locked content powered by Pinata's Submarine Me"
+          }
         />
-        <meta property="og:image" content={fileInfo && fileInfo.thumbnail ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}` : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"} />
-        <title>{fileInfo && fileInfo.name ? fileInfo.name : "Submarine Me - By Pinata"}</title>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
-        <script dangerouslySetInnerHTML={{
+        <meta
+          property="og:image"
+          content={
+            fileInfo && fileInfo.thumbnail
+              ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}`
+              : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
+          }
+        />
+        <title>
+          {fileInfo && fileInfo.name
+            ? fileInfo.name
+            : "Submarine Me - By Pinata"}
+        </title>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             
-            gtag('config', 'G-LDJ4RPGPGE');`
-        }} />  
+            gtag('config', 'G-LDJ4RPGPGE');`,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -91,13 +152,14 @@ window['_fs_namespace'] = 'FS';
               `,
           }}
         />
-      
       </Head>
-      <ContentLanding
-        missing={missing}
-        loading={loading}
-        fileInfo={fileInfo}
-      />
+      <Provider autoConnect connectors={connectors}>
+        <ContentLanding
+          missing={missing}
+          loading={loading}
+          fileInfo={fileInfo}
+        />
+      </Provider>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ethers } from "ethers";
+import { verifyMessage } from 'ethers/lib/utils'
 import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
 import * as util from "ethereumjs-util";
@@ -89,13 +90,8 @@ The NFT contract address is:
 ${contractAddress}
 The verification id is: 
 ${message.id}`;
-      let nonce = `\x19Ethereum Signed Message:
-${fullMessage.length}${fullMessage}`;
-      nonce = util.keccak(Buffer.from(nonce, "utf-8"));
-      const { v, r, s } = util.fromRpcSig(signature);
-      const pubKey = util.ecrecover(util.toBuffer(nonce), v, r, s);
-      const addrBuf = util.pubToAddress(pubKey);
-      const recoveredAddress = util.bufferToHex(addrBuf);
+        const recoveredAddress = verifyMessage(fullMessage, signature);
+
       if (address === recoveredAddress) {
         let balance = await checkErc721Balance(contract, recoveredAddress);
         if(balance && tokenId) {

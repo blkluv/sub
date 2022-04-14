@@ -12,6 +12,8 @@ import Gallery from "./Gallery";
 import { Tweet } from "react-twitter-widgets";
 import { useTwitter } from "../../hooks/useTwitter";
 import { EVMChains } from "../../hooks/useMetamask";
+import { useConnect, useSignMessage } from "wagmi";
+import axios from "axios";
 
 const MainLandingContent = ({
   setGallery,
@@ -23,8 +25,10 @@ const MainLandingContent = ({
   gallery,
   fullResponse,
   handleChangePage,
-  verifying
+  verifying,
+  eth,
 }) => {
+  const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
 
   const { twitterAuth } = useTwitter();
@@ -54,6 +58,16 @@ const MainLandingContent = ({
       setSolSigning(false);
       alert(error.message);
     }
+  };
+
+  const signEthMessage = async () => {
+    const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
+    setMessageToSign(`To verify you own the NFT in question, 
+you must sign this message. 
+The NFT contract address is:
+${messageToSign.data.contract}
+The verification id is: 
+${messageToSign.data.id}`);
   };
 
   return (
@@ -121,27 +135,65 @@ const MainLandingContent = ({
                   fileInfo.unlockInfo.type === "nft" &&
                   fileInfo.unlockInfo.blockchain &&
                   EVMChains.includes(fileInfo.unlockInfo.blockchain) ? (
-                  <div className="inline-flex w-1/2">
-                    <button
-                      onClick={() => handleSign()}
-                      className="w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
-                    >
-                      {signing ? "Unlocking..." : "Connect wallet"}
-                    </button>
+                  // <div className="inline-flex w-1/2">
+                  //   <button
+                  //     onClick={() => handleSign()}
+                  //     className="w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
+                  //   >
+                  //     {signing ? "Unlocking..." : "Connect wallet"}
+                  //   </button>
+                  // </div>
+                  <div>
+                    {data.connected.toString() === "true" ? (
+                      <div>
+                        <button
+                          onClick={() => handleSign()}
+                          className="w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
+                        >
+                          {signing ? "Unlocking..." : "Unlock"}
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        {data.connectors.map((connector) => {
+                          return (
+                            <div>
+                              {connector.ready && (
+                                <button
+                                  className="m-2 inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
+                                  disabled={!connector.ready}
+                                  key={connector.id}
+                                  onClick={() => connect(connector)}
+                                >
+                                  {connector.name}
+                                  {!connector.ready && " (unsupported)"}
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 ) : fileInfo &&
                   fileInfo.unlockInfo &&
                   fileInfo.unlockInfo.type === "retweet" ? (
-                    <div className="max-w-full m-auto text-center">
-                      {/* <a className="text-sm underline" href={fileInfo.unlockInfo.tweetUrl} target="_blank" rel="noopener noreferrer">Make sure you have retweeted this tweet</a> */}
-                      <Tweet tweetId={fileInfo.unlockInfo.tweetUrl.split("status/")[1]} />
-                      <p className="text-muted text-sm">Make sure you have retweeted the above Tweet.</p>
-                  <button
+                  <div className="max-w-full m-auto text-center">
+                    {/* <a className="text-sm underline" href={fileInfo.unlockInfo.tweetUrl} target="_blank" rel="noopener noreferrer">Make sure you have retweeted this tweet</a> */}
+                    <Tweet
+                      tweetId={fileInfo.unlockInfo.tweetUrl.split("status/")[1]}
+                    />
+                    <p className="text-muted text-sm">
+                      Make sure you have retweeted the above Tweet.
+                    </p>
+                    <button
                       onClick={() => twitterAuth()}
                       className="mt-4 w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                     >
-                      {verifying ? "Verifying retweet..." : "Connect Your Twitter"}
-                    </button>             
+                      {verifying
+                        ? "Verifying retweet..."
+                        : "Connect Your Twitter"}
+                    </button>
                   </div>
                 ) : (
                   <div />

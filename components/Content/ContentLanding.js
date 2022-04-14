@@ -7,6 +7,7 @@ import Missing from './Missing';
 import RetweetLanding from './RetweetLanding';
 import { useRouter } from 'next/router';
 import { useTwitter } from '../../hooks/useTwitter';
+import { useSignMessage, useAccount } from "wagmi";
 
 export default function ContentLanding({ loading, fileInfo, missing }) {
   const [signing, setSigning] = useState(false);
@@ -15,6 +16,9 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
   const [offset, setOffset] = useState(0);
   const [limit] = useState(50);
   const [verifying, setVerifying] = useState(false);
+  const [messageToSign, setMessageToSign] = useState("");
+
+  const [{ data: accountData, error: accountError, loading: accountLoading }, disconnect] = useAccount()
 
   const { verifyRetweet } = useTwitter();
   const router = useRouter();
@@ -49,6 +53,9 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
   }
 
   const { signData, ethereum, setEthereum } = useMetamask();
+  const [{ data: signingData, error: signingError, loading:signmessageLoading }, signMessage] =
+  useSignMessage();
+
   const handleSign = async () => {    
     try {
       setSigning(true);
@@ -59,7 +66,30 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
           window.location.replace(url);
         } 
       } else {
-        const res = await signData(fileInfo);
+        const { shortId, submarineCID, unlockInfo } = fileInfo;
+        const { contract, blockchain, tokenId, network } = unlockInfo;
+        const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
+        const messageData = `To verify you own the NFT in question,
+you must sign this message. 
+The NFT contract address is:
+${messageToSign.data.contract}
+The verification id is: 
+${messageToSign.data.id}`
+
+        const {data: signature} = await signMessage({ message: messageData });
+
+        const verificationResponse = await axios.post("/api/verify", {
+          address: accountData.address,
+          signature,
+          network,
+          contractAddress: contract,
+          blockchain, 
+          tokenId,
+          CID: submarineCID,
+          shortId: shortId
+        });
+
+        const res = verificationResponse.data;
         if(res && !res.directory) {
           setSigning(false);
           window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);

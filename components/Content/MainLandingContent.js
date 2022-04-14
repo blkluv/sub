@@ -157,7 +157,7 @@ ${messageToSign.data.id}`);
                       <div>
                         {data.connectors.map((connector) => {
                           return (
-                            <div>
+                            <div key={connector.name}>
                               {connector.ready && (
                                 <button
                                   className="m-2 inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"

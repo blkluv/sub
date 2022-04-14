@@ -52,7 +52,7 @@ const Content = () => {
           property="og:description"
           content={fileInfo && fileInfo.name ? fileInfo?.description : "Locked content powered by Pinata's Submarine Me"}
         />
-        <meta property="og:image" content={fileInfo && fileInfo.thimbnail ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}` : "https://gateway.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"} />
+        <meta property="og:image" content={fileInfo && fileInfo.thumbnail ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}` : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"} />
         <title>{fileInfo && fileInfo.name ? fileInfo.name : "Submarine Me - By Pinata"}</title>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
         <script dangerouslySetInnerHTML={{

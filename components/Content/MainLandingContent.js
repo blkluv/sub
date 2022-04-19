@@ -181,7 +181,7 @@ ${messageToSign.data.id}`);
                   <div className="max-w-full m-auto text-center">
                     {/* <a className="text-sm underline" href={fileInfo.unlockInfo.tweetUrl} target="_blank" rel="noopener noreferrer">Make sure you have retweeted this tweet</a> */}
                     <Tweet
-                      tweetId={fileInfo.unlockInfo.tweetUrl.split("status/")[1]}
+                      tweetId={fileInfo.unlockInfo.tweetUrl.split("status/")[1].split("?")[0]}
                     />
                     <p className="text-muted text-sm">
                       Make sure you have retweeted the above Tweet.

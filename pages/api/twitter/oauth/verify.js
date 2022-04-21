@@ -69,7 +69,7 @@ export default withSession(async (req, res) => {
   
       const v2Client = client.v2;
 
-      const rt = await v2Client.tweetRetweetedBy(tweetUrl.split("status/")[1]);    
+      const rt = await v2Client.tweetRetweetedBy(tweetUrl.split("status/")[1].split("?")[0]);    
       const retweets = rt.data;
       const retweeted = retweets.find(r => r.username === screen_name);
 

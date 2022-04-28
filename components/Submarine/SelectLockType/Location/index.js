@@ -24,7 +24,7 @@ const Location = ({
     <div>
       <div>
         <h3 className="text-gray-900 font-bold text-2xl">
-          Allow content to be unlocked by a person's geolocation
+          {"Allow content to be unlocked by a person's geolocation"}
         </h3>
         <p className="text-gray-600">
           Upload media that can only be unlocked if the person trying to access

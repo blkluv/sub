@@ -14,6 +14,7 @@ import { useTwitter } from "../../hooks/useTwitter";
 import { EVMChains } from "../../hooks/useMetamask";
 import { useConnect, useSignMessage } from "wagmi";
 import axios from "axios";
+import LocationUnlock from "./LocationUnlock";
 
 const MainLandingContent = ({
   setGallery,
@@ -26,6 +27,7 @@ const MainLandingContent = ({
   fullResponse,
   handleChangePage,
   verifying,
+  setVerifying, 
   eth,
 }) => {
   const [{ data, error }, connect] = useConnect();
@@ -60,16 +62,50 @@ const MainLandingContent = ({
     }
   };
 
-  const signEthMessage = async () => {
-    const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
-    setMessageToSign(`To verify you own the NFT in question, 
-you must sign this message. 
-The NFT contract address is:
-${messageToSign.data.contract}
-The verification id is: 
-${messageToSign.data.id}`);
-  };
+  const verifyLocation = async () => {
+    setVerifying(true);
+    if(!navigator.geolocation) {
+      setVerifying(false);
+      alert("geolocation not supported");      
+    } else {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const latitude  = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        try {
+          const res = await axios.post("/api/location/verify", {
+            userLat: latitude, 
+            userLong: longitude, 
+            shortId: window.location.pathname.split("/")[1]
+          });
+          const data = res.data;
+          if (data && !data.directory) {
+            setSolSigning(false);
+            window.location.replace(
+              `${data.gateway}/ipfs/${data.cid}?accessToken=${data.token}`
+            );
+          } else if (data && data.html) {
+            setSolSigning(false);
+            window.location.replace(
+              `${data.gateway}/ipfs/${data.cid}/index.html?accessToken=${data.token}`
+            );
+          } else {
+            setFullResponse(data);
+            setGallery(true);
+          }
+        } catch (error) {
+          setVerifying(false);          
+          alert(error.response.data)
+        }
+        
+        setVerifying(false);   
+      }, (error) => {
+        setVerifying(false);
+        alert(error);
+      });
+    }
+  }
 
+  
   return (
     <div>
       <div className="absolute p-4 flex flex-row">
@@ -135,14 +171,6 @@ ${messageToSign.data.id}`);
                   fileInfo.unlockInfo.type === "nft" &&
                   fileInfo.unlockInfo.blockchain &&
                   EVMChains.includes(fileInfo.unlockInfo.blockchain) ? (
-                  // <div className="inline-flex w-1/2">
-                  //   <button
-                  //     onClick={() => handleSign()}
-                  //     className="w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
-                  //   >
-                  //     {signing ? "Unlocking..." : "Connect wallet"}
-                  //   </button>
-                  // </div>
                   <div>
                     {data.connected.toString() === "true" ? (
                       <div>
@@ -195,7 +223,11 @@ ${messageToSign.data.id}`);
                         : "Connect Your Twitter"}
                     </button>
                   </div>
-                ) : (
+                ) : fileInfo?.unlockInfo?.type === "location" ? 
+                  <div>
+                    <LocationUnlock fileInfo={fileInfo} verifying={verifying} verifyLocation={verifyLocation} />
+                  </div>
+                : (
                   <div />
                 )}
               </div>

@@ -48,6 +48,9 @@ export default async function handler(req, res) {
           blockchain: Joi.string().min(1).max(100).allow(null, ''), 
           tokenId: Joi.string().min(1).max(100).optional().allow(null, ''), 
           tweetUrl: Joi.string().min(1).max(100).optional().allow(null, ''), 
+          lat: Joi.number().optional().allow(null, ''), 
+          long: Joi.number().optional().allow(null, ''), 
+          distance: Joi.string().min(0).max(6000).optional().allow(null, ''), 
         }).required(),
         shortId: Joi.string().min(1).max(100).required(),
       });

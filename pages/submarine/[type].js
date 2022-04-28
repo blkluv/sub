@@ -9,9 +9,9 @@ import Alert from "../../components/Alert";
 import { useSubmarine } from "../../hooks/useSubmarine";
 import axios from "axios";
 import { useAuth } from "../../hooks/useAuth";
-import Head from "next/head";
 import SharedHead from "../../components/SharedHead";
 import Twitter from "../../components/Submarine/SelectLockType/Twitter";
+import Location from "../../components/Submarine/SelectLockType/Location";
 const short = require("short-uuid");
 
 const blockchainOptions = ["Ethereum", "Polygon", "Avalanche", "Solana"];
@@ -44,6 +44,10 @@ const UnlockType = () => {
   const [description, setDescription] = useState("");
   const [thumbnailCid, setThumbnailCid] = useState("");
   const [file, setFile] = useState(true);
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
+  const [distance, setDistance] = useState(0);
+
   const FILE_SIZE_LIMIT = 500000000;
   const onFileChange = (e, type) => {
     const files = e.target.files;
@@ -90,7 +94,7 @@ const UnlockType = () => {
 
   const canSubmit = () => {
     switch (type) {
-      case "retweet": 
+      case "retweet":
         return tweetUrl.length > 5;
       case "nft":
         return (
@@ -100,6 +104,8 @@ const UnlockType = () => {
           name &&
           description
         );
+      case "location": 
+          return lat && long && distance;
       default:
         return false;
     }
@@ -127,7 +133,7 @@ const UnlockType = () => {
       });
       data.append("pinToIPFS", false);
 
-      const res = await handleUpload(data);      
+      const res = await handleUpload(data);
 
       const submarinedContent = {
         shortId: identifier,
@@ -142,7 +148,10 @@ const UnlockType = () => {
           network: network,
           blockchain,
           tokenId,
-          tweetUrl
+          tweetUrl,
+          lat, 
+          long, 
+          distance
         },
         submarineCid: res.items[0].cid,
       };
@@ -188,8 +197,9 @@ const UnlockType = () => {
 
   const renderUnlockType = () => {
     switch (type) {
-      case "retweet": 
-        return <Twitter 
+      case "retweet":
+        return (
+          <Twitter
             name={name}
             setName={setName}
             thumbnail={thumbnail}
@@ -203,7 +213,31 @@ const UnlockType = () => {
             setFile={setFile}
             tweetUrl={tweetUrl}
             setTweetUrl={setTweetUrl}
-        />
+          />
+        );
+      case "location":
+        return (
+          <Location
+            name={name}
+            setName={setName}
+            thumbnail={thumbnail}
+            setThumbnail={setThumbnail}
+            setSelectedFiles={setSelectedFiles}
+            selectedFiles={selectedFiles}
+            description={description}
+            setDescription={setDescription}
+            onFileChange={onFileChange}
+            onThumbnailChange={onThumbnailChange}
+            lat={lat}
+            long={long}
+            setLat={setLat}
+            setLong={setLong}
+            distance={distance}
+            setDistance={setDistance}
+            setFile={setFile}
+            file={file}
+          />
+        );
       case "nft":
       default:
         return (

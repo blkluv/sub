@@ -4,10 +4,10 @@ import axios from 'axios';
 import Solana from './Solana';
 import Ethereum from './Ethereum';
 import Missing from './Missing';
-import RetweetLanding from './RetweetLanding';
 import { useRouter } from 'next/router';
 import { useTwitter } from '../../hooks/useTwitter';
 import { useSignMessage, useAccount } from "wagmi";
+import MainLandingContent from './MainLandingContent';
 
 export default function ContentLanding({ loading, fileInfo, missing }) {
   const [signing, setSigning] = useState(false);
@@ -16,7 +16,6 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
   const [offset, setOffset] = useState(0);
   const [limit] = useState(50);
   const [verifying, setVerifying] = useState(false);
-  const [messageToSign, setMessageToSign] = useState("");
 
   const [{ data: accountData, error: accountError, loading: accountLoading }, disconnect] = useAccount()
 
@@ -144,8 +143,8 @@ ${messageToSign.data.id}`
         <Missing /> :     
         <div>
 {
-        fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type === "retweet" ? 
-        <RetweetLanding verifying={verifying} handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} /> :
+        fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type !== "nft" ? 
+        <MainLandingContent setVerifying={setVerifying} verifying={verifying} handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} /> :
         fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.blockchain && fileInfo.unlockInfo.blockchain === "Solana" ? 
         <Solana handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
         <Ethereum ethereum={ethereum} setEthereum={setEthereum} handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />

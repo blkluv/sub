@@ -30,6 +30,16 @@ const actions = [
     link: "/submarine/retweet",
     text: "Require a retweet of a specific tweet in order to unlock your submarined content.",
   },
+    {
+    title: "Location",
+    href: "#",
+    id: "location",
+    icon: MapIcon,
+    iconForeground: "text-pinata-purple",
+    iconBackground: "bg-grey-50",
+    link: "/submarine/location",
+    text: "Require a someone to verify their current location to unlock your submarined content.",
+  },
   {
     title: "Credit/Debit Card Payment",
     href: "#",
@@ -39,17 +49,6 @@ const actions = [
     iconBackground: "bg-grey-50",
     link: "/submarine/card",
     text: "Require a payment to unlock your submarined content",
-    soon: true
-  },
-  {
-    title: "Location",
-    href: "#",
-    id: "location",
-    icon: MapIcon,
-    iconForeground: "text-pinata-purple",
-    iconBackground: "bg-grey-50",
-    link: "/submarine/location",
-    text: "Require a someone to verify their current location to unlock your submarined content.",
     soon: true
   },
 ];

@@ -1,8 +1,7 @@
 //convert oauth methods to promises so we can use async/await syntax
 //and keep our code sexier
 
-module.exports = (oauthCallback) => {
-  console.log(oauthCallback);
+module.exports = (oauthCallback) => {  
   const CONSUMER_KEY = process.env.CONSUMER_KEY;
   const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
   const _oauth = new (require('oauth').OAuth)(

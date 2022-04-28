@@ -1,4 +1,6 @@
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
+import GoogleMapsCoordsModal from "../GoogleMapsCoordsModal";
 
 const LocationForm = ({
   lat,
@@ -9,6 +11,7 @@ const LocationForm = ({
   setDistance,
 }) => {
   const [gettingLocation, setGettingLocation] = useState(false);
+  const [googleMapsModalOpen, setGoogleMapsModalOpen] = useState(false);
   const detectLocation = async () => {
     setGettingLocation(true);
     if(!navigator.geolocation) {
@@ -36,7 +39,7 @@ const LocationForm = ({
           htmlFor="lat"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
-          <span>Latitude*</span>
+          <span>Latitude* </span><span className="cursor" aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}><InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" /></span>
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
@@ -59,7 +62,7 @@ const LocationForm = ({
           htmlFor="long"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
-          <span>Longitude*</span>
+          <span>Longitude* </span><span className="cursor" aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}><InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" /></span>
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
@@ -100,6 +103,7 @@ const LocationForm = ({
           </div>
         </div>
       </div>
+      <GoogleMapsCoordsModal googleMapsModalOpen={googleMapsModalOpen} setGoogleMapsModalOpen={setGoogleMapsModalOpen} />
     </div>
   );
 };

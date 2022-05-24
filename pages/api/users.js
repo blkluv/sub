@@ -54,11 +54,33 @@ export default async function handler(req, res) {
         }
       } else {        
         const existingKeys = await findAPIKeys(req);
-        const currentAPIKey = submarineMeUser.key;
-        const match = existingKeys.find(key => {
-          return key === currentAPIKey
-        });
-        if(!match) {          
+        if(existingKeys.length > 0 && submarineMeUser.key) {
+          const currentAPIKey = submarineMeUser.key;
+          const match = existingKeys.find(key => {
+            return key === currentAPIKey
+          });
+          if(!match) {          
+            const newKey = await createAPIKey(req);
+  
+            const { data, error } = await supabase
+            .from('Users')
+            .update({ 'pinata_submarine_key': newKey.key })
+            .eq('pinata_user_id', user.userInformation.id)
+            
+            if(error) {
+              throw error;
+            }
+          }
+        } else if(existingKeys.length > 0) {
+          const { data, error } = await supabase
+          .from('Users')
+          .update({ 'pinata_submarine_key': existingKeys[0].key })
+          .eq('pinata_user_id', user.userInformation.id)
+          
+          if(error) {
+            throw error;
+          }
+        } else {
           const newKey = await createAPIKey(req);
 
           const { data, error } = await supabase
@@ -69,7 +91,7 @@ export default async function handler(req, res) {
           if(error) {
             throw error;
           }
-        }
+        }        
       }
 
       const gateways = await getGateways(req);

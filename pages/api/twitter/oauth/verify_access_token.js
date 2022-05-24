@@ -16,7 +16,6 @@ export default withSession(async (req, res) => {
       const {oauth_token, oauth_verifier} = req.body;
       
       const tokens = req.session.get("tokens");
-      console.log(tokens);
 
       const oauth_token_secret = tokens[oauth_token].oauth_token_secret;
       

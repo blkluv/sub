@@ -10,7 +10,7 @@ function getDistanceFrom(lon1, lat1, lon2, lat2) {
      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
      (1 - Math.cos(dLon))/2;
 
-  //Convert km to miles
+  //Convert km to miles  
   return (R * 2 * Math.asin(Math.sqrt(a)) * 0.621371);
 }
 
@@ -22,11 +22,11 @@ export default async function handler(req, res) {
       const info = await getUserContentCombo(shortId);
 
       const { unlock_info, submarine_cid, Users } = info;
-      const { lat, long, distance } = unlock_info;
-      const { pinata_submarine_key, pinata_gateway_subdomain } = Users;
-
+      const { lat, long, distance } = unlock_info;      
+      const { pinata_submarine_key, pinata_gateway_subdomain } = Users;      
       const distanceFrom = getDistanceFrom(userLong, userLat, long, lat);
-      if (distanceFrom > parseInt(distance, 10)) {
+      
+      if (distanceFrom > parseFloat(distance)) {
         return res.status(401).send("Not in the right location");
       }
 

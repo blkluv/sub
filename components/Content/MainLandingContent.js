@@ -66,7 +66,7 @@ const MainLandingContent = ({
     setVerifying(true);
     if(!navigator.geolocation) {
       setVerifying(false);
-      alert("geolocation not supported");      
+      alert("Your device does not support geolocation");      
     } else {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const latitude  = position.coords.latitude;
@@ -100,7 +100,7 @@ const MainLandingContent = ({
         setVerifying(false);   
       }, (error) => {
         setVerifying(false);
-        alert(error);
+        alert("Location services may be disabled on your device, please enable them.");
       });
     }
   }

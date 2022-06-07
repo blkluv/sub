@@ -35,8 +35,8 @@ export default async function handler(req, res) {
         res.status(401).send("Unauthorized");
       }
       const schema = Joi.object({
-        name: Joi.string().min(1).max(50).required(),
-        description: Joi.string().min(1).max(256).required(),
+        name: Joi.string().min(1).max(100).required(),
+        description: Joi.string().min(1).max(400).required(),
         thumbnail: Joi.string().min(0).max(100).optional(),
         submarineCid: Joi.string().min(1).max(100).required(),
         unlockInfo: Joi.object({

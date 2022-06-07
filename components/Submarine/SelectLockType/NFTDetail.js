@@ -49,13 +49,18 @@ const NFTDetail = ({ onThumbnailChange, thumbnail, name, setName, description, s
                 onChange={(e) => setName(e.target.value)}
                 type="text"
                 name="name"
+                maxLength={100}
                 autoComplete="off"
                 required
                 id="name"
                 placeholder="Give your unlockable content a name"
                 className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
               />
+              
             </div>
+            <div>
+                <p className="text-sm text-pinata-purple">{`${name.length}/100`}</p>
+              </div>
           </div>
         </div>
         <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5 mt-2">
@@ -75,10 +80,14 @@ const NFTDetail = ({ onThumbnailChange, thumbnail, name, setName, description, s
                 id="description"
                 autoComplete="off"
                 required
+                maxLength={400}
                 placeholder="Describe the content"
                 className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
               />
             </div>
+            <div>
+                <p className="text-sm text-pinata-purple">{`${description ? description.length : 0}/400`}</p>
+              </div>
           </div>
         </div>
         <UploadMedia onFileChange={onFileChange} selectedFiles={selectedFiles} file={file} setFile={setFile} />

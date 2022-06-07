@@ -256,6 +256,7 @@ const UnlockType = () => {
             networks={networks}
             setNetwork={setNetwork}
             setDescription={setDescription}
+            description={description}
             blockchainOptions={blockchainOptions}
             blockchain={blockchain}
             setBlockchain={setBlockchain}

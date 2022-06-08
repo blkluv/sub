@@ -6,6 +6,6 @@ There are many NFT token gating solutions available today, but none of them hand
 
 Submarine.me—a [Pinata](https://pinata.cloud) experiment—solves that. 
 
-For customers who have a Pinata Professional Plan and a dedicated IPFS gateway, it couldn't be simpler to lock exclusive media content behind ownership of an NFT. Upload a file, add some data about the file, choose what NFT contract (contract address and EVM chain) to check on, and that's it. Creator will get a unique link that they can share knowing that the exlusive content is safely protected from unauthorized access. 
+For customers who have a Pinata paid Plan and a dedicated IPFS gateway, it couldn't be simpler to lock exclusive media content behind ownership of an NFT. Upload a file, add some data about the file, choose what NFT contract (contract address and EVM chain) to check on, and that's it. Creator will get a unique link that they can share knowing that the exlusive content is safely protected from unauthorized access. 
 
 NFT projects, individual artists, brands, and more can leverage Submarine.me to easily lock and serve content. 

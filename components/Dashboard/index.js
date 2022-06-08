@@ -11,6 +11,8 @@ import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
 
+const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
+
 const LIMIT = 5;
 
 const Dashboard = () => {
@@ -27,12 +29,25 @@ const Dashboard = () => {
     checkForPlan();
   }, []);
 
+  const isValidPaidPlan = (userPlanInfo) => {
+    if(userPlanInfo?.subscriptionItems[0]?.type === "PROFESSIONAL" && userPlanInfo?.subscriptionItems[0]?.type === "EXTRA_MANAGED_GATEWAY") {
+      return true;
+    }
+    
+    if(NEW_PLANS.includes(userPlanInfo?.plan?.nickname)) {
+      return true;
+    }
+
+    return false;
+  }
+
   const checkForPlan = async () => {
-    const userPlanInfo = await getUserBillingInfo();    
+    const userPlanInfo = await getUserBillingInfo();   
+    console.log({userPlanInfo}); 
     if (!userPlanInfo) {
       setLoading(false);
       setDisplayUpgradeModal(true);
-    } else if (userPlanInfo?.subscriptionItems[0]?.type !== "PROFESSIONAL" && userPlanInfo?.subscriptionItems[0]?.type !== "EXTRA_MANAGED_GATEWAY") {
+    } else if (!isValidPaidPlan(userPlanInfo)) {
       setLoading(false);
       setDisplayUpgradeModal(true);
     } else {
@@ -44,7 +59,7 @@ const Dashboard = () => {
     const { accessToken } = await fetchSession();
     try {
       const res = await ky(
-        `${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/userStripeCustomer`,
+        `${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

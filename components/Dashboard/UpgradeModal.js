@@ -50,7 +50,7 @@ export default function UpgradeModal() {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                    Submarine.me is only available to Pinata Professional Plan customer with a Dedicated Gateway. 
+                    Submarine.me is only available to Pinata customers with a paid plan and a Dedicated Gateway. 
                     </p>
                   </div>
                 </div>

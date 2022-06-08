@@ -29,8 +29,8 @@ const Dashboard = () => {
     checkForPlan();
   }, []);
 
-  const isValidPaidPlan = (userPlanInfo) => {
-    if(userPlanInfo?.subscriptionItems[0]?.type === "PROFESSIONAL" && userPlanInfo?.subscriptionItems[0]?.type === "EXTRA_MANAGED_GATEWAY") {
+  const isValidPaidPlan = (userPlanInfo) => {    
+    if(userPlanInfo?.subscriptionItems[0]?.type === "PROFESSIONAL" || userPlanInfo?.subscriptionItems[0]?.type === "EXTRA_MANAGED_GATEWAY") {
       return true;
     }
     

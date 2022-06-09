@@ -17,7 +17,6 @@ export default async function handler(req, res) {
   } else if(req.method === "GET") {
     try {
       const user = await getUserSession(req.headers.authorization);
-      console.log(user);
       if(!user) {
         return res.status(401).send("Unauthorized");
       }
@@ -33,6 +32,8 @@ export default async function handler(req, res) {
       }
 
       const submarineMeUser = Users[0];
+      console.log({Users});
+      console.log({submarineMeUser});
       if(!submarineMeUser) {
         const APIKeys = await findAPIKeys(req);
         let theAPIKey;

@@ -72,7 +72,6 @@ export const logUserIn = async (email, password) => {
     localStorage.removeItem("pinata-avatar");
     // await Auth.federatedSignIn();
     const res = await Auth.signIn(email, password);
-    console.log(res);
     if(res.challengeName) {
       return {
         success: true,

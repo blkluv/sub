@@ -32,12 +32,15 @@ export default async function handler(req, res) {
       }
 
       const submarineMeUser = Users[0];
+      console.log({userFromPinata: user})
       console.log({Users});
       console.log({submarineMeUser});
-      if(!submarineMeUser) {
+      if(!submarineMeUser || Users.length === 0) {
         const APIKeys = await findAPIKeys(req);
         let theAPIKey;
         if(!APIKeys || APIKeys.length < 1) {
+          console.log("Creating API key for user: ");
+          console.log(user);
           const createKeyResults = await createAPIKey(req);
           theAPIKey = createKeyResults.key.key
         } else {

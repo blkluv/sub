@@ -55,6 +55,7 @@ export default async function handler(req, res) {
         ])
 
         if(error) {
+          console.log(error);
           throw error;
         }
       } else {        

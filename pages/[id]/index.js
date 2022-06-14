@@ -39,34 +39,19 @@ const connectors = ({ chainId }) => {
   ];
 };
 
-const Content = () => {
-  const [fileInfo, setFileInfo] = useState();
+const Content = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [missing, set404] = useState(false);
 
   useEffect(() => {
-    fetchContent();
-    //eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (fileInfo) {
-      setLoading(false);
+    if (data) {
+      setLoading(false);      
     }
-  }, [fileInfo]);
 
-  const fetchContent = async () => {
-    try {
-      const res = await ky(`/api/content${window.location.pathname}`, {
-        method: "GET",
-      });
-      const json = await res.json();
-      setFileInfo(json);
-    } catch (error) {
+    if(data && data.error) {
       set404(true);
-      setLoading(false);
     }
-  };
+  }, [data]);
 
   return (
     <div>
@@ -75,40 +60,40 @@ const Content = () => {
         <link
           rel="icon"
           href={
-            fileInfo && fileInfo.thumbnail
-              ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}`
+            data && data.thumbnail
+              ? `https://opengateway.mypinata.cloud/ipfs/${data?.thumbnail}`
               : "/submarine.png"
           }
         ></link>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <meta name="description" content={fileInfo?.description} />
+        <meta name="description" content={data?.description} />
         <meta property="og:type" content="Web application" />
         <meta
           property="og:title"
-          content={fileInfo && fileInfo.name ? fileInfo?.name : "Submarine Me"}
+          content={data && data.name ? data?.name : "Gucci Vault"}
         />
         <meta
           property="og:description"
           content={
-            fileInfo && fileInfo.name
-              ? fileInfo?.description
-              : "Locked content powered by Pinata's Submarine Me"
+            data && data.name
+              ? data?.description
+              : "Locked content powered by Gucci Vault"
           }
         />
         <meta
           property="og:image"
           content={
-            fileInfo && fileInfo.thumbnail
-              ? `https://opengateway.mypinata.cloud/ipfs/${fileInfo?.thumbnail}`
+            data && data.thumbnail
+              ? `https://opengateway.mypinata.cloud/ipfs/${data?.thumbnail}`
               : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
           }
         />
         <title>
-          {fileInfo && fileInfo.name
-            ? fileInfo.name
-            : "Submarine Me - By Pinata"}
+          {data && data.name
+            ? data.name
+            : "Gucci Vault"}
         </title>
         <script
           async
@@ -157,11 +142,26 @@ window['_fs_namespace'] = 'FS';
         <ContentLanding
           missing={missing}
           loading={loading}
-          fileInfo={fileInfo}
+          fileInfo={data}
         />
       </Provider>
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {    
+    const host = process.env.NODE_ENV === "production" ? "https://app.submarine.me" : "http://localhost:3001";
+
+    const res = await ky(`${host}/api/content/${context.query.id}`, {
+      method: "GET",
+    });
+    const data = await res.json();   
+    return { props: { data } } 
+  } catch (error) {
+    console.log(error);
+    return { props: { data: { error: true } } }
+  }  
+}
 
 export default Content;

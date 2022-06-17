@@ -248,11 +248,11 @@ const MainLandingContent = ({
           )}
         </div>
       </div>
-      <footer className="p-4">
+      {/* <footer className="p-4">
      
         <Pinnie />
      
-      </footer>
+      </footer> */}
     </div>
   );
 };

@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     minHeight: {
       '1/2': '50%',
-      '3/4': '75%'
+      '3/4': '75%', 
+      'screen': '100vh',
     },
     maxHeight: {
       "3/4": '75%',

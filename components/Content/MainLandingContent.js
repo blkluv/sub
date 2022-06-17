@@ -112,12 +112,9 @@ const MainLandingContent = ({
         <div>
           <SubmarineLogoSvg />
         </div>
-      </div>
-      <div className="absolute bottom-10 right-10 z-10">
-        <Pinnie />
-      </div>
-      <div className="public-content-bg h-screen w-screen flex flex-col justify-center align-center">
-        <div className="p-10 md:w-1/2 w-5/6 h-auto max-h-3/4 text-center flex flex-col align-center m-auto bg-white overflow-scroll shadow-lg rounded-lg">
+      </div>      
+      <div className="public-content-bg w-screen min-h-screen flex flex-col justify-center align-center">
+        <div className="p-10 md:w-1/2 w-auto mx-2 h-auto max-h-3/4 text-center flex flex-col align-center md:m-auto bg-white shadow-lg rounded-lg mt-36 mb-36 md:mt-36 md:mb-36">
           {loading ? (
             <div>
               <h1>Loading...</h1>
@@ -251,6 +248,11 @@ const MainLandingContent = ({
           )}
         </div>
       </div>
+      <footer className="p-4">
+     
+        <Pinnie />
+     
+      </footer>
     </div>
   );
 };

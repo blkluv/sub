@@ -1,4 +1,4 @@
-Submarine.me is an application created during the 2022 ETHDenver Buildathon
+Submarine.me is an application created during the 2022 ETHDenver Buidlathon
 
 # Submarine.me 
 

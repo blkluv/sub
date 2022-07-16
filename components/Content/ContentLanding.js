@@ -67,13 +67,8 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
       } else {
         const { shortId, submarineCID, unlockInfo } = fileInfo;
         const { contract, blockchain, tokenId, network } = unlockInfo;
-        const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
-        const messageData = `To verify you own the NFT in question,
-you must sign this message. 
-The NFT contract address is:
-${messageToSign.data.contract}
-The verification id is: 
-${messageToSign.data.id}`
+        const messageToSign = await axios.get(`/api/verify?contract=${contract}&shortId=${shortId}`);
+        const messageData = messageToSign.data.message;
 
         const {data: signature} = await signMessage({ message: messageData });
 
@@ -85,7 +80,8 @@ ${messageToSign.data.id}`
           blockchain, 
           tokenId,
           CID: submarineCID,
-          shortId: shortId
+          shortId: shortId, 
+          messageId: messageToSign.data.session.id
         });
 
         const res = verificationResponse.data;

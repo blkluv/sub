@@ -94,6 +94,10 @@ ${savedMessage.id}`);
         return res.status(401).send("NFT not associated with your public key.");
       }
 
+      if(!shortId) {
+        return res.json(true);
+      }
+
       const info = await getUserContentCombo(shortId);
       const { submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;

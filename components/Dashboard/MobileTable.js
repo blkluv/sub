@@ -1,7 +1,8 @@
-import { ShareIcon, TrashIcon } from '@heroicons/react/outline';
+import { PencilAltIcon, ShareIcon, TrashIcon } from '@heroicons/react/outline';
 import React from 'react'
 import { makeDatePretty } from '../../helpers/makePrettyDate';
 import Image from "next/image";
+import Link from 'next/link';
 
 const MobileTable = ({ files, copyLink, openDeleteModal, getThumbnail }) => {
   return (
@@ -27,6 +28,8 @@ const MobileTable = ({ files, copyLink, openDeleteModal, getThumbnail }) => {
             <button onClick={() => copyLink(file)}>
               <ShareIcon className="w-6" />
             </button>
+            
+                <Link href={`/submarine/${file?.unlock_info?.type}?edit=${file.short_id}`}><PencilAltIcon className="w-6 cursor-pointer" /></Link>            
             <button
               onClick={() => openDeleteModal(file)}
               className="text-red"

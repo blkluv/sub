@@ -13,8 +13,24 @@ const Twitter = ({
   selectedFiles,
   file,
   setFile,
-  tweetUrl, 
-  setTweetUrl
+  tweetUrl,
+  setTweetUrl,
+  logoCid,
+  onLogoChange,
+  buttonColor,
+  setButtonColor,
+  buttonTextColor,
+  setButtonTextColor,
+  fontFamily,
+  setFontFamily,
+  uploadingLogo,
+  background,
+  uploadingBackground,
+  onBackgroundChange,
+  backgroundCid,
+  logo,
+  buttonShape, 
+  setButtonShape
 }) => {
   return (
     <div>
@@ -40,6 +56,22 @@ const Twitter = ({
           selectedFiles={selectedFiles}
           file={file}
           setFile={setFile}
+          uploadingBackground={uploadingBackground}
+          backgroundCid={backgroundCid}
+          background={background}
+          onBackgroundChange={onBackgroundChange}
+          logoCid={logoCid}
+          onLogoChange={onLogoChange}
+          buttonColor={buttonColor}
+          setButtonColor={setButtonColor}
+          buttonTextColor={buttonTextColor}
+          setButtonTextColor={setButtonTextColor}
+          fontFamily={fontFamily}
+          setFontFamily={setFontFamily}
+          uploadingLogo={uploadingLogo}
+          logo={logo}
+          buttonShape={buttonShape}
+          setButtonShape={setButtonShape}
         />
       </div>
     </div>

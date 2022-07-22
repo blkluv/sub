@@ -10,7 +10,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 
-const infuraId = "80f214d8bfdb44a8a95217f902393d6d"//process.env.NEXTJS_PUBLIC_INFURA_ID;
+const infuraId = "80f214d8bfdb44a8a95217f902393d6d"; //process.env.NEXTJS_PUBLIC_INFURA_ID;
 
 const chains = defaultChains;
 
@@ -45,10 +45,10 @@ const Content = ({ data }) => {
 
   useEffect(() => {
     if (data) {
-      setLoading(false);      
+      setLoading(false);
     }
 
-    if(data && data.error) {
+    if (data && data.error) {
       set404(true);
     }
   }, [data]);
@@ -72,14 +72,14 @@ const Content = ({ data }) => {
         <meta property="og:type" content="Web application" />
         <meta
           property="og:title"
-          content={data && data.name ? data?.name : "Gucci Vault"}
+          content={data && data.name ? data?.name : "Submarine.me"}
         />
         <meta
           property="og:description"
           content={
             data && data.name
               ? data?.description
-              : "Locked content powered by Gucci Vault"
+              : "Locked content powered by Submarine.me"
           }
         />
         <meta
@@ -90,11 +90,13 @@ const Content = ({ data }) => {
               : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
           }
         />
-        <title>
-          {data && data.name
-            ? data.name
-            : "Gucci Vault"}
-        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:wght@300&family=Open+Sans:wght@300&family=Oswald:wght@300&family=Roboto+Condensed:wght@300&family=Roboto:wght@300&family=Source+Sans+Pro:wght@300&display=swap"
+          rel="stylesheet"
+        ></link>
+        <title>{data && data.name ? data.name : "Submarine.me"}</title>
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"
@@ -139,29 +141,28 @@ window['_fs_namespace'] = 'FS';
         />
       </Head>
       <Provider autoConnect connectors={connectors}>
-        <ContentLanding
-          missing={missing}
-          loading={loading}
-          fileInfo={data}
-        />
+        <ContentLanding missing={missing} loading={loading} fileInfo={data} />
       </Provider>
     </div>
   );
 };
 
 export async function getServerSideProps(context) {
-  try {    
-    const host = process.env.NODE_ENV === "production" ? "https://app.submarine.me" : "http://localhost:3001";
+  try {
+    const host =
+      process.env.NODE_ENV === "production"
+        ? "https://app.submarine.me"
+        : "http://localhost:3001";
 
     const res = await ky(`${host}/api/content/${context.query.id}`, {
       method: "GET",
     });
-    const data = await res.json();   
-    return { props: { data } } 
+    const data = await res.json();
+    return { props: { data } };
   } catch (error) {
     console.log(error);
-    return { props: { data: { error: true } } }
-  }  
+    return { props: { data: { error: true } } };
+  }
 }
 
 export default Content;

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
 import ky from "ky";
 import { fetchSession } from "./useAuth";
+import { resolve } from "@sentry/utils";
 
 export const uploadSubmarinedContent = async (data) => {
   const sessionData = await fetchSession();
@@ -27,6 +28,11 @@ export const uploadSubmarinedContent = async (data) => {
 };
 
 export const useSubmarine = () => {
+  const [gatewayUrl, setGatewayUrl] = useState("https://opengateway.mypinata.cloud");
+
+  useEffect(() => {
+    getGateway();
+  }, [])
   const handleUpload = async (data) => {
     return await uploadSubmarinedContent(data);
   };
@@ -151,6 +157,13 @@ export const useSubmarine = () => {
       Source: "login",
     };
   };
+
+  const getGateway = async () => {
+    // Need to fetch the right content here
+    return new Promise((res) => {
+      resolve();
+    })
+  }
   return {
     handleUpload,
     getHeaders, 
@@ -158,6 +171,7 @@ export const useSubmarine = () => {
     getSubmarinedContent, 
     getLockMetadata,
     getContent, 
-    submarineKey
+    submarineKey, 
+    gatewayUrl
   };
 };

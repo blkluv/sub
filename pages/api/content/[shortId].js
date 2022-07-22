@@ -32,7 +32,8 @@ export default async function handler(req, res) {
       thumbnail: theContent.thumbnail,
       submarineCID: theContent.submarine_cid,
       unlockInfo: theContent.unlock_info,
-      shortId: theContent.short_id
+      shortId: theContent.short_id,
+      customizations: theContent.customizations
     }
     
     return res.status(200).json(returnObject);

@@ -19,6 +19,22 @@ const Location = ({
   setLong,
   distance,
   setDistance,
+  logoCid,
+  onLogoChange,
+  buttonColor,
+  setButtonColor,
+  buttonTextColor,
+  setButtonTextColor,
+  fontFamily,
+  setFontFamily,
+  uploadingLogo,
+  background,
+  uploadingBackground,
+  onBackgroundChange,
+  backgroundCid,
+  logo,
+  buttonShape, 
+  setButtonShape
 }) => {
   return (
     <div>
@@ -51,6 +67,22 @@ const Location = ({
           selectedFiles={selectedFiles}
           file={file}
           setFile={setFile}
+          uploadingBackground={uploadingBackground}
+          backgroundCid={backgroundCid}
+          background={background}
+          onBackgroundChange={onBackgroundChange}
+          logoCid={logoCid}
+          onLogoChange={onLogoChange}
+          buttonColor={buttonColor}
+          setButtonColor={setButtonColor}
+          buttonTextColor={buttonTextColor}
+          setButtonTextColor={setButtonTextColor}
+          fontFamily={fontFamily}
+          setFontFamily={setFontFamily}
+          uploadingLogo={uploadingLogo}
+          logo={logo}
+          buttonShape={buttonShape}
+          setButtonShape={setButtonShape}
         />
       </div>
     </div>

@@ -1,4 +1,6 @@
+import { PencilAltIcon, ShareIcon, TrashIcon } from "@heroicons/react/outline";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { makeDatePretty } from "../../helpers/makePrettyDate";
 
@@ -12,14 +14,18 @@ const DesktopTable = ({ files, getThumbnail, copyLink, openDeleteModal }) => {
               scope="col"
               className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0"
             >
-              Name
+              
             </th>
-            <th
+            {/* <th
               scope="col"
               className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
             >
               Content Identifier (CID)
-            </th>
+            </th> */}
+            <th
+              scope="col"
+              className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+            ></th>
             <th
               scope="col"
               className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
@@ -46,33 +52,29 @@ const DesktopTable = ({ files, getThumbnail, copyLink, openDeleteModal }) => {
                     </span> <br/>
                     <span className="text-muted text-sm">
                       {makeDatePretty(file.created_at)}
+                    </span> <br />
+                    <span className="text-muted text-sm">
+                    {file?.submarine_cid}
                     </span>
                   </span>
                 </span>
                 <br />
               </td>
-              <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+              {/* <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
                 {file?.submarine_cid}
+              </td> */}
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <Link href={`/submarine/${file?.unlock_info?.type}?edit=${file.short_id}`}><PencilAltIcon className="w-6 cursor-pointer" /></Link>
               </td>
-              {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          <a
-            className="text-indigo-600 hover:text-indigo-900"
-            href={getLink(file)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {file.unlock_info?.type}
-          </a>
-        </td> */}
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                <button onClick={() => copyLink(file)}>Copy Share Link</button>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <button onClick={() => copyLink(file)}><ShareIcon className="w-6" /></button>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button
                   onClick={() => openDeleteModal(file)}
                   className="text-gray-500"
                 >
-                  Delete
+                  <TrashIcon className="w-6" />
                 </button>
               </td>
             </tr>

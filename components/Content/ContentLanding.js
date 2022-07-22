@@ -9,7 +9,8 @@ import { useTwitter } from '../../hooks/useTwitter';
 import { useSignMessage, useAccount } from "wagmi";
 import MainLandingContent from './MainLandingContent';
 
-export default function ContentLanding({ loading, fileInfo, missing }) {
+export default function ContentLanding({ loading, fileInfo, missing, preview }) {
+  console.log(fileInfo);
   const [signing, setSigning] = useState(false);
   const [gallery, setGallery] = useState(false);
   const [fullResponse, setFullResponse] = useState(null);
@@ -131,7 +132,7 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
       setFullResponse(res.data);
     }    
   }
-
+  console.log(fileInfo)
   return (
     <div>
       {
@@ -140,10 +141,10 @@ export default function ContentLanding({ loading, fileInfo, missing }) {
         <div>
 {
         fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type !== "nft" ? 
-        <MainLandingContent setVerifying={setVerifying} verifying={verifying} handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} /> :
+        <MainLandingContent preview={preview} setVerifying={setVerifying} verifying={verifying} handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} /> :
         fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.blockchain && fileInfo.unlockInfo.blockchain === "Solana" ? 
-        <Solana handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
-        <Ethereum ethereum={ethereum} setEthereum={setEthereum} handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
+        <Solana preview={preview} handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} /> : 
+        <Ethereum preview={preview} ethereum={ethereum} setEthereum={setEthereum} handleChangePage={handleChangePage} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} loading={loading} signing={signing} handleSign={handleSign} />
       }
         </div>
       }

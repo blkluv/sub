@@ -14,6 +14,10 @@ const networkOptions = {
 
 const NFT = ({
   onFileChange,
+  uploadingBackground,
+  backgroundCid,
+  background,
+  onBackgroundChange,
   selectedFiles,
   contractAddress,
   setContractAddress,
@@ -30,22 +34,37 @@ const NFT = ({
   blockchain,
   setBlockchain,
   blockchainOptions,
-  tokenId, 
-  setTokenId, 
-  updateAuthority, 
-  setUpdateAuthority, 
-  mintAddress, 
-  setMintAddress, 
-  file, 
-  setFile
+  tokenId,
+  setTokenId,
+  updateAuthority,
+  setUpdateAuthority,
+  mintAddress,
+  setMintAddress,
+  file,
+  setFile,
+  logoCid,
+  onLogoChange,
+  buttonColor,
+  setButtonColor,
+  buttonTextColor,
+  setButtonTextColor,
+  fontFamily,
+  setFontFamily,
+  uploadingLogo,
+  logo,
+  buttonShape, 
+  setButtonShape
 }) => {
-  const [nftLockType, setNftLockType] = useState(blockchainOptions ? blockchainOptions[0] : null);
+  const [nftLockType, setNftLockType] = useState(
+    blockchainOptions ? blockchainOptions[0] : null
+  );
   const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
-  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
+  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] =
+    useState(false);
   const [mintAddressModalOpen, setMintAddressModalOpen] = useState(false);
 
   const renderBlockchainSelector = () => {
-    if(blockchainOptions) {
+    if (blockchainOptions) {
       return (
         <div>
           <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
@@ -74,7 +93,6 @@ const NFT = ({
         </div>
       );
     }
-    
   };
 
   const renderNetworkSelector = () => {
@@ -118,103 +136,139 @@ const NFT = ({
         case "Solana":
           return (
             <div>
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
-              >
-                <span>Update Authority*</span> <span className="cursor" aria-label="button" onClick={() => setUpdateAuthorityModalOpen(true)}><InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" /></span>
-              </label>
-              <div className="mt-1 sm:mt-0 sm:col-span-2">
-                <div className="max-w-lg flex">
-                  <input
-                    value={updateAuthority}
-                    onChange={(e) => setUpdateAuthority(e.target.value)}
-                    type="text"
-                    name="nft"
-                    required
-                    id="nft"
-                    autoComplete="off"
-                    placeholder="Update authority"
-                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-                  />
+              <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
+                >
+                  <span>Update Authority*</span>{" "}
+                  <span
+                    className="cursor"
+                    aria-label="button"
+                    onClick={() => setUpdateAuthorityModalOpen(true)}
+                  >
+                    <InformationCircleIcon
+                      className="h-6 w-6 -mt-2 ml-2 text-black"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </label>
+                <div className="mt-1 sm:mt-0 sm:col-span-2">
+                  <div className="max-w-lg flex">
+                    <input
+                      value={updateAuthority}
+                      onChange={(e) => setUpdateAuthority(e.target.value)}
+                      type="text"
+                      name="nft"
+                      required
+                      id="nft"
+                      autoComplete="off"
+                      placeholder="Update authority"
+                      className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
-              <label
-                htmlFor="mintAddress"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 mt-4 flex flex-row"
-              >
-                <span>Mint Address (optional)</span> <span className="cursor" aria-label="button" onClick={() => setMintAddressModalOpen(true)}><InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" /></span>
-              </label>
-              <div className="mt-1 sm:mt-0 sm:col-span-2">
-                <div className="max-w-lg flex">
-                  <input
-                    value={mintAddress}
-                    onChange={(e) => setMintAddress(e.target.value)}
-                    type="text"        
-                    id="mintAddress"
-                    autoComplete="off"
-                    placeholder="Mint Address"
-                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-                  />
+              <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+                <label
+                  htmlFor="mintAddress"
+                  className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 mt-4 flex flex-row"
+                >
+                  <span>Mint Address (optional)</span>{" "}
+                  <span
+                    className="cursor"
+                    aria-label="button"
+                    onClick={() => setMintAddressModalOpen(true)}
+                  >
+                    <InformationCircleIcon
+                      className="h-6 w-6 -mt-2 ml-2 text-black"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </label>
+                <div className="mt-1 sm:mt-0 sm:col-span-2">
+                  <div className="max-w-lg flex">
+                    <input
+                      value={mintAddress}
+                      onChange={(e) => setMintAddress(e.target.value)}
+                      type="text"
+                      id="mintAddress"
+                      autoComplete="off"
+                      placeholder="Mint Address"
+                      className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                    />
+                  </div>
                 </div>
               </div>
+              <UpdateAuthorityModal
+                updateAuthorityModalOpen={updateAuthorityModalOpen}
+                setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen}
+              />
+              <MintAddressModal
+                mintAddressModalOpen={mintAddressModalOpen}
+                setMintAddressModalOpen={setMintAddressModalOpen}
+              />
             </div>
-            <UpdateAuthorityModal updateAuthorityModalOpen={updateAuthorityModalOpen} setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen} />                 
-            <MintAddressModal mintAddressModalOpen={mintAddressModalOpen} setMintAddressModalOpen={setMintAddressModalOpen} />
-            </div>
-          )
+          );
         default:
           return (
             <div>
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-              >
-                Contract Address*
-              </label>
-              <div className="mt-1 sm:mt-0 sm:col-span-2">
-                <div className="max-w-lg flex">
-                  <input
-                    value={contractAddress}
-                    onChange={(e) => setContractAddress(e.target.value)}
-                    type="text"
-                    name="nft"
-                    required
-                    id="nft"
-                    autoComplete="off"
-                    placeholder="Contract address"
-                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-                  />
+              <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                >
+                  Contract Address*
+                </label>
+                <div className="mt-1 sm:mt-0 sm:col-span-2">
+                  <div className="max-w-lg flex">
+                    <input
+                      value={contractAddress}
+                      onChange={(e) => setContractAddress(e.target.value)}
+                      type="text"
+                      name="nft"
+                      required
+                      id="nft"
+                      autoComplete="off"
+                      placeholder="Contract address"
+                      className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row mt-4"
-              >
-                <span>Token ID (Optional)</span> <span className="cursor" aria-label="button" onClick={() => setTokenIdModalOpen(true)}><InformationCircleIcon className="ml-2 h-6 w-6 text-black -mt-2" /></span>
-              </label>
-              <div className="mt-1 sm:mt-0 sm:col-span-2">
-                <div className="max-w-lg flex">
-                  <input
-                    value={tokenId}
-                    onChange={(e) => setTokenId(e.target.value)}
-                    type="text"
-                    name="tokenId"
-                    id="tokenId"
-                    autoComplete="off"
-                    placeholder="Token ID"
-                    className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-                  />
+              <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row mt-4"
+                >
+                  <span>Token ID (Optional)</span>{" "}
+                  <span
+                    className="cursor"
+                    aria-label="button"
+                    onClick={() => setTokenIdModalOpen(true)}
+                  >
+                    <InformationCircleIcon className="ml-2 h-6 w-6 text-black -mt-2" />
+                  </span>
+                </label>
+                <div className="mt-1 sm:mt-0 sm:col-span-2">
+                  <div className="max-w-lg flex">
+                    <input
+                      value={tokenId}
+                      onChange={(e) => setTokenId(e.target.value)}
+                      type="text"
+                      name="tokenId"
+                      id="tokenId"
+                      autoComplete="off"
+                      placeholder="Token ID"
+                      className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <TokenIdModal open={tokenIdModalOpen} setOpen={setTokenIdModalOpen} />
+              <TokenIdModal
+                open={tokenIdModalOpen}
+                setOpen={setTokenIdModalOpen}
+              />
             </div>
           );
       }
@@ -249,6 +303,21 @@ const NFT = ({
           selectedFiles={selectedFiles}
           file={file}
           setFile={setFile}
+          uploadingBackground={uploadingBackground}
+          backgroundCid={backgroundCid}
+          background={background}
+          onBackgroundChange={onBackgroundChange}
+          logoCid={logoCid}
+          onLogoChange={onLogoChange}
+          buttonColor={buttonColor}
+          setButtonColor={setButtonColor}
+          buttonTextColor={buttonTextColor}
+          setButtonTextColor={setButtonTextColor}
+          fontFamily={fontFamily}
+          setFontFamily={setFontFamily}
+          uploadingLogo={uploadingLogo}
+          buttonShape={buttonShape}
+          setButtonShape={setButtonShape}
         />
       </div>
     </div>

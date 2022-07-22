@@ -32,6 +32,13 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      'Roboto': ['Roboto', ...defaultTheme.fontFamily.sans], 
+      OpenSans: ['Open Sans', ...defaultTheme.fontFamily.sans], 
+      Montserrat: ['Montserrat', ...defaultTheme.fontFamily.sans], 
+      Oswald: ['Oswald', ...defaultTheme.fontFamily.sans], 
+      RobotoCondensed: ['Roboto Condensed', ...defaultTheme.fontFamily.sans], 
+      SourceSansPro: ['Source Sans Pro', ...defaultTheme.fontFamily.sans], 
+      Lato: ['Lato', ...defaultTheme.fontFamily.sans]
     },
   },
   plugins: [],

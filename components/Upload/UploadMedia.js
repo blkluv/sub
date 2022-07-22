@@ -50,7 +50,6 @@ const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
       onFileChange(ev, "submarine");
     }
   };
-  const fileInput = useRef(null);
 
   return (
     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 mt-2">

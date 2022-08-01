@@ -1,4 +1,5 @@
 import axios from "axios";
+const TIMEOUT_SECONDS = 60
 
 export const getSubmarinedContent = async (pinata_submarine_key, submarine_cid, pinata_gateway_subdomain, offset = 0) => {
   try {
@@ -29,7 +30,7 @@ export const getSubmarinedContent = async (pinata_submarine_key, submarine_cid, 
       childContent = directoryItems;
     }
     const body = {
-      timeoutSeconds: 3600,
+      timeoutSeconds: TIMEOUT_SECONDS,
       contentIds: [item.id],
     };
     const token = await axios.post(

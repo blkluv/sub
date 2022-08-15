@@ -28,7 +28,7 @@ export const uploadSubmarinedContent = async (data) => {
 };
 
 export const useSubmarine = () => {
-  const [gatewayUrl, setGatewayUrl] = useState("https://opengateway.mypinata.cloud");
+  const [gatewayUrl, setGatewayUrl] = useState("https://submarineme.mypinata.cloud");
 
   useEffect(() => {
     getGateway();
@@ -123,7 +123,7 @@ export const useSubmarine = () => {
   }
 
   const getLockMetadata = async (loadId) => {
-    const meta = await ky(`https://opengateway.mypinata.cloud/ipfs/${loadId}`);
+    const meta = await ky(`https://submarineme.mypinata.cloud/ipfs/${loadId}`);
     const jsonMeta = await meta.json();
     return jsonMeta;
   }

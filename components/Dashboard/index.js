@@ -152,7 +152,7 @@ const Dashboard = () => {
 
   const getThumbnail = (file) => {
     if (file.thumbnail) {
-      return `https://opengateway.mypinata.cloud/ipfs/${file.thumbnail}`;
+      return `https://submarineme.mypinata.cloud/ipfs/${file.thumbnail}`;
     } else {
       return placeholder;
     }

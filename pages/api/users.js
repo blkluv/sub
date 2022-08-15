@@ -115,11 +115,10 @@ export default async function handler(req, res) {
         }
       }
 
-      return res.status(200).json({ message: 'user exists with valid key' })
+      return res.status(200).json(submarineMeUser)
       
     } catch (error) {
       console.log("Error for: ");
-      console.log(user);
       console.log(error);
       const { response: fetchResponse } = error
       return res.status(fetchResponse?.status || 500).json(error.data)

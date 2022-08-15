@@ -37,7 +37,7 @@ const CustomizeLockScreen = ({
               {background && background.length > 0 ? (
                 <img
                   className="w-40"
-                  src={typeof background === "string" ? `https://opengateway.mypinata.cloud/ipfs/${background}`: background[0]?.preview}
+                  src={typeof background === "string" ? `https://submarineme.mypinata.cloud/ipfs/${background}`: background[0]?.preview}
                   alt="preview for thumbnail"
                 />
               ) : (
@@ -78,7 +78,7 @@ const CustomizeLockScreen = ({
               {logoCid && logoCid.length > 0 ? (
                 <img
                   className="w-10"
-                  src={`https://opengateway.mypinata.cloud/ipfs/${logoCid}`}
+                  src={`https://submarineme.mypinata.cloud/ipfs/${logoCid}`}
                   alt="preview for logo"
                 />
               ) : (

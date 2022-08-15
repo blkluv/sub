@@ -15,6 +15,7 @@ export const getSubmarinedContent = async (pinata_submarine_key, submarine_cid, 
     );
 
     const { data } = content;     
+  
     const { items } = data;
     const item = items.find((i) => i.cid === submarine_cid);
 

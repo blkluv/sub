@@ -10,6 +10,19 @@ import ky from "ky";
 Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
 
+export const getDbInfo = async (accessToken) => {
+  console.log(accessToken)
+  const res = await ky("/api/users", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      source: "login",
+    }
+  });
+
+  return await res.json();
+}
+
 export const fetchSession = async () => {
   try {
     const session = await Auth.currentSession();
@@ -23,10 +36,14 @@ export const fetchSession = async () => {
           d: "mm", //return default image if no gravatar found
         });
         localStorage.setItem("pinata-avatar", avatar);
-      }
-      user.avatar = avatar;
+        //  Get User Info From Submarine DB        
+      }     
+      user.avatar = avatar; 
     }
     const { idToken, accessToken, refreshToken } = session;
+    // const data = await getDbInfo(accessToken.jwtToken);
+    // user.pinata_submarine_key = data.pinata_submarine_key;
+    // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
     return {
       user,
       session,

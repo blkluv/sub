@@ -9,7 +9,7 @@ const CustomLogo = ({ logo }) => {
         src={
           logo.includes("https")
             ? logo
-            : `https://opengateway.mypinata.cloud/ipfs/${logo}`
+            : `https://submarineme.mypinata.cloud/ipfs/${logo}`
         }
         className="w-8"
       />

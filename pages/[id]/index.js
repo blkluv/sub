@@ -61,7 +61,7 @@ const Content = ({ data }) => {
           rel="icon"
           href={
             data && data.thumbnail
-              ? `https://opengateway.mypinata.cloud/ipfs/${data?.thumbnail}`
+              ? `https://submarineme.mypinata.cloud/ipfs/${data?.thumbnail}`
               : "/submarine.png"
           }
         ></link>
@@ -86,7 +86,7 @@ const Content = ({ data }) => {
           property="og:image"
           content={
             data && data.thumbnail
-              ? `https://opengateway.mypinata.cloud/ipfs/${data?.thumbnail}`
+              ? `https://submarineme.mypinata.cloud/ipfs/${data?.thumbnail}`
               : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
           }
         />

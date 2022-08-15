@@ -122,7 +122,7 @@ const MainLandingContent = ({
       fileInfo.customizations.backgroundCid
     ) {
       return {
-        backgroundImage: `url(https://opengateway.mypinata.cloud/ipfs/${fileInfo.customizations.backgroundCid})`,
+        backgroundImage: `url(https://submarineme.mypinata.cloud/ipfs/${fileInfo.customizations.backgroundCid})`,
       };
     } else {
       return {};
@@ -230,7 +230,7 @@ const MainLandingContent = ({
                 typeof fileInfo.thumbnail === "string" ? (
                   <img
                     className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-                    src={`https://opengateway.mypinata.cloud/ipfs/${fileInfo.thumbnail}`}
+                    src={`https://submarineme.mypinata.cloud/ipfs/${fileInfo.thumbnail}`}
                     alt={`${fileInfo.name} preview`}
                   />
                 ) : fileInfo?.thumbnail?.length > 0 && (

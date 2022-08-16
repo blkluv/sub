@@ -10,7 +10,6 @@ import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
-import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -26,7 +25,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(getGatewayUrl())
+    setGatewayUrl(localStorage.getItem("sm-gateway"));
   }, []);
 
   const { getHeaders } = useSubmarine();

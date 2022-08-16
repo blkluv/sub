@@ -1,11 +1,10 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const CustomLogo = ({ logo }) => {
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(getGatewayUrl())
+    setGatewayUrl(localStorage.getItem("sm-gateway"))
   }, []);
   return (
     <div className="w-20">

@@ -41,7 +41,7 @@ const DesktopTable = ({ files, getThumbnail, copyLink, openDeleteModal }) => {
             <tr key={file.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-900 sm:pl-6 md:pl-0">
                 <span className="flex flex-row">
-                  <Image layout="fixed" className="rounded-full border-2 border-gray-500" src={getThumbnail(file)} height={70} width={70} />
+                  <img layout="fixed" className="rounded-full" src={getThumbnail(file)} style={{height:70, width:70}} />
                   <span className="ml-4">
                     <span className="text-md font-medium text-gray-900">{file?.name}</span>
                     <br />

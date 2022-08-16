@@ -9,7 +9,6 @@ import { Provider, chain, defaultChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
-import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const infuraId = "80f214d8bfdb44a8a95217f902393d6d"; //process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -45,7 +44,7 @@ const Content = ({ data }) => {
   const [missing, set404] = useState(false);
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(getGatewayUrl())
+    setGatewayUrl(localStorage.getItem("sm-gateway"))
   }, []);
 
   useEffect(() => {

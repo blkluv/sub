@@ -55,7 +55,3 @@ export const getGateways = async (req) => {
     throw error;
   }
 }
-
-export const getGatewayUrl = () => {
-  return localStorage.getItem("sm-gateway");
-}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import UploadBackground from "../../Upload/UploadBackground";
 import UploadLogo from "../../Upload/UploadLogo";
 import { SketchPicker } from "react-color";
-import { getGatewayUrl } from "../../../helpers/user.helpers";
 
 const CustomizeLockScreen = ({
   background,
@@ -23,7 +22,7 @@ const CustomizeLockScreen = ({
 }) => {
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(getGatewayUrl())
+    setGatewayUrl(localStorage.getItem("sm-gateway"))
   }, []);
   return (
 

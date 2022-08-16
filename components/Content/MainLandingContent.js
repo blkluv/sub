@@ -19,7 +19,6 @@ import Loading from "../Dashboard/Loading";
 import CustomLogo from "./CustomLogo";
 import CustomButton from "./CustomButton";
 import Head from "next/head";
-import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const MainLandingContent = ({
   setGallery,
@@ -41,7 +40,7 @@ const MainLandingContent = ({
   const [gatewayUrl, setGatewayUrl] = useState("");
   
   useEffect(() => {
-    setGatewayUrl(getGatewayUrl())
+    setGatewayUrl(localStorage.getItem("sm-gateway"))
   }, []);
 
   const { twitterAuth } = useTwitter();

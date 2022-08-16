@@ -3,7 +3,6 @@ import router, { useRouter } from "next/router";
 import ky from "ky";
 import { fetchSession } from "./useAuth";
 import { resolve } from "@sentry/utils";
-import { getGatewayUrl } from "../helpers/user.helpers";
 
 export const uploadSubmarinedContent = async (data) => {
   const sessionData = await fetchSession();
@@ -29,11 +28,12 @@ export const uploadSubmarinedContent = async (data) => {
 };
 
 export const useSubmarine = () => {
-  const [gatewayUrl, setGatewayUrl] = useState(getGatewayUrl());
+  const [gatewayUrl, setGatewayUrl] = useState("");
 
   useEffect(() => {
-    getGateway();
-  }, [])
+    setGatewayUrl(localStorage.getItem("sm-gateway"));
+  }, []);
+
   const handleUpload = async (data) => {
     return await uploadSubmarinedContent(data);
   };
@@ -124,7 +124,7 @@ export const useSubmarine = () => {
   }
 
   const getLockMetadata = async (loadId) => {
-    const meta = await ky(`${getGatewayUrl()}/ipfs/${loadId}`);
+    const meta = await ky(`${localStorage.getItem("sm-gateway")}/ipfs/${loadId}`);
     const jsonMeta = await meta.json();
     return jsonMeta;
   }
@@ -159,12 +159,6 @@ export const useSubmarine = () => {
     };
   };
 
-  const getGateway = async () => {
-    // Need to fetch the right content here
-    return new Promise((res) => {
-      resolve();
-    })
-  }
   return {
     handleUpload,
     getHeaders, 

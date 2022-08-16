@@ -3,6 +3,7 @@ import router, { useRouter } from "next/router";
 import ky from "ky";
 import { fetchSession } from "./useAuth";
 import { resolve } from "@sentry/utils";
+import { getGatewayUrl } from "../helpers/user.helpers";
 
 export const uploadSubmarinedContent = async (data) => {
   const sessionData = await fetchSession();
@@ -28,7 +29,7 @@ export const uploadSubmarinedContent = async (data) => {
 };
 
 export const useSubmarine = () => {
-  const [gatewayUrl, setGatewayUrl] = useState("https://submarineme.mypinata.cloud");
+  const [gatewayUrl, setGatewayUrl] = useState(getGatewayUrl());
 
   useEffect(() => {
     getGateway();
@@ -123,7 +124,7 @@ export const useSubmarine = () => {
   }
 
   const getLockMetadata = async (loadId) => {
-    const meta = await ky(`https://submarineme.mypinata.cloud/ipfs/${loadId}`);
+    const meta = await ky(`${getGatewayUrl()}/ipfs/${loadId}`);
     const jsonMeta = await meta.json();
     return jsonMeta;
   }

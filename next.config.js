@@ -6,7 +6,7 @@ const nextConfig = {
       // Looks like backward compatibility approach.
   },
   images: {
-    domains: ['submarineme.mypinata.cloud'],
+    domains: [''],
   },
   webpack(config) {
     config.resolve.fallback = {

@@ -19,6 +19,7 @@ import Loading from "../Dashboard/Loading";
 import CustomLogo from "./CustomLogo";
 import CustomButton from "./CustomButton";
 import Head from "next/head";
+import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const MainLandingContent = ({
   setGallery,
@@ -37,6 +38,11 @@ const MainLandingContent = ({
 }) => {
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
+  const [gatewayUrl, setGatewayUrl] = useState("");
+  
+  useEffect(() => {
+    setGatewayUrl(getGatewayUrl())
+  }, []);
 
   const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
@@ -122,7 +128,7 @@ const MainLandingContent = ({
       fileInfo.customizations.backgroundCid
     ) {
       return {
-        backgroundImage: `url(https://submarineme.mypinata.cloud/ipfs/${fileInfo.customizations.backgroundCid})`,
+        backgroundImage: `url(${gatewayUrl}/ipfs/${fileInfo.customizations.backgroundCid})`,
       };
     } else {
       return {};
@@ -230,7 +236,7 @@ const MainLandingContent = ({
                 typeof fileInfo.thumbnail === "string" ? (
                   <img
                     className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-                    src={`https://submarineme.mypinata.cloud/ipfs/${fileInfo.thumbnail}`}
+                    src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
                     alt={`${fileInfo.name} preview`}
                   />
                 ) : fileInfo?.thumbnail?.length > 0 && (

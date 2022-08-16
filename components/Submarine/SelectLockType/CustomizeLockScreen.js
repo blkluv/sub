@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import UploadBackground from "../../Upload/UploadBackground";
 import UploadLogo from "../../Upload/UploadLogo";
 import { SketchPicker } from "react-color";
+import { getGatewayUrl } from "../../../helpers/user.helpers";
 
 const CustomizeLockScreen = ({
   background,
@@ -20,7 +21,10 @@ const CustomizeLockScreen = ({
   fontFamily, 
   setFontFamily
 }) => {
-  console.log({"LOGO": logoCid})
+  const [gatewayUrl, setGatewayUrl] = useState("");
+  useEffect(() => {
+    setGatewayUrl(getGatewayUrl())
+  }, []);
   return (
 
     <div>
@@ -37,7 +41,7 @@ const CustomizeLockScreen = ({
               {background && background.length > 0 ? (
                 <img
                   className="w-40"
-                  src={typeof background === "string" ? `https://submarineme.mypinata.cloud/ipfs/${background}`: background[0]?.preview}
+                  src={typeof background === "string" ? `${gatewayUrl}/ipfs/${background}`: background[0]?.preview}
                   alt="preview for thumbnail"
                 />
               ) : (
@@ -78,7 +82,7 @@ const CustomizeLockScreen = ({
               {logoCid && logoCid.length > 0 ? (
                 <img
                   className="w-10"
-                  src={`https://submarineme.mypinata.cloud/ipfs/${logoCid}`}
+                  src={`${gatewayUrl}/ipfs/${logoCid}`}
                   alt="preview for logo"
                 />
               ) : (

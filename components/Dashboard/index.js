@@ -10,6 +10,7 @@ import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
+import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -23,6 +24,10 @@ const Dashboard = () => {
   const [offset, setOffset] = useState(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [gatewayUrl, setGatewayUrl] = useState("");
+  useEffect(() => {
+    setGatewayUrl(getGatewayUrl())
+  }, []);
 
   const { getHeaders } = useSubmarine();
   useEffect(() => {
@@ -152,7 +157,7 @@ const Dashboard = () => {
 
   const getThumbnail = (file) => {
     if (file.thumbnail) {
-      return `https://submarineme.mypinata.cloud/ipfs/${file.thumbnail}`;
+      return `${gatewayUrl}/ipfs/${file.thumbnail}`;
     } else {
       return placeholder;
     }

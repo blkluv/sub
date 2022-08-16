@@ -11,7 +11,6 @@ Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
 
 export const getDbInfo = async (accessToken) => {
-  console.log(accessToken)
   const res = await ky("/api/users", {
     method: "GET",
     headers: {
@@ -41,9 +40,7 @@ export const fetchSession = async () => {
       user.avatar = avatar; 
     }
     const { idToken, accessToken, refreshToken } = session;
-    // const data = await getDbInfo(accessToken.jwtToken);
-    // user.pinata_submarine_key = data.pinata_submarine_key;
-    // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
+   
     return {
       user,
       session,
@@ -351,9 +348,7 @@ export const useAuth = () => {
   };
 
   const handleSession = async () => {
-
-    const sessionData = await fetchSession();
-
+    const sessionData = await fetchSession();    
     if (sessionData && sessionData.user && sessionData.session) {
       setUser(sessionData.user);
       setIsAuthenticated(true);
@@ -361,6 +356,12 @@ export const useAuth = () => {
       setRefreshToken(sessionData.refreshToken);
       setIdToken(sessionData.idToken);
     }
+
+    const data = await getDbInfo(sessionData.accessToken);
+    // user.pinata_submarine_key = data.pinata_submarine_key;
+    // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
+    const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`
+    localStorage.setItem("sm-gateway", gatewayURL);
   };
 
   return {

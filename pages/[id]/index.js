@@ -9,6 +9,7 @@ import { Provider, chain, defaultChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
+import { getGatewayUrl } from "../../helpers/user.helpers";
 
 const infuraId = "80f214d8bfdb44a8a95217f902393d6d"; //process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -42,6 +43,10 @@ const connectors = ({ chainId }) => {
 const Content = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [missing, set404] = useState(false);
+  const [gatewayUrl, setGatewayUrl] = useState("");
+  useEffect(() => {
+    setGatewayUrl(getGatewayUrl())
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -61,7 +66,7 @@ const Content = ({ data }) => {
           rel="icon"
           href={
             data && data.thumbnail
-              ? `https://submarineme.mypinata.cloud/ipfs/${data?.thumbnail}`
+              ? `${gatewayUrl}/ipfs/${data?.thumbnail}`
               : "/submarine.png"
           }
         ></link>
@@ -86,7 +91,7 @@ const Content = ({ data }) => {
           property="og:image"
           content={
             data && data.thumbnail
-              ? `https://submarineme.mypinata.cloud/ipfs/${data?.thumbnail}`
+              ? `${gatewayUrl}/ipfs/${data?.thumbnail}`
               : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
           }
         />

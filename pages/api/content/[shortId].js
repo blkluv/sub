@@ -1,8 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseClient } from '../../helpers/supabase';
 
-const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
-const supabaseKey = process.env.SUPABASE_SECRET;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = getSupabaseClient()
 
 export default async function handler(req, res) {
   try {

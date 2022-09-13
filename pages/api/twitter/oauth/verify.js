@@ -1,12 +1,8 @@
 
 import { withIronSession } from "next-iron-session";
-import { createClient } from "@supabase/supabase-js";
 import { getOauthSecret, getUserContentCombo } from "../../../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
 
-const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
-const supabaseKey = process.env.SUPABASE_SECRET;
-const supabase = createClient(supabaseUrl, supabaseKey);
 const { TwitterApi } = require('twitter-api-v2');
 
 function withSession(handler) {

@@ -2,12 +2,10 @@ import axios from "axios";
 import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import { validate as uuidValidate } from "uuid";
+import { getSupabaseClient } from '../../helpers/supabase';
 
-import { createClient } from "@supabase/supabase-js";
+const supabase = getSupabaseClient()
 
-const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
-const supabaseKey = process.env.SUPABASE_SECRET;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const getUserSession = async (auth) => {
   try {

@@ -9,11 +9,9 @@ import { erc1155 } from "../../erc1155";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseClient } from '../../helpers/supabase';
 
-const supabaseUrl = "https://kabuzibvkgxaowgjoewz.supabase.co";
-const supabaseKey = process.env.SUPABASE_SECRET;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = getSupabaseClient()
 
 function withSession(handler) {
   return withIronSession(handler, {

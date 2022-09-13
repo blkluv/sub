@@ -173,7 +173,7 @@ const Dashboard = () => {
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div className="text-center sm:text-left pb-4">
-                  <Link href="/submarine/new">
+                  <Link passHref href="/submarine/new">
                     <button
                       type="button"
                       className="mb-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-pinata-purple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

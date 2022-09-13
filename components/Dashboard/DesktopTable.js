@@ -39,7 +39,8 @@ const DesktopTable = ({ files, getThumbnail, copyLink, openDeleteModal }) => {
             <tr key={file.id}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-900 sm:pl-6 md:pl-0">
                 <span className="flex flex-row">
-                  <img
+                  <Image
+                    alt="Thumbnail"
                     layout="fixed"
                     className="rounded-full"
                     src={getThumbnail(file)}
@@ -66,7 +67,7 @@ const DesktopTable = ({ files, getThumbnail, copyLink, openDeleteModal }) => {
                 {file?.submarine_cid}
               </td> */}
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <Link href={`/submarine/${file?.unlock_info?.type}?edit=${file.short_id}`}>
+                <Link passHref href={`/submarine/${file?.unlock_info?.type}?edit=${file.short_id}`}>
                   <PencilAltIcon className="w-6 cursor-pointer" />
                 </Link>
               </td>

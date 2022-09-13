@@ -17,7 +17,7 @@ export default function Twitter({ meta }) {
         <div className="max-w-md w-full space-y-8">
           <div>
             <div className="text-center mt-10">
-              <Image width={150} height={84} src="/Twitter-Logo.png" />
+              <Image alt="Twitter logo" width={150} height={84} src="/Twitter-Logo.png" />
             </div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               This Submarined Content Requires You To Retweet a Tweet

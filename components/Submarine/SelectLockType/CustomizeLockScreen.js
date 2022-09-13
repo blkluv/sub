@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UploadBackground from "../../Upload/UploadBackground";
 import UploadLogo from "../../Upload/UploadLogo";
 import { SketchPicker } from "react-color";
+import Image from "next/image";
 
 const CustomizeLockScreen = ({
   background,
@@ -34,7 +35,7 @@ const CustomizeLockScreen = ({
           <div className="flex items-center">
             <span className="flex align-center justify-center h-40 w-40 overflow-hidden">
               {background && background.length > 0 ? (
-                <img
+                <Image
                   className="w-40"
                   src={
                     typeof background === "string"
@@ -76,7 +77,7 @@ const CustomizeLockScreen = ({
           <div className="flex items-center">
             <span className="h-20 w-20 overflow-hidden flex flex-col align-center justify-center">
               {logoCid && logoCid.length > 0 ? (
-                <img
+                <Image
                   className="w-10"
                   src={`${gatewayUrl}/ipfs/${logoCid}`}
                   alt="preview for logo"

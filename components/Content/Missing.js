@@ -17,7 +17,13 @@ const Missing = () => {
       <div className="public-content-bg h-screen w-screen flex flex-col justify-center align-center">
         <div className="p-10 md:w-1/2 w-3/4 h-auto text-center flex flex-col justify-center align-center m-auto bg-white overflow-hidden shadow-lg rounded-lg">
           <div>
-            <Image height={135} width={200} src="/submarine.png" className="z-100" />
+            <Image
+              alt="Submarine Logo"
+              height={135}
+              width={200}
+              src="/submarine.png"
+              className="z-100"
+            />
             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
               <span className="block">This submarine got lost at sea</span>
             </h2>

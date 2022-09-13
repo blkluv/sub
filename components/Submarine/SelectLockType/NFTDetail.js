@@ -4,6 +4,7 @@ import UploadThumbnail from "../../Upload/UploadThumbnail";
 import { Switch } from "@headlessui/react";
 import CustomizeLockScreen from "./CustomizeLockScreen";
 import { useSubmarine } from "../../../hooks/useSubmarine";
+import Image from "next/image";
 
 const NFTDetail = ({
   onThumbnailChange,
@@ -45,7 +46,7 @@ const NFTDetail = ({
           <div className="flex items-center">
             <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
               {thumbnail && thumbnail.length > 0 ? (
-                <img
+                <Image
                   className="h-12 w-12"
                   src={
                     thumbnail[0].preview ? thumbnail[0].preview : `${gatewayUrl}/ipfs/${thumbnail}`

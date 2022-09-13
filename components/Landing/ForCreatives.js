@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const ForCreatives = () => {
@@ -43,7 +44,7 @@ const ForCreatives = () => {
           return (
             <div key={c.title} className="p-8 bg-pinata-light-blue rounded-sm text-left">
               <div>
-                <img src={c.icon} alt="icon" />
+                <Image src={c.icon} alt="icon" />
               </div>
               <h3 className="mt-4 font-bold text-xl">{c.title}</h3>
               <p className="mt-4 font-light">{c.text}</p>

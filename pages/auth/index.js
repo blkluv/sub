@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Auth from "../../components/Auth";
 import { useAuth } from "../../hooks/useAuth";
 import { useRouter } from "next/router";
-import Head from "next/head";
 import SharedHead from "../../components/SharedHead";
 
 const AuthWrapper = () => {

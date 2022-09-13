@@ -8,7 +8,7 @@ const CustomLogo = ({ logo }) => {
   }, []);
   return (
     <div className="w-20">
-      <img
+      <Image
         alt="Logo"
         src={logo.includes("https") ? logo : `${gatewayUrl}/ipfs/${logo}`}
         className="w-8"

@@ -596,7 +596,7 @@ const UnlockType = () => {
             fileInfo={fileInfo}
           />
           <div className="flex flex-row justify-between">
-            <Link href="/submarine/new">
+            <Link passHref href="/submarine/new">
               <div className="h-8 w-8 cursor-pointer">
                 <ArrowLeftIcon />
               </div>

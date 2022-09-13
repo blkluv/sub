@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const HowItWorks = () => {
@@ -9,7 +10,7 @@ const HowItWorks = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-16 container m-auto text-center">
         <div>
           <div className="">
-            <img
+            <Image
               className="h-64 w-auto m-auto"
               src="/Step1.png"
               alt="Step one: Choose how you'd like your content unlocked"
@@ -20,7 +21,7 @@ const HowItWorks = () => {
         </div>
         <div>
           <div>
-            <img
+            <Image
               className="h-64 w-auto m-auto"
               src="/StepOne.png"
               alt="Step two: Add info about the content and upload the submarined file"
@@ -31,7 +32,7 @@ const HowItWorks = () => {
         </div>
         <div>
           <div>
-            <img
+            <Image
               className="h-64 w-auto m-auto"
               src="/StepThree.png"
               alt="Step three: share the custom link"

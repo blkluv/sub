@@ -54,7 +54,7 @@ export default function MintAddressModal({ mintAddressModalOpen, setMintAddressM
                         "You can find this on most Solana NFT marketplaces by looking at the info about the NFT you own."
                       }
                     </p>
-                    <Image src={mint} layout="responsive" />
+                    <Image src={mint} alt={"Mint Address"} layout="responsive" />
                   </div>
                 </div>
               </div>

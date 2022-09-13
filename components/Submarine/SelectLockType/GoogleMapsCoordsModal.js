@@ -54,7 +54,7 @@ export default function GoogleMapsCoordsModal({ googleMapsModalOpen, setGoogleMa
                         "By right clicking on the pin of an address you look up in Google Maps, you can get the latitude and longitude."
                       }
                     </p>
-                    <Image src={maps} layout="responsive" />
+                    <Image src={maps} alt="Google Maps" layout="responsive" />
                   </div>
                 </div>
               </div>

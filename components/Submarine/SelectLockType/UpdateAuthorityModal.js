@@ -57,7 +57,7 @@ export default function UpdateAuthorityModal({
                         "You can find this on most Solana explorers by looking up the specific mint address for an NFT in the collection. Here's an example from Solscan."
                       }
                     </p>
-                    <Image src={authority} layout="responsive" />
+                    <Image src={authority} alt={"Update Authority"} layout="responsive" />
                   </div>
                 </div>
               </div>

@@ -12,7 +12,7 @@ const SubmarineNew = () => {
       <SharedHead />
       <Navigation />
       <div className="w-4/5 m-auto mt-10 mb-12">
-        <Link href="/">
+        <Link passHref href="/">
           <div className="h-8 w-8 cursor-pointer mb-8">
             <ArrowLeftIcon />
           </div>

@@ -19,6 +19,7 @@ import Loading from "../Dashboard/Loading";
 import CustomLogo from "./CustomLogo";
 import CustomButton from "./CustomButton";
 import Head from "next/head";
+import Image from "next/image";
 
 const MainLandingContent = ({
   setGallery,
@@ -219,14 +220,14 @@ const MainLandingContent = ({
             ) : (
               <div>
                 {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
-                  <img
+                  <Image
                     className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
                     src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
                     alt={`${fileInfo.name} preview`}
                   />
                 ) : (
                   fileInfo?.thumbnail?.length > 0 && (
-                    <img
+                    <Image
                       className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
                       src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]?.preview}
                       alt={`${fileInfo.name} preview`}

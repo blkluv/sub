@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import gravatar from "gravatar";
 import axios from "axios";
 import ky from "ky";
+
 Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
 

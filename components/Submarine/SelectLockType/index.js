@@ -67,6 +67,7 @@ export default function SelectLockType() {
         {actions.map((action, actionIdx) => (
           <Link
             id={action.id}
+            passHref
             key={action.title}
             href={action.soon ? "/submarine/new" : action.link}
           >

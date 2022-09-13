@@ -1,16 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useAuth } from "../../hooks/useAuth";
 import ProfileDropDown from "./ProfileDropDown";
-import InfoDropDown from "./InfoDropDown";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navigation() {
   const [avatar, setAvatar] = useState(null);
-  const router = useRouter();
   const { isAuthenticated, fetchSession } = useAuth();
   useEffect(() => {
     if (isAuthenticated) {
@@ -41,15 +38,15 @@ export default function Navigation() {
                 </Disclosure.Button> */}
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <Link href="/">
+                <Link passHref href="/">
                   <div className="flex-shrink-0 flex items-center cursor-pointer">
-                    <img
+                    <Image
                       className="block lg:hidden h-8 w-auto"
                       src="/submarine.png"
                       alt="Submarine Me"
                     />
 
-                    <img
+                    <Image
                       className="hidden lg:block h-8 w-auto"
                       src="/submarine.png"
                       alt="Submarine Me"

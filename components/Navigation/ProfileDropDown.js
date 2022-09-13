@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { useAuth } from "../../hooks/useAuth";
+import Image from "next/image";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -13,7 +14,7 @@ const ProfileDropDown = ({ avatar }) => {
       <div>
         <Menu.Button className="bg-white rounded-full flex text-sm outline-none">
           <span className="sr-only">Open user menu</span>
-          <img className="h-8 w-8 rounded-full" src={avatar} alt="" />
+          <Image className="h-8 w-8 rounded-full" src={avatar} alt="" />
         </Menu.Button>
       </div>
       <Transition

@@ -1,8 +1,5 @@
 import React, { FC, useMemo } from "react";
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
+import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   LedgerWalletAdapter,
@@ -17,7 +14,17 @@ import { clusterApiUrl } from "@solana/web3.js";
 
 import MainLandingContent from "./MainLandingContent";
 
-const Solana = ({ signing, loading, handleSign, fileInfo, gallery, fullResponse, setGallery, setFullResponse, handleChangePage }) => {
+const Solana = ({
+  signing,
+  loading,
+  handleSign,
+  fileInfo,
+  gallery,
+  fullResponse,
+  setGallery,
+  setFullResponse,
+  handleChangePage,
+}) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
 
@@ -43,10 +50,20 @@ const Solana = ({ signing, loading, handleSign, fileInfo, gallery, fullResponse,
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <MainLandingContent handleChangePage={handleChangePage} setGallery={setGallery} setFullResponse={setFullResponse} fullResponse={fullResponse} gallery={gallery} fileInfo={fileInfo} signing={signing} loading={loading} handleSign={handleSign} />        
+        <MainLandingContent
+          handleChangePage={handleChangePage}
+          setGallery={setGallery}
+          setFullResponse={setFullResponse}
+          fullResponse={fullResponse}
+          gallery={gallery}
+          fileInfo={fileInfo}
+          signing={signing}
+          loading={loading}
+          handleSign={handleSign}
+        />
       </WalletProvider>
     </ConnectionProvider>
   );
 };
 
-export default Solana
+export default Solana;

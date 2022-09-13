@@ -4,15 +4,7 @@ import DeleteModal from "./DeleteModal";
 import DesktopTable from "./DesktopTable";
 import MobileTable from "./MobileTable";
 
-const LinkTable = ({
-  files,
-  copyLink,
-  setOpen,
-  open,
-  handleDelete,
-  loadLinks,
-  getThumbnail
-}) => {
+const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, getThumbnail }) => {
   const [file, setFile] = useState(null);
 
   const openDeleteModal = (thisFile) => {
@@ -28,19 +20,18 @@ const LinkTable = ({
 
   return (
     <div>
-
-        <DesktopTable
-          files={files}
-          copyLink={copyLink}
-          getThumbnail={getThumbnail}
-          openDeleteModal={openDeleteModal}
-        />
-        <MobileTable
-          files={files}
-          copyLink={copyLink}
-          openDeleteModal={openDeleteModal}
-          getThumbnail={getThumbnail}
-        />
+      <DesktopTable
+        files={files}
+        copyLink={copyLink}
+        getThumbnail={getThumbnail}
+        openDeleteModal={openDeleteModal}
+      />
+      <MobileTable
+        files={files}
+        copyLink={copyLink}
+        openDeleteModal={openDeleteModal}
+        getThumbnail={getThumbnail}
+      />
 
       <DeleteModal
         file={file}

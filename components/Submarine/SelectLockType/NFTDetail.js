@@ -29,20 +29,16 @@ const NFTDetail = ({
   fontFamily,
   setFontFamily,
   uploadingLogo,
-  buttonShape, 
-  setButtonShape, 
-  logo
+  buttonShape,
+  setButtonShape,
+  logo,
 }) => {
-
   const [customize, setCustomize] = useState(false);
   const { gatewayUrl } = useSubmarine();
   return (
     <div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="photo"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="photo" className="block text-sm font-medium text-gray-700">
           Thumbnail (Optional)
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -52,9 +48,7 @@ const NFTDetail = ({
                 <img
                   className="h-12 w-12"
                   src={
-                    thumbnail[0].preview
-                      ? thumbnail[0].preview
-                      : `${gatewayUrl}/ipfs/${thumbnail}`
+                    thumbnail[0].preview ? thumbnail[0].preview : `${gatewayUrl}/ipfs/${thumbnail}`
                   }
                   alt="preview for thumbnail"
                 />
@@ -73,10 +67,7 @@ const NFTDetail = ({
         </div>
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5 mt-2">
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-        >
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
           Name*
         </label>
         <div className="mt-2 sm:mt-0 sm:col-span-2">

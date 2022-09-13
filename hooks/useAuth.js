@@ -16,11 +16,11 @@ export const getDbInfo = async (accessToken) => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       source: "login",
-    }
+    },
   });
 
   return await res.json();
-}
+};
 
 export const fetchSession = async () => {
   try {
@@ -35,12 +35,12 @@ export const fetchSession = async () => {
           d: "mm", //return default image if no gravatar found
         });
         localStorage.setItem("pinata-avatar", avatar);
-        //  Get User Info From Submarine DB        
-      }     
-      user.avatar = avatar; 
+        //  Get User Info From Submarine DB
+      }
+      user.avatar = avatar;
     }
     const { idToken, accessToken, refreshToken } = session;
-   
+
     return {
       user,
       session,
@@ -50,10 +50,7 @@ export const fetchSession = async () => {
     };
   } catch (error) {
     console.log(error);
-    if (
-      window.location.pathname !== "/" &&
-      !window.location.pathname.includes("auth")
-    ) {
+    if (window.location.pathname !== "/" && !window.location.pathname.includes("auth")) {
       window.location.replace("/");
     }
     //  Cognito does not handle non-logged in users well here
@@ -71,9 +68,7 @@ export const logUserOut = async () => {
 export const clearCognitoCache = () => {
   const cookies = Cookies.get();
   const cookieKeys = Object.keys(cookies);
-  const filteredCookies = cookieKeys.filter((c) =>
-    c.includes("CognitoIdentityServiceProvider")
-  );
+  const filteredCookies = cookieKeys.filter((c) => c.includes("CognitoIdentityServiceProvider"));
   for (const c of filteredCookies) {
     Cookies.remove(c, { path: "/", domain: ".app.pinata.cloud" });
     Cookies.remove(c, { path: "/", domain: ".pinata.cloud" });
@@ -86,7 +81,7 @@ export const logUserIn = async (email, password) => {
     localStorage.removeItem("pinata-avatar");
     // await Auth.federatedSignIn();
     const res = await Auth.signIn(email, password);
-    if(res.challengeName) {
+    if (res.challengeName) {
       return {
         success: true,
         user: res,
@@ -100,12 +95,12 @@ export const logUserIn = async (email, password) => {
           source: "login",
         },
       });
-  
+
       return {
         success: true,
         user: res,
       };
-    }    
+    }
   } catch (error) {
     console.log(error);
     return {
@@ -115,13 +110,7 @@ export const logUserIn = async (email, password) => {
   }
 };
 
-export const signUpUser = async (
-  email,
-  password,
-  firstName,
-  lastName,
-  isBuilder
-) => {
+export const signUpUser = async (email, password, firstName, lastName, isBuilder) => {
   try {
     const { user } = await Auth.signUp({
       username: email,
@@ -348,7 +337,7 @@ export const useAuth = () => {
   };
 
   const handleSession = async () => {
-    const sessionData = await fetchSession();    
+    const sessionData = await fetchSession();
     if (sessionData && sessionData.user && sessionData.session) {
       setUser(sessionData.user);
       setIsAuthenticated(true);
@@ -360,7 +349,7 @@ export const useAuth = () => {
     const data = await getDbInfo(sessionData.accessToken);
     // user.pinata_submarine_key = data.pinata_submarine_key;
     // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
-    const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`
+    const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`;
     localStorage.setItem("sm-gateway", gatewayURL);
   };
 

@@ -1,14 +1,21 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { InformationCircleIcon } from '@heroicons/react/outline'
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import authority from "./update_authority.png";
 
-export default function UpdateAuthorityModal({ updateAuthorityModalOpen, setUpdateAuthorityModalOpen }) {  
+export default function UpdateAuthorityModal({
+  updateAuthorityModalOpen,
+  setUpdateAuthorityModalOpen,
+}) {
   return (
     <Transition.Root show={updateAuthorityModalOpen} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setUpdateAuthorityModalOpen}>
+      <Dialog
+        as="div"
+        className="fixed z-10 inset-0 overflow-y-auto"
+        onClose={setUpdateAuthorityModalOpen}
+      >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -46,7 +53,9 @@ export default function UpdateAuthorityModal({ updateAuthorityModalOpen, setUpda
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500 mb-4">
-                      {"You can find this on most Solana explorers by looking up the specific mint address for an NFT in the collection. Here's an example from Solscan."} 
+                      {
+                        "You can find this on most Solana explorers by looking up the specific mint address for an NFT in the collection. Here's an example from Solscan."
+                      }
                     </p>
                     <Image src={authority} layout="responsive" />
                   </div>
@@ -66,5 +75,5 @@ export default function UpdateAuthorityModal({ updateAuthorityModalOpen, setUpda
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

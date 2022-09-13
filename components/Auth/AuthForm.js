@@ -75,10 +75,7 @@ export default function AuthForm() {
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{" "}
-              <a
-                href="https://app.pinata.cloud"
-                className="font-medium text-pinata-purple"
-              >
+              <a href="https://app.pinata.cloud" className="font-medium text-pinata-purple">
                 sign up here.
               </a>
             </p>
@@ -101,7 +98,7 @@ export default function AuthForm() {
                       className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       placeholder="MFA code"
                     />
-                  </div>     
+                  </div>
                 </div>
               </div>
             ) : (
@@ -141,18 +138,16 @@ export default function AuthForm() {
                     />
                   </div>
                 </div>
-
-               
               </div>
             )}
-             <div className="mt-4">
-                  <button
-                    type="submit"
-                    className="group relative w-full flex-row justify-center align-center sm:h-auto h-16 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
-                  >
-                    <span>{submitting ? "Signing in..." : "Sign in"}</span>
-                  </button>
-                </div>
+            <div className="mt-4">
+              <button
+                type="submit"
+                className="group relative w-full flex-row justify-center align-center sm:h-auto h-16 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
+              >
+                <span>{submitting ? "Signing in..." : "Sign in"}</span>
+              </button>
+            </div>
           </form>
         </div>
       </div>

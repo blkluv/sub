@@ -25,9 +25,7 @@ const chains = defaultChains;
 
 // Set up connectors
 const connectors = ({ chainId }) => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0];
+  const rpcUrl = chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0];
   return [
     new InjectedConnector({
       chains,
@@ -178,7 +176,7 @@ const UnlockType = () => {
     name,
     description,
     type,
-    edit
+    edit,
   ]);
 
   const loadContent = async () => {
@@ -197,16 +195,8 @@ const UnlockType = () => {
     json.preview = true;
     setFileInfo(json);
     setUnlockInfo(json.unlockInfo);
-    const {
-      unlockInfo,
-      description,
-      customizations,
-      id,
-      name,
-      shortId,
-      submarineCID,
-      thumbnail,
-    } = json;
+    const { unlockInfo, description, customizations, id, name, shortId, submarineCID, thumbnail } =
+      json;
     const {
       blockchain,
       contract,
@@ -377,13 +367,9 @@ const UnlockType = () => {
       e.preventDefault();
       setUploading(true);
       let cid;
-      const identifier = fileInfo?.shortId
-        ? fileInfo?.shortId
-        : short.generate();
+      const identifier = fileInfo?.shortId ? fileInfo?.shortId : short.generate();
       debugger;
-      if (        
-        !submarinedFile && selectedFiles && (selectedFiles.length > 0)
-      ) {
+      if (!submarinedFile && selectedFiles && selectedFiles.length > 0) {
         const data = new FormData();
 
         data.append("name", identifier);
@@ -594,11 +580,7 @@ const UnlockType = () => {
     <div>
       <SharedHead />
       <Navigation />
-      <Alert
-        showAlert={showAlert}
-        type={message?.type}
-        message={message?.message}
-      />
+      <Alert showAlert={showAlert} type={message?.type} message={message?.message} />
       {uploading ? (
         <div className="w-3/4 m-auto text-center">
           <h3>Please wait</h3>

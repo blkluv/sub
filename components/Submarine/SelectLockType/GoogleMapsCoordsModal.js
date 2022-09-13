@@ -1,14 +1,18 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { InformationCircleIcon } from '@heroicons/react/outline'
+import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import maps from "./googlemaps.png";
 
-export default function GoogleMapsCoordsModal({ googleMapsModalOpen, setGoogleMapsModalOpen }) {  
+export default function GoogleMapsCoordsModal({ googleMapsModalOpen, setGoogleMapsModalOpen }) {
   return (
     <Transition.Root show={googleMapsModalOpen} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setGoogleMapsModalOpen}>
+      <Dialog
+        as="div"
+        className="fixed z-10 inset-0 overflow-y-auto"
+        onClose={setGoogleMapsModalOpen}
+      >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -46,7 +50,9 @@ export default function GoogleMapsCoordsModal({ googleMapsModalOpen, setGoogleMa
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500 mb-4">
-                      {"By right clicking on the pin of an address you look up in Google Maps, you can get the latitude and longitude."} 
+                      {
+                        "By right clicking on the pin of an address you look up in Google Maps, you can get the latitude and longitude."
+                      }
                     </p>
                     <Image src={maps} layout="responsive" />
                   </div>
@@ -66,5 +72,5 @@ export default function GoogleMapsCoordsModal({ googleMapsModalOpen, setGoogleMa
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

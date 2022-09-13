@@ -33,21 +33,12 @@ function createConnectionConfig(
 export default withSession(async (req, res) => {
   if (req.method === "POST") {
     try {
-      const {
-        network,
-        updateAuthority,
-        CID,
-        address,
-        signature,
-        shortId,
-        message,
-        mintAddress,
-      } = req.body;
+      const { network, updateAuthority, CID, address, signature, shortId, message, mintAddress } =
+        req.body;
 
       const savedMessage = req.session.get("message-session");
 
-      const signedMessage = new TextEncoder()
-        .encode(`To verify you own the NFT in question,
+      const signedMessage = new TextEncoder().encode(`To verify you own the NFT in question,
 you must sign this message. 
 The NFT update authority address is:
 ${updateAuthority}
@@ -58,16 +49,8 @@ ${savedMessage.id}`);
         return res.status(401).send(`Invalid signature attempt.`);
       }
 
-      if (
-        !sign.detached.verify(
-          signedMessage,
-          bs58.decode(signature),
-          bs58.decode(address)
-        )
-      ) {
-        return res
-          .status(401)
-          .send(`Invalid signature or NFT not owned by public key provided.`);
+      if (!sign.detached.verify(signedMessage, bs58.decode(signature), bs58.decode(address))) {
+        return res.status(401).send(`Invalid signature or NFT not owned by public key provided.`);
       }
 
       const nftArray = await getParsedNftAccountsByOwner({
@@ -84,9 +67,7 @@ ${savedMessage.id}`);
       );
 
       if (mintAddress) {
-        let filteredByMintAddress = foundUpdateAuthority.filter(
-          (f) => f.mint === mintAddress
-        );
+        let filteredByMintAddress = foundUpdateAuthority.filter((f) => f.mint === mintAddress);
         foundUpdateAuthority = filteredByMintAddress;
       }
 
@@ -94,14 +75,18 @@ ${savedMessage.id}`);
         return res.status(401).send("NFT not associated with your public key.");
       }
 
-      if(!shortId) {
+      if (!shortId) {
         return res.json(true);
       }
 
       const info = await getUserContentCombo(shortId);
       const { submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
-      const responseObj = await getSubmarinedContent(pinata_submarine_key, submarine_cid, pinata_gateway_subdomain);
+      const responseObj = await getSubmarinedContent(
+        pinata_submarine_key,
+        submarine_cid,
+        pinata_gateway_subdomain
+      );
       return res.json(responseObj);
     } catch (error) {
       console.log(error);

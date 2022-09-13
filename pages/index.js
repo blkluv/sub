@@ -6,8 +6,7 @@ import Auth from "../components/Auth";
 import Head from "next/head";
 import SharedHead from "../components/SharedHead";
 export default function Home() {
-  const { fetchSession, isAuthenticated, plan, confirmMFA, logUserIn } =
-    useAuth();
+  const { fetchSession, isAuthenticated, plan, confirmMFA, logUserIn } = useAuth();
   useEffect(() => {
     fetchSession();
   }, []);

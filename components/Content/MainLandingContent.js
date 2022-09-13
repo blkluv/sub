@@ -38,9 +38,9 @@ const MainLandingContent = ({
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
   const [gatewayUrl, setGatewayUrl] = useState("");
-  
+
   useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"))
+    setGatewayUrl(localStorage.getItem("sm-gateway"));
   }, []);
 
   const { twitterAuth } = useTwitter();
@@ -54,9 +54,7 @@ const MainLandingContent = ({
       const res = await signData(fileInfo);
       if (res && !res.directory) {
         setSolSigning(false);
-        window.location.replace(
-          `${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`
-        );
+        window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);
       } else if (res && res.html) {
         setSolSigning(false);
         window.location.replace(
@@ -91,9 +89,7 @@ const MainLandingContent = ({
             const data = res.data;
             if (data && !data.directory) {
               setSolSigning(false);
-              window.location.replace(
-                `${data.gateway}/ipfs/${data.cid}?accessToken=${data.token}`
-              );
+              window.location.replace(`${data.gateway}/ipfs/${data.cid}?accessToken=${data.token}`);
             } else if (data && data.html) {
               setSolSigning(false);
               window.location.replace(
@@ -112,20 +108,14 @@ const MainLandingContent = ({
         },
         (error) => {
           setVerifying(false);
-          alert(
-            "Location services may be disabled on your device, please enable them."
-          );
+          alert("Location services may be disabled on your device, please enable them.");
         }
       );
     }
   };
 
   const forcedStyle = () => {
-    if (
-      fileInfo &&
-      fileInfo.customizations &&
-      fileInfo.customizations.backgroundCid
-    ) {
+    if (fileInfo && fileInfo.customizations && fileInfo.customizations.backgroundCid) {
       return {
         backgroundImage: `url(${gatewayUrl}/ipfs/${fileInfo.customizations.backgroundCid})`,
       };
@@ -194,10 +184,7 @@ const MainLandingContent = ({
           rel="stylesheet"
         ></link>
         <title>{data && data.name ? data.name : "Submarine.me"}</title>
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"
-        ></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
       </Head>
 
       <div style={hasCustomFont() ? getCustomFont() : {}}>
@@ -230,27 +217,26 @@ const MainLandingContent = ({
                 handleChangePage={handleChangePage}
               />
             ) : (
-              <div>                               
-                {fileInfo?.thumbnail?.length > 0 &&
-                typeof fileInfo.thumbnail === "string" ? (
+              <div>
+                {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
                   <img
                     className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
                     src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
                     alt={`${fileInfo.name} preview`}
                   />
-                ) : fileInfo?.thumbnail?.length > 0 && (
-                  <img
-                    className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-                    src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]?.preview}
-                    alt={`${fileInfo.name} preview`}
-                  />
+                ) : (
+                  fileInfo?.thumbnail?.length > 0 && (
+                    <img
+                      className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
+                      src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]?.preview}
+                      alt={`${fileInfo.name} preview`}
+                    />
+                  )
                 )}
                 <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                   <span className="block">{fileInfo.name}</span>
                 </h2>
-                <h4 className="mt-4 text-muted text-xl">
-                  {fileInfo.description}
-                </h4>
+                <h4 className="mt-4 text-muted text-xl">{fileInfo.description}</h4>
                 <div className="mt-10 flex justify-center">
                   {fileInfo &&
                   fileInfo.unlockInfo &&
@@ -276,9 +262,7 @@ const MainLandingContent = ({
                                 onClick={() => hanldeSolSign()}
                                 className="m-auto w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                               >
-                                {solSigning
-                                  ? "Unlocking..."
-                                  : "Verify Ownership"}
+                                {solSigning ? "Unlocking..." : "Verify Ownership"}
                               </button>
                             )}
                             <WalletDisconnectButton className="mt-4 w-full m-auto" />
@@ -342,16 +326,13 @@ const MainLandingContent = ({
                         </div>
                       )}
                     </div>
-                  ) : fileInfo &&
-                    fileInfo.unlockInfo &&
-                    fileInfo.unlockInfo.type === "retweet" ? (
+                  ) : fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type === "retweet" ? (
                     <div className="max-w-full m-auto text-center">
                       {/* <a className="text-sm underline" href={fileInfo.unlockInfo.tweetUrl} target="_blank" rel="noopener noreferrer">Make sure you have retweeted this tweet</a> */}
                       <Tweet
                         tweetId={
                           fileInfo?.unlockInfo?.tweetUrl &&
-                          fileInfo?.unlockInfo?.tweetUrl.split("status/")[1]
-                            .split("?")[0]
+                          fileInfo?.unlockInfo?.tweetUrl.split("status/")[1].split("?")[0]
                         }
                       />
                       <p className="text-muted text-sm">
@@ -370,9 +351,7 @@ const MainLandingContent = ({
                           onClick={() => twitterAuth()}
                           className="mt-4 w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                         >
-                          {verifying
-                            ? "Verifying retweet..."
-                            : "Connect Your Twitter"}
+                          {verifying ? "Verifying retweet..." : "Connect Your Twitter"}
                         </button>
                       )}
                     </div>
@@ -389,22 +368,19 @@ const MainLandingContent = ({
                     <div />
                   )}
                 </div>
-                {fileInfo &&
-                  fileInfo.unlockInfo &&
-                  fileInfo.unlockInfo.type === "nft" && (
-                    <p className="mt-4 mb-4 text-md text-muted">
-                      Unlock this content by connecting your wallet to verify
-                      you have the required NFT.
-                    </p>
-                  )}
+                {fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type === "nft" && (
+                  <p className="mt-4 mb-4 text-md text-muted">
+                    Unlock this content by connecting your wallet to verify you have the required
+                    NFT.
+                  </p>
+                )}
 
-                {fileInfo.unlockInfo &&
-                  fileInfo.unlockInfo.type === "retweet" && (
-                    <p className="mt-4 mb-4 text-md text-muted">
-                      Unlock this content by retweeting the above tweet and
-                      signing in with your Twitter account.
-                    </p>
-                  )}
+                {fileInfo.unlockInfo && fileInfo.unlockInfo.type === "retweet" && (
+                  <p className="mt-4 mb-4 text-md text-muted">
+                    Unlock this content by retweeting the above tweet and signing in with your
+                    Twitter account.
+                  </p>
+                )}
               </div>
             )}
           </div>

@@ -13,11 +13,7 @@ const ProfileDropDown = ({ avatar }) => {
       <div>
         <Menu.Button className="bg-white rounded-full flex text-sm outline-none">
           <span className="sr-only">Open user menu</span>
-          <img
-            className="h-8 w-8 rounded-full"
-            src={avatar}
-            alt=""
-          />
+          <img className="h-8 w-8 rounded-full" src={avatar} alt="" />
         </Menu.Button>
       </div>
       <Transition

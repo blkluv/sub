@@ -1,7 +1,12 @@
 import axios from "axios";
-const TIMEOUT_SECONDS = 60
+const TIMEOUT_SECONDS = 60;
 
-export const getSubmarinedContent = async (pinata_submarine_key, submarine_cid, pinata_gateway_subdomain, offset = 0) => {
+export const getSubmarinedContent = async (
+  pinata_submarine_key,
+  submarine_cid,
+  pinata_gateway_subdomain,
+  offset = 0
+) => {
   try {
     const config = {
       headers: {
@@ -14,19 +19,22 @@ export const getSubmarinedContent = async (pinata_submarine_key, submarine_cid, 
       config
     );
 
-    const { data } = content;     
-  
+    const { data } = content;
+
     const { items } = data;
     const item = items.find((i) => i.cid === submarine_cid);
 
     let hasIndexHtml = false;
-    let childContent = []
+    let childContent = [];
     let totalChildContentItems = 0;
-    if(item.type === 'D') {
-      const listData = await axios.get(`${process.env.NEXT_PUBLIC_MANAGED_API}/content/${item.id}/list?includePaths=true&limit=10&offset=${offset}`, config)          
+    if (item.type === "D") {
+      const listData = await axios.get(
+        `${process.env.NEXT_PUBLIC_MANAGED_API}/content/${item.id}/list?includePaths=true&limit=10&offset=${offset}`,
+        config
+      );
       totalChildContentItems = listData.data.totalItems;
       const { items: directoryItems } = listData.data;
-      const indexHtml = directoryItems.filter(i => i.originalname.includes("index.html"));
+      const indexHtml = directoryItems.filter((i) => i.originalname.includes("index.html"));
       hasIndexHtml = indexHtml.length > 0;
       childContent = directoryItems;
     }
@@ -39,19 +47,19 @@ export const getSubmarinedContent = async (pinata_submarine_key, submarine_cid, 
       body,
       config
     );
-  
+
     const GATEWAY_URL = `https://${pinata_gateway_subdomain}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
     return {
-      directory: item.type === 'D' ? true : false, 
-      html: hasIndexHtml, 
-      token: token.data, 
-      gateway: GATEWAY_URL, 
-      cid: submarine_cid, 
-      childContent, 
-      totalItems: totalChildContentItems, 
-      itemId: item.id
-    }
+      directory: item.type === "D" ? true : false,
+      html: hasIndexHtml,
+      token: token.data,
+      gateway: GATEWAY_URL,
+      cid: submarine_cid,
+      childContent,
+      totalItems: totalChildContentItems,
+      itemId: item.id,
+    };
   } catch (error) {
     throw error;
   }
-}
+};

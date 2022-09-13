@@ -1,18 +1,23 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationIcon } from '@heroicons/react/outline'
-import { useAuth } from '../../hooks/useAuth'
+import { Fragment, useRef, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationIcon } from "@heroicons/react/outline";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function UpgradeModal() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
   const { logUserOut } = useAuth();
 
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef(null);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={() => setOpen(true)}>
+      <Dialog
+        as="div"
+        className="fixed z-10 inset-0 overflow-y-auto"
+        initialFocus={cancelButtonRef}
+        onClose={() => setOpen(true)}
+      >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -50,7 +55,8 @@ export default function UpgradeModal() {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                    Submarine.me is only available to Pinata customers with a paid plan and a Dedicated Gateway. 
+                      Submarine.me is only available to Pinata customers with a paid plan and a
+                      Dedicated Gateway.
                     </p>
                   </div>
                 </div>
@@ -64,7 +70,7 @@ export default function UpgradeModal() {
                   rel="noreferrer noopener"
                 >
                   Go Upgrade Today!
-                </a>   
+                </a>
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-full border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
@@ -72,12 +78,12 @@ export default function UpgradeModal() {
                   ref={cancelButtonRef}
                 >
                   Log Out
-                </button>           
+                </button>
               </div>
             </div>
           </Transition.Child>
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

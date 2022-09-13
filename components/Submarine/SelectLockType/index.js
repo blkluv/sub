@@ -30,7 +30,7 @@ const actions = [
     link: "/submarine/retweet",
     text: "Require a retweet of a specific tweet in order to unlock your submarined content.",
   },
-    {
+  {
     title: "Location",
     href: "#",
     id: "location",
@@ -49,10 +49,9 @@ const actions = [
     iconBackground: "bg-grey-50",
     link: "/submarine/card",
     text: "Require a payment to unlock your submarined content",
-    soon: true
+    soon: true,
   },
 ];
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -61,19 +60,20 @@ function classNames(...classes) {
 export default function SelectLockType() {
   return (
     <div>
-
       <h3 className="font-bold text-2xl mb-4">
         {"Choose how you'd like your submarined content to be unlocked"}
       </h3>
       <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
         {actions.map((action, actionIdx) => (
-          <Link  id={action.id} key={action.title} href={action.soon ? "/submarine/new" : action.link}>
-            <div             
+          <Link
+            id={action.id}
+            key={action.title}
+            href={action.soon ? "/submarine/new" : action.link}
+          >
+            <div
               className={classNames(
-                action.soon ? "cursor-not-allowed" : "cursor-pointer", 
-                actionIdx === 0
-                  ? "rounded-tl-lg rounded-tr-lg sm:rounded-tr-none"
-                  : "",
+                action.soon ? "cursor-not-allowed" : "cursor-pointer",
+                actionIdx === 0 ? "rounded-tl-lg rounded-tr-lg sm:rounded-tr-none" : "",
                 actionIdx === 1 ? "sm:rounded-tr-lg" : "",
                 actionIdx === actions.length - 2 ? "sm:rounded-bl-lg" : "",
                 actionIdx === actions.length - 1

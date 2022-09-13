@@ -2,17 +2,12 @@ import { MapIcon } from "@heroicons/react/outline";
 import React from "react";
 import CustomButton from "./CustomButton";
 
-const LocationUnlock = ({
-  fileInfo,
-  verifying,
-  verifyLocation,
-  isButtonCustom,
-}) => {
+const LocationUnlock = ({ fileInfo, verifying, verifyLocation, isButtonCustom }) => {
   return (
     <div>
       <p className="text-muted text-sm">
-        You have to be within <strong>{fileInfo?.unlockInfo?.distance}</strong>{" "}
-        mile(s) of these coordinates to unlock this media:
+        You have to be within <strong>{fileInfo?.unlockInfo?.distance}</strong> mile(s) of these
+        coordinates to unlock this media:
       </p>
       <p className="mt-4">
         <a

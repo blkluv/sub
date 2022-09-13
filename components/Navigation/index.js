@@ -55,18 +55,12 @@ export default function Navigation() {
                       alt="Submarine Me"
                     />
 
-                    <span className="ml-2 text-xl font-extrabold text-gray-900">
-                      submarine.me
-                    </span>
+                    <span className="ml-2 text-xl font-extrabold text-gray-900">submarine.me</span>
                   </div>
                 </Link>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                
-
-                {isAuthenticated && (
-                  <ProfileDropDown avatar={avatar} />
-                )}
+                {isAuthenticated && <ProfileDropDown avatar={avatar} />}
               </div>
             </div>
           </div>

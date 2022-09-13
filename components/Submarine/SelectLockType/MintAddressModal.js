@@ -1,14 +1,18 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { InformationCircleIcon } from '@heroicons/react/outline'
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import mint from "./mintAddress.png";
 
-export default function MintAddressModal({ mintAddressModalOpen, setMintAddressModalOpen }) {  
+export default function MintAddressModal({ mintAddressModalOpen, setMintAddressModalOpen }) {
   return (
     <Transition.Root show={mintAddressModalOpen} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setMintAddressModalOpen}>
+      <Dialog
+        as="div"
+        className="fixed z-10 inset-0 overflow-y-auto"
+        onClose={setMintAddressModalOpen}
+      >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -46,7 +50,9 @@ export default function MintAddressModal({ mintAddressModalOpen, setMintAddressM
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500 mb-4">
-                      {"You can find this on most Solana NFT marketplaces by looking at the info about the NFT you own."} 
+                      {
+                        "You can find this on most Solana NFT marketplaces by looking at the info about the NFT you own."
+                      }
                     </p>
                     <Image src={mint} layout="responsive" />
                   </div>
@@ -66,5 +72,5 @@ export default function MintAddressModal({ mintAddressModalOpen, setMintAddressM
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

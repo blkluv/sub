@@ -17,21 +17,17 @@ const CustomizeLockScreen = ({
   setButtonTextColor,
   buttonShape,
   setButtonShape,
-  fontFamily, 
-  setFontFamily
+  fontFamily,
+  setFontFamily,
 }) => {
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"))
+    setGatewayUrl(localStorage.getItem("sm-gateway"));
   }, []);
   return (
-
     <div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="photo"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="photo" className="block text-sm font-medium text-gray-700">
           Background Image
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -40,7 +36,11 @@ const CustomizeLockScreen = ({
               {background && background.length > 0 ? (
                 <img
                   className="w-40"
-                  src={typeof background === "string" ? `${gatewayUrl}/ipfs/${background}`: background[0]?.preview}
+                  src={
+                    typeof background === "string"
+                      ? `${gatewayUrl}/ipfs/${background}`
+                      : background[0]?.preview
+                  }
                   alt="preview for thumbnail"
                 />
               ) : (
@@ -69,10 +69,7 @@ const CustomizeLockScreen = ({
         </div>
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="logo"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="logo" className="block text-sm font-medium text-gray-700">
           Logo Image
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -101,51 +98,32 @@ const CustomizeLockScreen = ({
                 </svg>
               )}
             </span>
-            {uploadingLogo ? (
-              <div>Uploading...</div>
-            ) : (
-              <UploadLogo onLogoChange={onLogoChange} />
-            )}
+            {uploadingLogo ? <div>Uploading...</div> : <UploadLogo onLogoChange={onLogoChange} />}
           </div>
         </div>
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="button-color"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="button-color" className="block text-sm font-medium text-gray-700">
           Button Color
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            <SketchPicker
-              color={buttonColor}
-              onChangeComplete={setButtonColor}
-            />
+            <SketchPicker color={buttonColor} onChangeComplete={setButtonColor} />
           </div>
         </div>
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="button-text-color"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="button-text-color" className="block text-sm font-medium text-gray-700">
           Button Text Color
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            <SketchPicker
-              color={buttonTextColor}
-              onChangeComplete={setButtonTextColor}
-            />
+            <SketchPicker color={buttonTextColor} onChangeComplete={setButtonTextColor} />
           </div>
         </div>
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="button-shape"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="button-shape" className="block text-sm font-medium text-gray-700">
           Button Shape
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -156,7 +134,7 @@ const CustomizeLockScreen = ({
                   id="button-rounded"
                   name="push-notifications"
                   type="radio"
-                  checked={buttonShape === "rounded" }
+                  checked={buttonShape === "rounded"}
                   onChange={() => setButtonShape("rounded")}
                   className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
@@ -172,7 +150,7 @@ const CustomizeLockScreen = ({
                   id="button-square"
                   name="push-notifications"
                   type="radio"
-                  checked={buttonShape !== "rounded" }
+                  checked={buttonShape !== "rounded"}
                   onChange={() => setButtonShape("square")}
                   className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
@@ -188,31 +166,28 @@ const CustomizeLockScreen = ({
         </div>
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="font-family"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="font-family" className="block text-sm font-medium text-gray-700">
           Font Family
         </label>
         <div className="mt-1 sm:mt-0 ">
           <div className="max-w-lg flex">
-          <div className="mt-1 sm:mt-0 ">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
-                  value={fontFamily}
-                  onChange={(e) => setFontFamily(e.target.value)}
-                  className="max-w-lg block w-full sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
-                >
-                  <option value="Inter">Inter</option>
-                  <option value="Lato">Lato</option>
-                  <option value="Open Sans">Open Sans</option>
-                  <option value="Roboto">Roboto</option>
-                  <option value="Roboto Condensed">Roboto Condensed</option>                  
-                  <option value="Source Sans Pro">Source Sans Pro</option>
-                </select>
-                </div>
+            <div className="mt-1 sm:mt-0 ">
+              <select
+                id="country"
+                name="country"
+                autoComplete="country-name"
+                value={fontFamily}
+                onChange={(e) => setFontFamily(e.target.value)}
+                className="max-w-lg block w-full sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
+              >
+                <option value="Inter">Inter</option>
+                <option value="Lato">Lato</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Roboto Condensed">Roboto Condensed</option>
+                <option value="Source Sans Pro">Source Sans Pro</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

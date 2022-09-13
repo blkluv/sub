@@ -8,10 +8,7 @@ const SharedHead = () => {
       <link rel="icon" href="/submarine.png"></link>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <meta
-        name="description"
-        content="Submarine Me - Unlock Exlusive Content With An NFT"
-      />
+      <meta name="description" content="Submarine Me - Unlock Exlusive Content With An NFT" />
       <meta property="og:type" content="Web application" />
       <meta property="og:title" content="Submarine Me - By Pinata" />
       <meta
@@ -25,10 +22,7 @@ const SharedHead = () => {
         content="https://gateway.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
       />
       <title>Submarine Me - By Pinata</title>
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"
-      ></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
       <script
         dangerouslySetInnerHTML={{
           __html: `

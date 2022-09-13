@@ -16,9 +16,7 @@ const chains = defaultChains;
 
 // Set up connectors
 const connectors = ({ chainId }) => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0];
+  const rpcUrl = chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0];
   return [
     new InjectedConnector({
       chains,
@@ -44,7 +42,7 @@ const Content = ({ data }) => {
   const [missing, set404] = useState(false);
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"))
+    setGatewayUrl(localStorage.getItem("sm-gateway"));
   }, []);
 
   useEffect(() => {
@@ -63,28 +61,17 @@ const Content = ({ data }) => {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <link
           rel="icon"
-          href={
-            data && data.thumbnail
-              ? `${gatewayUrl}/ipfs/${data?.thumbnail}`
-              : "/submarine.png"
-          }
+          href={data && data.thumbnail ? `${gatewayUrl}/ipfs/${data?.thumbnail}` : "/submarine.png"}
         ></link>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta name="description" content={data?.description} />
         <meta property="og:type" content="Web application" />
-        <meta
-          property="og:title"
-          content={data && data.name ? data?.name : "Submarine.me"}
-        />
+        <meta property="og:title" content={data && data.name ? data?.name : "Submarine.me"} />
         <meta
           property="og:description"
-          content={
-            data && data.name
-              ? data?.description
-              : "Locked content powered by Submarine.me"
-          }
+          content={data && data.name ? data?.description : "Locked content powered by Submarine.me"}
         />
         <meta
           property="og:image"
@@ -101,10 +88,7 @@ const Content = ({ data }) => {
           rel="stylesheet"
         ></link>
         <title>{data && data.name ? data.name : "Submarine.me"}</title>
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"
-        ></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -154,9 +138,7 @@ window['_fs_namespace'] = 'FS';
 export async function getServerSideProps(context) {
   try {
     const host =
-      process.env.NODE_ENV === "production"
-        ? "https://app.submarine.me"
-        : "http://localhost:3001";
+      process.env.NODE_ENV === "production" ? "https://app.submarine.me" : "http://localhost:3001";
 
     const res = await ky(`${host}/api/content/${context.query.id}`, {
       method: "GET",

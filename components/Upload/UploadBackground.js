@@ -19,8 +19,8 @@ const UploadBackground = ({ onBackgroundChange }) => {
             type="file"
             className="sr-only"
             accept=".png, .jpeg, .jpg, .gif"
-            ref={fileInput}    
-            onChange={onBackgroundChange}       
+            ref={fileInput}
+            onChange={onBackgroundChange}
           />
         </label>
       </div>

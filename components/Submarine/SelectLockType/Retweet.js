@@ -1,7 +1,7 @@
 import React from "react";
 import UploadFile from "../../Upload/UploadFile";
 
-const Retweet = ({onFileChange, selectedFiles, tweetUrl, setTweetUrl }) => {
+const Retweet = ({ onFileChange, selectedFiles, tweetUrl, setTweetUrl }) => {
   return (
     <div>
       <div>

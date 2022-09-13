@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 .public-content-bg {
-  background: linear-gradient(180deg, #B6ECE2 0%, #9C6BC3 100%);
+  background: linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%);
 }
 
 .hero-content-bg {
-  background: linear-gradient(180deg, #B6ECE2 0%, #9C6BC3 100%);
-  background-image: url('../public/background.png');
+  background: linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%);
+  background-image: url("../public/background.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -20,25 +20,25 @@
   left: 221.21px;
   top: 210.67px;
 
-  background: linear-gradient(95.71deg, #00BEDD 16.8%, #953BED 214.83%);
+  background: linear-gradient(95.71deg, #00bedd 16.8%, #953bed 214.83%);
   transform: rotate(9.86deg);
 }
 
 .landing-bg {
-  background: linear-gradient(180deg, #E3D1FF 0%, #3FD6EE 100%);
+  background: linear-gradient(180deg, #e3d1ff 0%, #3fd6ee 100%);
 }
 
 .special-background {
-  background: linear-gradient(180deg, #F1E8FF 7.81%, #E9FCFF 100%);
+  background: linear-gradient(180deg, #f1e8ff 7.81%, #e9fcff 100%);
 }
 
 .wallet-adapter-modal {
-  max-width: 60%!important;
-  max-height: 50%!important;
-  margin-top: 15%!important;
+  max-width: 60% !important;
+  max-height: 50% !important;
+  margin-top: 15% !important;
 }
 
-.wallet-adapter-button  {
+.wallet-adapter-button {
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
@@ -51,26 +51,26 @@
   margin-right: 10px;
 }
 
-.wallet-adapter-button span{
+.wallet-adapter-button span {
   margin-left: 5px;
   color: rgb(153, 153, 153);
 }
 
 #twitter-widget-0 {
-  max-width: 500px!important;
-  width: 500px!important;
-  margin: auto!important;
+  max-width: 500px !important;
+  width: 500px !important;
+  margin: auto !important;
 }
 
 @media only screen and (max-width: 600px) {
   .wallet-adapter-modal {
-    max-width: 90%!important;
-    max-height: 50%!important;
-    margin-top: 20%!important;
+    max-width: 90% !important;
+    max-height: 50% !important;
+    margin-top: 20% !important;
   }
 
   #twitter-widget-0 {
-    width: 150px!important;
-    margin: auto!important;
+    width: 150px !important;
+    margin: auto !important;
   }
 }

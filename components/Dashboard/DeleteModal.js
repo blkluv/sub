@@ -1,22 +1,27 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationIcon } from '@heroicons/react/outline'
+import { Fragment, useRef, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationIcon } from "@heroicons/react/outline";
 
 export default function DeleteModal({ file, handleDelete, loadLinks, open, setOpen }) {
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef(null);
   const deleteLink = async () => {
-    if(!file.id) {
-      throw "No file id"
+    if (!file.id) {
+      throw "No file id";
     }
     await handleDelete(file.id);
     loadLinks(0);
     setOpen(false);
-  }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setOpen}>
+      <Dialog
+        as="div"
+        className="fixed z-10 inset-0 overflow-y-auto"
+        initialFocus={cancelButtonRef}
+        onClose={setOpen}
+      >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -81,5 +86,5 @@ export default function DeleteModal({ file, handleDelete, loadLinks, open, setOp
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

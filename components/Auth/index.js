@@ -1,6 +1,6 @@
-import React from 'react'
-import Nav from '../Navigation'
-import AuthForm from './AuthForm'
+import React from "react";
+import Nav from "../Navigation";
+import AuthForm from "./AuthForm";
 
 const index = () => {
   return (
@@ -8,7 +8,7 @@ const index = () => {
       <Nav />
       <AuthForm />
     </div>
-  )
-}
+  );
+};
 
-export default index
+export default index;

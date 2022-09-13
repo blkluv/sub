@@ -13,9 +13,7 @@ const chains = defaultChains;
 
 // Set up connectors
 const connectors = ({ chainId }) => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0];
+  const rpcUrl = chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0];
   return [
     new InjectedConnector({
       chains,
@@ -36,20 +34,11 @@ const connectors = ({ chainId }) => {
   ];
 };
 
-export default function PreviewModal({
-  previewOpen,
-  setPreviewOpen,
-  fileInfo,
-  loading, 
-}) {
+export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo, loading }) {
   console.log(previewOpen);
   return (
     <Transition.Root show={previewOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="fixed z-10 inset-0 overflow-y-auto"
-        onClose={setPreviewOpen}
-      >
+      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setPreviewOpen}>
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -64,10 +53,7 @@ export default function PreviewModal({
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
-          <span
-            className="hidden sm:inline-block sm:align-middle sm:h-screen"
-            aria-hidden="true"
-          >
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
             &#8203;
           </span>
           <Transition.Child
@@ -79,8 +65,8 @@ export default function PreviewModal({
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl md:max-w-3xl sm:w-full sm:p-6">        
-              <div>                
+            <div className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl md:max-w-3xl sm:w-full sm:p-6">
+              <div>
                 <div className="mt-3 text-center sm:mt-5">
                   <div className="mt-2">
                     <Provider autoConnect connectors={connectors}>
@@ -88,7 +74,7 @@ export default function PreviewModal({
                         missing={false}
                         loading={false}
                         fileInfo={fileInfo}
-                        preview={true}              
+                        preview={true}
                       />
                     </Provider>
                   </div>

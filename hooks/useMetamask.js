@@ -9,7 +9,7 @@ export const useMetamask = () => {
   const [holdsNFT, setHoldsNFT] = useState(false);
 
   const signData = async (metadata) => {
-    try {      
+    try {
       const { shortId, submarineCID, unlockInfo } = metadata;
       const { contract, blockchain, tokenId, network } = unlockInfo;
       const messageToSign = await axios.get(`/api/verify?contract=${contract}`);
@@ -23,28 +23,28 @@ you must sign this message.
 The NFT contract address is:
 ${messageToSign.data.contract}
 The verification id is: 
-${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
+${messageToSign.data.id}`, //JSON.stringify(messageToSign.data),
           account,
           messageToSign.data.id,
         ],
       });
-  
+
       const res = await axios.post("/api/verify", {
         address: account,
         signature,
         network,
         contractAddress: contract,
-        blockchain, 
+        blockchain,
         tokenId,
         CID: submarineCID,
-        shortId: shortId
+        shortId: shortId,
       });
-      const data = res.data;  
-      data.signature = signature;   
-      return data; 
+      const data = res.data;
+      data.signature = signature;
+      return data;
     } catch (error) {
       throw error;
-    }    
+    }
   };
 
   return {
@@ -52,8 +52,8 @@ ${messageToSign.data.id}`,//JSON.stringify(messageToSign.data),
     ethereum,
     url,
     holdsNFT,
-    url, 
-    setEthereum, 
-    EVMChains
+    url,
+    setEthereum,
+    EVMChains,
   };
 };

@@ -19,8 +19,8 @@ const UploadLogo = ({ onLogoChange }) => {
             type="file"
             className="sr-only"
             accept=".png, .jpeg, .jpg, .gif"
-            ref={fileInput}    
-            onChange={onLogoChange}       
+            ref={fileInput}
+            onChange={onLogoChange}
           />
         </label>
       </div>

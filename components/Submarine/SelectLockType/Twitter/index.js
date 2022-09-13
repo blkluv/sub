@@ -29,8 +29,8 @@ const Twitter = ({
   onBackgroundChange,
   backgroundCid,
   logo,
-  buttonShape, 
-  setButtonShape
+  buttonShape,
+  setButtonShape,
 }) => {
   return (
     <div>
@@ -39,8 +39,8 @@ const Twitter = ({
           Allow content to be unlocked by a Retweet
         </h3>
         <p className="text-gray-600">
-          Upload media that can only be unlocked if the person trying to access
-          it retweets a tweet you specify.
+          Upload media that can only be unlocked if the person trying to access it retweets a tweet
+          you specify.
         </p>
       </div>
       <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">

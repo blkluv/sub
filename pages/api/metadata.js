@@ -2,22 +2,18 @@ import axios from "axios";
 import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import { validate as uuidValidate } from "uuid";
-import { getSupabaseClient } from '../../helpers/supabase';
+import { getSupabaseClient } from "../../helpers/supabase";
 
-const supabase = getSupabaseClient()
-
+const supabase = getSupabaseClient();
 
 const getUserSession = async (auth) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`,
-      {
-        headers: {
-          Authorization: auth,
-          source: "login",
-        },
-      }
-    );
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
+      headers: {
+        Authorization: auth,
+        source: "login",
+      },
+    });
     return res.data;
   } catch (error) {
     throw error;
@@ -40,11 +36,7 @@ export default async function handler(req, res) {
         unlockInfo: Joi.object({
           type: Joi.string().min(1).max(100).required(),
           contract: Joi.string().min(1).max(100).optional().allow(null, ""),
-          updateAuthority: Joi.string()
-            .min(1)
-            .max(100)
-            .optional()
-            .allow(null, ""),
+          updateAuthority: Joi.string().min(1).max(100).optional().allow(null, ""),
           mintAddress: Joi.string().min(1).max(100).optional().allow(null, ""),
           network: Joi.string().min(1).max(100).allow(null, ""),
           blockchain: Joi.string().min(1).max(100).allow(null, ""),
@@ -55,11 +47,7 @@ export default async function handler(req, res) {
           distance: Joi.number().min(0).max(6000).optional().allow(null, ""),
         }).required(),
         customizations: Joi.object({
-          backgroundCid: Joi.string()
-            .min(1)
-            .max(100)
-            .optional()
-            .allow(null, ""),
+          backgroundCid: Joi.string().min(1).max(100).optional().allow(null, ""),
           buttonColor: Joi.object().optional().allow(null, ""),
           buttonTextColor: Joi.object().optional().allow(null, ""),
           buttonShape: Joi.string().min(1).max(100).optional().allow(null, ""),
@@ -97,9 +85,7 @@ export default async function handler(req, res) {
         theCreationObject.background_cid = req.body.background_cid;
       }
 
-      const { data, error } = await supabase
-        .from("Content")
-        .insert([theCreationObject]);
+      const { data, error } = await supabase.from("Content").insert([theCreationObject]);
 
       if (error) {
         throw error;
@@ -127,11 +113,7 @@ export default async function handler(req, res) {
         unlockInfo: Joi.object({
           type: Joi.string().min(1).max(100).required(),
           contract: Joi.string().min(1).max(100).optional().allow(null, ""),
-          updateAuthority: Joi.string()
-            .min(1)
-            .max(100)
-            .optional()
-            .allow(null, ""),
+          updateAuthority: Joi.string().min(1).max(100).optional().allow(null, ""),
           mintAddress: Joi.string().min(1).max(100).optional().allow(null, ""),
           network: Joi.string().min(1).max(100).allow(null, ""),
           blockchain: Joi.string().min(1).max(100).allow(null, ""),
@@ -142,11 +124,7 @@ export default async function handler(req, res) {
           distance: Joi.number().min(0).max(6000).optional().allow(null, ""),
         }).required(),
         customizations: Joi.object({
-          backgroundCid: Joi.string()
-            .min(1)
-            .max(100)
-            .optional()
-            .allow(null, ""),
+          backgroundCid: Joi.string().min(1).max(100).optional().allow(null, ""),
           buttonColor: Joi.object().optional().allow(null, ""),
           buttonTextColor: Joi.object().optional().allow(null, ""),
           buttonShape: Joi.string().min(1).max(100).optional().allow(null, ""),

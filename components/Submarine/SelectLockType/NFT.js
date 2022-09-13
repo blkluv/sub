@@ -52,15 +52,12 @@ const NFT = ({
   setFontFamily,
   uploadingLogo,
   logo,
-  buttonShape, 
-  setButtonShape
+  buttonShape,
+  setButtonShape,
 }) => {
-  const [nftLockType, setNftLockType] = useState(
-    blockchainOptions ? blockchainOptions[0] : null
-  );
+  const [nftLockType, setNftLockType] = useState(blockchainOptions ? blockchainOptions[0] : null);
   const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
-  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] =
-    useState(false);
+  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
   const [mintAddressModalOpen, setMintAddressModalOpen] = useState(false);
 
   const renderBlockchainSelector = () => {
@@ -265,10 +262,7 @@ const NFT = ({
                   </div>
                 </div>
               </div>
-              <TokenIdModal
-                open={tokenIdModalOpen}
-                setOpen={setTokenIdModalOpen}
-              />
+              <TokenIdModal open={tokenIdModalOpen} setOpen={setTokenIdModalOpen} />
             </div>
           );
       }
@@ -282,9 +276,8 @@ const NFT = ({
           Allow content to be unlocked with ownership of an NFT
         </h3>
         <p className="text-gray-600">
-          Provide details about the NFT to be used to unlock the content, and
-          anyone trying to access your file will not be able to access it unless
-          they own the NFT specified.
+          Provide details about the NFT to be used to unlock the content, and anyone trying to
+          access your file will not be able to access it unless they own the NFT specified.
         </p>
       </div>
 

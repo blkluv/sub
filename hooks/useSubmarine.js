@@ -13,15 +13,12 @@ export const uploadSubmarinedContent = async (data) => {
     Source: "login",
   };
 
-  const res = await ky(
-    `${process.env.NEXT_PUBLIC_MANAGED_API}/content`,
-    {
-      method: "POST",
-      headers: headers,
-      body: data,
-      timeout: 2147483647,
-    }
-  );
+  const res = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/content`, {
+    method: "POST",
+    headers: headers,
+    body: data,
+    timeout: 2147483647,
+  });
 
   const json = await res.json();
   return json;
@@ -40,114 +37,105 @@ export const useSubmarine = () => {
 
   const getSubmarineApiKey = async () => {
     const headers = await getHeaders();
-    const res = await ky( `${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
+    const res = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
       method: "GET",
       headers: {
-        ...headers
-      }
-    }, );
+        ...headers,
+      },
+    });
     const json = await res.json();
     const { items } = json;
-    if(items.length > 0) {
-      return items[0].key
+    if (items.length > 0) {
+      return items[0].key;
     } else {
       return null;
     }
-  }
+  };
 
   const createSubmarineKey = async () => {
     const headers = await getHeaders();
-    await ky( `${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
+    await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/auth/keys`, {
       method: "POST",
       headers: {
-        ...headers
-      }
-    }, );
-  }
+        ...headers,
+      },
+    });
+  };
 
   const submarineKey = async () => {
     let key = await getSubmarineApiKey();
-    if(key) {
+    if (key) {
       return key;
     }
 
-    await createSubmarineKey(); 
+    await createSubmarineKey();
     key = await getSubmarineApiKey();
     return key;
-  }
+  };
 
   const uploadJSON = async (json, id) => {
     try {
       const headers = await getHeaders();
       const payload = {
-        "pinataMetadata": {
-          "name": id
+        pinataMetadata: {
+          name: id,
         },
-        pinataContent: json
+        pinataContent: json,
+      };
+
+      if (json) {
+        payload.pinataMetadata.keyvalues = json;
       }
 
-      if(json) {
-        payload.pinataMetadata.keyvalues = json
-      }
-
-      await ky(
-        `${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinJSONToIPFS`,
-        {
-          method: "POST",
-          headers: {
-            ...headers, 
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify(payload),
-          timeout: 2147483647,
-        },         
-      );    
+      await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinJSONToIPFS`, {
+        method: "POST",
+        headers: {
+          ...headers,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+        timeout: 2147483647,
+      });
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   const getSubmarinedContent = async () => {
-    const url = `${process.env.NEXT_PUBLIC_PINATA_API_URL}/data/pinList?status=pinned&metadata[keyvalues]={"submarineMe":{"value":"true","op":"eq"}}`
+    const url = `${process.env.NEXT_PUBLIC_PINATA_API_URL}/data/pinList?status=pinned&metadata[keyvalues]={"submarineMe":{"value":"true","op":"eq"}}`;
     const headers = await getHeaders();
-    const res = await ky(
-     url,
-      {
-        method: "GET",
-        headers: {
-          ...headers
-        }
-      },         
-    );  
+    const res = await ky(url, {
+      method: "GET",
+      headers: {
+        ...headers,
+      },
+    });
     const json = await res.json();
     return json?.rows || [];
-  }
+  };
 
   const getLockMetadata = async (loadId) => {
     const meta = await ky(`${localStorage.getItem("sm-gateway")}/ipfs/${loadId}`);
     const jsonMeta = await meta.json();
     return jsonMeta;
-  }
+  };
 
   const getContent = async (jsonMeta) => {
-    try {      
+    try {
       const { id, cid } = jsonMeta;
-      const url = `/api/lock?id=${id}&cid=${cid}`
+      const url = `/api/lock?id=${id}&cid=${cid}`;
       const headers = await getHeaders();
-      const res = await ky(
-        url,
-        {
-          method: "GET",
-          headers: {
-            ...headers
-          }
-        },         
-    );  
-    const json = await res.json();
+      const res = await ky(url, {
+        method: "GET",
+        headers: {
+          ...headers,
+        },
+      });
+      const json = await res.json();
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   const getHeaders = async () => {
     const sessionData = await fetchSession();
@@ -161,12 +149,12 @@ export const useSubmarine = () => {
 
   return {
     handleUpload,
-    getHeaders, 
-    uploadJSON, 
-    getSubmarinedContent, 
+    getHeaders,
+    uploadJSON,
+    getSubmarinedContent,
     getLockMetadata,
-    getContent, 
-    submarineKey, 
-    gatewayUrl
+    getContent,
+    submarineKey,
+    gatewayUrl,
   };
 };

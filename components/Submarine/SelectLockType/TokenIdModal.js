@@ -1,9 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { InformationCircleIcon } from '@heroicons/react/outline'
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 
-export default function TokenIdModal({ open, setOpen }) {  
+export default function TokenIdModal({ open, setOpen }) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setOpen}>
@@ -44,7 +44,9 @@ export default function TokenIdModal({ open, setOpen }) {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      If you provide a token ID, we will not only check to see an NFT from the collection is owned by the wallet, we will check if the specific token ID provided is owned by wallet.
+                      If you provide a token ID, we will not only check to see an NFT from the
+                      collection is owned by the wallet, we will check if the specific token ID
+                      provided is owned by wallet.
                     </p>
                   </div>
                 </div>
@@ -55,7 +57,7 @@ export default function TokenIdModal({ open, setOpen }) {
                   className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-pinata-purple text-base font-medium text-white outline-none sm:text-sm"
                   onClick={() => setOpen(false)}
                 >
-                 Close
+                  Close
                 </button>
               </div>
             </div>
@@ -63,5 +65,5 @@ export default function TokenIdModal({ open, setOpen }) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

@@ -31,7 +31,11 @@ const HowItWorks = () => {
         </div>
         <div>
           <div>
-            <img className="h-64 w-auto m-auto" src="/StepThree.png" alt="Step three: share the custom link" />
+            <img
+              className="h-64 w-auto m-auto"
+              src="/StepThree.png"
+              alt="Step three: share the custom link"
+            />
           </div>
           <p className="text-xl font-bold mt-4 mb-2">Step 3</p>
           <p>Share the custom link</p>

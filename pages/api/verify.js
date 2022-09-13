@@ -9,9 +9,9 @@ import { erc1155 } from "../../erc1155";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
-import { getSupabaseClient } from '../../helpers/supabase';
+import { getSupabaseClient } from "../../helpers/supabase";
 
-const supabase = getSupabaseClient()
+const supabase = getSupabaseClient();
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -77,36 +77,26 @@ export default withSession(async (req, res) => {
         },
       };
 
-      let { data: Session, error } = await supabase
-        .from("Session")
-        .select("*")
-        .eq("id", messageId);        
+      let { data: Session, error } = await supabase.from("Session").select("*").eq("id", messageId);
 
       const message = Session[0];
 
-      if(message.used) {
-        throw "This signature has already been used"
+      if (message.used) {
+        throw "This signature has already been used";
       }
 
       const { data, error: updateError } = await supabase
-      .from('Session')
-      .update({ used: true })
-      .match({ id: messageId })
+        .from("Session")
+        .update({ used: true })
+        .match({ id: messageId });
 
       if (updateError) {
         throw error;
       }
 
-      const rpc =
-        blockchain && network
-          ? networkMap[blockchain][network]
-          : networkMap[network];
+      const rpc = blockchain && network ? networkMap[blockchain][network] : networkMap[network];
       const provider = await new ethers.providers.JsonRpcProvider(rpc);
-      let contract = await new ethers.Contract(
-        contractAddress,
-        json(),
-        provider
-      );
+      let contract = await new ethers.Contract(contractAddress, json(), provider);
       const fullMessage = `To verify you own the NFT in question, 
 you must sign this message. 
 The NFT contract address is:
@@ -120,25 +110,13 @@ ${message.id}`;
         let balance = await checkErc721Balance(contract, recoveredAddress);
         if (balance && tokenId) {
           const owner = await contract.ownerOf(tokenId);
-          if (
-            owner.toString().toLowerCase() !== recoveredAddress.toLowerCase()
-          ) {
-            return res
-              .status(401)
-              .send(`Token ID ${tokenId} not owned by ${address}`);
+          if (owner.toString().toLowerCase() !== recoveredAddress.toLowerCase()) {
+            return res.status(401).send(`Token ID ${tokenId} not owned by ${address}`);
           }
         }
         if (!balance) {
-          contract = await new ethers.Contract(
-            contractAddress,
-            erc1155(),
-            provider
-          );
-          balance = await checkErc1155Balance(
-            contract,
-            recoveredAddress,
-            tokenId
-          );
+          contract = await new ethers.Contract(contractAddress, erc1155(), provider);
+          balance = await checkErc1155Balance(contract, recoveredAddress, tokenId);
         }
 
         if (balance && balance.toString() !== "0") {
@@ -174,9 +152,7 @@ ${message.id}`;
         contract: req.query.contract,
         shortId: req.query.shortId || null,
       };
-      const { data, error } = await supabase
-        .from("Session")
-        .insert([sessionObject]);
+      const { data, error } = await supabase.from("Session").insert([sessionObject]);
 
       if (error) {
         throw error;
@@ -188,7 +164,7 @@ ${sessionObject.contract}
 The verification id is: 
 ${sessionObject.id}`;
 
-      return res.json({session: sessionObject, message: fullMessage});
+      return res.json({ session: sessionObject, message: fullMessage });
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;

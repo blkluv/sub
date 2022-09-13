@@ -12,7 +12,7 @@ export const useTwitter = () => {
       window.location.href = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauth_token}`;
     } catch (error) {
       console.error(error);
-      alert(error.message)
+      alert(error.message);
       return null;
     }
   };
@@ -27,7 +27,7 @@ export const useTwitter = () => {
         );
         return res.data;
       } catch (error) {
-        console.error(error);      
+        console.error(error);
         throw error;
       }
     }

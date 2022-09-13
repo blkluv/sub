@@ -4,17 +4,13 @@ import React, { useEffect, useState } from "react";
 const CustomLogo = ({ logo }) => {
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"))
+    setGatewayUrl(localStorage.getItem("sm-gateway"));
   }, []);
   return (
     <div className="w-20">
       <img
         alt="Logo"
-        src={
-          logo.includes("https")
-            ? logo
-            : `${gatewayUrl}/ipfs/${logo}`
-        }
+        src={logo.includes("https") ? logo : `${gatewayUrl}/ipfs/${logo}`}
         className="w-8"
       />
     </div>

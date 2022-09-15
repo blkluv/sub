@@ -7,6 +7,7 @@ import SharedHead from "../../components/SharedHead";
 const AuthWrapper = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  console.log("render auth");
   useEffect(() => {
     if (isAuthenticated) {
       router.push("/");

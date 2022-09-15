@@ -1,25 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
-import { useAuth } from "../../hooks/useAuth";
 import ProfileDropDown from "./ProfileDropDown";
 import Link from "next/link";
 import Image from "next/image";
+import { useAppSelector } from "../../store/hooks";
+import { selectUser, selectUserAvatar } from "../../store/selectors/authSelectors";
 
 export default function Navigation() {
-  const [avatar, setAvatar] = useState(null);
-  const { isAuthenticated, fetchSession } = useAuth();
-  useEffect(() => {
-    if (isAuthenticated) {
-      getUserInfo();
-    }
-  }, [isAuthenticated]);
-
-  const getUserInfo = async () => {
-    const { user } = await fetchSession();
-
-    setAvatar(`https:${user.avatar}`);
-  };
+  const avatarPath = useAppSelector(selectUserAvatar);
+  const isAuthenticated = !!useAppSelector(selectUser);
+  const avatar = avatarPath ? `https:${avatarPath}` : "";
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -41,13 +32,9 @@ export default function Navigation() {
                 <Link passHref href="/">
                   <div className="flex-shrink-0 flex items-center cursor-pointer">
                     <Image
+                      height={32}
+                      width={47}
                       className="block lg:hidden h-8 w-auto"
-                      src="/submarine.png"
-                      alt="Submarine Me"
-                    />
-
-                    <Image
-                      className="hidden lg:block h-8 w-auto"
                       src="/submarine.png"
                       alt="Submarine Me"
                     />

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import Amplify, { Auth, Hub, Cache } from "aws-amplify";
-import router, { useRouter } from "next/router";
-import { awsconfig } from "../helpers/awsconfig";
-import { awsauth } from "../helpers/awsauth";
+import Auth from "@aws-amplify/auth";
+import Amplify from "@aws-amplify/core";
+import { Hub } from "@aws-amplify/core";
+import { awsconfig } from "../constants/awsconfig";
+import { awsauth } from "../constants/awsauth";
 import Cookies from "js-cookie";
 import gravatar from "gravatar";
 import axios from "axios";
@@ -12,15 +13,21 @@ Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
 
 export const getDbInfo = async (accessToken) => {
-  const res = await ky("/api/users", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      source: "login",
-    },
-  });
-
-  return await res.json();
+  throw new Error("not allowed");
+  try {
+    const res = await ky("/api/users", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        source: "login",
+      },
+    }).catch((err) => {
+      return;
+    });
+    return res && res.json();
+  } catch (err) {
+    return;
+  }
 };
 
 export const fetchSession = async () => {
@@ -35,22 +42,25 @@ export const fetchSession = async () => {
           r: "pg", //rating of image - no adult content
           d: "mm", //return default image if no gravatar found
         });
-        localStorage.setItem("pinata-avatar", avatar);
+        localStorage.setItem("pinata-avatar", avatar || "");
         //  Get User Info From Submarine DB
       }
       user.avatar = avatar;
     }
-    const { idToken, accessToken, refreshToken } = session;
+    console.log("log in");
+    // @ts-ignore https://github.com/aws-amplify/amplify-js/issues/4927
+    const { refreshToken, idToken, accessToken } = session;
+    console.log({ session });
 
     return {
       user,
       session,
-      accessToken: accessToken.jwtToken,
-      refreshToken: refreshToken.token,
-      idToken: idToken.jwtToken,
+      accessToken: accessToken.payload,
+      refreshToken: refreshToken.getToken(),
+      idToken: idToken.getJwtToken(),
     };
   } catch (error) {
-    console.log(error);
+    console.log({ error });
     if (window.location.pathname !== "/" && !window.location.pathname.includes("auth")) {
       window.location.replace("/");
     }
@@ -82,20 +92,29 @@ export const logUserIn = async (email, password) => {
     localStorage.removeItem("pinata-avatar");
     // await Auth.federatedSignIn();
     const res = await Auth.signIn(email, password);
+    console.log({ res });
     if (res.challengeName) {
       return {
         success: true,
         user: res,
       };
     } else {
-      const { accessToken } = await fetchSession();
-      await ky("/api/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          source: "login",
-        },
-      });
+      const session = await fetchSession();
+      const accessToken = session?.accessToken;
+      if (!accessToken) {
+        throw new Error("Missing access token");
+      }
+      try {
+        await ky("/api/users", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            source: "login",
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
 
       return {
         success: true,
@@ -132,20 +151,6 @@ export const signUpUser = async (email, password, firstName, lastName, isBuilder
     return {
       success: false,
       user: null,
-      error,
-    };
-  }
-};
-
-export const confirmMFA = async (user, code) => {
-  try {
-    const res = await Auth.confirmSignIn(user, code, "SOFTWARE_TOKEN_MFA");
-    return {
-      success: true,
-    };
-  } catch (error) {
-    return {
-      success: false,
       error,
     };
   }
@@ -213,7 +218,7 @@ export const forgotPasswordSubmit = async (email, code, newPassword) => {
 export const changePassword = async (oldPassword, newPassword) => {
   try {
     const session = await fetchSession();
-    return await Auth.changePassword(session.user, oldPassword, newPassword);
+    return await Auth.changePassword(session?.user, oldPassword, newPassword);
   } catch (error) {
     throw error;
   }
@@ -221,24 +226,24 @@ export const changePassword = async (oldPassword, newPassword) => {
 
 export const getMFAOptions = async () => {
   const session = await fetchSession();
-  return await Auth.getPreferredMFA(session.user);
+  return await Auth.getPreferredMFA(session?.user);
 };
 
-export const setPreferredMFA = async (preferredMFA) => {
+export const setPreferredMFA = async (preferredMFA?) => {
   const session = await fetchSession();
   const mfaType = preferredMFA ? preferredMFA : "TOTP";
-  return await Auth.setPreferredMFA(session.user, mfaType);
+  return await Auth.setPreferredMFA(session?.user, mfaType);
 };
 
 export const setupTotp = async () => {
   const session = await fetchSession();
-  return await Auth.setupTOTP(session.user);
+  return await Auth.setupTOTP(session?.user);
 };
 
 export const verifytTotp = async (challengeAnswer) => {
   try {
     const session = await fetchSession();
-    await Auth.verifyTotpToken(session.user, challengeAnswer);
+    await Auth.verifyTotpToken(session?.user, challengeAnswer);
     return await setPreferredMFA();
   } catch (error) {
     throw error;
@@ -248,7 +253,7 @@ export const verifytTotp = async (challengeAnswer) => {
 export const updateAttributes = async (attributes) => {
   try {
     const session = await fetchSession();
-    const user = session.user;
+    const user = session?.user;
     await Auth.updateUserAttributes(user, attributes);
   } catch (error) {
     throw error;
@@ -281,8 +286,7 @@ export const getAuthenticatedUser = async () => {
 // };
 
 export const useAuth = () => {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  console.log("useAuth");
   const [loggedInUser, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");
   const [idToken, setIdToken] = useState("");
@@ -295,7 +299,6 @@ export const useAuth = () => {
           const { signInUserSession } = data;
           Auth.currentAuthenticatedUser().then((user) => {
             setUser(user);
-            setIsAuthenticated(true);
             setAccessToken(signInUserSession.accessToken);
             setRefreshToken(signInUserSession.refreshToken);
             setIdToken(signInUserSession.idToken);
@@ -304,7 +307,6 @@ export const useAuth = () => {
         case "signOut":
           console.log("sign out");
           setUser(null);
-          setIsAuthenticated(false);
           break;
         case "signUp":
           console.log("sign up");
@@ -317,13 +319,13 @@ export const useAuth = () => {
     handleSession();
   }, []);
 
-  const authWithTwitter = async (calbackUrl) => {
+  const authWithTwitter = async (callbackUrl) => {
     try {
       //OAuth Step 1
       const response = await axios({
         url: `/api/twitter?request_token=true`,
         method: "POST",
-        body: {
+        data: {
           callbackUrl,
         },
       });
@@ -340,29 +342,32 @@ export const useAuth = () => {
   const handleSession = async () => {
     const sessionData = await fetchSession();
     if (sessionData && sessionData.user && sessionData.session) {
+      console.log({ sessionData, setUser });
       setUser(sessionData.user);
-      setIsAuthenticated(true);
       setAccessToken(sessionData.accessToken);
       setRefreshToken(sessionData.refreshToken);
       setIdToken(sessionData.idToken);
-    }
 
-    const data = await getDbInfo(sessionData.accessToken);
-    // user.pinata_submarine_key = data.pinata_submarine_key;
-    // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
-    const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`;
-    localStorage.setItem("sm-gateway", gatewayURL);
+      const data = await getDbInfo(sessionData.accessToken);
+      console.log({ data });
+      if (!data) {
+        return;
+      }
+      // user.pinata_submarine_key = data.pinata_submarine_key;
+      // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
+      const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`;
+      localStorage.setItem("sm-gateway", gatewayURL);
+    }
   };
 
   return {
-    isAuthenticated,
+    isAuthenticated: loggedInUser !== null,
     loggedInUser,
     signUpUser,
     confirmSignUp,
     resendConfirmationCode,
     sendPasswordReset,
     forgotPasswordSubmit,
-    confirmMFA,
     logUserIn,
     logUserOut,
     fetchSession,

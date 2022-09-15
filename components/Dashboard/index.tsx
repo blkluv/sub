@@ -4,12 +4,12 @@ import LinkTable from "./LinkTable";
 import Link from "next/link";
 import Alert from "../Alert";
 import { useSubmarine } from "../../hooks/useSubmarine";
-import ky from "ky";
 import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
+import { getKy } from "../../helpers/ky";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -63,14 +63,13 @@ const Dashboard = () => {
   };
 
   const getUserBillingInfo = async () => {
-    const { accessToken } = await fetchSession();
+    const session = await fetchSession();
+    if (!session) {
+      return;
+    }
     try {
-      const res = await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          source: "login",
-        },
-      });
+      const ky = getKy();
+      const res = await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`);
 
       const userJson = await res.json();
       return userJson;

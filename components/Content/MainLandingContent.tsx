@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Pinnie from "../Pinnie";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import {
   WalletModalProvider,
@@ -20,6 +19,8 @@ import CustomLogo from "./CustomLogo";
 import CustomButton from "./CustomButton";
 import Head from "next/head";
 import Image from "next/image";
+import { selectGatewayUrl } from "../../store/selectors/authSelectors";
+import { useAppSelector } from "../../store/hooks";
 
 const MainLandingContent = ({
   setGallery,
@@ -38,11 +39,8 @@ const MainLandingContent = ({
 }) => {
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
-  const [gatewayUrl, setGatewayUrl] = useState("");
 
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
@@ -179,12 +177,12 @@ const MainLandingContent = ({
     <div>
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={"anonymous"} />
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:wght@300&family=Open+Sans:wght@300&family=Oswald:wght@300&family=Roboto+Condensed:wght@300&family=Roboto:wght@300&family=Source+Sans+Pro:wght@300&display=swap"
           rel="stylesheet"
         ></link>
-        <title>{data && data.name ? data.name : "Submarine.me"}</title>
+        <title>{data.connectors?.[0]?.name || "Submarine.me"}</title>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
       </Head>
 

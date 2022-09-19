@@ -52,7 +52,6 @@ ${messageToSign.data.id}`, //JSON.stringify(messageToSign.data),
     ethereum,
     url,
     holdsNFT,
-    url,
     setEthereum,
     EVMChains,
   };

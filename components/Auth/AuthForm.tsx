@@ -1,72 +1,33 @@
-import { useState } from "react";
-import { LockClosedIcon } from "@heroicons/react/solid";
-import { useAuth } from "../../hooks/useAuth";
+import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { selectAuthError, selectAuthStatus } from "../../store/selectors/authSelectors";
+import { confirmMFA, doLogin, LOGIN_STATUSES } from "../../store/slices/authSlice";
 
 export default function AuthForm() {
-  const [submitting, setSubmitting] = useState(false);
-  const [authError, setAuthError] = useState(null);
-  const [user, setUser] = useState(null);
+  const loginStatus = useAppSelector(selectAuthStatus);
+  const authError = useAppSelector(selectAuthError);
   const [mfa, setMFA] = useState("");
   const [confirmCode, setConfirmCode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { confirmMFA, logUserIn } = useAuth();
-
+  const dispatch = useAppDispatch();
   const handleValidSubmit = async (event) => {
     event.preventDefault();
-    setSubmitting(true);
-    setAuthError(null);
     if (confirmCode) {
       let res;
       if (mfa) {
-        res = await confirmMFA(user, mfa);
+        res = dispatch(confirmMFA({ mfa }));
       } else {
         //  Should not get here since we're not doing sign up here.
       }
-      if (res.success) {
-        setSubmitting(false);
-        // props.history.push("/authenticate");
-      } else {
-        setSubmitting(false);
-        setAuthError(res.error.message);
-      }
-    } else {
-      const result = await logUserIn(email, password);
-      setSubmitting(false);
-      if (result.user && result.user.challengeName) {
-        //  Indicates the user has MFA enabled
-        setSubmitting(false);
-        setUser(result.user);
-        setConfirmCode(true);
-      } else if (
-        result.error &&
-        result.error.code &&
-        result.error.code === "UserNotConfirmedException"
-      ) {
-        setAuthError(
-          "Account has not been confirmed, enter code that was previously emailed or request a new one"
-        );
-        setConfirmCode(true);
-      } else if (!result.success) {
-        setAuthError(result.error.message);
-      } else {
-        // props.history.push("/authenticate");
-        //REDIRECT HERE
-      }
     }
+
+    dispatch(doLogin({ email, password }));
   };
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
@@ -145,8 +106,9 @@ export default function AuthForm() {
                 type="submit"
                 className="group relative w-full flex-row justify-center align-center sm:h-auto h-16 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
               >
-                <span>{submitting ? "Signing in..." : "Sign in"}</span>
+                <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>
               </button>
+              <p className="mt-2 text-center text-sm text-red-600">{authError}</p>
             </div>
           </form>
         </div>

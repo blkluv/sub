@@ -1,20 +1,26 @@
 import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { useAuth } from "../../hooks/useAuth";
 import Image from "next/image";
+import { useAppDispatch } from "../../store/hooks";
+import { doLogOut } from "../../store/slices/authSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const ProfileDropDown = ({ avatar }) => {
-  const { logUserOut } = useAuth();
+  const dispatch = useAppDispatch();
+  const handleLogOut = () => {
+    dispatch(doLogOut());
+  };
   return (
     <Menu as="div" className="ml-3 relative">
       <div>
         <Menu.Button className="bg-white rounded-full flex text-sm outline-none">
           <span className="sr-only">Open user menu</span>
-          <Image className="h-8 w-8 rounded-full" src={avatar} alt="" />
+          {avatar && (
+            <Image className="h-8 w-8 rounded-full" src={avatar} alt="avatar" layout="fill" />
+          )}
         </Menu.Button>
       </div>
       <Transition
@@ -56,7 +62,7 @@ const ProfileDropDown = ({ avatar }) => {
           <Menu.Item>
             {({ active }) => (
               <button
-                onClick={logUserOut}
+                onClick={handleLogOut}
                 className={classNames(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700"

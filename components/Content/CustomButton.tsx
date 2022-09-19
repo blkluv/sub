@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-const CustomButton = ({ fileInfo, buttonText, loadingText, loading, onClick: click }) => {
+const CustomButton = ({ fileInfo, buttonText, loadingText, loading = false, onClick: click }) => {
   const [styles, setStyles] = useState({
     padding: 10,
   });
-  const [classes, setClasses] = useState("cursor-pointer");
-
   useEffect(() => {
     const style = {
       padding: 10,
       marginTop: 5,
+      backgroundColor: null,
+      color: null,
+      borderRadius: null,
     };
     if (fileInfo?.customizations.buttonColor && fileInfo?.customizations?.buttonColor?.hex) {
       style.backgroundColor = fileInfo.customizations.buttonColor.hex;

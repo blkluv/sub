@@ -1,11 +1,10 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useAppSelector } from "../../store/hooks";
+import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 
 const CustomLogo = ({ logo }) => {
-  const [gatewayUrl, setGatewayUrl] = useState("");
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <div className="w-20">
       <Image

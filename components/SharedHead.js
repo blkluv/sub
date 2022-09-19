@@ -6,7 +6,7 @@ const SharedHead = () => {
     <Head>
       <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       <link rel="icon" href="/submarine.png"></link>
-      <meta charset="utf-8" />
+      <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
       <meta name="description" content="Submarine Me - Unlock Exlusive Content With An NFT" />
       <meta property="og:type" content="Web application" />

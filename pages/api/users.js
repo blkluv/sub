@@ -43,15 +43,13 @@ export default async function handler(req, res) {
           theAPIKey = APIKeys[0].key;
         }
 
-        const { data, error } = await supabase
-          .from("Users")
-          .insert([
-            {
-              id: uuidv4(),
-              pinata_user_id: user.userInformation.id,
-              pinata_submarine_key: theAPIKey,
-            },
-          ]);
+        const { data, error } = await supabase.from("Users").insert([
+          {
+            id: uuidv4(),
+            pinata_user_id: user.userInformation.id,
+            pinata_submarine_key: theAPIKey,
+          },
+        ]);
 
         if (error) {
           console.log(error);
@@ -101,7 +99,7 @@ export default async function handler(req, res) {
 
       const gateways = await getGateways(req);
       if (!gateways || !gateways.items || !gateways.items.rows || gateways.items.rows.length < 1) {
-        return res.status(400).send("User Has No Gateways");
+        return res.status(403).send("User Has No Gateways");
       } else {
         const { data, error } = await supabase
           .from("Users")

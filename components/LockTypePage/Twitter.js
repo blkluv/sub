@@ -1,8 +1,25 @@
 import Image from "next/image";
-import { useAuth } from "../../hooks/useAuth";
 
 export default function Twitter({ meta }) {
-  const { authWithTwitter } = useAuth();
+  const authWithTwitter = async (callbackUrl) => {
+    try {
+      //OAuth Step 1
+      const response = await axios({
+        url: `/api/twitter?request_token=true`,
+        method: "POST",
+        data: {
+          callbackUrl,
+        },
+      });
+
+      const { oauth_token } = response.data;
+      localStorage.setItem("ot", oauth_token);
+      //Oauth Step 2
+      window.location.href = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauth_token}`;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       {/*

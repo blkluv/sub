@@ -6,7 +6,6 @@ import Amplify from "@aws-amplify/core";
 import { awsconfig } from "../../constants/awsconfig";
 import { awsauth } from "../../constants/awsauth";
 import gravatar from "gravatar";
-import { string } from "joi";
 import { getKy, setCredentials } from "../../helpers/ky";
 
 Amplify.configure(awsconfig);
@@ -58,7 +57,9 @@ export const doLogOut = createAsyncThunk("auth/logout", async () => {
 export const doLogin = createAsyncThunk(
   "auth/login",
   async ({ email, password }: UserCredentials) => {
+    console.log("env!", process.env.NEXT_PUBLIC_SIGNOUT_REDIRECT);
     const res = await Auth.signIn(email, password);
+    console.log({ res });
     if (res.challengeName) {
       //TODO
       return {

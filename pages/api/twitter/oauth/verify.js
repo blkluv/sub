@@ -17,7 +17,9 @@ function withSession(handler) {
 export default withSession(async (req, res) => {
   if (req.method === "POST") {
     try {
-      const oauth = require("../../../../helpers/oauth-promise")(process.env.CONSUMER_CALLBACK);
+      const oauth = require("../../../../helpers/oauth-promise")(
+        `${process.env.NEXT_PUBLIC_VERCEL_URL}${process.env.CONSUMER_CALLBACK}`
+      );
       const { oauth_token, oauth_token_secret } = await oauth.getOAuthRequestToken();
       const obj = {
         oauth_token,

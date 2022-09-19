@@ -57,7 +57,7 @@ export const doLogOut = createAsyncThunk("auth/logout", async () => {
 export const doLogin = createAsyncThunk(
   "auth/login",
   async ({ email, password }: UserCredentials) => {
-    console.log("env!", process.env.NEXT_PUBLIC_SIGNOUT_REDIRECT);
+    console.log({ awsauth, awsconfig });
     const res = await Auth.signIn(email, password);
     console.log({ res });
     if (res.challengeName) {

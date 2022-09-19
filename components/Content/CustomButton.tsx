@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const CustomButton = ({ fileInfo, buttonText, loadingText, loading, onClick: click }) => {
+const CustomButton = ({ fileInfo, buttonText, loadingText, loading = false, onClick: click }) => {
   const [styles, setStyles] = useState({
     padding: 10,
   });

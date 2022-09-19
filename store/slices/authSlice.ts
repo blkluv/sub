@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { HYDRATE } from "next-redux-wrapper";
+import { HYDRATE } from "next-redux-wrapper";
 import Auth from "@aws-amplify/auth";
 import Amplify from "@aws-amplify/core";
 // import { Hub } from "@aws-amplify/core";
@@ -77,15 +77,17 @@ export const doLogin = createAsyncThunk(
       const user = await Auth.currentAuthenticatedUser();
       try {
         const ky = getKy();
-        console.log({ ky });
         const r = await ky("/api/users", {
           method: "GET",
         });
-        console.log({ r });
+        const re = await r.json();
+        user.attributes = {
+          ...user.attributes,
+          ...re,
+        };
       } catch (err) {
         console.log(err);
       }
-      console.log({ user });
       return { user: user.attributes };
     }
   }
@@ -153,15 +155,12 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // Special reducer for hydrating the state. Special case for next-redux-wrapper
-    // extraReducers: {
-    //   [HYDRATE]: (state, action) => {
-    //     return {
-    //       ...state,
-    //       ...action.payload.auth,
-    //     };
-    //   },
-    // },
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(doLogin.pending, (state, { payload }) => {

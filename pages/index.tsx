@@ -6,7 +6,7 @@ import { selectIsAuthenticated } from "../store/selectors/authSelectors";
 
 export default function Home() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  console.log({ isAuthenticated });
+  // TODO move auth to a separate component
   return (
     <>
       <SharedHead />

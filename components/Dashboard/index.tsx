@@ -3,13 +3,13 @@ import Navigation from "../Navigation";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
 import Alert from "../Alert";
-import { useSubmarine } from "../../hooks/useSubmarine";
-import { fetchSession } from "../../hooks/useAuth";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
 import { getKy } from "../../helpers/ky";
+import { useAppSelector } from "../../store/hooks";
+import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -23,12 +23,8 @@ const Dashboard = () => {
   const [offset, setOffset] = useState(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [gatewayUrl, setGatewayUrl] = useState("");
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
 
-  const { getHeaders } = useSubmarine();
   useEffect(() => {
     checkForPlan();
   }, []);
@@ -50,7 +46,6 @@ const Dashboard = () => {
 
   const checkForPlan = async () => {
     const userPlanInfo = await getUserBillingInfo();
-    console.log({ userPlanInfo });
     if (!userPlanInfo) {
       setLoading(false);
       setDisplayUpgradeModal(true);
@@ -63,10 +58,6 @@ const Dashboard = () => {
   };
 
   const getUserBillingInfo = async () => {
-    const session = await fetchSession();
-    if (!session) {
-      return;
-    }
     try {
       const ky = getKy();
       const res = await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`);
@@ -98,14 +89,8 @@ const Dashboard = () => {
   };
 
   const loadLinks = async (newOffset) => {
-    // const res = await getSubmarinedContent()
-    const headers = await getHeaders();
-    const res = await ky(`/api/metadata?offset=${newOffset}`, {
-      method: "GET",
-      headers: {
-        ...headers,
-      },
-    });
+    const ky = getKy();
+    const res = await ky.get(`/api/metadata?offset=${newOffset}`);
 
     const json = await res.json();
     if (json && json.length > 0) {
@@ -130,13 +115,9 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      const headers = await getHeaders();
+      const ky = getKy();
       await ky(`/api/metadata`, {
         method: "DELETE",
-        headers: {
-          ...headers,
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ id }),
         timeout: 2147483647,
       });

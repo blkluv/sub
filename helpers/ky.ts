@@ -1,7 +1,8 @@
 import ky from "ky";
+import { KyInstance } from "ky/distribution/types/ky";
 
-let kyObj;
-export const getKy = () => {
+let kyObj: KyInstance;
+export const getKy = (): KyInstance => {
   if (kyObj) {
     return kyObj;
   }
@@ -9,12 +10,12 @@ export const getKy = () => {
 };
 
 export const setCredentials = (jwt: string) => {
-  console.log("set");
   kyObj = ky.extend({
     hooks: {
       beforeRequest: [
         (request) => {
           request.headers.set("Authorization", `Bearer ${jwt}`);
+          request.headers.set("source", "login");
         },
       ],
     },

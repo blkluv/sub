@@ -4,11 +4,7 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import NFT from "../../components/Submarine/SelectLockType/NFT";
-import ky from "ky";
 import Alert from "../../components/Alert";
-import { useSubmarine } from "../../hooks/useSubmarine";
-import axios from "axios";
-import { useAuth } from "../../hooks/useAuth";
 import SharedHead from "../../components/SharedHead";
 import Twitter from "../../components/Submarine/SelectLockType/Twitter";
 import Location from "../../components/Submarine/SelectLockType/Location";
@@ -18,8 +14,10 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import PreviewModal from "../../components/Content/PreviewModal";
+import { getKy } from "../../helpers/ky";
+import { useAppDispatch } from "../../store/hooks";
 
-const infuraId = "80f214d8bfdb44a8a95217f902393d6d"; //process.env.NEXTJS_PUBLIC_INFURA_ID;
+const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
 const chains = defaultChains;
 
@@ -58,8 +56,6 @@ const UnlockType = () => {
     { id: 5, name: "Polygon - Mumbai" },
   ];
 
-  const { handleUpload, submarineKey, getHeaders, uploadJSON } = useSubmarine();
-  const { fetchSession, loggedInUser } = useAuth();
   const router = useRouter();
   const { type, edit } = router.query;
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -181,15 +177,9 @@ const UnlockType = () => {
 
   const loadContent = async () => {
     setLoading(true);
-    const headers = await getHeaders();
 
-    const res = await fetch(`/api/content/${edit}`, {
-      method: "GET",
-      headers: {
-        ...headers,
-        "content-type": "application/json",
-      },
-    });
+    const ky = getKy();
+    const res = await ky(`/api/content/${edit}`);
     setLoading(false);
     const json = await res.json();
     json.preview = true;
@@ -258,22 +248,14 @@ const UnlockType = () => {
       });
     }
     setThumbnail(files);
-
-    const { accessToken } = await fetchSession();
     const data = new FormData();
     data.append("file", files[0], files[0].name);
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Source: "login",
-        },
-      }
-    );
-
-    setThumbnailCid(res.data.IpfsHash);
+    const ky = getKy();
+    const res = await ky.post(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`, {
+      body: data,
+    });
+    const json = await res.json();
+    setThumbnailCid(json.IpfsHash);
   };
 
   const onBackgroundChange = async (e) => {
@@ -286,23 +268,16 @@ const UnlockType = () => {
     }
     setBackground(files);
 
-    const { accessToken } = await fetchSession();
     const data = new FormData();
     data.append("file", files[0], files[0].name);
     setUploadingBackground(true);
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Source: "login",
-        },
-      }
-    );
+    const ky = getKy();
+    const res = await ky.post(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`, {
+      body: data,
+    });
     setUploadingBackground(false);
-
-    setBackgroundCid(res.data.IpfsHash);
+    const response = await res.json();
+    setBackgroundCid(response.IpfsHash);
   };
 
   const onLogoChange = async (e) => {
@@ -316,23 +291,16 @@ const UnlockType = () => {
     }
     setLogo(files);
 
-    const { accessToken } = await fetchSession();
     const data = new FormData();
     data.append("file", files[0], files[0].name);
     setUploadingLogo(true);
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Source: "login",
-        },
-      }
-    );
+    const ky = getKy();
+    const res = await ky.post(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/pinning/pinFileToIPFS`, {
+      body: data,
+    });
     setUploadingLogo(false);
-
-    setLogoCid(res.data.IpfsHash);
+    const resJson = await res.json();
+    setLogoCid(resJson.IpfsHash);
   };
 
   const canSubmit = () => {
@@ -376,10 +344,17 @@ const UnlockType = () => {
         Array.from(selectedFiles).forEach((file) => {
           data.append("files", file);
         });
-        data.append("pinToIPFS", false);
+        data.append("pinToIPFS", "false");
 
-        const res = await handleUpload(data);
-        cid = res.items[0].cid;
+        const ky = getKy();
+        const res = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/content`, {
+          method: "POST",
+          body: data,
+          timeout: 2147483647,
+        });
+
+        const resJson = await res.json();
+        cid = resJson.items[0].cid;
       } else {
         cid = submarinedFile;
       }
@@ -407,14 +382,9 @@ const UnlockType = () => {
 
       debugger;
 
-      const headers = await getHeaders();
-
+      const ky = getKy();
       await ky(`/api/metadata`, {
         method: edit ? "PUT" : "POST",
-        headers: {
-          ...headers,
-          "content-type": "application/json",
-        },
         body: JSON.stringify(submarinedContent),
         timeout: 2147483647,
       });
@@ -447,8 +417,6 @@ const UnlockType = () => {
     }
   };
 
-  const handleSaveEdits = async () => {};
-
   const renderUnlockType = () => {
     switch (type) {
       case "retweet":
@@ -457,8 +425,8 @@ const UnlockType = () => {
             name={name}
             setName={setName}
             thumbnail={thumbnail}
-            setThumbnail={setThumbnail}
-            setSelectedFiles={setSelectedFiles}
+            // setThumbnail={setThumbnail} // TODO?
+            // setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
             onFileChange={onFileChange}
             onThumbnailChange={onThumbnailChange}
@@ -492,8 +460,8 @@ const UnlockType = () => {
             name={name}
             setName={setName}
             thumbnail={thumbnail}
-            setThumbnail={setThumbnail}
-            setSelectedFiles={setSelectedFiles}
+            // setThumbnail={setThumbnail} // TODO?
+            // setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
             description={description}
             setDescription={setDescription}
@@ -533,7 +501,7 @@ const UnlockType = () => {
             setName={setName}
             thumbnail={thumbnail}
             setThumbnail={setThumbnail}
-            setSelectedFiles={setSelectedFiles}
+            // setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
             onFileChange={onFileChange}
             onThumbnailChange={onThumbnailChange}
@@ -575,6 +543,7 @@ const UnlockType = () => {
         );
     }
   };
+  const dispatch = useAppDispatch();
 
   return (
     <div>

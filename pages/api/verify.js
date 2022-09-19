@@ -3,7 +3,6 @@ import { ethers } from "ethers";
 import { verifyMessage } from "ethers/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
-import * as util from "ethereumjs-util";
 import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
 import { getUserContentCombo } from "../../helpers/verify.helpers";

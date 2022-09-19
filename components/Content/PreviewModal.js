@@ -6,8 +6,8 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import ContentLanding from "./ContentLanding";
-import { XIcon } from "@heroicons/react/outline";
-const infuraId = "80f214d8bfdb44a8a95217f902393d6d"; //process.env.NEXTJS_PUBLIC_INFURA_ID;
+
+const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
 const chains = defaultChains;
 
@@ -34,7 +34,7 @@ const connectors = ({ chainId }) => {
   ];
 };
 
-export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo, loading }) {
+export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }) {
   console.log(previewOpen);
   return (
     <Transition.Root show={previewOpen} as={Fragment}>

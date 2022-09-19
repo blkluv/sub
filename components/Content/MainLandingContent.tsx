@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Pinnie from "../Pinnie";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import {
   WalletModalProvider,
@@ -20,6 +19,8 @@ import CustomLogo from "./CustomLogo";
 import CustomButton from "./CustomButton";
 import Head from "next/head";
 import Image from "next/image";
+import { selectGatewayUrl } from "../../store/selectors/authSelectors";
+import { useAppSelector } from "../../store/hooks";
 
 const MainLandingContent = ({
   setGallery,
@@ -38,11 +39,8 @@ const MainLandingContent = ({
 }) => {
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
-  const [gatewayUrl, setGatewayUrl] = useState("");
 
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   const { twitterAuth } = useTwitter();
   const { signData } = useSolana();

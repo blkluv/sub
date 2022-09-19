@@ -3,6 +3,8 @@ import UploadBackground from "../../Upload/UploadBackground";
 import UploadLogo from "../../Upload/UploadLogo";
 import { SketchPicker } from "react-color";
 import Image from "next/image";
+import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
+import { useAppSelector } from "../../../store/hooks";
 
 const CustomizeLockScreen = ({
   background,
@@ -21,10 +23,7 @@ const CustomizeLockScreen = ({
   fontFamily,
   setFontFamily,
 }) => {
-  const [gatewayUrl, setGatewayUrl] = useState("");
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">

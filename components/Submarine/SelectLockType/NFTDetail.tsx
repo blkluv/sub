@@ -3,8 +3,9 @@ import UploadMedia from "../../Upload/UploadMedia";
 import UploadThumbnail from "../../Upload/UploadThumbnail";
 import { Switch } from "@headlessui/react";
 import CustomizeLockScreen from "./CustomizeLockScreen";
-import { useSubmarine } from "../../../hooks/useSubmarine";
 import Image from "next/image";
+import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
+import { useAppSelector } from "../../../store/hooks";
 
 const NFTDetail = ({
   onThumbnailChange,
@@ -35,7 +36,7 @@ const NFTDetail = ({
   logo,
 }) => {
   const [customize, setCustomize] = useState(false);
-  const { gatewayUrl } = useSubmarine();
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
@@ -164,7 +165,7 @@ const NFTDetail = ({
           setButtonTextColor={setButtonTextColor}
           uploadingLogo={uploadingLogo}
           onLogoChange={onLogoChange}
-          backgroundCid={backgroundCid}
+          // backgroundCid={backgroundCid} // TODO
           fontFamily={fontFamily}
           setFontFamily={setFontFamily}
           buttonShape={buttonShape}

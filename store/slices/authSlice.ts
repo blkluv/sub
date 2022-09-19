@@ -59,6 +59,7 @@ export const doLogin = createAsyncThunk(
   async ({ email, password }: UserCredentials) => {
     console.log({ awsauth, awsconfig });
     const res = await Auth.signIn(email, password);
+    console.log("signed in?", email, password);
     console.log({ res });
     if (res.challengeName) {
       //TODO

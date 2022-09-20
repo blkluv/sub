@@ -16,8 +16,12 @@ export enum LOGIN_STATUSES {
   pending = "PENDING",
   fulfilled = "FULFILLED",
   rejected = "REJECTED",
+  MFARequest = "MFA_REQUEST",
 }
 
+// we use this to temporarily store CognitoUser for MFA login.
+// CognitoUser is not serializable so we cannot store it on Redux.
+let cognitoUser = {};
 interface User {
   email?: string;
   email_verified?: boolean;
@@ -47,9 +51,22 @@ interface UserMFA {
   mfa: string;
 }
 
+interface Login {
+  user: User;
+  status: "OK";
+}
+interface MFA {
+  user: null;
+  status: "MFA";
+}
+
 export const confirmMFA = createAsyncThunk("auth/confirmMFA", async ({ mfa }: UserMFA) => {
-  const user = await Auth.currentAuthenticatedUser();
-  await Auth.confirmSignIn(user, mfa, "SOFTWARE_TOKEN_MFA");
+  if (!cognitoUser) {
+    throw new Error("Invalid flow?!");
+  }
+  await Auth.confirmSignIn(cognitoUser, mfa, "SOFTWARE_TOKEN_MFA");
+  const user = await getUser();
+  return { user, status: "OK" };
 });
 
 export const doLogOut = createAsyncThunk("auth/logout", async () => {
@@ -58,17 +75,19 @@ export const doLogOut = createAsyncThunk("auth/logout", async () => {
 
 export const doLogin = createAsyncThunk(
   "auth/login",
-  async ({ email, password }: UserCredentials) => {
+  async ({ email, password }: UserCredentials): Promise<Login | MFA> => {
     const res = await Auth.signIn(email, password);
-    if (res.challengeName) {
-      //TODO
+    if (res.challengeName === "SOFTWARE_TOKEN_MFA") {
+      // we use this to temporarily store CognitoUser for MFA login.
+      // CognitoUser is not serializable so we cannot store it on Redux.
+      cognitoUser = res;
       return {
-        success: true,
-        user: res,
+        status: "MFA",
+        user: null,
       };
     } else {
       const user = await getUser();
-      return { user: user };
+      return { user, status: "OK" };
     }
   }
 );
@@ -76,21 +95,17 @@ export const doLogin = createAsyncThunk(
 const getUser = async (): Promise<User> => {
   const session = await Auth.currentSession();
   // @ts-ignore https://github.com/aws-amplify/amplify-js/issues/4927
-  const { refreshToken, idToken, accessToken } = session;
+  const { accessToken } = session;
   if (!accessToken) {
     throw new Error("Missing access token");
   }
   setCredentials(accessToken.jwtToken);
   const user = await Auth.currentAuthenticatedUser();
   try {
-    const ky = getKy();
-    const r = await ky("/api/users", {
-      method: "GET",
-    });
-    const re = await r.json();
+    const gatewayUrl = await getGatewayUrl();
     user.attributes = {
       ...user.attributes,
-      gatewayUrl: re.pinata_gateway_subdomain,
+      gatewayUrl,
     };
   } catch (err) {
     console.log(err);
@@ -98,29 +113,26 @@ const getUser = async (): Promise<User> => {
   return user.attributes;
 };
 
-export const tryLogin = createAsyncThunk("auth/tryLogin", async () => {
+const getGatewayUrl = async (): Promise<string> => {
+  const gatewayUrl = localStorage.getItem("pinata_gateway_subdomain");
+  if (gatewayUrl) {
+    return gatewayUrl;
+  }
+  const ky = getKy();
+  const r = await ky("/api/users", {
+    method: "GET",
+  });
+  const re = await r.json();
+  const gw = re.pinata_gateway_subdomain;
+  localStorage.setItem("pinata_gateway_subdomain", gw);
+  return gw;
+};
+
+export const tryLogin = createAsyncThunk("auth/tryLogin", async (): Promise<Login | MFA> => {
   const user = await getUser();
   const userWithAvatar = await setAvatar(user);
-  return { user: userWithAvatar };
+  return { user: userWithAvatar, status: "OK" };
 });
-
-/**
- * if (result.success) {
-        if (result?.user?.challengeName) {
-          //  Indicates the user has MFA enabled
-          setConfirmCode(true);
-          setUser(result.user);
-        } else if (result.error?.code === "UserNotConfirmedException") {
-          setAuthError(
-            "Account has not been confirmed, enter code that was previously emailed or request a new one"
-          );
-          setConfirmCode(true);
-        }
-      } else {
-        // login failed, invalid username or wrong password
-        setAuthError(result.error.message);
-      }
- */
 
 const setAvatar = async (user: User): Promise<User> => {
   let avatar = localStorage.getItem("pinata-avatar");
@@ -138,7 +150,7 @@ const setAvatar = async (user: User): Promise<User> => {
 };
 
 const isPendingLogin = isPending(tryLogin, doLogin);
-const isFulfilledLogin = isFulfilled(tryLogin, doLogin);
+const isFulfilledLogin = isFulfilled(tryLogin, doLogin, confirmMFA);
 
 // Actual Slice
 export const authSlice = createSlice({
@@ -151,6 +163,10 @@ export const authSlice = createSlice({
     });
     builder.addCase(tryLogin.rejected, (state) => {
       state.status = LOGIN_STATUSES.idle;
+    });
+    builder.addCase(confirmMFA.rejected, (state, { error }) => {
+      const { message } = error;
+      state.errorMsg = message;
     });
     builder.addCase(doLogin.rejected, (state, { error }) => {
       state.status = LOGIN_STATUSES.rejected;
@@ -165,8 +181,12 @@ export const authSlice = createSlice({
       state.errorMsg = null;
       state.status = LOGIN_STATUSES.pending;
     });
-    builder.addMatcher(isFulfilledLogin, (state, { payload: { user } }) => {
+    builder.addMatcher(isFulfilledLogin, (state, { payload: { user, status } }) => {
       state.status = LOGIN_STATUSES.fulfilled;
+      if (status === "MFA") {
+        state.status = LOGIN_STATUSES.MFARequest;
+        return;
+      }
       state.user = {
         email: user.email,
         email_verified: user.email_verified,

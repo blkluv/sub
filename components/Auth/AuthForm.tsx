@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectAuthError, selectAuthStatus } from "../../store/selectors/authSelectors";
+import {
+  selectAuthError,
+  selectAuthStatus,
+  selectIsMFARequest,
+} from "../../store/selectors/authSelectors";
 import { confirmMFA, doLogin, LOGIN_STATUSES } from "../../store/slices/authSlice";
 
 export default function AuthForm() {
   const loginStatus = useAppSelector(selectAuthStatus);
   const authError = useAppSelector(selectAuthError);
   const [mfa, setMFA] = useState("");
-  const [confirmCode, setConfirmCode] = useState(false);
+
+  const isMFARequest = useAppSelector(selectIsMFARequest);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useAppDispatch();
   const handleValidSubmit = async (event) => {
     event.preventDefault();
-    if (confirmCode) {
+    if (isMFARequest) {
       let res;
       if (mfa) {
         res = dispatch(confirmMFA({ mfa }));
@@ -42,7 +47,7 @@ export default function AuthForm() {
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleValidSubmit}>
-            {confirmCode ? (
+            {isMFARequest ? (
               <div>
                 <div className="rounded-md shadow-sm -space-y-px">
                   <div>

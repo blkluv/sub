@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, AnyAction, isPending, isFulfilled } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import Auth from "@aws-amplify/auth";
 import Amplify from "@aws-amplify/core";
@@ -18,17 +18,19 @@ export enum LOGIN_STATUSES {
   rejected = "REJECTED",
 }
 
+interface User {
+  email?: string;
+  email_verified?: boolean;
+  firstname?: string;
+  lastname?: string;
+  sub?: string;
+  avatar?: string;
+  gatewayUrl?: string;
+}
 export interface AuthState {
   status: LOGIN_STATUSES;
   errorMsg?: string;
-  user?: {
-    email?: string;
-    email_verified?: boolean;
-    firstname?: string;
-    lastname?: string;
-    sub?: string;
-    avatar?: string;
-  };
+  user?: User;
 }
 
 // Initial state
@@ -57,10 +59,7 @@ export const doLogOut = createAsyncThunk("auth/logout", async () => {
 export const doLogin = createAsyncThunk(
   "auth/login",
   async ({ email, password }: UserCredentials) => {
-    console.log({ awsauth, awsconfig });
     const res = await Auth.signIn(email, password);
-    console.log("signed in?", email, password);
-    console.log({ res });
     if (res.challengeName) {
       //TODO
       return {
@@ -69,12 +68,12 @@ export const doLogin = createAsyncThunk(
       };
     } else {
       const user = await getUser();
-      return { user: user.attributes };
+      return { user: user };
     }
   }
 );
 
-const getUser = async () => {
+const getUser = async (): Promise<User> => {
   const session = await Auth.currentSession();
   // @ts-ignore https://github.com/aws-amplify/amplify-js/issues/4927
   const { refreshToken, idToken, accessToken } = session;
@@ -91,17 +90,18 @@ const getUser = async () => {
     const re = await r.json();
     user.attributes = {
       ...user.attributes,
-      ...re,
+      gatewayUrl: re.pinata_gateway_subdomain,
     };
   } catch (err) {
     console.log(err);
   }
-  return user;
+  return user.attributes;
 };
 
-export const tryLogIn = createAsyncThunk("auth/tryLogIn", async () => {
+export const tryLogin = createAsyncThunk("auth/tryLogin", async () => {
   const user = await getUser();
-  return { user: user.attributes };
+  const userWithAvatar = await setAvatar(user);
+  return { user: userWithAvatar };
 });
 
 /**
@@ -122,62 +122,35 @@ export const tryLogIn = createAsyncThunk("auth/tryLogIn", async () => {
       }
  */
 
-const setAvatar = async (user) => {
-  if (user) {
-    let avatar = localStorage.getItem("pinata-avatar");
-    if (!avatar) {
-      avatar = await gravatar.url(user.attributes.email, {
-        s: "200", //size of image
-        r: "pg", //rating of image - no adult content
-        d: "mm", //return default image if no gravatar found
-      });
-      localStorage.setItem("pinata-avatar", avatar || "");
-      //  Get User Info From Submarine DB
-    }
-    user.avatar = avatar;
+const setAvatar = async (user: User): Promise<User> => {
+  let avatar = localStorage.getItem("pinata-avatar");
+  if (!avatar) {
+    avatar = await gravatar.url(user.email, {
+      s: "200", //size of image
+      r: "pg", //rating of image - no adult content
+      d: "mm", //return default image if no gravatar found
+    });
+    localStorage.setItem("pinata-avatar", avatar || "");
+    //  Get User Info From Submarine DB
   }
+  user.avatar = avatar;
+  return user;
 };
-const fetchSession = async () => {
-  try {
-    const session = await Auth.currentSession();
-    const user = await Auth.currentAuthenticatedUser();
 
-    // @ts-ignore https://github.com/aws-amplify/amplify-js/issues/4927
-    const { refreshToken, idToken, accessToken } = session;
-    return {
-      user,
-      session,
-      accessToken: accessToken.payload,
-      refreshToken: refreshToken.getToken(),
-      idToken: idToken.getJwtToken(),
-    };
-  } catch (error) {
-    console.log({ error });
-    if (window.location.pathname !== "/" && !window.location.pathname.includes("auth")) {
-      window.location.replace("/");
-    }
-    //  Cognito does not handle non-logged in users well here
-    //  Because it throws an error, we just need to return null for all properties
-    return null;
-  }
-};
+const isPendingLogin = isPending(tryLogin, doLogin);
+const isFulfilledLogin = isFulfilled(tryLogin, doLogin);
+
 // Actual Slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    [HYDRATE]: (state, action) => {
-      console.error("HYDRATE", state, action.payload);
-      return {
-        ...state,
-        ...action.payload.auth,
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(doLogin.pending, (state, { payload }) => {
-      state.errorMsg = null;
-      state.status = LOGIN_STATUSES.pending;
+    builder.addCase(HYDRATE, (state, action) => {
+      console.log(action);
+    });
+    builder.addCase(tryLogin.rejected, (state) => {
+      state.status = LOGIN_STATUSES.idle;
     });
     builder.addCase(doLogin.rejected, (state, { error }) => {
       state.status = LOGIN_STATUSES.rejected;
@@ -185,11 +158,14 @@ export const authSlice = createSlice({
       state.errorMsg = message;
     });
 
-    builder.addCase(tryLogIn.pending, (state, { payload }) => {
+    builder.addCase(doLogOut.fulfilled, (state) => {
+      state.user = null;
+    });
+    builder.addMatcher(isPendingLogin, (state) => {
       state.errorMsg = null;
       state.status = LOGIN_STATUSES.pending;
     });
-    builder.addCase(tryLogIn.fulfilled, (state, { payload: { user } }) => {
+    builder.addMatcher(isFulfilledLogin, (state, { payload: { user } }) => {
       state.status = LOGIN_STATUSES.fulfilled;
       state.user = {
         email: user.email,
@@ -197,20 +173,8 @@ export const authSlice = createSlice({
         firstname: user["custom:firstName"],
         lastname: user["custom:lastName"],
         sub: user.sub,
+        gatewayUrl: user["gatewayUrl"],
       };
-    });
-    builder.addCase(doLogin.fulfilled, (state, { payload: { user } }) => {
-      state.status = LOGIN_STATUSES.fulfilled;
-      state.user = {
-        email: user.email,
-        email_verified: user.email_verified,
-        firstname: user["custom:firstName"],
-        lastname: user["custom:lastName"],
-        sub: user.sub,
-      };
-    });
-    builder.addCase(doLogOut.fulfilled, (state) => {
-      state.user = null;
     });
   },
 });

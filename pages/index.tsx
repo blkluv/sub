@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  // TODO move auth to a separate component
+  // TODO move auth to a separate route
   return (
     <>
       <SharedHead />

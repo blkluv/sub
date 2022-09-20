@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useAppDispatch } from "../../store/hooks";
-import { tryLogIn } from "../../store/slices/authSlice";
+import { tryLogin } from "../../store/slices/authSlice";
 import Nav from "../Navigation";
 import AuthForm from "./AuthForm";
 
 const Auth = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(tryLogIn());
+    dispatch(tryLogin());
   }, []);
   return (
     <div>

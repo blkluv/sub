@@ -6,7 +6,6 @@ const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
   const [dragOverActive, setDragOverActive] = useState(false);
 
   const dragOverHandler = (ev) => {
-    console.log("File(s) in drop zone");
     ev.preventDefault();
     setDragOverActive(true);
   };
@@ -17,7 +16,6 @@ const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
   };
 
   const dropHandler = (ev) => {
-    console.log("File(s) dropped");
     ev.preventDefault();
 
     if (ev.dataTransfer.items) {

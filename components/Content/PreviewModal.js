@@ -35,7 +35,6 @@ const connectors = ({ chainId }) => {
 };
 
 export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }) {
-  console.log(previewOpen);
   return (
     <Transition.Root show={previewOpen} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setPreviewOpen}>

@@ -32,10 +32,9 @@ export interface AuthState {
 }
 
 // Initial state
-const initialState: AuthState = {
+const initialState = {
   status: LOGIN_STATUSES.idle,
-  user: null,
-};
+} as AuthState;
 
 interface UserCredentials {
   email: string;
@@ -50,6 +49,7 @@ export const confirmMFA = createAsyncThunk("auth/confirmMFA", async ({ mfa }: Us
   const user = await Auth.currentAuthenticatedUser();
   await Auth.confirmSignIn(user, mfa, "SOFTWARE_TOKEN_MFA");
 });
+
 export const doLogOut = createAsyncThunk("auth/logout", async () => {
   Auth.signOut();
 });
@@ -68,32 +68,41 @@ export const doLogin = createAsyncThunk(
         user: res,
       };
     } else {
-      const session = await Auth.currentSession();
-
-      // @ts-ignore https://github.com/aws-amplify/amplify-js/issues/4927
-      const { refreshToken, idToken, accessToken } = session;
-      if (!accessToken) {
-        throw new Error("Missing access token");
-      }
-      setCredentials(accessToken.jwtToken);
-      const user = await Auth.currentAuthenticatedUser();
-      try {
-        const ky = getKy();
-        const r = await ky("/api/users", {
-          method: "GET",
-        });
-        const re = await r.json();
-        user.attributes = {
-          ...user.attributes,
-          ...re,
-        };
-      } catch (err) {
-        console.log(err);
-      }
+      const user = await getUser();
       return { user: user.attributes };
     }
   }
 );
+
+const getUser = async () => {
+  const session = await Auth.currentSession();
+  // @ts-ignore https://github.com/aws-amplify/amplify-js/issues/4927
+  const { refreshToken, idToken, accessToken } = session;
+  if (!accessToken) {
+    throw new Error("Missing access token");
+  }
+  setCredentials(accessToken.jwtToken);
+  const user = await Auth.currentAuthenticatedUser();
+  try {
+    const ky = getKy();
+    const r = await ky("/api/users", {
+      method: "GET",
+    });
+    const re = await r.json();
+    user.attributes = {
+      ...user.attributes,
+      ...re,
+    };
+  } catch (err) {
+    console.log(err);
+  }
+  return user;
+};
+
+export const tryLogIn = createAsyncThunk("auth/tryLogIn", async () => {
+  const user = await getUser();
+  return { user: user.attributes };
+});
 
 /**
  * if (result.success) {
@@ -158,6 +167,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     [HYDRATE]: (state, action) => {
+      console.error("HYDRATE", state, action.payload);
       return {
         ...state,
         ...action.payload.auth,
@@ -175,9 +185,22 @@ export const authSlice = createSlice({
       state.errorMsg = message;
     });
 
+    builder.addCase(tryLogIn.pending, (state, { payload }) => {
+      state.errorMsg = null;
+      state.status = LOGIN_STATUSES.pending;
+    });
+    builder.addCase(tryLogIn.fulfilled, (state, { payload: { user } }) => {
+      state.status = LOGIN_STATUSES.fulfilled;
+      state.user = {
+        email: user.email,
+        email_verified: user.email_verified,
+        firstname: user["custom:firstName"],
+        lastname: user["custom:lastName"],
+        sub: user.sub,
+      };
+    });
     builder.addCase(doLogin.fulfilled, (state, { payload: { user } }) => {
       state.status = LOGIN_STATUSES.fulfilled;
-
       state.user = {
         email: user.email,
         email_verified: user.email_verified,

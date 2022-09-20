@@ -10,7 +10,6 @@ import { useSignMessage, useAccount } from "wagmi";
 import MainLandingContent from "./MainLandingContent";
 
 export default function ContentLanding({ loading, fileInfo, missing, preview }) {
-  console.log(fileInfo);
   const [signing, setSigning] = useState(false);
   const [gallery, setGallery] = useState(false);
   const [fullResponse, setFullResponse] = useState(null);
@@ -139,7 +138,6 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
       setFullResponse(res.data);
     }
   };
-  console.log(fileInfo);
   return (
     <div>
       {missing ? (

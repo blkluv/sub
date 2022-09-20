@@ -65,7 +65,7 @@ const Dashboard = () => {
       const userJson = await res.json();
       return userJson;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   };

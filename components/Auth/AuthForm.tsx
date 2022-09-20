@@ -104,6 +104,7 @@ export default function AuthForm() {
             <div className="mt-4">
               <button
                 type="submit"
+                disabled={loginStatus === LOGIN_STATUSES.pending}
                 className="group relative w-full flex-row justify-center align-center sm:h-auto h-16 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
               >
                 <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>

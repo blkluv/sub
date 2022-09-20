@@ -3,6 +3,7 @@ import Auth from "../components/Auth";
 import SharedHead from "../components/SharedHead";
 import { useAppSelector } from "../store/hooks";
 import { selectIsAuthenticated } from "../store/selectors/authSelectors";
+import { useEffect } from "react";
 
 export default function Home() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);

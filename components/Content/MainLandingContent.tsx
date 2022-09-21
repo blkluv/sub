@@ -11,7 +11,7 @@ import Gallery from "./Gallery";
 import { Tweet } from "react-twitter-widgets";
 import { useTwitter } from "../../hooks/useTwitter";
 import { EVMChains } from "../../hooks/useMetamask";
-import { useConnect, useSignMessage } from "wagmi";
+import { useConnect } from "wagmi";
 import axios from "axios";
 import LocationUnlock from "./LocationUnlock";
 import Loading from "../Dashboard/Loading";
@@ -34,8 +34,6 @@ const MainLandingContent = ({
   handleChangePage,
   verifying,
   setVerifying,
-  eth,
-  preview,
 }) => {
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);

@@ -4,12 +4,18 @@ import { Disclosure } from "@headlessui/react";
 import ProfileDropDown from "./ProfileDropDown";
 import Link from "next/link";
 import Image from "next/image";
-import { useAppSelector } from "../../store/hooks";
-import { selectUser, selectUserAvatar } from "../../store/selectors/authSelectors";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { selectIsAuthenticated, selectUserAvatar } from "../../store/selectors/authSelectors";
+import { doLogOut } from "../../store/slices/authSlice";
+import CustomButton from "../Content/CustomButton";
 
 export default function Navigation() {
   const avatarPath = useAppSelector(selectUserAvatar);
-  const isAuthenticated = !!useAppSelector(selectUser);
+  const isAuthenticated = !!useAppSelector(selectIsAuthenticated);
+  const dispatch = useAppDispatch();
+  const handleLogOut = () => {
+    dispatch(doLogOut());
+  };
   const avatar = avatarPath ? `https:${avatarPath}` : "";
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -45,6 +51,17 @@ export default function Navigation() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {isAuthenticated && <ProfileDropDown avatar={avatar} />}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleLogOut}
+                    className={
+                      "px-4 py-1 rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
+                    }
+                  >
+                    {" "}
+                    Log out{" "}
+                  </button>
+                )}
               </div>
             </div>
           </div>

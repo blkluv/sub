@@ -1,9 +1,11 @@
 import { withIronSession } from "next-iron-session";
 import { getOauthSecret, getUserContentCombo } from "../../../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
+import { getSupabaseClient } from "../../../../helpers/supabase";
+import { definitions } from "../../../../types/supabase";
 
 const { TwitterApi } = require("twitter-api-v2");
-
+const supabase = getSupabaseClient();
 function withSession(handler) {
   return withIronSession(handler, {
     password: process.env.SECRET_COOKIE_PASSWORD,
@@ -25,7 +27,7 @@ export default withSession(async (req, res) => {
         oauth_token,
         oauth_secret: oauth_token_secret,
       };
-      const { data, error } = await supabase.from("Twitter").insert([obj]);
+      const { data, error } = await supabase.from<definitions["Twitter"]>("Twitter").insert([obj]);
       //req.session.set("tokens", tokens);
       res.json({ oauth_token });
     } catch (error) {

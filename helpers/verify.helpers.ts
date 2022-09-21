@@ -1,19 +1,15 @@
+import { definitions } from "../types/supabase";
 import { getSupabaseClient } from "./supabase";
 
 const supabase = getSupabaseClient();
 
-export const getUserContentCombo = async (shortId) => {
+type UserContentCombo = definitions["Content"] & { Users: definitions["Users"] };
+
+export const getUserContentCombo = async (shortId): Promise<UserContentCombo> => {
   try {
     let { data: Content, error } = await supabase
-      .from("Content")
-      .select(
-        `
-      *,
-      Users (
-        pinata_user_id, pinata_submarine_key, pinata_gateway_subdomain
-      )
-    `
-      )
+      .from<UserContentCombo>("Content")
+      .select(`*, Users (pinata_user_id, pinata_submarine_key, pinata_gateway_subdomain)`)
       .eq("short_id", shortId);
 
     if (!Content || !Content[0]) {
@@ -29,12 +25,8 @@ export const getUserContentCombo = async (shortId) => {
 export const getOauthSecret = async (oauth_token) => {
   try {
     let { data, error } = await supabase
-      .from("Twitter")
-      .select(
-        `
-    oauth_secret
-    `
-      )
+      .from<definitions["Twitter"]>("Twitter")
+      .select("oauth_secret")
       .eq("oauth_token", oauth_token);
 
     if (error) {

@@ -1,4 +1,3 @@
-import { useEffect, useState, FC, useCallback } from "react";
 import axios from "axios";
 
 export const useTwitter = () => {

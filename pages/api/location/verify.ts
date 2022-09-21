@@ -23,6 +23,7 @@ export default async function handler(req, res) {
       const info = await getUserContentCombo(shortId);
 
       const { unlock_info, submarine_cid, Users } = info;
+      console.log({ info });
       const { lat, long, distance } = unlock_info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = Users;
       const distanceFrom = getDistanceFrom(userLong, userLat, long, lat);

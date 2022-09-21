@@ -1,4 +1,5 @@
 import { getSupabaseClient } from "../../../helpers/supabase";
+import { definitions } from "../../../types/supabase";
 
 const supabase = getSupabaseClient();
 
@@ -9,7 +10,7 @@ export default async function handler(req, res) {
     }
 
     let { data: Content, error } = await supabase
-      .from("Content")
+      .from<definitions["Content"]>("Content")
       .select("*")
       .eq("short_id", req.query.shortId);
 

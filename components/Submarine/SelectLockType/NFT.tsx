@@ -297,7 +297,6 @@ const NFT = ({
           file={file}
           setFile={setFile}
           uploadingBackground={uploadingBackground}
-          backgroundCid={backgroundCid}
           background={background}
           onBackgroundChange={onBackgroundChange}
           logoCid={logoCid}

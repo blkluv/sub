@@ -9,6 +9,7 @@ import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
 import { getSupabaseClient } from "../../helpers/supabase";
+import { definitions } from "../../types/supabase";
 
 const supabase = getSupabaseClient();
 
@@ -76,7 +77,10 @@ export default withSession(async (req, res) => {
         },
       };
 
-      let { data: Session, error } = await supabase.from("Session").select("*").eq("id", messageId);
+      let { data: Session, error } = await supabase
+        .from<definitions["Session"]>("Session")
+        .select("*")
+        .eq("id", messageId);
 
       const message = Session[0];
 
@@ -85,7 +89,7 @@ export default withSession(async (req, res) => {
       }
 
       const { data, error: updateError } = await supabase
-        .from("Session")
+        .from<definitions["Session"]>("Session")
         .update({ used: true })
         .match({ id: messageId });
 

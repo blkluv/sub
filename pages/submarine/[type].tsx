@@ -304,7 +304,6 @@ const UnlockType = () => {
   };
 
   const canSubmit = () => {
-    console.log({ fileInfo });
     switch (type) {
       case "retweet":
         return tweetUrl.length > 5;
@@ -336,7 +335,7 @@ const UnlockType = () => {
       setUploading(true);
       let cid;
       const identifier = fileInfo?.shortId ? fileInfo?.shortId : short.generate();
-      debugger;
+
       if (!submarinedFile && selectedFiles && selectedFiles.length > 0) {
         const data = new FormData();
 
@@ -380,8 +379,6 @@ const UnlockType = () => {
         submarineCid: cid,
       };
 
-      debugger;
-
       const ky = getKy();
       await ky(`/api/metadata`, {
         method: edit ? "PUT" : "POST",
@@ -402,7 +399,7 @@ const UnlockType = () => {
       }, 2500);
       router.push("/");
     } catch (error) {
-      console.log(error);
+      console.log({ error });
       setUploading(false);
       clearFields();
       setMessage({

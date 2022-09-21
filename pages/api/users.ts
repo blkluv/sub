@@ -1,6 +1,7 @@
 import { createAPIKey, getGateways, getUserSession, findAPIKeys } from "../../helpers/user.helpers";
 import { v4 as uuidv4 } from "uuid";
 import { getSupabaseClient } from "../../helpers/supabase";
+import { definitions } from "../../types/supabase";
 
 const supabase = getSupabaseClient();
 
@@ -9,17 +10,18 @@ export default async function handler(req, res) {
     try {
     } catch (error) {
       console.log(error);
-      res.status(500).json(error);
+      res.status(501).json(error);
     }
   } else if (req.method === "GET") {
+    let user = null;
     try {
-      const user = await getUserSession(req.headers.authorization);
+      user = await getUserSession(req.headers.authorization);
       if (!user) {
         return res.status(401).send("Unauthorized");
       }
 
       let { data: Users, error } = await supabase
-        .from("Users")
+        .from<definitions["Users"]>("Users")
         .select("*")
         .eq("pinata_user_id", user.userInformation.id);
 
@@ -38,12 +40,12 @@ export default async function handler(req, res) {
           console.log("Creating API key for user: ");
           console.log(user);
           const createKeyResults = await createAPIKey(req);
-          theAPIKey = createKeyResults.key.key;
+          theAPIKey = createKeyResults.key;
         } else {
           theAPIKey = APIKeys[0].key;
         }
 
-        const { data, error } = await supabase.from("Users").insert([
+        const { data, error } = await supabase.from<definitions["Users"]>("Users").insert([
           {
             id: uuidv4(),
             pinata_user_id: user.userInformation.id,
@@ -57,16 +59,17 @@ export default async function handler(req, res) {
         }
       } else {
         const existingKeys = await findAPIKeys(req);
-        if (existingKeys.length > 0 && submarineMeUser.key) {
-          const currentAPIKey = submarineMeUser.key;
-          const match = existingKeys.find((key) => {
-            return key === currentAPIKey;
+        console.log({ existingKeys });
+        if (existingKeys.length > 0 && submarineMeUser.pinata_submarine_key) {
+          const currentAPIKey = submarineMeUser.pinata_submarine_key;
+          const match = existingKeys.find((keyObj) => {
+            return keyObj.key === currentAPIKey;
           });
           if (!match) {
             const newKey = await createAPIKey(req);
 
             const { data, error } = await supabase
-              .from("Users")
+              .from<definitions["Users"]>("Users")
               .update({ pinata_submarine_key: newKey.key })
               .eq("pinata_user_id", user.userInformation.id);
 
@@ -87,7 +90,7 @@ export default async function handler(req, res) {
           const newKey = await createAPIKey(req);
 
           const { data, error } = await supabase
-            .from("Users")
+            .from<definitions["Users"]>("Users")
             .update({ pinata_submarine_key: newKey.key })
             .eq("pinata_user_id", user.userInformation.id);
 
@@ -114,13 +117,14 @@ export default async function handler(req, res) {
       return res.status(200).json(submarineMeUser);
     } catch (error) {
       console.log("Error for: ");
+      console.log(user);
       console.log(error);
       const { response: fetchResponse } = error;
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {
     return res
-      .status(200)
+      .status(501)
       .json({ message: "This is the way...wait, no it is not. What are you doing here?" });
   }
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeDatePretty } from "../../helpers/makePrettyDate";
 import DeleteModal from "./DeleteModal";
 import DesktopTable from "./DesktopTable";
 import MobileTable from "./MobileTable";

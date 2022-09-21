@@ -179,11 +179,7 @@ const Dashboard = () => {
                         getThumbnail={getThumbnail}
                       />
 
-                      <Pagination
-                        offset={offset}
-                        handlePageChange={handleChangePage}
-                        LIMIT={LIMIT}
-                      />
+                      <Pagination handlePageChange={handleChangePage} />
                     </div>
                   </div>
                 )}

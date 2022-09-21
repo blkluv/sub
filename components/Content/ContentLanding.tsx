@@ -62,7 +62,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
     try {
       setSigning(true);
       if (fileInfo.unlockInfo.blockchain === "Solana") {
-        const url = await signDataSol(fileInfo);
+        const url = await signDataSol(fileInfo); // TODO fix this
         if (url) {
           setSigning(false);
           window.location.replace(url);
@@ -146,7 +146,8 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
         <div>
           {fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type !== "nft" ? (
             <MainLandingContent
-              preview={preview}
+              handleSign={false} // TODO FIX THIS
+              signing={false} // TODO FIX THIS
               setVerifying={setVerifying}
               verifying={verifying}
               handleChangePage={handleChangePage}
@@ -162,7 +163,6 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
             fileInfo.unlockInfo.blockchain &&
             fileInfo.unlockInfo.blockchain === "Solana" ? (
             <Solana
-              preview={preview}
               handleChangePage={handleChangePage}
               setGallery={setGallery}
               setFullResponse={setFullResponse}
@@ -175,9 +175,6 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
             />
           ) : (
             <Ethereum
-              preview={preview}
-              ethereum={ethereum}
-              setEthereum={setEthereum}
               handleChangePage={handleChangePage}
               fullResponse={fullResponse}
               gallery={gallery}

@@ -10,7 +10,6 @@ import { useAppSelector } from "../../../store/hooks";
 const NFTDetail = ({
   onThumbnailChange,
   uploadingBackground,
-  backgroundCid,
   background,
   onBackgroundChange,
   thumbnail,
@@ -33,7 +32,6 @@ const NFTDetail = ({
   uploadingLogo,
   buttonShape,
   setButtonShape,
-  logo,
 }) => {
   const [customize, setCustomize] = useState(false);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
@@ -158,7 +156,6 @@ const NFTDetail = ({
           background={background}
           onBackgroundChange={onBackgroundChange}
           logoCid={logoCid}
-          logo={logo}
           buttonColor={buttonColor}
           buttonTextColor={buttonTextColor}
           setButtonColor={setButtonColor}

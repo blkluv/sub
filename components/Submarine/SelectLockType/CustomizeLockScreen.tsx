@@ -10,7 +10,6 @@ const CustomizeLockScreen = ({
   background,
   onBackgroundChange,
   uploadingBackground,
-  logo,
   logoCid,
   onLogoChange,
   uploadingLogo,

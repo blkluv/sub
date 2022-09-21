@@ -1,16 +1,9 @@
-import { useEffect, useState, FC, useCallback } from "react";
 import axios from "axios";
 import { useWallet } from "@solana/wallet-adapter-react";
 import bs58 from "bs58";
-import { sign } from "tweetnacl";
 
 export const useSolana = () => {
   const { publicKey, signMessage } = useWallet();
-  const [solana, setSolana] = useState(null);
-  const [url, setUrl] = useState("");
-  const [holdsNFT, setHoldsNFT] = useState(false);
-
-  useEffect(() => {}, [solana]);
 
   const signData = async (metadata) => {
     try {
@@ -51,9 +44,5 @@ ${messageToSign.data.id}`);
 
   return {
     signData,
-    solana,
-    url,
-    holdsNFT,
-    url,
   };
 };

@@ -71,6 +71,7 @@ export const confirmMFA = createAsyncThunk("auth/confirmMFA", async ({ mfa }: Us
 
 export const doLogOut = createAsyncThunk("auth/logout", async () => {
   Auth.signOut();
+  localStorage.removeItem("pinata_gateway_subdomain");
 });
 
 export const doLogin = createAsyncThunk(
@@ -143,7 +144,6 @@ const setAvatar = async (user: User): Promise<User> => {
       d: "mm", //return default image if no gravatar found
     });
     localStorage.setItem("pinata-avatar", avatar || "");
-    //  Get User Info From Submarine DB
   }
   user.avatar = avatar;
   return user;

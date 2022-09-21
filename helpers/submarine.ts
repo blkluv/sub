@@ -2,9 +2,9 @@ import axios from "axios";
 const TIMEOUT_SECONDS = 60;
 
 export const getSubmarinedContent = async (
-  pinata_submarine_key,
-  submarine_cid,
-  pinata_gateway_subdomain,
+  pinata_submarine_key: string,
+  submarine_cid: string,
+  pinata_gateway_subdomain: string,
   offset = 0
 ) => {
   try {

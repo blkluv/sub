@@ -1,8 +1,6 @@
 import ky from "ky";
 import React, { useEffect, useState } from "react";
 import ContentLanding from "../../components/Content/ContentLanding";
-import { mockData } from "../../components/Dashboard/mockData";
-import { useRouter } from "next/router";
 import Head from "next/head";
 
 import { Provider, chain, defaultChains } from "wagmi";
@@ -10,6 +8,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
+import { useAppSelector } from "../../store/hooks";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -127,7 +126,7 @@ window['_fs_namespace'] = 'FS';
         />
       </Head>
       <Provider autoConnect connectors={connectors}>
-        <ContentLanding missing={missing} loading={loading} fileInfo={data} />
+        <ContentLanding preview={false} missing={missing} loading={loading} fileInfo={data} />
       </Provider>
     </div>
   );

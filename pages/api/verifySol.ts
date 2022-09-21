@@ -1,11 +1,10 @@
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
 import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import bs58 from "bs58";
 import { sign } from "tweetnacl";
-import { clusterApiUrl, Connection } from "@solana/web3.js";
+import { clusterApiUrl, Commitment, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
 
@@ -22,7 +21,7 @@ function withSession(handler) {
 function createConnectionConfig(
   network,
   clusterApi = clusterApiUrl("mainnet-beta"),
-  commitment = "confirmed"
+  commitment: Commitment = "confirmed"
 ) {
   if (network === "Devnet") {
     clusterApi = clusterApiUrl("devnet");

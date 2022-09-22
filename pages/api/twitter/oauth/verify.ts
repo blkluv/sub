@@ -62,31 +62,35 @@ export default withSession(async (req, res) => {
       const { unlock_info, submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
 
-      const { tweetUrl } = unlock_info;
+      const { type } = unlock_info;
+      // TS sanity check
+      if (type === "retweet") {
+        const { tweetUrl } = unlock_info;
 
-      const client = new TwitterApi({
-        appKey: process.env.CONSUMER_KEY,
-        appSecret: process.env.CONSUMER_SECRET,
-        accessToken: oauth_access_token,
-        accessSecret: oauth_access_token_secret,
-      });
+        const client = new TwitterApi({
+          appKey: process.env.CONSUMER_KEY,
+          appSecret: process.env.CONSUMER_SECRET,
+          accessToken: oauth_access_token,
+          accessSecret: oauth_access_token_secret,
+        });
 
-      const v2Client = client.v2;
+        const v2Client = client.v2;
 
-      const rt = await v2Client.tweetRetweetedBy(tweetUrl.split("status/")[1].split("?")[0]);
-      const retweets = rt.data;
-      const retweeted = retweets.find((r) => r.username === screen_name);
+        const rt = await v2Client.tweetRetweetedBy(tweetUrl.split("status/")[1].split("?")[0]);
+        const retweets = rt.data;
+        const retweeted = retweets.find((r) => r.username === screen_name);
 
-      if (!retweeted) {
-        return res.status(401).send("Unauthorized, you didn't retweet.");
+        if (!retweeted) {
+          return res.status(401).send("Unauthorized, you didn't retweet.");
+        }
+
+        const responseObj = await getSubmarinedContent(
+          pinata_submarine_key,
+          submarine_cid,
+          pinata_gateway_subdomain
+        );
+        return res.json(responseObj);
       }
-
-      const responseObj = await getSubmarinedContent(
-        pinata_submarine_key,
-        submarine_cid,
-        pinata_gateway_subdomain
-      );
-      return res.json(responseObj);
     } catch (error) {
       console.log(error);
       res.status(500).send(error.message);

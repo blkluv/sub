@@ -68,7 +68,6 @@ const Location = ({
           file={file}
           setFile={setFile}
           uploadingBackground={uploadingBackground}
-          backgroundCid={backgroundCid}
           background={background}
           onBackgroundChange={onBackgroundChange}
           logoCid={logoCid}
@@ -80,7 +79,6 @@ const Location = ({
           fontFamily={fontFamily}
           setFontFamily={setFontFamily}
           uploadingLogo={uploadingLogo}
-          logo={logo}
           buttonShape={buttonShape}
           setButtonShape={setButtonShape}
         />

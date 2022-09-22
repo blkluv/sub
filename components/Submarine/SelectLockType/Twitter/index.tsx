@@ -27,8 +27,6 @@ const Twitter = ({
   background,
   uploadingBackground,
   onBackgroundChange,
-  backgroundCid,
-  logo,
   buttonShape,
   setButtonShape,
 }) => {
@@ -57,7 +55,6 @@ const Twitter = ({
           file={file}
           setFile={setFile}
           uploadingBackground={uploadingBackground}
-          backgroundCid={backgroundCid}
           background={background}
           onBackgroundChange={onBackgroundChange}
           logoCid={logoCid}
@@ -69,7 +66,6 @@ const Twitter = ({
           fontFamily={fontFamily}
           setFontFamily={setFontFamily}
           uploadingLogo={uploadingLogo}
-          logo={logo}
           buttonShape={buttonShape}
           setButtonShape={setButtonShape}
         />

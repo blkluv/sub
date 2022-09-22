@@ -21,6 +21,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { useAppSelector } from "../../store/hooks";
+import { LocationLockResponse } from "../../pages/api/location/verify";
 
 const MainLandingContent = ({
   setGallery,
@@ -83,7 +84,7 @@ const MainLandingContent = ({
               userLong: longitude,
               shortId: window.location.pathname.split("/")[1],
             });
-            const data = res.data;
+            const data: LocationLockResponse = res.data;
             if (data && !data.directory) {
               setSolSigning(false);
               window.location.replace(`${data.gateway}/ipfs/${data.cid}?accessToken=${data.token}`);

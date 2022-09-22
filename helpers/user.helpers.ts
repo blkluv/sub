@@ -21,7 +21,7 @@ export interface PinPolicy {
   version: number;
 }
 
-export const getUserSession = async (auth): Promise<UserInformation> => {
+export const getUserSession = async (auth): Promise<{ userInformation: UserInformation }> => {
   try {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
       headers: {

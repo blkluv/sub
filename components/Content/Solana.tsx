@@ -24,6 +24,8 @@ const Solana = ({
   setGallery,
   setFullResponse,
   handleChangePage,
+  setVerifying,
+  verifying,
 }) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
@@ -57,6 +59,8 @@ const Solana = ({
           fullResponse={fullResponse}
           gallery={gallery}
           fileInfo={fileInfo}
+          setVerifying={setVerifying}
+          verifying={verifying}
           signing={signing}
           loading={loading}
           handleSign={handleSign}

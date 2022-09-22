@@ -3,7 +3,82 @@ import { getSupabaseClient } from "./supabase";
 
 const supabase = getSupabaseClient();
 
-type UserContentCombo = definitions["Content"] & { Users: definitions["Users"] };
+interface Hsl {
+  a: number;
+  h: number;
+  l: number;
+  s: number;
+}
+
+interface Hsv {
+  a: number;
+  h: number;
+  s: number;
+  v: number;
+}
+
+interface Rgb {
+  a: number;
+  b: number;
+  g: number;
+  r: number;
+}
+
+interface ButtonColor {
+  hex: string;
+  hsl: Hsl;
+  hsv: Hsv;
+  rgb: Rgb;
+  oldHue: number;
+  source: string;
+}
+
+interface Customizations {
+  backgroundCid?: string;
+  fontFamily?: string;
+  buttonColor?: ButtonColor;
+  buttonShape?: string;
+  logoCid?: string;
+}
+type UnlockInfoRetweet = {
+  type: "retweet";
+  network?: any;
+  tokenId: string;
+  contract: string;
+  tweetUrl: string;
+  blockchain: string;
+  mintAddress: string;
+  updateAuthority: string;
+};
+
+type UnlockInfoNFT = {
+  type: "nft";
+  network: string;
+  contract: string;
+};
+
+type UnlockInfoLocation = {
+  lat: number;
+  long: number;
+  type: "location";
+  network?: any;
+  tokenId: string;
+  contract: string;
+  distance: string;
+  tweetUrl: string;
+  blockchain: string;
+  mintAddress: string;
+  updateAuthority: string;
+};
+type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;
+
+interface ContentWithUnlockInfo
+  extends Omit<definitions["Content"], "unlock_info" | "customizations"> {
+  unlock_info: UnlockInfo;
+  customizations?: Customizations;
+}
+
+type UserContentCombo = ContentWithUnlockInfo & { Users: definitions["Users"] };
 
 export const getUserContentCombo = async (shortId): Promise<UserContentCombo> => {
   try {

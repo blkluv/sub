@@ -433,7 +433,6 @@ const UnlockType = () => {
             tweetUrl={tweetUrl}
             setTweetUrl={setTweetUrl}
             uploadingBackground={uploadingBackground}
-            backgroundCid={backgroundCid}
             background={background}
             onBackgroundChange={onBackgroundChange}
             description={description}
@@ -446,7 +445,6 @@ const UnlockType = () => {
             fontFamily={fontFamily}
             setFontFamily={setFontFamily}
             uploadingLogo={uploadingLogo}
-            logo={logo}
             buttonShape={buttonShape}
             setButtonShape={setButtonShape}
           />

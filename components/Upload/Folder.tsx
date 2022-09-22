@@ -10,6 +10,7 @@ const Folder = ({ onChange }) => {
         style={{ display: "none" }}
         ref={fileInput}
         onChange={onChange}
+        // @ts-ignore */ https://github.com/facebook/react/issues/3468
         directory=""
         webkitdirectory=""
         type="file"

@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { useMetamask } from "../../hooks/useMetamask";
 import axios from "axios";
 import Solana from "./Solana";
-import Ethereum from "./Ethereum";
 import Missing from "./Missing";
 import { useRouter } from "next/router";
 import { useTwitter } from "../../hooks/useTwitter";
@@ -17,8 +15,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
   const [limit] = useState(50);
   const [verifying, setVerifying] = useState(false);
 
-  const [{ data: accountData, error: accountError, loading: accountLoading }, disconnect] =
-    useAccount();
+  const [{ data: accountData }] = useAccount();
 
   const { verifyRetweet } = useTwitter();
   const router = useRouter();
@@ -54,19 +51,17 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
     }
   };
 
-  const { signData, ethereum, setEthereum } = useMetamask();
-  const [{ data: signingData, error: signingError, loading: signmessageLoading }, signMessage] =
-    useSignMessage();
+  const [, signMessage] = useSignMessage();
 
   const handleSign = async () => {
     try {
       setSigning(true);
       if (fileInfo.unlockInfo.blockchain === "Solana") {
-        const url = await signDataSol(fileInfo); // TODO fix this
-        if (url) {
-          setSigning(false);
-          window.location.replace(url);
-        }
+        // const url = await signDataSol(fileInfo); // TODO fix this
+        // if (url) {
+        //   setSigning(false);
+        //   window.location.replace(url);
+        // }
       } else {
         const { shortId, submarineCID, unlockInfo } = fileInfo;
         const { contract, blockchain, tokenId, network } = unlockInfo;
@@ -144,10 +139,27 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
         <Missing />
       ) : (
         <div>
-          {fileInfo && fileInfo.unlockInfo && fileInfo.unlockInfo.type !== "nft" ? (
+          {fileInfo &&
+          fileInfo.unlockInfo &&
+          fileInfo.unlockInfo.blockchain &&
+          fileInfo.unlockInfo.blockchain === "Solana" ? (
+            <Solana
+              handleChangePage={handleChangePage}
+              setGallery={setGallery}
+              setFullResponse={setFullResponse}
+              fullResponse={fullResponse}
+              gallery={gallery}
+              fileInfo={fileInfo}
+              setVerifying={setVerifying}
+              verifying={verifying}
+              loading={loading}
+              signing={signing}
+              handleSign={handleSign}
+            />
+          ) : (
             <MainLandingContent
-              handleSign={false} // TODO FIX THIS
-              signing={false} // TODO FIX THIS
+              handleSign={handleSign}
+              signing={signing}
               setVerifying={setVerifying}
               verifying={verifying}
               handleChangePage={handleChangePage}
@@ -157,31 +169,6 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
               gallery={gallery}
               fileInfo={fileInfo}
               loading={loading}
-            />
-          ) : fileInfo &&
-            fileInfo.unlockInfo &&
-            fileInfo.unlockInfo.blockchain &&
-            fileInfo.unlockInfo.blockchain === "Solana" ? (
-            <Solana
-              handleChangePage={handleChangePage}
-              setGallery={setGallery}
-              setFullResponse={setFullResponse}
-              fullResponse={fullResponse}
-              gallery={gallery}
-              fileInfo={fileInfo}
-              loading={loading}
-              signing={signing}
-              handleSign={handleSign}
-            />
-          ) : (
-            <Ethereum
-              handleChangePage={handleChangePage}
-              fullResponse={fullResponse}
-              gallery={gallery}
-              fileInfo={fileInfo}
-              loading={loading}
-              signing={signing}
-              handleSign={handleSign}
             />
           )}
         </div>

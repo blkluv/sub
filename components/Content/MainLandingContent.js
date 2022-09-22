@@ -39,10 +39,6 @@ const MainLandingContent = ({
   const [solSigning, setSolSigning] = useState(false);
   const [gatewayUrl, setGatewayUrl] = useState("");
 
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
-
   const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
 
@@ -52,6 +48,9 @@ const MainLandingContent = ({
     try {
       setSolSigning(true);
       const res = await signData(fileInfo);
+      if (res.gateway) {
+        setGatewayUrl(res.gateway);
+      }
       if (res && !res.directory) {
         setSolSigning(false);
         window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);
@@ -87,6 +86,9 @@ const MainLandingContent = ({
               shortId: window.location.pathname.split("/")[1],
             });
             const data = res.data;
+            if (data.gateway) {
+              setGatewayUrl(data.gateway);
+            }
             if (data && !data.directory) {
               setSolSigning(false);
               window.location.replace(`${data.gateway}/ipfs/${data.cid}?accessToken=${data.token}`);

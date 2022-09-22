@@ -344,13 +344,13 @@ export const useAuth = () => {
       setAccessToken(sessionData.accessToken);
       setRefreshToken(sessionData.refreshToken);
       setIdToken(sessionData.idToken);
-    }
 
-    const data = await getDbInfo(sessionData.accessToken);
-    // user.pinata_submarine_key = data.pinata_submarine_key;
-    // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
-    const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`;
-    localStorage.setItem("sm-gateway", gatewayURL);
+      const data = await getDbInfo(sessionData.accessToken);
+      // user.pinata_submarine_key = data.pinata_submarine_key;
+      // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
+      const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`;
+      localStorage.setItem("sm-gateway", gatewayURL);
+    }
   };
 
   return {

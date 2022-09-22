@@ -40,10 +40,7 @@ const connectors = ({ chainId }) => {
 const Content = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [missing, set404] = useState(false);
-  const [gatewayUrl, setGatewayUrl] = useState("");
-  useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
-  }, []);
+  gatewayUrl = data.gatewayUrl;
 
   useEffect(() => {
     if (data) {

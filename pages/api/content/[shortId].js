@@ -22,6 +22,10 @@ export default async function handler(req, res) {
     }
 
     const theContent = Content[0];
+    const gateway = await supabase
+      .from("Users")
+      .select("pinata_gateway_subdomain")
+      .eq("id", theContent.pinata_user_id);
 
     const returnObject = {
       id: theContent.id,
@@ -32,6 +36,7 @@ export default async function handler(req, res) {
       unlockInfo: theContent.unlock_info,
       shortId: theContent.short_id,
       customizations: theContent.customizations,
+      gatewayUrl: gateway[0].pinata_gateway.subdomain,
     };
 
     return res.status(200).json(returnObject);

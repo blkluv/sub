@@ -1,15 +1,12 @@
 import React from "react";
-import Navigation from "../../components/Navigation";
-import SharedHead from "../../components/SharedHead";
+import Layout from "../../components/Layout";
 import SelectLockType from "../../components/Submarine/SelectLockType";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 
 const SubmarineNew = () => {
   return (
-    <div>
-      <SharedHead />
-      <Navigation />
+    <Layout>
       <div className="w-4/5 m-auto mt-10 mb-12">
         <Link passHref href="/">
           <div className="h-8 w-8 cursor-pointer mb-8">
@@ -18,7 +15,7 @@ const SubmarineNew = () => {
         </Link>
         <SelectLockType />
       </div>
-    </div>
+    </Layout>
   );
 };
 

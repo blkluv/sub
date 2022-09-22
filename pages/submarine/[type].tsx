@@ -5,7 +5,6 @@ import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import NFT from "../../components/Submarine/SelectLockType/NFT";
 import Alert from "../../components/Alert";
-import SharedHead from "../../components/SharedHead";
 import Twitter from "../../components/Submarine/SelectLockType/Twitter";
 import Location from "../../components/Submarine/SelectLockType/Location";
 import ContentLanding from "../../components/Content/ContentLanding";
@@ -16,6 +15,7 @@ import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import PreviewModal from "../../components/Content/PreviewModal";
 import { getKy } from "../../helpers/ky";
 import { useAppDispatch } from "../../store/hooks";
+import Layout from "../../components/Layout";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -495,15 +495,12 @@ const UnlockType = () => {
             name={name}
             setName={setName}
             thumbnail={thumbnail}
-            setThumbnail={setThumbnail}
-            // setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
             onFileChange={onFileChange}
             onThumbnailChange={onThumbnailChange}
             contractAddress={contractAddress}
             setContractAddress={setContractAddress}
             network={network}
-            networks={networks}
             setNetwork={setNetwork}
             setDescription={setDescription}
             description={description}
@@ -519,7 +516,6 @@ const UnlockType = () => {
             file={file}
             setFile={setFile}
             uploadingBackground={uploadingBackground}
-            backgroundCid={backgroundCid}
             background={background}
             onBackgroundChange={onBackgroundChange}
             logoCid={logoCid}
@@ -530,7 +526,6 @@ const UnlockType = () => {
             setButtonTextColor={setButtonTextColor}
             fontFamily={fontFamily}
             setFontFamily={setFontFamily}
-            logo={logo}
             uploadingLogo={uploadingLogo}
             buttonShape={buttonShape}
             setButtonShape={setButtonShape}
@@ -538,12 +533,9 @@ const UnlockType = () => {
         );
     }
   };
-  const dispatch = useAppDispatch();
 
   return (
-    <div>
-      <SharedHead />
-      <Navigation />
+    <Layout>
       <Alert showAlert={showAlert} type={message?.type} message={message?.message} />
       {uploading ? (
         <div className="w-3/4 m-auto text-center">
@@ -615,7 +607,7 @@ const UnlockType = () => {
           </div>
         </div>
       )}
-    </div>
+    </Layout>
   );
 };
 

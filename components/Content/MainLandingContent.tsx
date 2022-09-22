@@ -330,7 +330,7 @@ const MainLandingContent = ({
                       <Tweet
                         tweetId={
                           fileInfo?.unlockInfo?.tweetUrl &&
-                          fileInfo?.unlockInfo?.tweetUrl.split("status/")[1].split("?")[0]
+                          fileInfo?.unlockInfo?.tweetUrl.split("status/")?.[1]?.split("?")?.[0]
                         }
                       />
                       <p className="text-muted text-sm">

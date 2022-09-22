@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectIsAuthenticated, selectUserAvatar } from "../../store/selectors/authSelectors";
 import { doLogOut } from "../../store/slices/authSlice";
-import CustomButton from "../Content/CustomButton";
 
 export default function Navigation() {
   const avatarPath = useAppSelector(selectUserAvatar);

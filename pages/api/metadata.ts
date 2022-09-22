@@ -124,13 +124,14 @@ export default async function handler(req, res) {
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else if (req.method === "DELETE") {
-    if (!req.body.id || !uuidValidate(req.body.id)) {
+    const { id } = JSON.parse(req.body);
+    if (!id || !uuidValidate(id)) {
       return res.status(401).send("No valid id passed in");
     } else {
       const { data, error } = await supabase
         .from<definitions["Content"]>("Content")
         .delete()
-        .eq("id", req.body.id)
+        .eq("id", id)
         .eq("pinata_user_id", user.userInformation.id);
 
       if (error) {

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navigation from "../Navigation";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
 import Alert from "../Alert";
@@ -144,7 +143,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Navigation />
       <Alert showAlert={showAlert} type={message?.type} message={message?.message} />
       {displayUpgradeModal && <UpgradeModal />}
       <div className="h-screen bg-gray container w-full m-auto">

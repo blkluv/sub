@@ -15,7 +15,6 @@ const networkOptions = {
 const NFT = ({
   onFileChange,
   uploadingBackground,
-  backgroundCid,
   background,
   onBackgroundChange,
   selectedFiles,
@@ -23,11 +22,9 @@ const NFT = ({
   setContractAddress,
   network,
   setNetwork,
-  networks,
   name,
   setName,
   thumbnail,
-  setThumbnail,
   description,
   setDescription,
   onThumbnailChange,
@@ -51,7 +48,6 @@ const NFT = ({
   fontFamily,
   setFontFamily,
   uploadingLogo,
-  logo,
   buttonShape,
   setButtonShape,
 }) => {

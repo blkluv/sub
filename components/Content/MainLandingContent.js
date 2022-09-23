@@ -34,13 +34,13 @@ const MainLandingContent = ({
   setVerifying,
   eth,
   preview,
+  gatewayUrl,
 }) => {
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
-  const [gatewayUrl, setGatewayUrl] = useState("");
-
+  const [safeGatewayUrl, setSafeGatewayUrl] = useState(gatewayUrl);
   useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
+    setSafeGatewayUrl(gatewayUrl || localStorage.getItem("sm-gateway"));
   }, []);
 
   const { twitterAuth } = useTwitter();
@@ -117,7 +117,7 @@ const MainLandingContent = ({
   const forcedStyle = () => {
     if (fileInfo && fileInfo.customizations && fileInfo.customizations.backgroundCid) {
       return {
-        backgroundImage: `url(${gatewayUrl}/ipfs/${fileInfo.customizations.backgroundCid})`,
+        backgroundImage: `url(${safeGatewayUrl}/ipfs/${fileInfo.customizations.backgroundCid})`,
       };
     } else {
       return {};
@@ -191,7 +191,7 @@ const MainLandingContent = ({
         <div className="absolute p-4 flex flex-row">
           <div>
             {fileInfo.customizations && fileInfo.customizations.logoCid ? (
-              <CustomLogo logo={fileInfo.customizations.logoCid} />
+              <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
             ) : (
               <SubmarineLogoSvg />
             )}
@@ -221,7 +221,7 @@ const MainLandingContent = ({
                 {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
                   <img
                     className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-                    src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
+                    src={`${safeGatewayUrl}/ipfs/${fileInfo.thumbnail}`}
                     alt={`${fileInfo.name} preview`}
                   />
                 ) : (

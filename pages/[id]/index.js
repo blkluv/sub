@@ -40,8 +40,7 @@ const connectors = ({ chainId }) => {
 const Content = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [missing, set404] = useState(false);
-  gatewayUrl = data.gatewayUrl;
-
+  const gatewayUrl = `https://${data.gatewayUrl}.mypinata.cloud`;
   useEffect(() => {
     if (data) {
       setLoading(false);
@@ -126,7 +125,12 @@ window['_fs_namespace'] = 'FS';
         />
       </Head>
       <Provider autoConnect connectors={connectors}>
-        <ContentLanding missing={missing} loading={loading} fileInfo={data} />
+        <ContentLanding
+          missing={missing}
+          loading={loading}
+          fileInfo={data}
+          gatewayUrl={gatewayUrl}
+        />
       </Provider>
     </div>
   );

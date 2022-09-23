@@ -221,6 +221,8 @@ const MainLandingContent = ({
                     className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
                     src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
                     alt={`${fileInfo.name} preview`}
+                    width={100}
+                    height={100}
                   />
                 ) : (
                   fileInfo?.thumbnail?.length > 0 && (
@@ -228,6 +230,8 @@ const MainLandingContent = ({
                       className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
                       src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]?.preview}
                       alt={`${fileInfo.name} preview`}
+                      width={100}
+                      height={100}
                     />
                   )
                 )}

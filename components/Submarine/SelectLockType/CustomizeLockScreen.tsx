@@ -40,6 +40,8 @@ const CustomizeLockScreen = ({
                       ? `${gatewayUrl}/ipfs/${background}`
                       : background[0]?.preview
                   }
+                  height={160}
+                  width={160}
                   alt="preview for thumbnail"
                 />
               ) : (
@@ -79,6 +81,8 @@ const CustomizeLockScreen = ({
                   className="w-10"
                   src={`${gatewayUrl}/ipfs/${logoCid}`}
                   alt="preview for logo"
+                  height={40}
+                  width={40}
                 />
               ) : (
                 <svg

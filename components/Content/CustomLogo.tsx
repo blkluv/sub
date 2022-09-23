@@ -11,6 +11,8 @@ const CustomLogo = ({ logo }) => {
         alt="Logo"
         src={logo.includes("https") ? logo : `${gatewayUrl}/ipfs/${logo}`}
         className="w-8"
+        width={40}
+        height={40}
       />
     </div>
   );

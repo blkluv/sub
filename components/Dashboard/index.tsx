@@ -60,7 +60,6 @@ const Dashboard = () => {
     try {
       const ky = getKy();
       const res = await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`);
-
       const userJson = await res.json();
       return userJson;
     } catch (error) {

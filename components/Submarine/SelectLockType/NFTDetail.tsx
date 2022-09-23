@@ -50,6 +50,8 @@ const NFTDetail = ({
                   src={
                     thumbnail[0].preview ? thumbnail[0].preview : `${gatewayUrl}/ipfs/${thumbnail}`
                   }
+                  height={48}
+                  width={48}
                   alt="preview for thumbnail"
                 />
               ) : (

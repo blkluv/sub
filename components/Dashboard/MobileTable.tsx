@@ -13,11 +13,7 @@ const MobileTable = ({ files, copyLink, openDeleteModal, getThumbnail }) => {
             <td className="w-screen px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               <div className="flex flex-row justify-left align-center w-full">
                 <div className="w-12">
-                  <Image
-                    alt="Thumbnail"
-                    src={getThumbnail(file)}
-                    style={{ height: 50, width: 50 }}
-                  />
+                  <Image alt="Thumbnail" src={getThumbnail(file)} height={50} width={50} />
                 </div>
 
                 <div className="ml-4">

@@ -57,8 +57,7 @@ export default function Navigation() {
                       "px-4 py-1 rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
                     }
                   >
-                    {" "}
-                    Log out{" "}
+                    Log out
                   </button>
                 )}
               </div>

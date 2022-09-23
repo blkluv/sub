@@ -14,7 +14,6 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import PreviewModal from "../../components/Content/PreviewModal";
 import { getKy } from "../../helpers/ky";
-import { useAppDispatch } from "../../store/hooks";
 import Layout from "../../components/Layout";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;

@@ -187,13 +187,15 @@ export const authSlice = createSlice({
         state.status = LOGIN_STATUSES.MFARequest;
         return;
       }
+
+      const gatewayUrl = `https://${user["gatewayUrl"]}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
       state.user = {
         email: user.email,
         email_verified: user.email_verified,
         firstname: user["custom:firstName"],
         lastname: user["custom:lastName"],
         sub: user.sub,
-        gatewayUrl: user["gatewayUrl"],
+        gatewayUrl,
       };
     });
   },

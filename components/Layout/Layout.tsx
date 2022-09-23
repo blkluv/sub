@@ -3,13 +3,13 @@ import Footer from "./Footer";
 import { useAppSelector } from "../../store/hooks";
 import { selectIsAuthenticated } from "../../store/selectors/authSelectors";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface Props {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: Props) {
+const Layout: React.FC<Props> = ({ children }: Props) => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const router = useRouter();
 
@@ -19,11 +19,15 @@ export default function Layout({ children }: Props) {
     }
   }, [isAuthenticated]);
 
-  return (
+  // TODO add loading spinner
+  const layout = isAuthenticated ? (
     <>
       <Header />
       <main>{children}</main>
       <Footer />
     </>
-  );
-}
+  ) : null;
+  return layout;
+};
+
+export default Layout;

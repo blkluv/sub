@@ -4,8 +4,8 @@ import SharedHead from "./SharedHead";
 export default function Header() {
   return (
     <>
-      <Navigation />
       <SharedHead />
+      <Navigation />
     </>
   );
 }

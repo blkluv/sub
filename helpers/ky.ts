@@ -7,6 +7,7 @@ export const getKy = (): KyInstance => {
     return kyObj;
   }
   kyObj = ky;
+  return kyObj;
 };
 
 export const setCredentials = (jwt: string) => {

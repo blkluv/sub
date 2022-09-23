@@ -12,6 +12,7 @@ const Ethereum = ({
   handleChangePage,
   ethereum,
   setEthereum,
+  gatewayUrl,
 }) => {
   // useEffect(() => {
   //   if (typeof window.ethereum !== "undefined" && fileInfo && fileInfo.unlockInfo && EVMChains.includes(fileInfo.unlockInfo.blockchain)) {
@@ -36,6 +37,7 @@ const Ethereum = ({
         loading={loading}
         signing={signing}
         handleSign={handleSign}
+        gatewayUrl={gatewayUrl}
       />
     </div>
   );

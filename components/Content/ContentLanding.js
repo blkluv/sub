@@ -9,7 +9,7 @@ import { useTwitter } from "../../hooks/useTwitter";
 import { useSignMessage, useAccount } from "wagmi";
 import MainLandingContent from "./MainLandingContent";
 
-export default function ContentLanding({ loading, fileInfo, missing, preview }) {
+export default function ContentLanding({ loading, fileInfo, missing, preview, gatewayUrl }) {
   console.log(fileInfo);
   const [signing, setSigning] = useState(false);
   const [gallery, setGallery] = useState(false);
@@ -158,6 +158,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
               gallery={gallery}
               fileInfo={fileInfo}
               loading={loading}
+              gatewayUrl={gatewayUrl}
             />
           ) : fileInfo &&
             fileInfo.unlockInfo &&
@@ -174,6 +175,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
               loading={loading}
               signing={signing}
               handleSign={handleSign}
+              gatewayUrl={gatewayUrl}
             />
           ) : (
             <Ethereum
@@ -187,6 +189,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
               loading={loading}
               signing={signing}
               handleSign={handleSign}
+              gatewayUrl={gatewayUrl}
             />
           )}
         </div>

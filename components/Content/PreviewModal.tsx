@@ -6,6 +6,8 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import ContentLanding from "./ContentLanding";
+import { useAppSelector } from "../../store/hooks";
+import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -35,6 +37,7 @@ const connectors = ({ chainId }) => {
 };
 
 export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }) {
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <Transition.Root show={previewOpen} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={setPreviewOpen}>
@@ -73,7 +76,7 @@ export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }) 
                         missing={false}
                         loading={false}
                         fileInfo={fileInfo}
-                        preview={true}
+                        gatewayUrl={gatewayUrl}
                       />
                     </Provider>
                   </div>

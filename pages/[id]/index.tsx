@@ -7,8 +7,6 @@ import { Provider, chain, defaultChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
-import { selectGatewayUrl } from "../../store/selectors/authSelectors";
-import { useAppSelector } from "../../store/hooks";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 

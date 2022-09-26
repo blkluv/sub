@@ -1,7 +1,7 @@
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import MintAddressModal from "./MintAddressModal";
-import NFTDetail from "./NFTDetail";
+import FileDetail from "./FileDetail";
 import TokenIdModal from "./TokenIdModal";
 import UpdateAuthorityModal from "./UpdateAuthorityModal";
 
@@ -281,7 +281,7 @@ const NFT = ({
         {renderBlockchainSelector()}
         {renderNetworkSelector()}
         {renderContractAddress()}
-        <NFTDetail
+        <FileDetail
           onThumbnailChange={onThumbnailChange}
           thumbnail={thumbnail}
           name={name}

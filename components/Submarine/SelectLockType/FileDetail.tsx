@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import UploadMedia from "../../Upload/UploadMedia";
 import UploadThumbnail from "../../Upload/UploadThumbnail";
 import { Switch } from "@headlessui/react";
@@ -6,34 +6,13 @@ import CustomizeLockScreen from "./CustomizeLockScreen";
 import Image from "next/image";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
 import { useAppSelector } from "../../../store/hooks";
+import { Field, useFormikContext } from "formik";
 
-const NFTDetail = ({
-  onThumbnailChange,
-  uploadingBackground,
-  background,
-  onBackgroundChange,
-  thumbnail,
-  name,
-  setName,
-  description,
-  setDescription,
-  onFileChange,
-  selectedFiles,
-  file,
-  setFile,
-  logoCid,
-  onLogoChange,
-  buttonColor,
-  setButtonColor,
-  buttonTextColor,
-  setButtonTextColor,
-  fontFamily,
-  setFontFamily,
-  uploadingLogo,
-  buttonShape,
-  setButtonShape,
-}) => {
+const FileDetail = () => {
   const [customize, setCustomize] = useState(false);
+
+  const { values } = useFormikContext();
+  console.log({ values });
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <div>
@@ -43,7 +22,7 @@ const NFTDetail = ({
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+            {/* <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
               {thumbnail && thumbnail.length > 0 ? (
                 <Image
                   className="h-12 w-12"
@@ -64,7 +43,7 @@ const NFTDetail = ({
                 </svg>
               )}
             </span>
-            <UploadThumbnail onThumbnailChange={onThumbnailChange} />
+            <UploadThumbnail onThumbnailChange={onThumbnailChange} /> */}
           </div>
         </div>
       </div>
@@ -74,9 +53,7 @@ const NFTDetail = ({
         </label>
         <div className="mt-2 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+            <Field
               type="text"
               name="name"
               maxLength={100}
@@ -88,7 +65,7 @@ const NFTDetail = ({
             />
           </div>
           <div>
-            <p className="text-sm text-pinata-purple">{`${name.length}/100`}</p>
+            <p className="text-sm text-pinata-purple">{`${values.name.length}/100`}</p>
           </div>
         </div>
       </div>
@@ -101,9 +78,7 @@ const NFTDetail = ({
         </label>
         <div className="mt-2 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
-            <input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+            <Field
               type="text"
               name="description"
               id="description"
@@ -115,9 +90,9 @@ const NFTDetail = ({
             />
           </div>
           <div>
-            <p className="text-sm text-pinata-purple">{`${
+            {/* <p className="text-sm text-pinata-purple">{`${
               description ? description.length : 0
-            }/400`}</p>
+            }/400`}</p> */}
           </div>
         </div>
       </div>
@@ -152,33 +127,10 @@ const NFTDetail = ({
           </div>
         </div>
       </div>
-      {customize && (
-        <CustomizeLockScreen
-          uploadingBackground={uploadingBackground}
-          background={background}
-          onBackgroundChange={onBackgroundChange}
-          logoCid={logoCid}
-          buttonColor={buttonColor}
-          buttonTextColor={buttonTextColor}
-          setButtonColor={setButtonColor}
-          setButtonTextColor={setButtonTextColor}
-          uploadingLogo={uploadingLogo}
-          onLogoChange={onLogoChange}
-          // backgroundCid={backgroundCid} // TODO
-          fontFamily={fontFamily}
-          setFontFamily={setFontFamily}
-          buttonShape={buttonShape}
-          setButtonShape={setButtonShape}
-        />
-      )}
-      <UploadMedia
-        onFileChange={onFileChange}
-        selectedFiles={selectedFiles}
-        file={file}
-        setFile={setFile}
-      />
+      {/* {customize && <CustomizeLockScreen />} */}
+      <UploadMedia />
     </div>
   );
 };
 
-export default NFTDetail;
+export default FileDetail;

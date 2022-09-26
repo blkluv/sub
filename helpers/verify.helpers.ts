@@ -61,18 +61,11 @@ type UnlockInfoLocation = {
   lat: number;
   long: number;
   type: "location";
-  network?: any;
-  tokenId: string;
-  contract: string;
   distance: string;
-  tweetUrl: string;
-  blockchain: string;
-  mintAddress: string;
-  updateAuthority: string;
 };
-type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;
+export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;
 
-interface ContentWithUnlockInfo
+export interface ContentWithUnlockInfo
   extends Omit<definitions["Content"], "unlock_info" | "customizations"> {
   unlock_info: UnlockInfo;
   customizations?: Customizations;

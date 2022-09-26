@@ -5,23 +5,12 @@ import { SketchPicker } from "react-color";
 import Image from "next/image";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
 import { useAppSelector } from "../../../store/hooks";
-
-const CustomizeLockScreen = ({
-  background,
-  onBackgroundChange,
-  uploadingBackground,
-  logoCid,
-  onLogoChange,
-  uploadingLogo,
-  buttonColor,
-  setButtonColor,
-  buttonTextColor,
-  setButtonTextColor,
-  buttonShape,
-  setButtonShape,
-  fontFamily,
-  setFontFamily,
-}) => {
+import { useFormikContext } from "formik";
+import { ContentWithUnlockInfo } from "../../../helpers/verify.helpers";
+import { Field } from "formik";
+const CustomizeLockScreen = () => {
+  const { values } = useFormikContext<ContentWithUnlockInfo>();
+  const background = "QmQgKmX4A7VwZabU6dZgQZBz5wxsuPYMCDggkWiboE2iqp"; // TODO !! values.customizations?.background;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <div>
@@ -61,11 +50,7 @@ const CustomizeLockScreen = ({
                 </svg>
               )}
             </span>
-            {uploadingBackground ? (
-              <div>Uploading...</div>
-            ) : (
-              <UploadBackground onBackgroundChange={onBackgroundChange} />
-            )}
+            {/* {uploadingBackground ? <div>Uploading...</div> : <UploadBackground />} TODO */}
           </div>
         </div>
       </div>
@@ -111,7 +96,7 @@ const CustomizeLockScreen = ({
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            <SketchPicker color={buttonColor} onChangeComplete={setButtonColor} />
+            {/* <SketchPicker color={buttonColor} onChangeComplete={setButtonColor} /> TODO */}
           </div>
         </div>
       </div>
@@ -121,7 +106,7 @@ const CustomizeLockScreen = ({
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            <SketchPicker color={buttonTextColor} onChangeComplete={setButtonTextColor} />
+            {/* <SketchPicker  color={buttonTextColor} onChangeComplete={setButtonTextColor} /> TODO */}
           </div>
         </div>
       </div>
@@ -149,12 +134,12 @@ const CustomizeLockScreen = ({
                 </label>
               </div>
               <div className="flex items-center">
-                <input
+                <Field
                   id="button-square"
                   name="push-notifications"
                   type="radio"
-                  checked={buttonShape !== "rounded"}
-                  onChange={() => setButtonShape("square")}
+                  // checked={buttonShape !== "rounded"} // TODO!
+                  // onChange={() => setButtonShape("square")}
                   className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label
@@ -175,12 +160,11 @@ const CustomizeLockScreen = ({
         <div className="mt-1 sm:mt-0 ">
           <div className="max-w-lg flex">
             <div className="mt-1 sm:mt-0 ">
-              <select
-                id="country"
-                name="country"
+              <Field
+                as="select"
+                id="font-family"
+                name="font-family"
                 autoComplete="country-name"
-                value={fontFamily}
-                onChange={(e) => setFontFamily(e.target.value)}
                 className="max-w-lg block w-full sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
               >
                 <option value="Inter">Inter</option>
@@ -189,7 +173,7 @@ const CustomizeLockScreen = ({
                 <option value="Roboto">Roboto</option>
                 <option value="Roboto Condensed">Roboto Condensed</option>
                 <option value="Source Sans Pro">Source Sans Pro</option>
-              </select>
+              </Field>
             </div>
           </div>
         </div>

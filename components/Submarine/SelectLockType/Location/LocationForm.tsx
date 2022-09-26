@@ -1,10 +1,12 @@
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import GoogleMapsCoordsModal from "../GoogleMapsCoordsModal";
+import { useFormikContext, Field } from "formik";
 
-const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => {
+const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
   const [googleMapsModalOpen, setGoogleMapsModalOpen] = useState(false);
+  const { setFieldValue } = useFormikContext();
   const detectLocation = async () => {
     setGettingLocation(true);
     if (!navigator.geolocation) {
@@ -15,8 +17,8 @@ const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => 
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          setLat(latitude);
-          setLong(longitude);
+          setFieldValue("unlock_info.lat", latitude);
+          setFieldValue("unlock_info.long", longitude);
           setGettingLocation(false);
         },
         (error) => {
@@ -37,7 +39,7 @@ const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => 
       </button>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
         <label
-          htmlFor="lat"
+          htmlFor="unlock_info.lat"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
           <span>Latitude* </span>
@@ -47,13 +49,11 @@ const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => 
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
-            <input
-              value={lat}
-              onChange={(e) => setLat(e.target.value)}
+            <Field
               type="text"
-              name="lat"
+              name="unlock_info.lat"
               required
-              id="lat"
+              id="unlock_info.lat"
               autoComplete="off"
               placeholder="Latitude"
               className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
@@ -63,7 +63,7 @@ const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => 
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
         <label
-          htmlFor="long"
+          htmlFor="unlock_info.long"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
           <span>Longitude* </span>
@@ -73,13 +73,11 @@ const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => 
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
-            <input
-              value={long}
-              onChange={(e) => setLong(e.target.value)}
+            <Field
               type="text"
-              name="long"
+              name="unlock_info.long"
               required
-              id="long"
+              id="unlock_info.long"
               autoComplete="off"
               placeholder="Longitude"
               className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
@@ -89,20 +87,18 @@ const LocationForm = ({ lat, setLat, long, setLong, distance, setDistance }) => 
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
         <label
-          htmlFor="distance"
+          htmlFor="unlock_info.distance"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
           <span>Allowed Range (in miles)*</span>
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="max-w-lg flex">
-            <input
-              value={distance}
-              onChange={(e) => setDistance(e.target.value)}
+            <Field
               type="number"
-              name="distance"
+              name="unlock_info.distance"
               required
-              id="distance"
+              id="unlock_info.distance"
               autoComplete="off"
               placeholder="Distance"
               className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"

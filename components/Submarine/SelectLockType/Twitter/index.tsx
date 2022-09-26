@@ -1,5 +1,5 @@
 import React from "react";
-import NFTDetail from "../NFTDetail";
+import FileDetail from "../FileDetail";
 import RetweetInfoForm from "./RetweetInfoForm";
 
 const Twitter = ({
@@ -43,7 +43,7 @@ const Twitter = ({
       </div>
       <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
         <RetweetInfoForm tweetURL={tweetUrl} setTweetURL={setTweetUrl} />
-        <NFTDetail
+        <FileDetail
           onThumbnailChange={onThumbnailChange}
           thumbnail={thumbnail}
           name={name}

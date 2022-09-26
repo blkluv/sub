@@ -1,13 +1,40 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import File from "./File";
 import Folder from "./Folder";
+import { useFormikContext } from "formik";
 
-const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
+enum FileType {
+  File = "file",
+  Folder = "folder",
+}
+
+const UploadMedia = () => {
   const [dragOverActive, setDragOverActive] = useState(false);
 
   const dragOverHandler = (ev) => {
     ev.preventDefault();
     setDragOverActive(true);
+  };
+
+  const [uploadType, setUploadFile] = useState(FileType.File);
+
+  const { values, setFieldValue } = useFormikContext();
+  const selectedFiles = values.selectedFiles;
+  const FILE_SIZE_LIMIT = 500000000;
+  const onFileChange = (e, type) => {
+    const files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size > FILE_SIZE_LIMIT) {
+        alert("File too large, limit is 500mb");
+        return;
+      }
+      Object.assign(files[i], {
+        preview: URL.createObjectURL(files[i]),
+        formattedSize: files[i].size,
+      });
+    }
+
+    setFieldValue("selectedFiles", files);
   };
 
   const dragExitHandler = (ev) => {
@@ -67,8 +94,8 @@ const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
                   id="file"
                   name="notification-method"
                   type="radio"
-                  checked={file}
-                  onChange={() => setFile(true)}
+                  checked={uploadType === FileType.File}
+                  onChange={() => setUploadFile(FileType.File)}
                   className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label htmlFor="file" className="ml-3 block text-sm font-medium text-gray-700">
@@ -81,8 +108,8 @@ const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
                   id="folder"
                   name="notification-method"
                   type="radio"
-                  checked={!file}
-                  onChange={() => setFile(false)}
+                  checked={uploadType === FileType.Folder}
+                  onChange={() => setUploadFile(FileType.Folder)}
                   className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label htmlFor="folder" className="ml-3 block text-sm font-medium text-gray-700">
@@ -120,14 +147,20 @@ const UploadMedia = ({ selectedFiles, onFileChange, file, setFile }) => {
                 htmlFor="file-upload-main"
                 className="relative cursor-pointer bg-white rounded-md font-medium text-pinata-purple hover:text-pinata-purple focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pinata-purple"
               >
-                {file ? <File onChange={onFileChange} /> : <Folder onChange={onFileChange} />}
+                {uploadType === FileType.File ? (
+                  <File onChange={onFileChange} />
+                ) : (
+                  <Folder onChange={onFileChange} />
+                )}
               </label>
               <p className="hidden sm:block pl-1">or drag and drop</p>
             </div>
             {selectedFiles.length > 0 ? (
               <p className="text-xs text-gray-500">
-                {file ? selectedFiles[0].name : selectedFiles[0].webkitRelativePath.split("/")[0]} (
-                {selectedFiles.length} files in folder)
+                {uploadType === FileType.File
+                  ? selectedFiles[0].name
+                  : selectedFiles[0].webkitRelativePath.split("/")[0]}{" "}
+                ({selectedFiles.length} files in folder)
               </p>
             ) : (
               <p className="text-xs text-gray-500">Any file up to 500MB</p>

@@ -348,7 +348,7 @@ export const useAuth = () => {
       const data = await getDbInfo(sessionData.accessToken);
       // user.pinata_submarine_key = data.pinata_submarine_key;
       // user.pinata_gateway_subdomain = data.pinata_gateway_subdomain;
-      const gatewayURL = `https://${data.pinata_gateway_subdomain}.mypinata.cloud`;
+      const gatewayURL = `https://${data.pinata_gateway_subdomain}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
       localStorage.setItem("sm-gateway", gatewayURL);
     }
   };

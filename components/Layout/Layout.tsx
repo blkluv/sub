@@ -14,10 +14,12 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push({ pathname: "/auth", query: { from: router.pathname } });
+    if (router.isReady) {
+      if (!isAuthenticated) {
+        router.push({ pathname: "/auth", query: { from: router.asPath } });
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router.isReady]);
 
   // TODO add loading spinner
   const layout = isAuthenticated ? (

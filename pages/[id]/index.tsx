@@ -40,7 +40,7 @@ const connectors = ({ chainId }) => {
 const Content = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [missing, set404] = useState(false);
-  const gatewayUrl = useAppSelector(selectGatewayUrl);
+  const gatewayUrl = `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
 
   useEffect(() => {
     if (data) {
@@ -126,7 +126,12 @@ window['_fs_namespace'] = 'FS';
         />
       </Head>
       <Provider autoConnect connectors={connectors}>
-        <ContentLanding preview={false} missing={missing} loading={loading} fileInfo={data} />
+        <ContentLanding
+          missing={missing}
+          loading={loading}
+          fileInfo={data}
+          gatewayUrl={gatewayUrl}
+        />
       </Provider>
     </div>
   );

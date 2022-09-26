@@ -7,7 +7,7 @@ import { useTwitter } from "../../hooks/useTwitter";
 import { useSignMessage, useAccount } from "wagmi";
 import MainLandingContent from "./MainLandingContent";
 
-export default function ContentLanding({ loading, fileInfo, missing, preview }) {
+export default function ContentLanding({ loading, fileInfo, missing, gatewayUrl }) {
   const [signing, setSigning] = useState(false);
   const [gallery, setGallery] = useState(false);
   const [fullResponse, setFullResponse] = useState(null);
@@ -19,7 +19,6 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
 
   const { verifyRetweet } = useTwitter();
   const router = useRouter();
-
   useEffect(() => {
     const { oauth_token, oauth_verifier } = router.query;
     if (oauth_token && oauth_verifier) {
@@ -155,6 +154,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
               loading={loading}
               signing={signing}
               handleSign={handleSign}
+              gatewayUrl={gatewayUrl}
             />
           ) : (
             <MainLandingContent
@@ -169,6 +169,7 @@ export default function ContentLanding({ loading, fileInfo, missing, preview }) 
               gallery={gallery}
               fileInfo={fileInfo}
               loading={loading}
+              gatewayUrl={gatewayUrl}
             />
           )}
         </div>

@@ -43,17 +43,17 @@ export default async function handler(req, res) {
   }
   if (req.method === "POST") {
     try {
-      await schema.validateAsync(req.body);
-
+      const obj = JSON.parse(req.body || {});
+      await schema.validateAsync(obj);
       const theCreationObject: definitions["Content"] = {
         id: uuidv4(),
-        name: req.body.name,
-        description: req.body.description,
-        submarine_cid: req.body.submarineCid,
-        short_id: req.body.shortId,
+        name: obj.name,
+        description: obj.description,
+        submarine_cid: obj.submarineCid,
+        short_id: obj.shortId,
         pinata_user_id: user.userInformation.id,
-        unlock_info: req.body.unlockInfo,
-        customizations: req.body.customizations,
+        unlock_info: obj.unlockInfo,
+        customizations: obj.customizations,
       };
 
       const { error } = await supabase

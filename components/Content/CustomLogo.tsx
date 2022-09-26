@@ -1,10 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { useAppSelector } from "../../store/hooks";
-import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 
-const CustomLogo = ({ logo }) => {
-  const gatewayUrl = useAppSelector(selectGatewayUrl);
+const CustomLogo = ({ logo, gatewayUrl }) => {
   return (
     <div className="w-20">
       <Image

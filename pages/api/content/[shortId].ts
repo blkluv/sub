@@ -1,5 +1,5 @@
 import { getSupabaseClient } from "../../../helpers/supabase";
-import { definitions } from "../../../types/supabase";
+import { getUserContentCombo } from "../../../helpers/verify.helpers";
 
 const supabase = getSupabaseClient();
 
@@ -9,21 +9,10 @@ export default async function handler(req, res) {
       return res.status(401).send("Please provide a shortId");
     }
 
-    let { data: Content, error } = await supabase
-      .from<definitions["Content"]>("Content")
-      .select("*")
-      .eq("short_id", req.query.shortId);
-
-    if (error) {
-      throw error;
-    }
-
-    if (!Content || !Content[0]) {
+    const theContent = await getUserContentCombo(req.query.shortId);
+    if (!theContent) {
       throw "Couldn't find content";
     }
-
-    const theContent = Content[0];
-
     const returnObject = {
       id: theContent.id,
       name: theContent.name,
@@ -33,6 +22,7 @@ export default async function handler(req, res) {
       unlockInfo: theContent.unlock_info,
       shortId: theContent.short_id,
       customizations: theContent.customizations,
+      gatewayUrl: theContent.Users.pinata_gateway_subdomain,
     };
 
     return res.status(200).json(returnObject);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navigation from "../../components/Navigation";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
@@ -15,6 +14,8 @@ import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import PreviewModal from "../../components/Content/PreviewModal";
 import { getKy } from "../../helpers/ky";
 import Layout from "../../components/Layout";
+import { useAppSelector } from "../../store/hooks";
+import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -221,6 +222,7 @@ const UnlockType = () => {
     setThumbnailCid(thumbnail);
   };
 
+  const gatewayUrl = useAppSelector(selectGatewayUrl);
   const FILE_SIZE_LIMIT = 500000000;
   const onFileChange = (e, type) => {
     const files = e.target.files;
@@ -598,7 +600,7 @@ const UnlockType = () => {
                     missing={false}
                     loading={false}
                     fileInfo={fileInfo}
-                    preview={true}
+                    gatewayUrl={gatewayUrl}
                   />
                 </Provider>
               </div>

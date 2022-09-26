@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import {
   WalletModalProvider,
@@ -19,8 +19,6 @@ import CustomLogo from "./CustomLogo";
 import CustomButton from "./CustomButton";
 import Head from "next/head";
 import Image from "next/image";
-import { selectGatewayUrl } from "../../store/selectors/authSelectors";
-import { useAppSelector } from "../../store/hooks";
 import { LocationLockResponse } from "../../pages/api/location/verify";
 
 const MainLandingContent = ({
@@ -35,11 +33,10 @@ const MainLandingContent = ({
   handleChangePage,
   verifying,
   setVerifying,
+  gatewayUrl,
 }) => {
   const [{ data, error }, connect] = useConnect();
   const [solSigning, setSolSigning] = useState(false);
-
-  const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   const { twitterAuth } = useTwitter();
   const { signData } = useSolana();
@@ -189,7 +186,7 @@ const MainLandingContent = ({
         <div className="absolute p-4 flex flex-row">
           <div>
             {fileInfo.customizations && fileInfo.customizations.logoCid ? (
-              <CustomLogo logo={fileInfo.customizations.logoCid} />
+              <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
             ) : (
               <SubmarineLogoSvg />
             )}

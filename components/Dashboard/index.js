@@ -25,7 +25,14 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [gatewayUrl, setGatewayUrl] = useState("");
   useEffect(() => {
-    setGatewayUrl(localStorage.getItem("sm-gateway"));
+    let gw = localStorage.getItem("sm-gateway");
+    const interval = setInterval(() => {
+      gw = localStorage.getItem("sm-gateway");
+      if (gw) {
+        setGatewayUrl(gw);
+        clearInterval(interval);
+      }
+    }, 1000);
   }, []);
 
   const { getHeaders } = useSubmarine();
@@ -158,7 +165,7 @@ const Dashboard = () => {
     if (file.thumbnail) {
       return `${gatewayUrl}/ipfs/${file.thumbnail}`;
     } else {
-      return placeholder;
+      return placeholder.src;
     }
   };
 

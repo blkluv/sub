@@ -40,7 +40,7 @@ const connectors = ({ chainId }) => {
 const Content = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [missing, set404] = useState(false);
-  const gatewayUrl = `https://${data.gatewayUrl}.mypinata.cloud`;
+  const gatewayUrl = `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
   useEffect(() => {
     if (data) {
       setLoading(false);

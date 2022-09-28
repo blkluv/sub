@@ -1,8 +1,10 @@
 import { withIronSession } from "next-iron-session";
 import { getOauthSecret, getUserContentCombo } from "../../../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
+import { getSupabaseClient } from "../../../../helpers/supabase";
 
 const { TwitterApi } = require("twitter-api-v2");
+const supabase = getSupabaseClient();
 
 function withSession(handler) {
   return withIronSession(handler, {

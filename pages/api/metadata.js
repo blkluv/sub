@@ -159,7 +159,8 @@ export default async function handler(req, res) {
       const { data, error } = await supabase
         .from("Content")
         .update(theCreationObject)
-        .eq("short_id", req.body.shortId);
+        .eq("short_id", req.body.shortId)
+        .eq("pinata_user_id", user.userInformation.id);
 
       if (error) {
         throw error;

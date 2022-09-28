@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
-import { Field } from "formik";
+import UploadHandler from "./UploadHandler";
 
-const UploadBackground = () => {
+const UploadBackground = ({ onFileChange }) => {
   const fileInput = useRef(null);
   return (
     <button
@@ -14,13 +14,14 @@ const UploadBackground = () => {
           className="relative cursor-pointer bg-white rounded-md font-medium text-pinata-purple hover:text-pinata-purple focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
         >
           <span>Select a background</span>
-          <Field
+          <input
             id="file-upload-background"
             name="file-upload-background"
             type="file"
             className="sr-only"
             accept=".png, .jpeg, .jpg, .gif"
             ref={fileInput}
+            onChange={onFileChange}
           />
         </label>
       </div>
@@ -28,4 +29,4 @@ const UploadBackground = () => {
   );
 };
 
-export default UploadBackground;
+export default UploadHandler(UploadBackground);

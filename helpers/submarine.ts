@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ContentResponseTO, JWTRequest } from "../types/managed/api";
 const TIMEOUT_SECONDS = 60;
 
 export const getSubmarinedContent = async (
@@ -21,7 +22,7 @@ export const getSubmarinedContent = async (
 
     const { data } = content;
 
-    const { items } = data;
+    const { items }: ContentResponseTO = data;
     const item = items.find((i) => i.cid === submarine_cid);
 
     let hasIndexHtml = false;
@@ -38,7 +39,7 @@ export const getSubmarinedContent = async (
       hasIndexHtml = indexHtml.length > 0;
       childContent = directoryItems;
     }
-    const body = {
+    const body: JWTRequest = {
       timeoutSeconds: TIMEOUT_SECONDS,
       contentIds: [item.id],
     };

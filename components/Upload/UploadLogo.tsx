@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
+import UploadHandler from "./UploadHandler";
 
-const UploadLogo = ({ onLogoChange }) => {
+const UploadLogo = ({ onFileChange }) => {
   const fileInput = useRef(null);
   return (
     <button
@@ -20,7 +21,7 @@ const UploadLogo = ({ onLogoChange }) => {
             className="sr-only"
             accept=".png, .jpeg, .jpg, .gif"
             ref={fileInput}
-            onChange={onLogoChange}
+            onChange={onFileChange}
           />
         </label>
       </div>
@@ -28,4 +29,4 @@ const UploadLogo = ({ onLogoChange }) => {
   );
 };
 
-export default UploadLogo;
+export default UploadHandler(UploadLogo);

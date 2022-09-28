@@ -33,31 +33,29 @@ interface ButtonColor {
   source: string;
 }
 
-interface Customizations {
+export interface Customizations {
   backgroundCid?: string;
   fontFamily?: string;
   buttonColor?: ButtonColor;
   buttonShape?: string;
   logoCid?: string;
 }
-type UnlockInfoRetweet = {
+export type UnlockInfoRetweet = {
   type: "retweet";
-  network?: any;
-  tokenId: string;
-  contract: string;
   tweetUrl: string;
+};
+
+export type UnlockInfoNFT = {
+  type: "nft";
+  tokenId: string;
+  network: string;
+  contract: string;
   blockchain: string;
   mintAddress: string;
   updateAuthority: string;
 };
 
-type UnlockInfoNFT = {
-  type: "nft";
-  network: string;
-  contract: string;
-};
-
-type UnlockInfoLocation = {
+export type UnlockInfoLocation = {
   lat: number;
   long: number;
   type: "location";

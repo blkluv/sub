@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
+import UploadHandler from "./UploadHandler";
 
-const UploadThumbnail = ({ onThumbnailChange }) => {
+const UploadThumbnail = ({ onFileChange }) => {
   const fileInput = useRef(null);
   return (
     <button
@@ -20,7 +21,7 @@ const UploadThumbnail = ({ onThumbnailChange }) => {
             className="sr-only"
             accept=".png, .jpeg, .jpg, .gif"
             ref={fileInput}
-            onChange={onThumbnailChange}
+            onChange={onFileChange}
           />
         </label>
       </div>
@@ -28,4 +29,4 @@ const UploadThumbnail = ({ onThumbnailChange }) => {
   );
 };
 
-export default UploadThumbnail;
+export default UploadHandler(UploadThumbnail);

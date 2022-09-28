@@ -2,7 +2,7 @@ import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import { validate as uuidValidate } from "uuid";
 import { getSupabaseClient } from "../../helpers/supabase";
-import { getUserSession, UserInformation } from "../../helpers/user.helpers";
+import { getUserSession } from "../../helpers/user.helpers";
 import { definitions } from "../../types/supabase";
 
 const supabase = getSupabaseClient();
@@ -10,7 +10,7 @@ const schema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
   description: Joi.string().min(1).max(400).required(),
   thumbnail: Joi.string().min(0).max(100).optional(),
-  submarineCid: Joi.string().min(1).max(100).required(),
+  submarineCID: Joi.string().min(1).max(100).required(),
   unlockInfo: Joi.object({
     type: Joi.string().min(1).max(100).required(),
     contract: Joi.string().min(1).max(100).optional().allow(null, ""),
@@ -49,13 +49,17 @@ export default async function handler(req, res) {
         id: uuidv4(),
         name: obj.name,
         description: obj.description,
-        submarine_cid: obj.submarineCid,
+        submarine_cid: obj.submarineCID,
         short_id: obj.shortId,
         pinata_user_id: user.userInformation.id,
         unlock_info: obj.unlockInfo,
         customizations: obj.customizations,
       };
 
+      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+        console.log("Adding thumbnail");
+        theCreationObject.thumbnail = req.body.thumbnail;
+      }
       const { error } = await supabase
         .from<definitions["Content"]>("Content")
         .insert([theCreationObject]);
@@ -76,15 +80,20 @@ export default async function handler(req, res) {
       await schema.validateAsync(req.body);
       console.log("validation success");
 
-      const theCreationObject = {
+      const theCreationObject: Omit<definitions["Content"], "id"> = {
         name: req.body.name,
         description: req.body.description,
-        submarine_cid: req.body.submarineCid,
+        submarine_cid: req.body.submarineCID,
         short_id: req.body.shortId,
         pinata_user_id: user.userInformation.id,
         unlock_info: req.body.unlockInfo,
         customizations: req.body.customizations,
       };
+
+      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+        console.log("Adding thumbnail");
+        theCreationObject.thumbnail = req.body.thumbnail;
+      }
 
       const { data, error } = await supabase
         .from<definitions["Content"]>("Content")

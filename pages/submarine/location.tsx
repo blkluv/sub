@@ -1,31 +1,21 @@
 import React from "react";
 import Location from "../../components/Submarine/SelectLockType/Location";
 import SubmarineFileForm from "../../components/Submarine/SelectLockType/SubmarineFileForm";
-import { ContentWithUnlockInfo } from "../../helpers/verify.helpers";
+import { ContentWithUnlockInfo, UnlockInfoLocation } from "../../helpers/verify.helpers";
 
 const LocationLock = () => {
   const canSubmit = (values) => {
-    return true;
-    // return values.lat && values.long && values.distance;
+    return values.unlockInfo.lat && values.unlockInfo.long && values.unlockInfo.distance;
   };
-  const initialValues: Omit<ContentWithUnlockInfo, "id" | "pinata_user_id"> = {
-    unlock_info: {
-      type: "location",
-      lat: 0,
-      long: 0,
-      distance: "0",
-    },
-    description: "",
-    customizations: {},
-    name: "",
-    short_id: "",
-    submarine_cid: "",
-    thumbnail: "",
-    selectedFiles: [],
+  const unlockInfo: UnlockInfoLocation = {
+    type: "location",
+    lat: 0,
+    long: 0,
+    distance: "0",
   };
 
   return (
-    <SubmarineFileForm canSubmit={canSubmit} initialValues={initialValues}>
+    <SubmarineFileForm canSubmit={canSubmit} unlockInfo={unlockInfo}>
       <Location />
     </SubmarineFileForm>
   );

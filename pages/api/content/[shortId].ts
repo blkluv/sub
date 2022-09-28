@@ -1,8 +1,16 @@
-import { getSupabaseClient } from "../../../helpers/supabase";
-import { getUserContentCombo } from "../../../helpers/verify.helpers";
+import { Customizations, getUserContentCombo, UnlockInfo } from "../../../helpers/verify.helpers";
 
-const supabase = getSupabaseClient();
-
+export interface getContentReturnObject {
+  id: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+  submarineCID: string;
+  unlockInfo: UnlockInfo;
+  shortId: string;
+  customizations: Customizations;
+  gatewayUrl: string;
+}
 export default async function handler(req, res) {
   try {
     if (!req.query.shortId) {

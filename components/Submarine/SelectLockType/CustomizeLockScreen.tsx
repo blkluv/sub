@@ -6,10 +6,11 @@ import Image from "next/image";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
 import { useAppSelector } from "../../../store/hooks";
 import { useFormikContext } from "formik";
-import { ContentWithUnlockInfo } from "../../../helpers/verify.helpers";
+
 import { Field } from "formik";
+import { MetadataUnlockInfo } from "./SubmarineFileForm";
 const CustomizeLockScreen = () => {
-  const { values } = useFormikContext<ContentWithUnlockInfo>();
+  const { values } = useFormikContext<MetadataUnlockInfo>();
   const background = "QmQgKmX4A7VwZabU6dZgQZBz5wxsuPYMCDggkWiboE2iqp"; // TODO !! values.customizations?.background;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (

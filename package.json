@@ -9,7 +9,8 @@
     "lint": "next lint --fix",
     "lint-staged": "lint-staged",
     "prepare": "husky install",
-    "update-types": "npx openapi-typescript https://yqyjlheiuezqmmxdwvhg.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxeWpsaGVpdWV6cW1teGR3dmhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjM1OTEyMDIsImV4cCI6MTk3OTE2NzIwMn0.Z_BtQoXEq2OTdM4pm6hSLgksj4wRKXOmA08I1sCWzYM --output types/supabase.ts"
+    "update-types": "npx openapi-typescript https://yqyjlheiuezqmmxdwvhg.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxeWpsaGVpdWV6cW1teGR3dmhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjM1OTEyMDIsImV4cCI6MTk3OTE2NzIwMn0.Z_BtQoXEq2OTdM4pm6hSLgksj4wRKXOmA08I1sCWzYM --output types/supabase.ts",
+    "update-managed-types": "swagger-typescript-api -p ./types/pinata-managed.json -o ./types/managed -n api.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -65,6 +66,7 @@
     "lint-staged": "^13.0.3",
     "postcss": "^8.4.6",
     "sharp": "^0.31.0",
+    "swagger-typescript-api": "^10.0.1",
     "tailwindcss": "^3.0.23"
   }
 }

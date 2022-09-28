@@ -6,8 +6,20 @@ import { useRouter } from "next/router";
 import { useTwitter } from "../../hooks/useTwitter";
 import { useSignMessage, useAccount } from "wagmi";
 import MainLandingContent from "./MainLandingContent";
+import { SubmarinedContentMetadata } from "../Submarine/SelectLockType/SubmarineFileForm";
 
-export default function ContentLanding({ loading, fileInfo, missing, gatewayUrl }) {
+export interface ContentLandingProps {
+  loading: boolean;
+  fileInfo: SubmarinedContentMetadata;
+  gatewayUrl: string;
+  missing: boolean;
+}
+export default function ContentLanding({
+  loading,
+  fileInfo,
+  missing,
+  gatewayUrl,
+}: ContentLandingProps) {
   const [signing, setSigning] = useState(false);
   const [gallery, setGallery] = useState(false);
   const [fullResponse, setFullResponse] = useState(null);
@@ -54,48 +66,50 @@ export default function ContentLanding({ loading, fileInfo, missing, gatewayUrl 
 
   const handleSign = async () => {
     try {
-      setSigning(true);
-      if (fileInfo.unlockInfo.blockchain === "Solana") {
-        // const url = await signDataSol(fileInfo); // TODO fix this
-        // if (url) {
-        //   setSigning(false);
-        //   window.location.replace(url);
-        // }
-      } else {
-        const { shortId, submarineCID, unlockInfo } = fileInfo;
-        const { contract, blockchain, tokenId, network } = unlockInfo;
-        const messageToSign = await axios.get(
-          `/api/verify?contract=${contract}&shortId=${shortId}`
-        );
-        const messageData = messageToSign.data.message;
-
-        const { data: signature } = await signMessage({ message: messageData });
-
-        const verificationResponse = await axios.post("/api/verify", {
-          address: accountData.address,
-          signature,
-          network,
-          contractAddress: contract,
-          blockchain,
-          tokenId,
-          CID: submarineCID,
-          shortId: shortId,
-          messageId: messageToSign.data.session.id,
-        });
-
-        const res = verificationResponse.data;
-        if (res && !res.directory) {
-          setSigning(false);
-          window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);
-        } else if (res && res.html) {
-          setSigning(false);
-          window.location.replace(
-            `${res.gateway}/ipfs/${res.cid}/index.html?accessToken=${res.token}`
-          );
+      if (fileInfo.unlockInfo.type === "nft") {
+        setSigning(true);
+        if (fileInfo.unlockInfo.blockchain === "Solana") {
+          // const url = await signDataSol(fileInfo); // TODO fix this
+          // if (url) {
+          //   setSigning(false);
+          //   window.location.replace(url);
+          // }
         } else {
-          setFullResponse(res);
-          setOffset(0);
-          setGallery(true);
+          const { shortId, submarineCID, unlockInfo } = fileInfo;
+          const { contract, blockchain, tokenId, network } = unlockInfo;
+          const messageToSign = await axios.get(
+            `/api/verify?contract=${contract}&shortId=${shortId}`
+          );
+          const messageData = messageToSign.data.message;
+
+          const { data: signature } = await signMessage({ message: messageData });
+
+          const verificationResponse = await axios.post("/api/verify", {
+            address: accountData.address,
+            signature,
+            network,
+            contractAddress: contract,
+            blockchain,
+            tokenId,
+            CID: submarineCID,
+            shortId: shortId,
+            messageId: messageToSign.data.session.id,
+          });
+
+          const res = verificationResponse.data;
+          if (res && !res.directory) {
+            setSigning(false);
+            window.location.replace(`${res.gateway}/ipfs/${res.cid}?accessToken=${res.token}`);
+          } else if (res && res.html) {
+            setSigning(false);
+            window.location.replace(
+              `${res.gateway}/ipfs/${res.cid}/index.html?accessToken=${res.token}`
+            );
+          } else {
+            setFullResponse(res);
+            setOffset(0);
+            setGallery(true);
+          }
         }
       }
     } catch (error) {
@@ -118,8 +132,19 @@ export default function ContentLanding({ loading, fileInfo, missing, gatewayUrl 
         setOffset(newOffset);
       }
     }
-
-    const res = await axios.post(`/api/content`, {
+    interface responseObject {
+      data: {
+        directory: boolean;
+        html: boolean;
+        token: any;
+        gateway: string;
+        cid: string;
+        childContent: any[];
+        totalItems: number;
+        itemId: any;
+      };
+    }
+    const res: responseObject = await axios.post(`/api/content`, {
       accessToken: fullResponse.token,
       gatewayURL: `${fullResponse.gateway}${fullResponse.childContent[0].uri}`,
       offset: newOffset,
@@ -140,6 +165,7 @@ export default function ContentLanding({ loading, fileInfo, missing, gatewayUrl 
         <div>
           {fileInfo &&
           fileInfo.unlockInfo &&
+          fileInfo.unlockInfo.type === "nft" &&
           fileInfo.unlockInfo.blockchain &&
           fileInfo.unlockInfo.blockchain === "Solana" ? (
             <Solana

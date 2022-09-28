@@ -17,8 +17,8 @@ const LocationForm = () => {
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          setFieldValue("unlock_info.lat", latitude);
-          setFieldValue("unlock_info.long", longitude);
+          setFieldValue("unlockInfo.lat", latitude);
+          setFieldValue("unlockInfo.long", longitude);
           setGettingLocation(false);
         },
         (error) => {
@@ -39,7 +39,7 @@ const LocationForm = () => {
       </button>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
         <label
-          htmlFor="unlock_info.lat"
+          htmlFor="unlockInfo.lat"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
           <span>Latitude* </span>
@@ -51,9 +51,9 @@ const LocationForm = () => {
           <div className="max-w-lg flex">
             <Field
               type="text"
-              name="unlock_info.lat"
+              name="unlockInfo.lat"
               required
-              id="unlock_info.lat"
+              id="unlockInfo.lat"
               autoComplete="off"
               placeholder="Latitude"
               className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
@@ -63,7 +63,7 @@ const LocationForm = () => {
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
         <label
-          htmlFor="unlock_info.long"
+          htmlFor="unlockInfo.long"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
           <span>Longitude* </span>
@@ -75,9 +75,9 @@ const LocationForm = () => {
           <div className="max-w-lg flex">
             <Field
               type="text"
-              name="unlock_info.long"
+              name="unlockInfo.long"
               required
-              id="unlock_info.long"
+              id="unlockInfo.long"
               autoComplete="off"
               placeholder="Longitude"
               className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
@@ -87,7 +87,7 @@ const LocationForm = () => {
       </div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
         <label
-          htmlFor="unlock_info.distance"
+          htmlFor="unlockInfo.distance"
           className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
         >
           <span>Allowed Range (in miles)*</span>
@@ -96,9 +96,9 @@ const LocationForm = () => {
           <div className="max-w-lg flex">
             <Field
               type="number"
-              name="unlock_info.distance"
+              name="unlockInfo.distance"
               required
-              id="unlock_info.distance"
+              id="unlockInfo.distance"
               autoComplete="off"
               placeholder="Distance"
               className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"

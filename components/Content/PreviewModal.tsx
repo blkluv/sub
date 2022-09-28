@@ -8,6 +8,7 @@ import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import ContentLanding from "./ContentLanding";
 import { useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
+import { SubmarinedContentMetadata } from "../Submarine/SelectLockType/SubmarineFileForm";
 
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
@@ -36,7 +37,12 @@ const connectors = ({ chainId }) => {
   ];
 };
 
-export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }) {
+interface PreviewModalProps {
+  previewOpen;
+  setPreviewOpen;
+  fileInfo: SubmarinedContentMetadata;
+}
+export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }: PreviewModalProps) {
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <Transition.Root show={previewOpen} as={Fragment}>

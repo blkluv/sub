@@ -7,12 +7,13 @@ import Image from "next/image";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
 import { useAppSelector } from "../../../store/hooks";
 import { Field, useFormikContext } from "formik";
+import { MetadataUnlockInfo } from "./SubmarineFileForm";
 
 const FileDetail = () => {
   const [customize, setCustomize] = useState(false);
 
-  const { values } = useFormikContext();
-  console.log({ values });
+  const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
+  const thumbnail = values.thumbnail;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
     <div>
@@ -22,8 +23,8 @@ const FileDetail = () => {
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            {/* <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-              {thumbnail && thumbnail.length > 0 ? (
+            <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+              {thumbnail && thumbnail.length && thumbnail.length > 0 ? (
                 <Image
                   className="h-12 w-12"
                   src={
@@ -43,7 +44,7 @@ const FileDetail = () => {
                 </svg>
               )}
             </span>
-            <UploadThumbnail onThumbnailChange={onThumbnailChange} /> */}
+            <UploadThumbnail setIpfsHash={(hash) => setFieldValue("thumbnail", hash)} />
           </div>
         </div>
       </div>

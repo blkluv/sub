@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getSubmarinedContent } from "../../../helpers/submarine";
-import { getUserContentCombo } from "../../../repositories/twitter";
+import { getUserContentCombo } from "../../../repositories/content";
 
 export default async function handler(req, res) {
   try {

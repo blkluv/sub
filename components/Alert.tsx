@@ -1,17 +1,26 @@
 import { CheckIcon, ExclamationIcon } from "@heroicons/react/outline";
 import React from "react";
-import { useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { selectAlert } from "../store/selectors/alertSelectors";
+import { clearAlert } from "../store/slices/alertSlice";
 
 export enum AlertType {
   Warning = "warning",
   Error = "error",
 }
-export type AlertProps = {
-  type: AlertType;
-  message: string;
-};
-const Alert = ({ type, message }: AlertProps) => {
-  //   const alert = useAppSelector(selectAlert);
+
+const Alert = () => {
+  const { type, message, timeout } = useAppSelector(selectAlert);
+  const dispatch = useAppDispatch();
+  if (timeout) {
+    setTimeout(() => {
+      dispatch(clearAlert());
+    }, timeout);
+  }
+  if (!message) {
+    return null;
+  }
+
   return (
     <div
       className={`border-l-4 ${

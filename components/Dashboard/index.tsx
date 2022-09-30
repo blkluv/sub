@@ -7,8 +7,9 @@ import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
 import { getKy } from "../../helpers/ky";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
+import { setAlert } from "../../store/slices/alertSlice";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -17,7 +18,6 @@ const LIMIT = 5;
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-  const [message, setMessage] = useState(null);
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
   const [offset, setOffset] = useState(0);
   const [open, setOpen] = useState(false);
@@ -98,17 +98,15 @@ const Dashboard = () => {
     setLoading(false);
     return json;
   };
+  const dispatch = useAppDispatch();
   const copyLink = (file) => {
     navigator.clipboard.writeText(`${window.location.origin}/${file.short_id}`);
-    setMessage({
-      type: "success",
-      message: "Share link copied!",
-    });
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-      setMessage(null);
-    }, 1500);
+    dispatch(
+      setAlert({
+        type: "success",
+        message: "Share link copied!",
+      })
+    );
   };
 
   const handleDelete = async (id) => {
@@ -120,15 +118,7 @@ const Dashboard = () => {
         timeout: 2147483647,
       });
     } catch (error) {
-      setMessage({
-        type: "error",
-        message: "Trouble deleting link",
-      });
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-        setMessage(null);
-      }, 1500);
+      dispatch(setAlert({ type: "error", message: "Error deleting link" }));
     }
   };
 

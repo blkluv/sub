@@ -26,7 +26,7 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
   // TODO make Alert global, redux store.
   const layout = isAuthenticated ? (
     <>
-      {/* <Alert /> */}
+      <Alert />
       <Header />
       <main>{children}</main>
       <Footer />

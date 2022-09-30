@@ -11,11 +11,12 @@ import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import { Provider, chain, defaultChains } from "wagmi";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
 import { Formik, Form, FormikHelpers } from "formik";
 import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 import { useRouter } from "next/router";
+import { setAlert } from "../../../store/slices/alertSlice";
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
 const chains = defaultChains;
@@ -43,7 +44,6 @@ export interface MetadataUnlockInfo {
 const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [message, setMessage] = useState(null);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   const [uploading, setUploading] = useState(false);
 
@@ -80,6 +80,7 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     handleUploadAndLinkGeneration(values);
   };
 
+  const dispatch = useAppDispatch();
   const handleUploadAndLinkGeneration = async (values: MetadataUnlockInfo) => {
     setUploading(true);
     let cid;
@@ -96,9 +97,24 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
       method: edit ? "PUT" : "POST",
       body: JSON.stringify(submarinedContent),
       timeout: false,
-    }).then(() => {
-      router.push("/");
-    });
+    })
+      .then(() => {
+        router.push("/");
+        dispatch(
+          setAlert({
+            type: "success",
+            message: "Created locked content!",
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          setAlert({
+            type: "error",
+            message: "Failed to create locked content!",
+          })
+        );
+      });
   };
 
   const connectors = ({ chainId }) => {

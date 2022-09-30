@@ -9,7 +9,7 @@ import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { definitions } from "../../types/supabase";
-import { getUserContentCombo } from "../../repositories/twitter";
+import { getUserContentCombo } from "../../repositories/content";
 
 const supabase = getSupabaseClient();
 

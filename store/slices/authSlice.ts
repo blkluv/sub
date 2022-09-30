@@ -159,7 +159,7 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(HYDRATE, (state, action) => {
-      console.log(action);
+      console.log("HYDRATE AUTH", action);
     });
     builder.addCase(tryLogin.rejected, (state) => {
       state.status = LOGIN_STATUSES.idle;

@@ -1,4 +1,4 @@
-import { getUserContentCombo } from "../../../repositories/twitter";
+import { getUserContentCombo } from "../../../repositories/content";
 import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 
 export interface getContentReturnObject {

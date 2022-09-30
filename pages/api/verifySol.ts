@@ -6,7 +6,7 @@ import { sign } from "tweetnacl";
 import { clusterApiUrl, Commitment, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
-import { getUserContentCombo } from "../../repositories/twitter";
+import { getUserContentCombo } from "../../repositories/content";
 
 function withSession(handler) {
   return withIronSession(handler, {

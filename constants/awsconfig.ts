@@ -1,5 +1,5 @@
 const cookieStorage = {
-  domain: process.env.NEXT_PUBLIC_VERCEL_URL,
+  domain: process.env.NEXT_PUBLIC_VERCEL_URL || "app.submarine.me",
   path: "/",
   expires: 20,
   secure: true,

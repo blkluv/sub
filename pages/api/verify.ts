@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
 import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
-import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { definitions } from "../../types/supabase";
+import { getUserContentCombo } from "../../repositories/twitter";
 
 const supabase = getSupabaseClient();
 

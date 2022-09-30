@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { withIronSession } from "next-iron-session";
-import { getUserContentCombo } from "../../helpers/verify.helpers";
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import bs58 from "bs58";
 import { sign } from "tweetnacl";
 import { clusterApiUrl, Commitment, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
+import { getUserContentCombo } from "../../repositories/twitter";
 
 function withSession(handler) {
   return withIronSession(handler, {

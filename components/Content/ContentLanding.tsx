@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 import { useTwitter } from "../../hooks/useTwitter";
 import { useSignMessage, useAccount } from "wagmi";
 import MainLandingContent from "./MainLandingContent";
-import { SubmarinedContentMetadata } from "../Submarine/SelectLockType/SubmarineFileForm";
+import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 
 export interface ContentLandingProps {
   loading: boolean;
-  fileInfo: SubmarinedContentMetadata;
+  fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
   missing: boolean;
 }

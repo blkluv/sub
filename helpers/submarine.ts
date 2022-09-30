@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ContentResponseTO, JWTRequest } from "../types/managed/api";
+import { ContentResponseTO, ContentTO, JWTRequest } from "../types/managed/api";
 const TIMEOUT_SECONDS = 60;
 
 export const getSubmarinedContent = async (
@@ -23,7 +23,8 @@ export const getSubmarinedContent = async (
     const { data } = content;
 
     const { items }: ContentResponseTO = data;
-    const item = items.find((i) => i.cid === submarine_cid);
+    // @ts-ignore
+    const item: ContentTO & { type: string } = items.find((i) => i.cid === submarine_cid);
 
     let hasIndexHtml = false;
     let childContent = [];

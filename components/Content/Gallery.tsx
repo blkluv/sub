@@ -17,10 +17,11 @@ export default function Gallery({ fullResponse, name, handleChangePage }) {
     }
   }, [fullResponse]);
 
-  const getIcon = (name) => {
-    const type = getType(name.split(".")[1]);
+  const getIcon = (filename) => {
+    const extension = filename.substr(filename.lastIndexOf(".") + 1);
+    const type = getType(extension);
     let icon = null;
-    if (mainThree.includes(type.split("/")[0])) {
+    if (type && mainThree.includes(type.split("/")[0])) {
       icon = iconMapper(type.split("/")[0]);
     } else {
       icon = iconMapper(type);

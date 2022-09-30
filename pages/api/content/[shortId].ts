@@ -1,4 +1,5 @@
-import { Customizations, getUserContentCombo, UnlockInfo } from "../../../helpers/verify.helpers";
+import { getUserContentCombo } from "../../../repositories/twitter";
+import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 
 export interface getContentReturnObject {
   id: string;

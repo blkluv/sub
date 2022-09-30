@@ -1,7 +1,7 @@
 import { withIronSession } from "next-iron-session";
-import { getOauthSecret, getUserContentCombo } from "../../../../helpers/verify.helpers";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
 import { getSupabaseClient } from "../../../../helpers/supabase";
+import { getOauthSecret, getUserContentCombo } from "../../../../repositories/twitter";
 import { definitions } from "../../../../types/supabase";
 
 const { TwitterApi } = require("twitter-api-v2");

@@ -142,7 +142,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Alert showAlert={showAlert} type={message?.type} message={message?.message} />
       {displayUpgradeModal && <UpgradeModal />}
       <div className="h-screen bg-gray container w-full m-auto">
         <main className="sm:w-4/5 sm:m-auto pt-12 sm:pt-24 pb-8">

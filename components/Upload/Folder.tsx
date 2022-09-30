@@ -11,8 +11,10 @@ const Folder = ({ onChange }) => {
         ref={fileInput}
         onChange={onChange}
         // @ts-ignore */ https://github.com/facebook/react/issues/3468
-        // directory=""
-        // webkitdirectory=""
+        // eslint-disable-next-line
+        directory=""
+        // eslint-disable-next-line
+        webkitdirectory=""
         type="file"
       />
     </div>

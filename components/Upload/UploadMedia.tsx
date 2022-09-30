@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import File from "./File";
 import Folder from "./Folder";
 import { useFormikContext } from "formik";
+import { getKy } from "../../helpers/ky";
+import { ContentResponseTO } from "../../types/managed/api";
+import shortUUID from "short-uuid";
+import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 
 enum FileType {
   File = "file",
@@ -9,6 +13,7 @@ enum FileType {
 }
 
 const UploadMedia = () => {
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null[]>([]);
   const [dragOverActive, setDragOverActive] = useState(false);
 
   const dragOverHandler = (ev) => {
@@ -18,23 +23,42 @@ const UploadMedia = () => {
 
   const [uploadType, setUploadFile] = useState(FileType.File);
 
-  const { values, setFieldValue } = useFormikContext();
-  const selectedFiles = values.selectedFiles;
-  const FILE_SIZE_LIMIT = 500000000;
-  const onFileChange = (e, type) => {
+  const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
+  interface HTMLInputEvent extends Event {
+    target: HTMLInputElement & EventTarget;
+  }
+  const onFileChange = async (e: HTMLInputEvent, type) => {
+    const FILE_SIZE_LIMIT = 500000000; // 500MB
     const files = e.target.files;
+    setSelectedFiles(files);
     for (let i = 0; i < files.length; i++) {
       if (files[i].size > FILE_SIZE_LIMIT) {
-        alert("File too large, limit is 500mb");
+        alert("File too large, limit is 500mb"); // TODO improve this
         return;
       }
       Object.assign(files[i], {
         preview: URL.createObjectURL(files[i]),
-        formattedSize: files[i].size,
       });
     }
+    const data = new FormData();
+    const identifier = values.shortId || shortUUID.generate();
 
-    setFieldValue("selectedFiles", files);
+    data.append("name", identifier);
+    Array.from(files).forEach((file) => {
+      data.append("files", file);
+    });
+    data.append("pinToIPFS", "false");
+
+    const ky = getKy();
+    const res = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/content`, {
+      method: "POST",
+      body: data,
+      timeout: false,
+    });
+
+    const resJson: ContentResponseTO = await res.json();
+    setFieldValue("submarineCID", resJson.items[0].cid);
+    setFieldValue("shortId", identifier);
   };
 
   const dragExitHandler = (ev) => {

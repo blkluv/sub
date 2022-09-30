@@ -14,9 +14,8 @@ import shortUUID from "short-uuid";
 import { useAppSelector } from "../../../store/hooks";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
 import { Formik, Form, FormikHelpers } from "formik";
-import { Customizations, UnlockInfo } from "../../../helpers/verify.helpers";
+import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 import { useRouter } from "next/router";
-import { ContentResponseTO } from "../../../types/managed/api";
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
 const chains = defaultChains;
@@ -45,7 +44,6 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState(null);
-  const [submarinedFile, setSubmarinedFile] = useState("");
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   const [uploading, setUploading] = useState(false);
 
@@ -87,29 +85,6 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     let cid;
     const identifier = shortUUID.generate(); // TODO! values.shortId ? values.shortId : shortUUID.generate();
 
-    // TODO!
-    // if (!submarinedFile && values.selectedFiles && values.selectedFiles.length > 0) {
-    //   const data = new FormData();
-
-    //   data.append("name", identifier);
-    //   Array.from(values.selectedFiles).forEach((file) => {
-    //     data.append("files", file);
-    //   });
-    //   data.append("pinToIPFS", "false");
-
-    //   const ky = getKy();
-    //   const res = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/content`, {
-    //     method: "POST",
-    //     body: data,
-    //     timeout: false,
-    //   });
-
-    //   const resJson: ContentResponseTO = await res.json();
-    //   cid = resJson.items[0].cid;
-    // } else {
-    //   cid = submarinedFile;
-    // }
-
     const submarinedContent = {
       shortId: identifier,
       submarineCID: cid,
@@ -121,6 +96,8 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
       method: edit ? "PUT" : "POST",
       body: JSON.stringify(submarinedContent),
       timeout: false,
+    }).then(() => {
+      router.push("/");
     });
   };
 
@@ -145,11 +122,9 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
       }),
     ];
   };
-  const fileInfo: SubmarinedContentMetadata = {}; // TODO
 
   return (
     <Layout>
-      <Alert showAlert={showAlert} type={message?.type} message={message?.message} />
       {uploading ? (
         <div className="w-3/4 m-auto text-center">
           <h3>Please wait</h3>
@@ -209,7 +184,7 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                       <ContentLanding
                         missing={false}
                         loading={false}
-                        fileInfo={fileInfo}
+                        fileInfo={props.values}
                         gatewayUrl={gatewayUrl}
                       />
                     </Provider>

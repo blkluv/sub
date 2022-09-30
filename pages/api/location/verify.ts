@@ -1,5 +1,5 @@
 import { getSubmarinedContent } from "../../../helpers/submarine";
-import { getUserContentCombo } from "../../../helpers/verify.helpers";
+import { getUserContentCombo } from "../../../repositories/twitter";
 
 export type LocationLockResponse = {
   directory: boolean;

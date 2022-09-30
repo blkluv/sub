@@ -10,9 +10,10 @@ import { useFormikContext } from "formik";
 import { Field } from "formik";
 import { MetadataUnlockInfo } from "./SubmarineFileForm";
 const CustomizeLockScreen = () => {
-  const { values } = useFormikContext<MetadataUnlockInfo>();
-  const background = "QmQgKmX4A7VwZabU6dZgQZBz5wxsuPYMCDggkWiboE2iqp"; // TODO !! values.customizations?.background;
+  const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
+  const background = values.customizations?.backgroundCid;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
+
   return (
     <div>
       <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:py-5">
@@ -25,11 +26,7 @@ const CustomizeLockScreen = () => {
               {background && background.length > 0 ? (
                 <Image
                   className="w-40"
-                  src={
-                    typeof background === "string"
-                      ? `${gatewayUrl}/ipfs/${background}`
-                      : background[0]?.preview
-                  }
+                  src={`${gatewayUrl}/ipfs/${background}`}
                   height={160}
                   width={160}
                   alt="preview for thumbnail"
@@ -62,10 +59,10 @@ const CustomizeLockScreen = () => {
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
             <span className="h-20 w-20 overflow-hidden flex flex-col align-center justify-center">
-              {logoCid && logoCid.length > 0 ? (
+              {values.customizations.logoCid && values.customizations.logoCid.length > 0 ? (
                 <Image
                   className="w-10"
-                  src={`${gatewayUrl}/ipfs/${logoCid}`}
+                  src={`${gatewayUrl}/ipfs/${values.customizations.logoCid}`}
                   alt="preview for logo"
                   height={40}
                   width={40}
@@ -87,7 +84,7 @@ const CustomizeLockScreen = () => {
                 </svg>
               )}
             </span>
-            {uploadingLogo ? <div>Uploading...</div> : <UploadLogo onLogoChange={onLogoChange} />}
+            <UploadLogo setIpfsHash={(hash) => setFieldValue("logo", hash)} />
           </div>
         </div>
       </div>
@@ -97,7 +94,10 @@ const CustomizeLockScreen = () => {
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            {/* <SketchPicker color={buttonColor} onChangeComplete={setButtonColor} /> TODO */}
+            <SketchPicker
+              color={values.customizations.buttonColor}
+              onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
+            />
           </div>
         </div>
       </div>
@@ -119,12 +119,10 @@ const CustomizeLockScreen = () => {
           <div className="max-w-lg flex">
             <div className="mt-4 space-y-4">
               <div className="flex items-center">
-                <input
+                <Field
                   id="button-rounded"
                   name="push-notifications"
                   type="radio"
-                  checked={buttonShape === "rounded"}
-                  onChange={() => setButtonShape("rounded")}
                   className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label

@@ -13,6 +13,7 @@ const FileDetail = () => {
   const [customize, setCustomize] = useState(false);
 
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
+  console.log({ values });
   const thumbnail = values.thumbnail;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (
@@ -27,9 +28,7 @@ const FileDetail = () => {
               {thumbnail && thumbnail.length && thumbnail.length > 0 ? (
                 <Image
                   className="h-12 w-12"
-                  src={
-                    thumbnail[0].preview ? thumbnail[0].preview : `${gatewayUrl}/ipfs/${thumbnail}`
-                  }
+                  src={`${gatewayUrl}/ipfs/${thumbnail}`}
                   height={48}
                   width={48}
                   alt="preview for thumbnail"
@@ -91,9 +90,9 @@ const FileDetail = () => {
             />
           </div>
           <div>
-            {/* <p className="text-sm text-pinata-purple">{`${
-              description ? description.length : 0
-            }/400`}</p> */}
+            <p className="text-sm text-pinata-purple">{`${
+              values.description ? values.description.length : 0
+            }/400`}</p>
           </div>
         </div>
       </div>
@@ -128,7 +127,7 @@ const FileDetail = () => {
           </div>
         </div>
       </div>
-      {/* {customize && <CustomizeLockScreen />} */}
+      {customize && <CustomizeLockScreen />}
       <UploadMedia />
     </div>
   );

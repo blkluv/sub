@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import Image from "next/image";
-import maps from "./googlemaps.png";
+import maps from "./Location/googlemaps.png";
 
 export default function GoogleMapsCoordsModal({ googleMapsModalOpen, setGoogleMapsModalOpen }) {
   return (

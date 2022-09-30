@@ -1,7 +1,7 @@
 import React from "react";
 import Location from "../../components/Submarine/SelectLockType/Location";
 import SubmarineFileForm from "../../components/Submarine/SelectLockType/SubmarineFileForm";
-import { ContentWithUnlockInfo, UnlockInfoLocation } from "../../helpers/verify.helpers";
+import { UnlockInfoLocation } from "../../types/UnlockInfo";
 
 const LocationLock = () => {
   const canSubmit = (values) => {

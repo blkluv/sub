@@ -7,7 +7,8 @@ const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
   const [googleMapsModalOpen, setGoogleMapsModalOpen] = useState(false);
   const { setFieldValue } = useFormikContext();
-  const detectLocation = async () => {
+  const detectLocation = async (e) => {
+    e.preventDefault();
     setGettingLocation(true);
     if (!navigator.geolocation) {
       setGettingLocation(false);

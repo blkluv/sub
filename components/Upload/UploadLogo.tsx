@@ -1,8 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import UploadHandler from "./UploadHandler";
 
 const UploadLogo = ({ onFileChange }) => {
   const fileInput = useRef(null);
+
+  const [isUploading, setIsUploading] = useState(false);
+  if (isUploading) {
+    return <div>Uploading...</div>;
+  }
+
   return (
     <button
       type="button"
@@ -21,7 +27,7 @@ const UploadLogo = ({ onFileChange }) => {
             className="sr-only"
             accept=".png, .jpeg, .jpg, .gif"
             ref={fileInput}
-            onChange={onFileChange}
+            onChange={(e) => onFileChange(e, setIsUploading)}
           />
         </label>
       </div>

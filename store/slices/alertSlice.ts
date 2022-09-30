@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 interface AlertState {
   message: string;
   type: string;
-  timeout: number;
+  timeout?: number;
 }
 // Initial state
 const initialState: AlertState = {
@@ -23,7 +23,7 @@ export const alertSlice = createSlice({
         ...action.payload,
       };
     },
-    setAlert: (state, action) => {
+    setAlert: (state, action: PayloadAction<AlertState>) => {
       state.message = action.payload.message;
       state.type = action.payload.type;
       state.timeout = action.payload.timeout || 5000;

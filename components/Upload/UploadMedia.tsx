@@ -6,6 +6,8 @@ import { getKy } from "../../helpers/ky";
 import { ContentResponseTO } from "../../types/managed/api";
 import shortUUID from "short-uuid";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
+import { useAppDispatch } from "../../store/hooks";
+import { setAlert } from "../../store/slices/alertSlice";
 
 enum FileType {
   File = "file",
@@ -27,13 +29,19 @@ const UploadMedia = () => {
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget;
   }
+  const dispatch = useAppDispatch();
   const onFileChange = async (e: HTMLInputEvent, type) => {
     const FILE_SIZE_LIMIT = 500000000; // 500MB
     const files = e.target.files;
     setSelectedFiles(files);
     for (let i = 0; i < files.length; i++) {
       if (files[i].size > FILE_SIZE_LIMIT) {
-        alert("File too large, limit is 500mb"); // TODO improve this
+        dispatch(
+          setAlert({
+            type: "error",
+            message: "File too large, limit is 500mb",
+          })
+        );
         return;
       }
       Object.assign(files[i], {

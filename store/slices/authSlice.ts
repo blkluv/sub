@@ -110,6 +110,7 @@ const getUser = async (): Promise<User> => {
     };
   } catch (err) {
     console.log(err);
+    throw new Error("Server error");
   }
   return user.attributes;
 };

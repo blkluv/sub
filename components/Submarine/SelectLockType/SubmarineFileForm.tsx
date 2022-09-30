@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React, { ReactNode, useEffect, useState } from "react";
-import Alert from "../../Alert";
 import ContentLanding from "../../Content/ContentLanding";
 import PreviewModal from "../../Content/PreviewModal";
 import Layout from "../../Layout";
@@ -42,10 +41,10 @@ export interface MetadataUnlockInfo {
 }
 
 const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
-  const [uploading, setUploading] = useState(false);
 
   const baseInitialValues = {
     name: "",
@@ -59,10 +58,8 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     unlockInfo,
     ...baseInitialValues,
   });
-  const router = useRouter();
 
   const { edit } = router.query;
-
   useEffect(() => {
     if (router.query && edit) {
       const ky = getKy();
@@ -73,22 +70,15 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
       );
     }
   }, [router.query, edit]);
-  const onSubmit = (
+  const onSubmit = async (
     values: MetadataUnlockInfo,
     { setSubmitting }: FormikHelpers<MetadataUnlockInfo>
   ) => {
-    handleUploadAndLinkGeneration(values);
-  };
+    setSubmitting(true);
+    const identifier = values.shortId ? values.shortId : shortUUID.generate();
 
-  const dispatch = useAppDispatch();
-  const handleUploadAndLinkGeneration = async (values: MetadataUnlockInfo) => {
-    setUploading(true);
-    let cid;
-    const identifier = shortUUID.generate(); // TODO! values.shortId ? values.shortId : shortUUID.generate();
-
-    const submarinedContent = {
+    const submarinedContent: MetadataUnlockInfo = {
       shortId: identifier,
-      submarineCID: cid,
       ...values,
     };
 
@@ -115,6 +105,7 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
           })
         );
       });
+    setSubmitting(false);
   };
 
   const connectors = ({ chainId }) => {
@@ -141,16 +132,16 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
 
   return (
     <Layout>
-      {uploading ? (
-        <div className="w-3/4 m-auto text-center">
-          <h3>Please wait</h3>
-          <div className="w-full text-center flex justify-center items-center">
-            <div className="text-center animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 m-auto mt-8"></div>
-          </div>
-        </div>
-      ) : (
-        <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
-          {(props) => (
+      <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
+        {(props) =>
+          props.isSubmitting ? (
+            <div className="w-3/4 m-auto text-center">
+              <h3>Please wait</h3>
+              <div className="w-full text-center flex justify-center items-center">
+                <div className="text-center animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 m-auto mt-8"></div>
+              </div>
+            </div>
+          ) : (
             <div className="w-11/12 m-auto mt-10">
               <PreviewModal
                 previewOpen={previewOpen}
@@ -182,12 +173,12 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                       <div className="flex justify-end">
                         <button
                           type="submit"
-                          disabled={!canSubmit(props.values) || uploading}
+                          disabled={!canSubmit(props.values) || props.isSubmitting}
                           className={`ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full text-white ${
                             canSubmit(props.values) && "bg-pinata-purple"
                           } outline-none focus:outline-none`}
                         >
-                          {uploading ? "Processing..." : "Upload and Continue"}
+                          {props.isSubmitting ? "Processing..." : "Upload and Continue"}
                         </button>
                       </div>
                     </div>
@@ -208,9 +199,9 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                 </div>
               </div>
             </div>
-          )}
-        </Formik>
-      )}
+          )
+        }
+      </Formik>
     </Layout>
   );
 };

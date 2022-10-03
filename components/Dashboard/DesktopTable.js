@@ -40,7 +40,6 @@ const DesktopTable = ({ files, getThumbnail, copyLink, openDeleteModal }) => {
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-900 sm:pl-6 md:pl-0">
                 <span className="flex flex-row">
                   <img
-                    layout="fixed"
                     className="rounded-full"
                     src={getThumbnail(file)}
                     style={{ height: 70, width: 70 }}

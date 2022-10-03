@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef } from "react";
 
 const Folder = ({ onChange }) => {

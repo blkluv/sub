@@ -6,7 +6,7 @@ import TokenIdModal from "./TokenIdModal";
 import UpdateAuthorityModal from "./UpdateAuthorityModal";
 
 const networkOptions = {
-  Ethereum: ["Mainnet", "Rinkeby"],
+  Ethereum: ["Mainnet", "Goerli"],
   Polygon: ["Mainnet", "Mumbai"],
   Avalanche: ["Mainnet", "Fuji"],
   Solana: ["Mainnet-Beta", "Devnet"],

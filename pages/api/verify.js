@@ -59,13 +59,12 @@ export default withSession(async (req, res) => {
       } = req.body;
       const networkMap = {
         "ETH - Mainnet": process.env.ALCHEMY_MAINNET,
-        "ETH - Ropsten": process.env.ALCHEMY_ROPSTEN,
-        "ETH - Rinkeby": process.env.ALCHEMY_RINKEBY,
+        "ETH - Goerli": process.env.ALCHEMY_GOERLI,
         "Polygon - Mainnet": process.env.ALCHEMY_POLYGON,
         "Polygon - Mumbai": process.env.ALCHEMY_MUMBAI,
         Ethereum: {
           Mainnet: process.env.ALCHEMY_MAINNET,
-          Rinkeby: process.env.ALCHEMY_RINKEBY,
+          Goerli: process.env.ALCHEMY_GOERLI,
         },
         Polygon: {
           Mainnet: process.env.ALCHEMY_POLYGON,

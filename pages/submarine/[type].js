@@ -53,7 +53,7 @@ const blockchainOptions = ["Ethereum", "Polygon", "Avalanche", "Solana"];
 const UnlockType = () => {
   const networks = [
     { id: 1, name: "ETH - Mainnet" },
-    { id: 3, name: "ETH - Rinkeby" },
+    { id: 3, name: "ETH - Goerli" },
     { id: 4, name: "Polygon - Mainnet" },
     { id: 5, name: "Polygon - Mumbai" },
   ];

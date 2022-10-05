@@ -3,28 +3,15 @@ import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import { validate as uuidValidate } from "uuid";
 import { getSupabaseClient } from "../../helpers/supabase";
+import { getUserSession } from "../../helpers/user.helpers";
 
 const supabase = getSupabaseClient();
-
-const getUserSession = async (auth) => {
-  try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
-      headers: {
-        Authorization: auth,
-        source: "login",
-      },
-    });
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     let user = null;
     try {
-      user = await getUserSession(req.headers.authorization);
+      user = await getUserSession(req.headers.authorization, req.headers.source);
       if (!user) {
         res.status(401).send("Unauthorized");
       }
@@ -91,7 +78,7 @@ export default async function handler(req, res) {
         throw error;
       }
 
-      res.status(200).json({ result: "success" });
+      res.status(200).json({ result: "success", id: req.body.shortId });
     } catch (error) {
       console.log("Error for: ");
       console.log(user);
@@ -101,7 +88,7 @@ export default async function handler(req, res) {
   } else if (req.method === "PUT") {
     let user = null;
     try {
-      user = await getUserSession(req.headers.authorization);
+      user = await getUserSession(req.headers.authorization, req.headers.source);
       if (!user) {
         res.status(401).send("Unauthorized");
       }
@@ -174,9 +161,10 @@ export default async function handler(req, res) {
       return res.status(500).json(error);
     }
   } else if (req.method === "GET") {
+    let user;
     try {
       const { offset } = req.query;
-      const user = await getUserSession(req.headers.authorization);
+      user = await getUserSession(req.headers.authorization, req.headers.source);
       if (!user) {
         return res.status(401).send("Unauthorized");
       }
@@ -200,7 +188,7 @@ export default async function handler(req, res) {
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else if (req.method === "DELETE") {
-    const user = await getUserSession(req.headers.authorization);
+    const user = await getUserSession(req.headers.authorization, req.headers.source);
     if (!user) {
       return res.status(401).send("Unauthorized");
     }

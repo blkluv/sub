@@ -1,18 +1,28 @@
 import axios from "axios";
 
-export const getUserSession = async (auth) => {
+export const getUserSession = async (auth, source) => {
   try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
-      headers: {
-        Authorization: auth,
-        source: "login",
-      },
-    });
+    let res;
+    if(!source) {
+      res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
+        headers: {
+          Authorization: auth
+        }
+      });
+      
+    } else {
+      res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
+        headers: {
+          Authorization: auth,
+          source: 'login'
+        }
+      });
+    }
     return res.data;
   } catch (error) {
     throw error;
   }
-};
+}
 
 export const createAPIKey = async (req) => {
   try {

@@ -228,8 +228,8 @@ const UnlockType = () => {
     setDescription(description);
     setName(name);
     setSubmarinedFile(submarineCID);
-    setThumbnail(thumbnail);
-    setThumbnailCid(thumbnail);
+    setThumbnail(thumbnail || "");
+    setThumbnailCid(thumbnail || "");
   };
 
   const FILE_SIZE_LIMIT = 500000000;
@@ -367,8 +367,7 @@ const UnlockType = () => {
       e.preventDefault();
       setUploading(true);
       let cid;
-      const identifier = fileInfo?.shortId ? fileInfo?.shortId : short.generate();
-      debugger;
+      const identifier = fileInfo?.shortId ? fileInfo?.shortId : short.generate();      
       if (!submarinedFile && selectedFiles && selectedFiles.length > 0) {
         const data = new FormData();
 
@@ -404,8 +403,6 @@ const UnlockType = () => {
         customizations: fileInfo.customizations,
         submarineCid: cid,
       };
-
-      debugger;
 
       const headers = await getHeaders();
 

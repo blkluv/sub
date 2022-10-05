@@ -78,7 +78,7 @@ export default async function handler(req, res) {
         throw error;
       }
 
-      res.status(200).json({ result: "success" });
+      res.status(200).json({ result: "success", id: req.body.shortId });
     } catch (error) {
       console.log("Error for: ");
       console.log(user);

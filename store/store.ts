@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action, combineReducers } from "@reduxjs/t
 import { authSlice } from "./slices/authSlice";
 import { createWrapper } from "next-redux-wrapper";
 import { alertSlice } from "./slices/alertSlice";
+import { submarinedContentSlice } from "./slices/submarinedContentSlice";
 
 const makeStore = () =>
   configureStore({
@@ -12,6 +13,7 @@ const makeStore = () =>
 const rootReducer = combineReducers({
   [authSlice.name]: authSlice.reducer,
   [alertSlice.name]: alertSlice.reducer,
+  [submarinedContentSlice.name]: submarinedContentSlice.reducer,
 });
 
 export type AppStore = ReturnType<typeof makeStore>;

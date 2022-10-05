@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React, { ReactNode, useEffect, useState } from "react";
-import ContentLanding from "../../Content/ContentLanding";
 import PreviewModal from "../../Content/PreviewModal";
 import Layout from "../../Layout";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -16,6 +15,8 @@ import { Formik, Form, FormikHelpers } from "formik";
 import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 import { useRouter } from "next/router";
 import { setAlert } from "../../../store/slices/alertSlice";
+import MainLandingContent from "../../Content/MainLandingContent";
+
 const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
 
 const chains = defaultChains;
@@ -188,9 +189,8 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                 <div className="hidden xl:block xl:w-1/2">
                   <div className="px-2">
                     <Provider autoConnect connectors={connectors}>
-                      <ContentLanding
+                      <MainLandingContent
                         missing={false}
-                        loading={false}
                         fileInfo={props.values}
                         gatewayUrl={gatewayUrl}
                       />

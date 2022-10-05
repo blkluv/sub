@@ -6,7 +6,15 @@ export const getKy = (): KyInstance => {
   if (kyObj) {
     return kyObj;
   }
-  kyObj = ky;
+  kyObj = ky.extend({
+    hooks: {
+      beforeRequest: [
+        (request) => {
+          request.headers.set("Content-Type", "application/json");
+        },
+      ],
+    },
+  });
   return kyObj;
 };
 

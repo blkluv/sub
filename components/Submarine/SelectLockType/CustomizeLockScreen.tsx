@@ -107,7 +107,10 @@ const CustomizeLockScreen = () => {
         </label>
         <div className="mt-1 sm:mt-0 sm:col-span-2">
           <div className="flex items-center">
-            {/* <SketchPicker  color={buttonTextColor} onChangeComplete={setButtonTextColor} /> TODO */}
+            <SketchPicker
+              color={values.customizations.buttonTextColor}
+              onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
+            />
           </div>
         </div>
       </div>

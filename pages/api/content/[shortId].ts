@@ -19,9 +19,6 @@ export default async function handler(req, res) {
     }
 
     const theContent = await getUserContentCombo(req.query.shortId);
-    if (!theContent) {
-      throw "Couldn't find content";
-    }
     const returnObject = {
       id: theContent.id,
       name: theContent.name,

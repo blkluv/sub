@@ -19,12 +19,6 @@ export const useTwitter = () => {
   const verifyRetweet = async (oauth_token, oauth_verifier) => {
     if (oauth_token && oauth_verifier) {
       try {
-        const res = await axios.get(
-          `/api/twitter/oauth/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}&shortId=${
-            window.location.pathname.split("/")[1]
-          }`
-        );
-        return res.data;
       } catch (error) {
         console.error(error);
         throw error;

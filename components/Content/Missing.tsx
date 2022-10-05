@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Missing = () => {
   return (
-    <div>
+    <>
       <div className="absolute p-4 flex flex-row">
         <div>
           <SubmarineLogoSvg />
@@ -37,7 +37,7 @@ const Missing = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

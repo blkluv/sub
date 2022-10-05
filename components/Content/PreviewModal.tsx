@@ -1,41 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Provider, chain, defaultChains } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { WalletLinkConnector } from "wagmi/connectors/walletLink";
-import ContentLanding from "./ContentLanding";
 import { useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
-
-const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
-
-const chains = defaultChains;
-
-// Set up connectors
-const connectors = ({ chainId }) => {
-  const rpcUrl = chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0];
-  return [
-    new InjectedConnector({
-      chains,
-      options: { shimDisconnect: true },
-    }),
-    new WalletConnectConnector({
-      options: {
-        infuraId,
-        qrcode: true,
-      },
-    }),
-    new WalletLinkConnector({
-      options: {
-        appName: "My wagmi app",
-        jsonRpcUrl: `${rpcUrl}/${infuraId}`,
-      },
-    }),
-  ];
-};
+import MainLandingContent from "./MainLandingContent";
 
 interface PreviewModalProps {
   previewOpen;
@@ -77,14 +46,11 @@ export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }: 
               <div>
                 <div className="mt-3 text-center sm:mt-5">
                   <div className="mt-2">
-                    <Provider autoConnect connectors={connectors}>
-                      <ContentLanding
-                        missing={false}
-                        loading={false}
-                        fileInfo={fileInfo}
-                        gatewayUrl={gatewayUrl}
-                      />
-                    </Provider>
+                    <MainLandingContent
+                      missing={false}
+                      fileInfo={fileInfo}
+                      gatewayUrl={gatewayUrl}
+                    />
                   </div>
                 </div>
               </div>

@@ -32,6 +32,7 @@ export interface Customizations {
   backgroundCid?: string;
   fontFamily?: string;
   buttonColor?: ButtonColor;
+  buttonTextColor?: ButtonColor;
   buttonShape?: string;
   logoCid?: string;
 }

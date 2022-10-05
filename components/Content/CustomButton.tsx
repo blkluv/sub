@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const CustomButton = ({ fileInfo, buttonText, loadingText, loading = false, onClick: click }) => {
+const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
   const [styles, setStyles] = useState({
     padding: 10,
   });
@@ -35,11 +35,11 @@ const CustomButton = ({ fileInfo, buttonText, loadingText, loading = false, onCl
 
   return (
     <button
-      onClick={click}
+      onClick={onClick}
       style={styles}
       className={`${fileInfo?.customizations?.buttonShape === "rounded" ? "rounded-full" : ""}`}
     >
-      {loading ? loadingText : buttonText}
+      {loading ? `Verifying ${lockName}...` : `Verify ${lockName}`}
     </button>
   );
 };

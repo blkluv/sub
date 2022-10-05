@@ -1,20 +1,11 @@
 import { getSubmarinedContent } from "../../../helpers/submarine";
 import { getUserContentCombo } from "../../../repositories/content";
+import { SubmarinedContent } from "../../../types/SubmarinedContent";
 
-export type LocationLockResponse = {
-  directory: boolean;
-  html: boolean;
-  token: any;
-  gateway: string;
-  cid: string;
-  childContent: any[];
-  totalItems: number;
-  itemId: any;
-};
-
-export default async function handler(req, res): Promise<LocationLockResponse> {
+export default async function handler(req, res): Promise<SubmarinedContent> {
   if (req.method === "POST") {
     try {
+      console.log({ bod: req.body });
       const { userLat, userLong, shortId } = req.body;
 
       const info = await getUserContentCombo(shortId);

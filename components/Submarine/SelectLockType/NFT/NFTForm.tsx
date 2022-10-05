@@ -10,7 +10,6 @@ const NFTForm = () => {
   const { values } = useFormikContext<MetadataUnlockInfo>();
   const unlockInfo = values.unlockInfo.type === "nft" ? values.unlockInfo : null;
 
-  console.log({ unlockInfo });
   return (
     <div>
       <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">

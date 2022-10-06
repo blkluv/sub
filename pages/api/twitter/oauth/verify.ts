@@ -1,18 +1,18 @@
 import { withIronSession } from "next-iron-session";
+import { TwitterApi } from "twitter-api-v2";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
 import { getSupabaseClient } from "../../../../helpers/supabase";
 import { getUserContentCombo } from "../../../../repositories/content";
 import { getOauthSecret } from "../../../../repositories/twitter";
 import { definitions } from "../../../../types/supabase";
 
-const { TwitterApi } = require("twitter-api-v2");
 const supabase = getSupabaseClient();
 function withSession(handler) {
   return withIronSession(handler, {
     password: process.env.SECRET_COOKIE_PASSWORD,
     cookieName: "web3-auth-session",
     cookieOptions: {
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      secure: process.env.NODE_ENV === "production",
     },
   });
 }
@@ -20,17 +20,19 @@ function withSession(handler) {
 export default withSession(async (req, res) => {
   if (req.method === "POST") {
     try {
-      const oauth = require("../../../../helpers/oauth-promise")(
+      const client = new TwitterApi({
+        appKey: process.env.CONSUMER_KEY,
+        appSecret: process.env.CONSUMER_SECRET,
+      });
+      const authLink = await client.generateAuthLink(
         `${process.env.NEXT_PUBLIC_VERCEL_URL}${process.env.CONSUMER_CALLBACK}`
       );
-      const { oauth_token, oauth_token_secret } = await oauth.getOAuthRequestToken();
       const obj = {
-        oauth_token,
-        oauth_secret: oauth_token_secret,
+        oauth_token: authLink.oauth_token,
+        oauth_secret: authLink.oauth_token_secret,
       };
-      const { data, error } = await supabase.from<definitions["Twitter"]>("Twitter").insert([obj]);
-      //req.session.set("tokens", tokens);
-      res.json({ oauth_token });
+      await supabase.from<definitions["Twitter"]>("Twitter").insert([obj]);
+      res.json({ url: authLink.url });
     } catch (error) {
       console.log(error);
       res.status(500).send(error.message);
@@ -38,59 +40,45 @@ export default withSession(async (req, res) => {
   } else {
     try {
       const { oauth_token, oauth_verifier, shortId } = req.query;
-      const oauth = require("../../../../helpers/oauth-promise")(process.env.CONSUMER_CALLBACK);
-      const token = await getOauthSecret(oauth_token);
+      const { oauth_secret } = await getOauthSecret(oauth_token);
 
-      const oauth_token_secret = token.oauth_secret;
-
-      const { oauth_access_token, oauth_access_token_secret } = await oauth.getOAuthAccessToken(
-        oauth_token,
-        oauth_token_secret,
-        oauth_verifier
-      );
-
-      //  Get logged in user info;
-      const response = await oauth.getProtectedResource(
-        "https://api.twitter.com/1.1/account/verify_credentials.json",
-        "GET",
-        oauth_access_token,
-        oauth_access_token_secret
-      );
-
-      const { screen_name } = JSON.parse(response.data);
-
-      const info = await getUserContentCombo(shortId);
-      const { unlock_info, submarine_cid } = info;
-      const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
-
-      const { type } = unlock_info;
       // TS sanity check
-      if (type === "retweet") {
-        const { tweetUrl } = unlock_info;
+      const client = new TwitterApi({
+        appKey: process.env.CONSUMER_KEY,
+        appSecret: process.env.CONSUMER_SECRET,
+        accessToken: oauth_token,
+        accessSecret: oauth_secret,
+      });
+      const loginResult = await client.login(oauth_verifier).catch((err) => {
+        res.status(401).send("Invalid tokens");
+        return;
+      });
+      if (loginResult) {
+        const loggedClient = loginResult.client;
+        const userId = await loggedClient.v1.verifyCredentials();
+        const info = await getUserContentCombo(shortId);
+        const { unlock_info, submarine_cid } = info;
+        const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
+        const { type } = unlock_info;
+        if (type === "retweet") {
+          const { tweetUrl } = unlock_info;
+          const tweetId = tweetUrl.split("status/")[1].split("?")[0];
+          const allRetweetsData = await loggedClient.v2.tweetRetweetedBy(tweetId);
+          const allRetweets = await allRetweetsData.data;
+          const retweeted = allRetweets.find((r) => r.username === userId.screen_name);
 
-        const client = new TwitterApi({
-          appKey: process.env.CONSUMER_KEY,
-          appSecret: process.env.CONSUMER_SECRET,
-          accessToken: oauth_access_token,
-          accessSecret: oauth_access_token_secret,
-        });
+          if (!retweeted) {
+            console.log("not retweeted");
+            return res.status(401).send("Unauthorized, you didn't retweet.");
+          }
 
-        const v2Client = client.v2;
-
-        const rt = await v2Client.tweetRetweetedBy(tweetUrl.split("status/")[1].split("?")[0]);
-        const retweets = rt.data;
-        const retweeted = retweets.find((r) => r.username === screen_name);
-
-        if (!retweeted) {
-          return res.status(401).send("Unauthorized, you didn't retweet.");
+          const responseObj = await getSubmarinedContent(
+            pinata_submarine_key,
+            submarine_cid,
+            pinata_gateway_subdomain
+          );
+          return res.json(responseObj);
         }
-
-        const responseObj = await getSubmarinedContent(
-          pinata_submarine_key,
-          submarine_cid,
-          pinata_gateway_subdomain
-        );
-        return res.json(responseObj);
       }
     } catch (error) {
       console.log(error);

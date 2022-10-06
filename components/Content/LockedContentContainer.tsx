@@ -1,6 +1,5 @@
 import Image from "next/future/image";
 import React from "react";
-import { EVMChains } from "../../hooks/useMetamask";
 import LocationUnlock from "./LockType/Location";
 import Solana from "./LockType/Solana";
 import NFT from "./LockType/NFT";
@@ -8,6 +7,7 @@ import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { UnlockInfo } from "../../types/UnlockInfo";
 
+export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;

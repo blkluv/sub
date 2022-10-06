@@ -11,9 +11,7 @@ import { MetadataUnlockInfo } from "./SubmarineFileForm";
 
 const FileDetail = () => {
   const [customize, setCustomize] = useState(false);
-
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
-  console.log({ values });
   const thumbnail = values.thumbnail;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   return (

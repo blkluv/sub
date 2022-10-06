@@ -11,7 +11,6 @@ export enum AlertType {
 
 const Alert = () => {
   const { type, message, timeout } = useAppSelector(selectAlert);
-  console.log("alert", { type, message, timeout });
   const dispatch = useAppDispatch();
   if (timeout) {
     setTimeout(() => {
@@ -22,7 +21,6 @@ const Alert = () => {
     return null;
   }
 
-  console.log({ type, message });
   return (
     <div
       className={`border-l-4 ${

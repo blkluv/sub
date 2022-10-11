@@ -4,7 +4,6 @@ const cookieStorage = {
   expires: 20,
   secure: true,
 };
-console.log(cookieStorage);
 export const awsconfig = {
   Auth: {
     region: "us-east-1",
@@ -28,3 +27,5 @@ export const awsconfig = {
     ],
   },
 };
+
+console.log(cookieStorage, process.env.NODE_ENV, awsconfig);

@@ -3,10 +3,6 @@ import Link from "next/link";
 import React, { ReactNode, useEffect, useState } from "react";
 import PreviewModal from "../../Content/PreviewModal";
 import Layout from "../../Layout";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { WalletLinkConnector } from "wagmi/connectors/walletLink";
-import { Provider, chain, defaultChains } from "wagmi";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -16,10 +12,6 @@ import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 import { useRouter } from "next/router";
 import { setAlert } from "../../../store/slices/alertSlice";
 import MainLandingContent from "../../Content/MainLandingContent";
-
-const infuraId = process.env.NEXTJS_PUBLIC_INFURA_ID;
-
-const chains = defaultChains;
 
 interface SubmarineProps {
   children: ReactNode;
@@ -31,11 +23,7 @@ export interface MetadataUnlockInfo {
   name: string;
   description: string;
   unlockInfo: UnlockInfo;
-  thumbnail?:
-    | string
-    | {
-        preview: string;
-      }[];
+  thumbnail?: string;
   customizations: Customizations;
   submarineCID: string;
   shortId: string;
@@ -109,28 +97,6 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     setSubmitting(false);
   };
 
-  const connectors = ({ chainId }) => {
-    const rpcUrl = chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0];
-    return [
-      new InjectedConnector({
-        chains,
-        options: { shimDisconnect: true },
-      }),
-      new WalletConnectConnector({
-        options: {
-          infuraId,
-          qrcode: true,
-        },
-      }),
-      new WalletLinkConnector({
-        options: {
-          appName: "My wagmi app",
-          jsonRpcUrl: `${rpcUrl}/${infuraId}`,
-        },
-      }),
-    ];
-  };
-
   return (
     <Layout>
       <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
@@ -188,14 +154,12 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
 
                 <div className="hidden xl:block xl:w-1/2">
                   <div className="px-2">
-                    <Provider autoConnect connectors={connectors}>
-                      <MainLandingContent
-                        missing={false}
-                        fileInfo={props.values}
-                        isPreview={true}
-                        gatewayUrl={gatewayUrl}
-                      />
-                    </Provider>
+                    <MainLandingContent
+                      missing={false}
+                      fileInfo={props.values}
+                      isPreview={true}
+                      gatewayUrl={gatewayUrl}
+                    />
                   </div>
                 </div>
               </div>

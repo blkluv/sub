@@ -10,6 +10,7 @@ import { Sentry } from "../../helpers/sentry";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { definitions } from "../../types/supabase";
 import { getUserContentCombo } from "../../repositories/content";
+import { getMessagetoSign } from "../../helpers/messageToSign";
 
 const supabase = getSupabaseClient();
 
@@ -100,13 +101,8 @@ export default withSession(async (req, res) => {
       const rpc = blockchain && network ? networkMap[blockchain][network] : networkMap[network];
       const provider = await new ethers.providers.JsonRpcProvider(rpc);
       let contract = await new ethers.Contract(contractAddress, json(), provider);
-      const fullMessage = `To verify you own the NFT in question, 
-you must sign this message. 
-The NFT contract address is:
-${contractAddress}
-The verification id is: 
-${message.id}`;
 
+      const fullMessage = getMessagetoSign(contractAddress, message.id);
       const recoveredAddress = verifyMessage(fullMessage, signature);
 
       if (address === recoveredAddress) {
@@ -160,13 +156,7 @@ ${message.id}`;
       if (error) {
         throw error;
       }
-      const fullMessage = `To verify you own the NFT in question, 
-you must sign this message. 
-The NFT contract address is:
-${sessionObject.contract}
-The verification id is: 
-${sessionObject.id}`;
-
+      const fullMessage = getMessagetoSign(sessionObject.contract, sessionObject.id);
       return res.json({ session: sessionObject, message: fullMessage });
     } catch (error) {
       console.log(error);

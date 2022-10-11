@@ -24,6 +24,7 @@ import { setAlert } from "../../../store/slices/alertSlice";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
+import { getMessagetoSign } from "../../../helpers/messageToSign";
 
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
@@ -34,15 +35,17 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
       if (unlockInfo.type === "nft") {
         const { updateAuthority, blockchain, tokenId, network, mintAddress } = unlockInfo;
         const ky = getKy();
-        const messageToSign = await ky
-          .get(`/api/verifySol?updateAuthority=${updateAuthority}`)
-          .json();
-        const message = new TextEncoder().encode(`To verify you own the NFT in question,
-        you must sign this message. 
-        The NFT update authority address is:
-        ${messageToSign.data.updateAuthority}
-        The verification id is: 
-        ${messageToSign.data.id}`);
+        const messageToSign: {
+          id: string;
+          created_at?: string;
+          contract?: string;
+          shortId?: string;
+          updateAuthority?: string;
+          used: boolean;
+        } = await ky.get(`/api/verifySol?updateAuthority=${updateAuthority}`).json();
+
+        const fullMessage = getMessagetoSign(messageToSign.updateAuthority, messageToSign.id);
+        const message = new TextEncoder().encode(fullMessage);
         if (!signMessage) {
           dispatch(
             setAlert({ message: "Wallet does not support message signing!", type: "error" })
@@ -65,7 +68,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
               tokenId,
               CID: submarineCID,
               shortId: shortId,
-              message: messageToSign.data,
+              message: messageToSign,
             },
           })
           .json();

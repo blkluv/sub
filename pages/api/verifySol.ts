@@ -7,6 +7,7 @@ import { clusterApiUrl, Commitment, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
 import { getUserContentCombo } from "../../repositories/content";
+import { getMessagetoSign } from "../../helpers/messageToSign";
 
 function withSession(handler) {
   return withIronSession(handler, {
@@ -37,12 +38,8 @@ export default withSession(async (req, res) => {
 
       const savedMessage = req.session.get("message-session");
 
-      const signedMessage = new TextEncoder().encode(`To verify you own the NFT in question,
-you must sign this message. 
-The NFT update authority address is:
-${updateAuthority}
-The verification id is: 
-${savedMessage.id}`);
+      const fullMessage = getMessagetoSign(updateAuthority, savedMessage.id);
+      const signedMessage = new TextEncoder().encode(fullMessage);
 
       if (message.id !== savedMessage.id) {
         return res.status(401).send(`Invalid signature attempt.`);

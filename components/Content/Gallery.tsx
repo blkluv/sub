@@ -8,6 +8,9 @@ config.autoAddCss = false;
 import mime from "mime";
 import { faImage, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { SubmarinedContent } from "../../types/SubmarinedContent";
+import { useAppDispatch } from "../../store/hooks";
+import { setSubmarinedContent } from "../../store/slices/submarinedContentSlice";
+import { getKy } from "../../helpers/ky";
 
 export const iconMapper = (type) => {
   const map = {
@@ -45,6 +48,9 @@ interface GalleryProps {
 
 export default function Gallery({ content, name }: GalleryProps) {
   const [items, setItems] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const limit = 10;
+  const dispatch = useAppDispatch();
   const handlePageChange = async (dir) => {
     let newOffset;
     if (dir === "forward") {
@@ -60,17 +66,22 @@ export default function Gallery({ content, name }: GalleryProps) {
       }
     }
 
-    const res: { data: SubmarinedContent } = await axios.post(`/api/content`, {
-      accessToken: content.token,
-      gatewayURL: `${content.gateway}${content.childContent[0].uri}`,
-      offset: newOffset,
-      shortId: window.location.pathname.split("/")[1],
-    });
+    const ky = getKy();
+    const res: SubmarinedContent = await ky
+      .post(`/api/content`, {
+        json: {
+          accessToken: content.token,
+          gatewayURL: `${content.gateway}${content.childContent[0].uri}`,
+          offset: newOffset,
+          shortId: window.location.pathname.split("/")[1],
+        },
+      })
+      .json();
 
-    if (res.data.childContent.length === 0) {
+    if (res.childContent.length === 0) {
       setOffset(newOffset - limit);
     } else {
-      setFullResponse(res.data);
+      dispatch(setSubmarinedContent(res));
     }
   };
   const mainThree = ["image", "audio", "video"];

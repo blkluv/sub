@@ -6,6 +6,7 @@ import NFT from "./LockType/NFT";
 import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { UnlockInfo } from "../../types/UnlockInfo";
+import WagmiProvider from "../Wagmi/Provider";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -22,7 +23,11 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
         if (unlockInfo.blockchain === "Solana") {
           return <Solana fileInfo={fileInfo} />;
         } else if (EVMChains.includes(unlockInfo.blockchain)) {
-          return <NFT fileInfo={fileInfo} />;
+          return (
+            <WagmiProvider>
+              <NFT fileInfo={fileInfo} />
+            </WagmiProvider>
+          );
         }
       case "retweet":
         return <Retweet fileInfo={fileInfo} />;
@@ -46,7 +51,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
         fileInfo?.thumbnail?.length > 0 && (
           <Image
             className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-            src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]?.preview}
+            src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
             alt={`${fileInfo.name} preview`}
             width={100}
             height={100}

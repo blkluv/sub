@@ -15,39 +15,44 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
   const dispatch = useAppDispatch();
   const unlockInfo: UnlockInfoLocation =
     fileInfo.unlockInfo.type === "location" && fileInfo.unlockInfo;
+
   const verifyLocation = async (): Promise<SubmarinedContent | void> => {
     if (!navigator.geolocation) {
       dispatch(setAlert({ type: "error", message: "Your device does not support geolocation" }));
       return;
     }
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        try {
-          const ky = getKy();
-          const res = await ky.post("/api/location/verify", {
-            body: JSON.stringify({
-              userLat: latitude,
-              userLong: longitude,
-              shortId: window.location.pathname.split("/")[1],
-            }),
-          });
-          const data: SubmarinedContent = await res.json();
-          return data;
-        } catch (error) {
-          dispatch(setAlert({ type: "error", message: error.response.statusText }));
+    const promise = new Promise<SubmarinedContent>((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          try {
+            const ky = getKy();
+            const data: SubmarinedContent = await ky
+              .post("/api/location/verify", {
+                json: {
+                  userLat: latitude,
+                  userLong: longitude,
+                  shortId: window.location.pathname.split("/")[1],
+                },
+              })
+              .json();
+            resolve(data);
+          } catch (error) {
+            dispatch(setAlert({ type: "error", message: error.response.statusText }));
+          }
+        },
+        (error) => {
+          dispatch(
+            setAlert({
+              type: "error",
+              message: "Location services may be disabled on your device, please enable them.",
+            })
+          );
         }
-      },
-      (error) => {
-        dispatch(
-          setAlert({
-            type: "error",
-            message: "Location services may be disabled on your device, please enable them.",
-          })
-        );
-      }
-    );
+      );
+    });
+    return promise;
   };
   const description = (
     <>
@@ -58,7 +63,7 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
       <p className="mt-4">
         <a
           className="flex flex-row space-around justify-center underline text-pinata-purple"
-          href={`https://www.openstreetmap.org/#map=18/${fileInfo?.unlockInfo?.lat}/${fileInfo?.unlockInfo?.long}`}
+          href={`https://www.openstreetmap.org/#map=18/${unlockInfo?.lat}/${unlockInfo?.long}`}
           target="_blank"
           rel="noreferrer noopener"
         >

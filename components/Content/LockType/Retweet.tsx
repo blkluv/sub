@@ -41,7 +41,6 @@ const Retweet = ({ fileInfo }) => {
       .catch((err) => {});
     if (res) {
       const data: SubmarinedContent = await res.json();
-      console.log({ data });
       return data;
     }
   };

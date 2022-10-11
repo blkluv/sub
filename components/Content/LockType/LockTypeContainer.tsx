@@ -18,7 +18,7 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
   const handleClick = async () => {
     setVerifying(true);
     try {
-      const submarinedContent = await handleVerify().catch((err) => console.log({ err }));
+      const submarinedContent = await handleVerify();
       if (submarinedContent) {
         dispatch(setSubmarinedContent(submarinedContent));
         setVerifying(false);

@@ -6,6 +6,7 @@ import {
   selectIsMFARequest,
 } from "../../store/selectors/authSelectors";
 import { confirmMFA, doLogin, LOGIN_STATUSES } from "../../store/slices/authSlice";
+import * as FullStory from '@fullstory/browser';
 
 export default function AuthForm() {
   const loginStatus = useAppSelector(selectAuthStatus);
@@ -29,6 +30,13 @@ export default function AuthForm() {
     }
 
     dispatch(doLogin({ email, password }));
+    //sample FullStory SDK calls
+    FullStory.setVars('page', {
+      userEmail: email
+     });
+    FullStory.event("Logged in", {
+      userEmail: email,
+    })
   };
 
   return (

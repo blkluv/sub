@@ -66,7 +66,7 @@ const PublicLayout = ({ children, fileInfo }: Props) => {
           gtag('config', 'G-LDJ4RPGPGE');`,
           }}
         />
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
 window['_fs_debug'] = false;
@@ -93,7 +93,7 @@ window['_fs_namespace'] = 'FS';
 })(window,document,window['_fs_namespace'],'script','user');
             `,
           }}
-        />
+        /> */}
       </Head>
       {children}
     </>

@@ -13,21 +13,18 @@ export enum AlertType {
 }
 const ExclamationIconStyled = styled(ExclamationIcon)`
   color: ${({ theme }) => theme.palette.warning.main};
-  height: 1.25rem;
-  width: 1.25rem;
+  height: ${({ theme }) => theme.spacing(3)};
+  width: ${({ theme }) => theme.spacing(3)};
   aria-hidden="true";
 `;
 const CheckIconStyled = styled(CheckIcon)`
   color: ${({ theme }) => theme.palette.success.main};
-  height: 1.25rem;
-  width: 1.25rem;
+  height: ${({ theme }) => theme.spacing(3)};
+  width: ${({ theme }) => theme.spacing(3)};
 `;
 
 const Alert = () => {
-  //const { type, message, timeout } = useAppSelector(selectAlert);
-  const type = "warning";
-  const message = "Failed to create locked content!";
-  const timeout = 0;
+  const { type, message, timeout } = useAppSelector(selectAlert);
   const dispatch = useAppDispatch();
   if (timeout) {
     setTimeout(() => {
@@ -54,7 +51,7 @@ const Alert = () => {
         position: "fixed",
         zIndex: 9999,
         width: "100%",
-        padding: "1rem",
+        padding: (theme) => theme.spacing(2),
       }}
     >
       <Grid2 container>
@@ -63,11 +60,11 @@ const Alert = () => {
         ) : (
           <CheckIconStyled />
         )}
-        <Container sx={{ marginLeft: "0.75rem" }}>
+        <Container sx={{ marginLeft: (theme) => theme.spacing(2) }}>
           <Typography
             sx={{
-              fontSize: "0.875rem",
-              lineHeight: "1.25rem",
+              fontSize: (theme) => theme.typography.subtitle1.fontSize,
+              lineHeight: (theme) => theme.typography.subtitle1.lineHeight,
               color:
                 type === AlertType.Warning || type === AlertType.Error
                   ? "rgb(161 98 7)"

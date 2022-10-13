@@ -8,7 +8,7 @@ import { doLogOut } from "../../store/slices/authSlice";
 import { MenuIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
-export default function Navigation({ props }) {
+export default function Navigation() {
   const avatarPath = useAppSelector(selectUserAvatar); // TODO - add avatar to user {isAuthenticated && <ProfileDropDown avatar={avatar} />}
   const isAuthenticated = !!useAppSelector(selectIsAuthenticated);
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export default function Navigation({ props }) {
     setMobileOpen(!mobileOpen);
   };
   return (
-    <AppBar component="nav" color="default">
+    <AppBar position="sticky" component="nav" color="default">
       <Toolbar sx={{ marginLeft: "15%", marginRight: "15%" }}>
         <IconButton
           color="inherit"

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Alert from "../Alert";
 import { useIntercom } from "react-use-intercom";
+import { Box } from "@mui/material";
 
 interface Props {
   children: React.ReactNode;

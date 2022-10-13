@@ -24,7 +24,7 @@ export interface MetadataUnlockInfo {
   description: string;
   unlockInfo: UnlockInfo;
   thumbnail?: string;
-  customizations: Customizations;
+  customizations?: Customizations;
   submarineCID: string;
   shortId: string;
 }

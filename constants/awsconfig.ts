@@ -27,5 +27,3 @@ export const awsconfig = {
     ],
   },
 };
-
-console.log(cookieStorage, process.env.NODE_ENV, awsconfig);

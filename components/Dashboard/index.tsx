@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
-import Alert from "../Alert";
 import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
@@ -10,6 +9,7 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
+import { Button } from "@mui/material";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -17,7 +17,6 @@ const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
   const [offset, setOffset] = useState(0);
   const [open, setOpen] = useState(false);
@@ -140,12 +139,7 @@ const Dashboard = () => {
               <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div className="text-center sm:text-left pb-4">
                   <Link passHref href="/submarine/new">
-                    <button
-                      type="button"
-                      className="mb-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-pinata-purple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Submarine New File
-                    </button>
+                    <Button>Submarine New File</Button>
                   </Link>
                 </div>
                 {loading ? (

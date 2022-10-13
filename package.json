@@ -13,11 +13,14 @@
     "update-managed-types": "swagger-typescript-api -p ./types/pinata-managed.json -o ./types/managed -n api.ts"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
+    "@mui/material": "^5.10.9",
     "@nfteyez/sol-rayz": "^0.10.2",
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/node": "^6.19.3",

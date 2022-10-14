@@ -157,7 +157,6 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                     <MainLandingContent
                       missing={false}
                       fileInfo={props.values}
-                      isPreview={true}
                       gatewayUrl={gatewayUrl}
                     />
                   </div>

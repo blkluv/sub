@@ -2,10 +2,10 @@ body {
   margin: 0;
   padding: 0;
 }
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/*
 .public-content-bg {
   background: linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%);
 }

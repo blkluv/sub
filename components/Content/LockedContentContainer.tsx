@@ -54,7 +54,13 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
       >
         {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
           <Image
-            className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
+            style={{
+              width: "6rem",
+              height: "6rem",
+              borderRadius: "1000px",
+              margin: "auto",
+              marginBottom: "1rem",
+            }}
             src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
             alt={`${fileInfo.name} preview`}
             width={100}
@@ -63,7 +69,13 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
         ) : (
           fileInfo?.thumbnail?.length > 0 && (
             <Image
-              className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
+              style={{
+                width: "6rem",
+                height: "6rem",
+                borderRadius: "1000px",
+                margin: "auto",
+                marginBottom: "1rem",
+              }}
               src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
               alt={`${fileInfo.name} preview`}
               width={100}

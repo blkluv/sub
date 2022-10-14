@@ -47,7 +47,6 @@ export default function PreviewModal({ previewOpen, setPreviewOpen, fileInfo }: 
                 <div className="mt-3 text-center sm:mt-5">
                   <div className="mt-2">
                     <MainLandingContent
-                      isPreview={true}
                       missing={false}
                       fileInfo={fileInfo}
                       gatewayUrl={gatewayUrl}

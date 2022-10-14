@@ -14,15 +14,9 @@ export interface MainLandingContentProps {
   missing: boolean;
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
-  isPreview?: boolean;
 }
 
-const MainLandingContent = ({
-  fileInfo,
-  gatewayUrl,
-  missing,
-  isPreview = false,
-}: MainLandingContentProps) => {
+const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingContentProps) => {
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
   let content;
   if (missing) {
@@ -46,7 +40,6 @@ const MainLandingContent = ({
       <Box
         style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
-          width: isPreview ? "50%" : "100%",
           margin: "auto",
           backgroundImage: fileInfo.customizations?.backgroundCid
             ? `url(${gatewayUrl}/ipfs/${fileInfo.customizations?.backgroundCid})`

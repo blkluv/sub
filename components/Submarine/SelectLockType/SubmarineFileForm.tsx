@@ -12,6 +12,14 @@ import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
 import { useRouter } from "next/router";
 import { setAlert } from "../../../store/slices/alertSlice";
 import MainLandingContent from "../../Content/MainLandingContent";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Typography,
+  Unstable_Grid2,
+} from "@mui/material";
 
 interface SubmarineProps {
   children: ReactNode;
@@ -102,67 +110,71 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
       <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
         {(props) =>
           props.isSubmitting ? (
-            <div className="w-3/4 m-auto text-center">
-              <h3>Please wait</h3>
-              <div className="w-full text-center flex justify-center items-center">
-                <div className="text-center animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 m-auto mt-8"></div>
-              </div>
-            </div>
+            <Container sx={{ textAlign: "center", padding: 4, marginBottom: 10 }}>
+              <Typography variant={"h3"} sx={{ marginBottom: 5 }}>
+                Please wait
+              </Typography>
+              <CircularProgress size={100} />
+            </Container>
           ) : (
-            <div className="w-11/12 m-auto mt-10">
-              <PreviewModal
-                previewOpen={previewOpen}
-                setPreviewOpen={setPreviewOpen}
-                fileInfo={props.values}
-              />
-              <div className="flex flex-row justify-between">
+            <Unstable_Grid2
+              container
+              sx={{ width: "90%", margin: "auto", marginTop: "1.5rem" }}
+              direction="column"
+              alignContent={"center"}
+            >
+              <Unstable_Grid2 container justifyContent={"space-between"}>
                 <Link passHref href="/submarine/new">
-                  <div className="h-8 w-8 cursor-pointer">
+                  <Box height={"2rem"} width={"2rem"} sx={{ cursor: "pointer" }}>
                     <ArrowLeftIcon />
-                  </div>
+                  </Box>
                 </Link>
-                <div className="block xl:hidden">
-                  <button
-                    onClick={() => setPreviewOpen(true)}
-                    className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full text-white bg-pinata-purple"
-                  >
-                    Preview
-                  </button>
-                </div>
-              </div>
-              <div className="xl:flex xl:flex-row xl:justify-between">
-                <div className="xl:w-1/2">
-                  <Form className="mt-10 w-3/4 m-auto space-y-8 divide-y divide-gray-200">
-                    <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+                <Box
+                  sx={{
+                    display: { xs: "block", xl: "none" },
+                  }}
+                >
+                  <Button onClick={() => setPreviewOpen(true)}>Preview</Button>
+                </Box>
+                <PreviewModal
+                  previewOpen={previewOpen}
+                  setPreviewOpen={setPreviewOpen}
+                  fileInfo={props.values}
+                />
+              </Unstable_Grid2>
+              <Unstable_Grid2 container direction={"row"}>
+                <Unstable_Grid2 xl={6} xs={12}>
+                  <Form>
+                    <Container sx={{ marginTop: (theme) => theme.spacing(2) }}>
                       {children}
-                    </div>
-                    <div className="pt-5 pb-8">
-                      <div className="flex justify-end">
-                        <button
-                          type="submit"
-                          disabled={!canSubmit(props.values) || props.isSubmitting}
-                          className={`ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full text-white ${
-                            canSubmit(props.values) && "bg-pinata-purple"
-                          } outline-none focus:outline-none`}
-                        >
-                          {props.isSubmitting ? "Processing..." : "Upload and Continue"}
-                        </button>
-                      </div>
-                    </div>
+                      <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>
+                        <Unstable_Grid2 container justifyContent={"end"}>
+                          <Button
+                            type="submit"
+                            disabled={!canSubmit(props.values) || props.isSubmitting}
+                          >
+                            {props.isSubmitting ? "Processing..." : "Upload and Continue"}
+                          </Button>
+                        </Unstable_Grid2>
+                      </Box>
+                    </Container>
                   </Form>
-                </div>
-
-                <div className="hidden xl:block xl:w-1/2">
-                  <div className="px-2">
+                </Unstable_Grid2>
+                <Unstable_Grid2 xl={6}>
+                  <Box
+                    sx={{
+                      display: { xs: "none", xl: "block" },
+                    }}
+                  >
                     <MainLandingContent
                       missing={false}
                       fileInfo={props.values}
                       gatewayUrl={gatewayUrl}
                     />
-                  </div>
-                </div>
-              </div>
-            </div>
+                  </Box>
+                </Unstable_Grid2>
+              </Unstable_Grid2>
+            </Unstable_Grid2>
           )
         }
       </Formik>

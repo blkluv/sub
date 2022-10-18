@@ -10,7 +10,6 @@ const UploadHandler =
   ({ setIpfsHash, ...props }: UploadHandlerProps) => {
     const onFileChange = async (e, setIsUploading) => {
       const file = e.target.files?.[0];
-      console.log(URL.createObjectURL(file));
       setIpfsHash(URL.createObjectURL(file));
       const data = new FormData();
       data.append("file", file, file.name);

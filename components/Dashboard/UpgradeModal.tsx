@@ -4,90 +4,55 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { useAppDispatch } from "../../store/hooks";
 import { doLogOut } from "../../store/slices/authSlice";
+/* This example requires Tailwind CSS v2.0+ */
+import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box } from "@mui/system";
+import Link from "next/link";
 
 export default function UpgradeModal() {
   const [open, setOpen] = useState(true);
 
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 2,
+  };
   const dispatch = useAppDispatch();
   const handleLogOut = () => {
     dispatch(doLogOut());
   };
-  const cancelButtonRef = useRef(null);
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        className="fixed z-10 inset-0 overflow-y-auto"
-        initialFocus={cancelButtonRef}
-        onClose={() => setOpen(true)}
-      >
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
-
-          {/* This element is to trick the browser into centering the modal contents. */}
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-            &#8203;
-          </span>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enterTo="opacity-100 translate-y-0 sm:scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          >
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-              <div className="sm:flex sm:items-start">
-                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-white sm:mx-0 sm:h-10 sm:w-10">
-                  <ExclamationIcon className="h-6 w-6 text-pinata-purple" aria-hidden="true" />
-                </div>
-                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                    Upgrade Your Pinata Account
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Submarine.me is only available to Pinata customers with a paid plan and a
-                      Dedicated Gateway.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-5 sm:mt-4 sm:ml-10 sm:pl-4 sm:flex">
-                <a
-                  type="button"
-                  className="inline-flex justify-center w-full rounded-full border border-transparent shadow-sm px-4 py-2 bg-pinata-purple text-base font-medium text-white focus:outline-none outline-none sm:w-auto sm:text-sm"
-                  href="https://app.pinata.cloud"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  Go Upgrade Today!
-                </a>
-                <button
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-full border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={handleLogOut}
-                  ref={cancelButtonRef}
-                >
-                  Log Out
-                </button>
-              </div>
-            </div>
-          </Transition.Child>
-        </div>
-      </Dialog>
-    </Transition.Root>
+    <Modal
+      open={open}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Unstable_Grid2 container justifyContent={"flex-start"} spacing={1}>
+          <ExclamationIcon className="h-6 w-6 text-pinata-purple" aria-hidden="true" />
+          <Typography id="modal-modal-title" variant="h6" component="h4">
+            Upgrade Your Pinata Account
+          </Typography>
+        </Unstable_Grid2>
+        <Typography variant="body1" id="modal-modal-description" sx={{ mt: 2 }}>
+          Submarine.me is only available to Pinata customers with a paid plan and a Dedicated
+          Gateway.
+        </Typography>
+        <Unstable_Grid2 container justifyContent={"flex-end"}>
+          <Link href={"https://app.pinata.cloud"} passHref>
+            <Button onClick={() => setOpen(false)}>Go Upgrade Today!</Button>
+          </Link>
+          <Button onClick={handleLogOut} variant="outlined">
+            Logout
+          </Button>
+        </Unstable_Grid2>
+      </Box>
+    </Modal>
   );
 }

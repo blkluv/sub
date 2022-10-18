@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Alert from "../Alert";
 import { useIntercom } from "react-use-intercom";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 
 interface Props {
   children: React.ReactNode;
@@ -43,7 +43,9 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
     <>
       <Alert />
       <Header />
-      <main>{children}</main>
+      <Container maxWidth={"lg"} sx={{ marginTop: (theme) => theme.spacing(2) }}>
+        <main>{children}</main>
+      </Container>
       <Footer />
     </>
   ) : null;

@@ -3,6 +3,7 @@ import { Divider } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import FormikTextfield from "../../../Form/FormikTextfield";
+import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
 import MintAddressModal from "../MintAddressModal";
 import TokenIdModal from "../TokenIdModal";
 import UpdateAuthorityModal from "../UpdateAuthorityModal";
@@ -22,7 +23,7 @@ const ContractAddress = ({ blockchain }) => {
         >
           <FormikTextfield
             type="text"
-            key="unlockInfo.nft"
+            name="unlockInfo.nft"
             label="Update authority"
             required
             adornment={
@@ -31,14 +32,14 @@ const ContractAddress = ({ blockchain }) => {
                 aria-label="button"
                 onClick={() => setUpdateAuthorityModalOpen(true)}
               >
-                <InformationCircleIcon height={"1.5rem"} width={"1.5rem"} />
+                <InformationCircleIconStyled />
               </span>
             }
           />
           <Divider variant="middle" flexItem />
           <FormikTextfield
             type="text"
-            key="unlockInfo.mintAddress"
+            name="unlockInfo.mintAddress"
             label="Mint Address"
             adornment={
               <span
@@ -46,7 +47,7 @@ const ContractAddress = ({ blockchain }) => {
                 aria-label="button"
                 onClick={() => setMintAddressModalOpen(true)}
               >
-                <InformationCircleIcon height={"1.5rem"} width={"1.5rem"} />
+                <InformationCircleIconStyled />
               </span>
             }
           />
@@ -70,13 +71,13 @@ const ContractAddress = ({ blockchain }) => {
         >
           <FormikTextfield
             type="text"
-            key="unlockInfo.contract"
+            name="unlockInfo.contract"
             label="Contract Address"
             required
           />
           <FormikTextfield
             type="text"
-            key="unlockInfo.contract"
+            name="unlockInfo.contract"
             label="Token ID"
             adornment={
               <span
@@ -84,7 +85,7 @@ const ContractAddress = ({ blockchain }) => {
                 aria-label="button"
                 onClick={() => setTokenIdModalOpen(true)}
               >
-                <InformationCircleIcon height={"1.5rem"} width={"1.5rem"} />
+                <InformationCircleIconStyled />
               </span>
             }
           />

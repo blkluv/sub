@@ -9,7 +9,8 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import { Button } from "@mui/material";
+import { Box, Button, Unstable_Grid2 } from "@mui/material";
+import { Container } from "@mui/system";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -130,45 +131,32 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <>
+      <Unstable_Grid2 container justifyContent={"space-between"} direction="column">
+        <Link passHref href="/submarine/new">
+          <Button>Submarine New File</Button>
+        </Link>
+        {loading ? (
+          <Unstable_Grid2 container justifyContent={"center"}>
+            <Loading />
+          </Unstable_Grid2>
+        ) : (
+          <>
+            <LinkTable
+              copyLink={copyLink}
+              files={files}
+              handleDelete={handleDelete}
+              open={open}
+              setOpen={setOpen}
+              loadLinks={loadLinks}
+              getThumbnail={getThumbnail}
+            />
+            <Pagination handlePageChange={handleChangePage} />
+          </>
+        )}
+      </Unstable_Grid2>
       {displayUpgradeModal && <UpgradeModal />}
-      <div className="h-screen bg-gray container w-full m-auto">
-        <main className="sm:w-4/5 sm:m-auto pt-12 sm:pt-24 pb-8">
-          <div className="flex flex-col">
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div className="text-center sm:text-left pb-4">
-                  <Link passHref href="/submarine/new">
-                    <Button>Submarine New File</Button>
-                  </Link>
-                </div>
-                {loading ? (
-                  <div className="flex flex-row w-full p-20 justify-center">
-                    <Loading />
-                  </div>
-                ) : (
-                  <div className="overflow-hidden sm:rounded-lg">
-                    <div>
-                      <LinkTable
-                        copyLink={copyLink}
-                        files={files}
-                        handleDelete={handleDelete}
-                        open={open}
-                        setOpen={setOpen}
-                        loadLinks={loadLinks}
-                        getThumbnail={getThumbnail}
-                      />
-
-                      <Pagination handlePageChange={handleChangePage} />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
+    </>
   );
 };
 

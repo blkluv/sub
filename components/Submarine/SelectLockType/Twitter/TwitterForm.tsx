@@ -1,9 +1,9 @@
-import { Field, useFormikContext } from "formik";
-import React from "react";
+import { Unstable_Grid2 } from "@mui/material";
+import { Field } from "formik";
 
 export default function TwitterForm() {
   return (
-    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
+    <Unstable_Grid2 container spacing={2}>
       <label
         htmlFor="unlockInfo.tweetUrl"
         className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
@@ -23,6 +23,6 @@ export default function TwitterForm() {
           />
         </div>
       </div>
-    </div>
+    </Unstable_Grid2>
   );
 }

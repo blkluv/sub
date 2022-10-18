@@ -8,6 +8,15 @@ import shortUUID from "short-uuid";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  Typography,
+  RadioGroup,
+  Unstable_Grid2,
+} from "@mui/material";
 
 enum FileType {
   File = "file",
@@ -26,6 +35,10 @@ const UploadMedia = () => {
   const [uploadType, setUploadFile] = useState(FileType.File);
 
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadFile((event.target as HTMLInputElement).value);
+  };
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget;
   }
@@ -107,50 +120,15 @@ const UploadMedia = () => {
   };
 
   return (
-    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 mt-2">
-      <label
-        htmlFor="cover-photo"
-        className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-      >
-        Media to Submarine
-      </label>
-      <div className="mt-1 mb-2 sm:mt-0 sm:col-span-2">
-        <div>
-          <p className="text-sm leading-5 text-gray-500">
-            Are you Submarining a single file or a folder?
-          </p>
-          <fieldset className="mt-4 mb-4">
-            <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
-              <div className="flex items-center">
-                <input
-                  id="file"
-                  name="notification-method"
-                  type="radio"
-                  checked={uploadType === FileType.File}
-                  onChange={() => setUploadFile(FileType.File)}
-                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                />
-                <label htmlFor="file" className="ml-3 block text-sm font-medium text-gray-700">
-                  Upload File
-                </label>
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  id="folder"
-                  name="notification-method"
-                  type="radio"
-                  checked={uploadType === FileType.Folder}
-                  onChange={() => setUploadFile(FileType.Folder)}
-                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                />
-                <label htmlFor="folder" className="ml-3 block text-sm font-medium text-gray-700">
-                  Upload Folder
-                </label>
-              </div>
-            </div>
-          </fieldset>
-        </div>
+    <Unstable_Grid2 container spacing={0}>
+      <Unstable_Grid2>
+        <FormControl>
+          <FormLabel> Are you Submarining a single file or a folder?</FormLabel>
+          <RadioGroup row value={uploadType} onChange={handleChange}>
+            <FormControlLabel value={FileType.Folder} control={<Radio />} label="Folder" />
+            <FormControlLabel value={FileType.File} control={<Radio />} label="File" />
+          </RadioGroup>
+        </FormControl>
         <div
           onDragOver={dragOverHandler}
           onDrop={dropHandler}
@@ -199,8 +177,8 @@ const UploadMedia = () => {
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </Unstable_Grid2>
+    </Unstable_Grid2>
   );
 };
 

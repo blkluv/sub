@@ -45,12 +45,11 @@ export const getType = (type) => {
   return mime.getType(type);
 };
 
-
 export default function Gallery({ content, name }: GalleryProps) {
   const [items, setItems] = useState([]);
   const [offset, setOffset] = useState(0);
-  const [isDisplaying, setIsDisplaying] = useState<boolean>(false)
-  const [displayItem, setDisplayItem] = useState(null)
+  const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
+  const [displayItem, setDisplayItem] = useState(null);
   const mainThree = ["image", "audio", "video"];
   const limit = 10;
   const dispatch = useAppDispatch();
@@ -60,7 +59,7 @@ export default function Gallery({ content, name }: GalleryProps) {
       setItems(content.childContent);
     }
   }, [content]);
-  
+
   const handlePageChange = async (dir) => {
     let newOffset;
     if (dir === "forward") {
@@ -75,7 +74,7 @@ export default function Gallery({ content, name }: GalleryProps) {
         setOffset(newOffset);
       }
     }
-    
+
     const ky = getKy();
     const res: SubmarinedContent = await ky
       .post(`/api/content`, {
@@ -96,9 +95,9 @@ export default function Gallery({ content, name }: GalleryProps) {
   };
 
   const displaySingleMedia = (item) => {
-    setIsDisplaying(true)
-    setDisplayItem(item)
-  }
+    setIsDisplaying(true);
+    setDisplayItem(item);
+  };
 
   const getIcon = (filename) => {
     const extension = filename.substr(filename.lastIndexOf(".") + 1);
@@ -120,14 +119,10 @@ export default function Gallery({ content, name }: GalleryProps) {
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8 mt-2">
         <h2 className="text-xl font-sans font-bold sm:my-4 my-6">{name}</h2>
-          {!isDisplaying ? 
+        {!isDisplaying ? (
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
-        
             {items.map((item) => (
-              <button 
-                  key={item.id}  
-                  onClick={() => displaySingleMedia(item)} 
-                  className="group">
+              <button key={item.id} onClick={() => displaySingleMedia(item)} className="group">
                 <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-full overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                   <FontAwesomeIcon
                     icon={getIcon(getName(item.originalname))}
@@ -138,14 +133,16 @@ export default function Gallery({ content, name }: GalleryProps) {
                 {/* <p className="mt-1 text-lg font-medium text-gray-900">{item.cid}</p> */}
               </button>
             ))}
-            </div>
-            :
-            <div>
-                <SingleMediaDisplay url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`} submarinedContent={displayItem} />
-                <button onClick={() => setIsDisplaying(false)}>Back</button>
-            </div>
-            }
-
+          </div>
+        ) : (
+          <div>
+            <SingleMediaDisplay
+              url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
+              submarinedContent={displayItem}
+            />
+            <button onClick={() => setIsDisplaying(false)}>Back</button>
+          </div>
+        )}
       </div>
       {content.totalItems > items.length && (
         <div>

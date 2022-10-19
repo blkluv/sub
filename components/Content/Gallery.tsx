@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-
 import Pagination from "../Dashboard/Pagination";
 config.autoAddCss = false;
-import mime from "mime";
-import { faImage, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { SubmarinedContent } from "../../types/SubmarinedContent";
 import { useAppDispatch } from "../../store/hooks";
 import { setSubmarinedContent } from "../../store/slices/submarinedContentSlice";
 import { getKy } from "../../helpers/ky";
+import SingleMediaDisplay from "./SingleMediaDisplay";
+import { faImage, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
+import mime from "mime";
 
+interface GalleryProps {
+  content: SubmarinedContent;
+  name: string;
+}
 export const iconMapper = (type) => {
   const map = {
     image: faImage,
@@ -41,16 +45,21 @@ export const getType = (type) => {
   return mime.getType(type);
 };
 
-interface GalleryProps {
-  content: SubmarinedContent;
-  name: string;
-}
-
 export default function Gallery({ content, name }: GalleryProps) {
   const [items, setItems] = useState([]);
   const [offset, setOffset] = useState(0);
+  const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
+  const [displayItem, setDisplayItem] = useState(null);
+  const mainThree = ["image", "audio", "video"];
   const limit = 10;
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (content && content.childContent) {
+      setItems(content.childContent);
+    }
+  }, [content]);
+
   const handlePageChange = async (dir) => {
     let newOffset;
     if (dir === "forward") {
@@ -84,12 +93,11 @@ export default function Gallery({ content, name }: GalleryProps) {
       dispatch(setSubmarinedContent(res));
     }
   };
-  const mainThree = ["image", "audio", "video"];
-  useEffect(() => {
-    if (content && content.childContent) {
-      setItems(content.childContent);
-    }
-  }, [content]);
+
+  const displaySingleMedia = (item) => {
+    setIsDisplaying(true);
+    setDisplayItem(item);
+  };
 
   const getIcon = (filename) => {
     const extension = filename.substr(filename.lastIndexOf(".") + 1);
@@ -106,31 +114,35 @@ export default function Gallery({ content, name }: GalleryProps) {
     const items = name.split("/");
     return items[items.length - 1];
   };
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8 mt-2">
         <h2 className="text-xl font-sans font-bold sm:my-4 my-6">{name}</h2>
-
-        <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
-          {items.map((item) => (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              key={item.id}
-              href={`${content.gateway}${item.uri}?accessToken=${content.token}`}
-              className="group"
-            >
-              <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-full overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                <FontAwesomeIcon
-                  icon={getIcon(getName(item.originalname))}
-                  style={{ fontSize: 75, padding: 10 }}
-                />
-              </div>
-              <h3 className="mt-4 text-sm text-gray-700">{getName(item.originalname)}</h3>
-              {/* <p className="mt-1 text-lg font-medium text-gray-900">{item.cid}</p> */}
-            </a>
-          ))}
-        </div>
+        {!isDisplaying ? (
+          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
+            {items.map((item) => (
+              <button key={item.id} onClick={() => displaySingleMedia(item)} className="group">
+                <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-full overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                  <FontAwesomeIcon
+                    icon={getIcon(getName(item.originalname))}
+                    style={{ fontSize: 75, padding: 10 }}
+                  />
+                </div>
+                <h3 className="mt-4 text-sm text-gray-700">{getName(item.originalname)}</h3>
+                {/* <p className="mt-1 text-lg font-medium text-gray-900">{item.cid}</p> */}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <SingleMediaDisplay
+              url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
+              submarinedContent={displayItem}
+            />
+            <button onClick={() => setIsDisplaying(false)}>Back</button>
+          </div>
+        )}
       </div>
       {content.totalItems > items.length && (
         <div>

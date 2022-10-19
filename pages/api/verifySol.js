@@ -21,11 +21,11 @@ function withSession(handler) {
 
 function createConnectionConfig(
   network,
-  clusterApi = clusterApiUrl("mainnet-beta"),
+  clusterApi = process.env.ALCHEMY_SOLANA_MAINNET || clusterApiUrl("mainnet-beta"),
   commitment = "confirmed"
 ) {
   if (network === "Devnet") {
-    clusterApi = clusterApiUrl("devnet");
+    clusterApi = process.env.ALCHEMY_SOLANA_DEVNET || clusterApiUrl("devnet");
   }
   return new Connection(clusterApi, commitment);
 }

@@ -13,9 +13,7 @@ const SingleMediaDisplay = ({url, submarinedContent}: SingleMediaDisplayProps) =
     const [fileType, setFileType] = useState<string>("")
   
     useEffect(() => {
-      console.log(fileType)
         findFileType()
-        console.log("Submarined Content", submarinedContent)
       }, [fileType]);
     
       const findFileType = async() => {

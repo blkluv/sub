@@ -32,7 +32,12 @@ export default function Navigation() {
     <AppBar position="sticky" component="nav" color="default">
       <Toolbar>
         <Container maxWidth={"lg"}>
-          <Unstable_Grid2 container alignItems="center" justifyContent="space-between">
+          <Unstable_Grid2
+            container
+            alignItems="center"
+            alignContent={"center"}
+            justifyContent="space-between"
+          >
             <Link passHref href="/">
               <Box>
                 <Image height={32} width={47} src="/submarine.png" alt="Submarine Me" />

@@ -7,6 +7,7 @@ import {
   ShoppingBagIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
+import { Typography } from "@mui/material";
 import Link from "next/link";
 
 const actions = [
@@ -59,10 +60,10 @@ function classNames(...classes) {
 
 export default function SelectLockType() {
   return (
-    <div>
-      <h3 className="font-bold text-2xl mb-4">
+    <>
+      <Typography variant={"h4"}>
         {"Choose how you'd like your submarined content to be unlocked"}
-      </h3>
+      </Typography>
       <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
         {actions.map((action, actionIdx) => (
           <Link
@@ -121,6 +122,6 @@ export default function SelectLockType() {
           </Link>
         ))}
       </div>
-    </div>
+    </>
   );
 }

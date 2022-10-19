@@ -49,7 +49,7 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
             "linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
+          minHeight: "75vh",
           justifyContent: "center",
           alignContent: "center",
           display: "flex",

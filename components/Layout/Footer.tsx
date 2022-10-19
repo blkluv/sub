@@ -49,7 +49,6 @@ export default function Footer() {
     <Container
       sx={{ padding: (theme) => theme.spacing(3, 1), marginTop: (theme) => theme.spacing(6) }}
     >
-      <div className="space-y-8 xl:col-span-1"></div>
       <Divider>
         <Grid2 container justifyContent={"space-between"}>
           <Typography color={"gray"}>

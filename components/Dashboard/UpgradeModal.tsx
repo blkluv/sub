@@ -1,10 +1,7 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { useState } from "react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { useAppDispatch } from "../../store/hooks";
 import { doLogOut } from "../../store/slices/authSlice";
-/* This example requires Tailwind CSS v2.0+ */
 import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
 import { Box } from "@mui/system";
 import Link from "next/link";
@@ -35,7 +32,7 @@ export default function UpgradeModal() {
     >
       <Box sx={style}>
         <Unstable_Grid2 container justifyContent={"flex-start"} spacing={1}>
-          <ExclamationIcon className="h-6 w-6 text-pinata-purple" aria-hidden="true" />
+          <ExclamationIcon style={{ width: "2rem", height: "2rem" }} aria-hidden="true" />
           <Typography id="modal-modal-title" variant="h6" component="h4">
             Upgrade Your Pinata Account
           </Typography>

@@ -33,7 +33,7 @@ const SharedHead = () => {
         gtag('config', 'G-LDJ4RPGPGE');`,
         }}
       />
-      <script
+      {/* <script
         dangerouslySetInnerHTML={{
           __html: `
 window['_fs_debug'] = false;
@@ -60,7 +60,7 @@ g._v="1.3.0";
 })(window,document,window['_fs_namespace'],'script','user');
           `,
         }}
-      />
+      /> */}
     </Head>
   );
 };

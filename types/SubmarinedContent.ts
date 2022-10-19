@@ -7,4 +7,5 @@ export type SubmarinedContent = {
   childContent: any[];
   totalItems: number;
   itemId: any;
+  originalName: string;
 };

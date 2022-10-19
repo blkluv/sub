@@ -13,7 +13,7 @@ const VideoWrapper = ( url) => {
       className="md:w-3/4 md:h-3/4 w-full h-full"
       width="100%"
       height="100%"
-      onError={() => window.open(url, "_blank", "noopener,noreferrer")}
+      // onError={() => window.open(url, "_blank", "noopener,noreferrer")}
     />
   )
 }

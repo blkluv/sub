@@ -1,10 +1,15 @@
-import VideoWrapper from "./MediaWrappers/VideoWrapper"
+import EmbeddedPlayer from "./MediaWrappers/EmbeddedPlayer"
 import Image from "next/image"
 import { useEffect, useState } from "react";
 import mime from "mime-types"
+import { SubmarinedContent } from "../../types/SubmarinedContent";
 
+export interface SingleMediaDisplayProps {
+  url: string, 
+  submarinedContent: SubmarinedContent
+}
 
-const SingleMediaDisplay = ({url, submarinedContent}) => {
+const SingleMediaDisplay = ({url, submarinedContent}: SingleMediaDisplayProps) => {
     const [fileType, setFileType] = useState<string>("")
   
     useEffect(() => {
@@ -32,9 +37,11 @@ const SingleMediaDisplay = ({url, submarinedContent}) => {
     return (
         <div>
         <div style={{ position: "relative", width: "100%", paddingBottom: "50%" }}>
-            {fileType == "image" && <Image src={url} alt="" layout="fill" objectFit="contain"/>}
-            {fileType == "video" && <VideoWrapper url={url}/>}
-            {fileType == "audio" && <audio src={url} controls><p>Your browser does not support the audio element.</p></audio>}
+          {fileType == "video" || fileType == "audio" ? 
+            <EmbeddedPlayer fileType={fileType} url={url}/>
+            :
+            <Image src={url} alt="" layout="fill" objectFit="contain"/>
+          }
         </div> 
       </div>
         

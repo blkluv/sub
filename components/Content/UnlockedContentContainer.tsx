@@ -3,7 +3,7 @@ import { useAppSelector } from "../../store/hooks";
 import { selectSubmarinedContent } from "../../store/selectors/submarinedContentSelectors";
 import { useState } from "react";
 import Gallery from "./Gallery";
-import VideoWrapper from "./MediaWrappers/VideoWrapper";
+import VideoWrapper from "./MediaWrappers/EmbeddedPlayer";
 import Image from "next/image";
 import SingleMediaDisplay from "./SingleMediaDisplay";
 

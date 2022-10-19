@@ -1,18 +1,17 @@
-import React from 'react'
-import ReactPlayer from 'react-player'
+import React from "react";
+import ReactPlayer from "react-player";
 
-export interface EmbeddedPlayerProps  {
-  url: string, 
-  fileType: string,
+export interface EmbeddedPlayerProps {
+  url: string;
+  fileType: string;
 }
 
-const EmbeddedPlayer = ( {url, fileType} : EmbeddedPlayerProps) => {
-
-  if(ReactPlayer.canPlay(url)){
+const EmbeddedPlayer = ({ url, fileType }: EmbeddedPlayerProps) => {
+  if (ReactPlayer.canPlay(url)) {
     return (
       <div>
-        <ReactPlayer 
-          url={url} 
+        <ReactPlayer
+          url={url}
           controls={true}
           playing={true}
           pip={true}
@@ -24,13 +23,10 @@ const EmbeddedPlayer = ( {url, fileType} : EmbeddedPlayerProps) => {
           onError={() => console.log("Cannot play this Media")}
         />
       </div>
-    )
+    );
+  } else {
+    return <h1>Oops! It seems that media cannot be played at the moment.</h1>;
   }
-  else {
-    return(
-      <h1>Oops! It seems that media cannot be played at the moment.</h1>
-    )
-  }
-}
+};
 
-export default EmbeddedPlayer
+export default EmbeddedPlayer;

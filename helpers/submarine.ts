@@ -60,7 +60,7 @@ export const getSubmarinedContent = async (
       childContent,
       totalItems: totalChildContentItems,
       itemId: item.id,
-      originalName: item.originalname,
+      originalname: item.originalname,
     };
   } catch (error) {
     throw error;

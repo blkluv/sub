@@ -57,7 +57,9 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
                     <Image
                       alt="Thumbnail"
                       layout="fixed"
-                      className="rounded-full"
+                      style={{
+                        borderRadius: "9999px",
+                      }}
                       src={getThumbnail(file)}
                       height={40}
                       width={40}
@@ -66,6 +68,7 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
                 </ListItemAvatar>
                 <ListItemText
                   primary={file.name}
+                  disableTypography
                   secondary={
                     <>
                       <Typography variant="body2">

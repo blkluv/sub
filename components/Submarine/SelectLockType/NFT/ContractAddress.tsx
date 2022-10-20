@@ -1,4 +1,3 @@
-import { InformationCircleIcon } from "@heroicons/react/outline";
 import { Divider } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
@@ -42,11 +41,7 @@ const ContractAddress = ({ blockchain }) => {
             name="unlockInfo.mintAddress"
             label="Mint Address"
             adornment={
-              <span
-                className="cursor"
-                aria-label="button"
-                onClick={() => setMintAddressModalOpen(true)}
-              >
+              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
                 <InformationCircleIconStyled />
               </span>
             }

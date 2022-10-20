@@ -34,28 +34,3 @@ const FormikTextfield = ({
 };
 
 export default FormikTextfield;
-
-/**
- * 
-    <TextField
-      fullWidth
-      id={name}
-      name={name}
-      label={label}
-      type={type}
-      value={formik.values[name]}
-      required={required}
-      autoComplete="off"
-      sx={{ m: 1 }}
-      onChange={formik.handleChange}
-      error={formik.touched[name] && Boolean(formik.errors[name])}
-      helperText={formik.touched[name] && formik.errors[name]}
-      InputProps={{
-        endAdornment: <InputAdornment position="end">{adornment}</InputAdornment>,
-      }}
-      inputProps={{
-        maxLength: maxLength,
-      }}
-      {...props}
-    />
- */

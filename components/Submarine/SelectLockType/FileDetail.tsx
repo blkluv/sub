@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import UploadMedia from "../../Upload/UploadMedia";
-import UploadThumbnail from "../../Upload/UploadThumbnail";
 import {
   Box,
   FormControlLabel,
@@ -17,6 +16,7 @@ import { useAppSelector } from "../../../store/hooks";
 import { useFormikContext } from "formik";
 import { MetadataUnlockInfo } from "./SubmarineFileForm";
 import FormikTextfield from "../../Form/FormikTextfield";
+import UploadImagePublic from "../../Upload/UploadImagePublic";
 
 const FileDetail = () => {
   const [customize, setCustomize] = useState(false);
@@ -80,7 +80,10 @@ const FileDetail = () => {
               </SvgIcon>
             )}
           </Box>
-          <UploadThumbnail setIpfsHash={(hash) => setFieldValue("thumbnail", hash)} />
+          <UploadImagePublic
+            label={"Upload"}
+            setIpfsHash={(hash) => setFieldValue("thumbnail", hash)}
+          />
         </Unstable_Grid2>
       </Unstable_Grid2>
       <UploadMedia />

@@ -60,7 +60,7 @@ const LocationForm = () => {
             </span>
           }
         />
-        <FormikTextfield name="unlockInfo.distance" label="Distance" required />
+        <FormikTextfield name="unlockInfo.distance" label="Distance" type="number" required />
         <GoogleMapsCoordsModal
           googleMapsModalOpen={googleMapsModalOpen}
           setGoogleMapsModalOpen={setGoogleMapsModalOpen}

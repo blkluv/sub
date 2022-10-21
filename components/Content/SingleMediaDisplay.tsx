@@ -34,11 +34,11 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
   };
   return (
     <div>
-      <div style={{ position: "relative", width: "100%", paddingBottom: "50%" }}>
+      <div style={{ position: "relative", width: "100%", paddingBottom: "40%" }}>
         {fileType == "video" || fileType == "audio" ? (
           <EmbeddedPlayer fileType={fileType} url={url} />
         ) : (
-          <Image src={url} alt="" layout="fill" objectFit="contain" />
+          <Image src={url} alt={submarinedContent.originalname} layout="fill" objectFit="contain" />
         )}
       </div>
     </div>

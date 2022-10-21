@@ -140,7 +140,12 @@ export default function Gallery({ content, name }: GalleryProps) {
               url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
               submarinedContent={displayItem}
             />
-            <button onClick={() => setIsDisplaying(false)}>Back</button>
+            <button
+              className={`ml-3 inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium rounded-full text-white bg-pinata-purple`}
+              onClick={() => setIsDisplaying(false)}
+            >
+              Back
+            </button>
           </div>
         )}
       </div>

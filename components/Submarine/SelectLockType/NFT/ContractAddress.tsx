@@ -27,7 +27,7 @@ const ContractAddress = ({ blockchain }) => {
             required
             adornment={
               <span
-                className="cursor"
+                style={{ cursor: "pointer" }}
                 aria-label="button"
                 onClick={() => setUpdateAuthorityModalOpen(true)}
               >
@@ -76,7 +76,7 @@ const ContractAddress = ({ blockchain }) => {
             label="Token ID"
             adornment={
               <span
-                className="cursor"
+                style={{ cursor: "pointer" }}
                 aria-label="button"
                 onClick={() => setTokenIdModalOpen(true)}
               >

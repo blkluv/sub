@@ -1,4 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
 import { Box } from "@mui/system";
 

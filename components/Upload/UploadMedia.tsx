@@ -16,7 +16,9 @@ import {
   Typography,
   RadioGroup,
   Unstable_Grid2,
+  Box,
 } from "@mui/material";
+import { Container } from "@mui/system";
 
 enum FileType {
   File = "file",
@@ -122,61 +124,87 @@ const UploadMedia = () => {
   return (
     <Unstable_Grid2 container spacing={0}>
       <Unstable_Grid2>
-        <FormControl>
+        <>
           <FormLabel> Are you Submarining a single file or a folder?</FormLabel>
           <RadioGroup row value={uploadType} onChange={handleChange}>
             <FormControlLabel value={FileType.Folder} control={<Radio />} label="Folder" />
             <FormControlLabel value={FileType.File} control={<Radio />} label="File" />
           </RadioGroup>
-        </FormControl>
-        <div
+        </>
+        <Unstable_Grid2
+          container
+          spacing={0}
+          justifyContent="center"
           onDragOver={dragOverHandler}
           onDrop={dropHandler}
           onDragLeave={dragExitHandler}
-          className={`max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 rounded-md ${
-            dragOverActive ? "border-blue border-solid bg-blue" : "border-gray-300 border-dashed"
-          }`}
+          sx={{
+            borderWidth: 2,
+            borderColor: dragOverActive ? "primary.main" : "grey.400",
+            borderStyle: "dashed",
+            borderRadius: 1,
+          }}
         >
-          <div className="space-y-1 text-center">
-            <svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              stroke="currentColor"
-              fill="none"
-              viewBox="0 0 48 48"
-              aria-hidden="true"
-            >
-              <path
-                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <div className="flex text-sm text-gray-600">
-              <label
+          <Unstable_Grid2>
+            <Container>
+              <svg
+                style={{
+                  width: "3rem",
+                  height: "3rem",
+                  margin: "auto",
+                  color: "gray",
+                }}
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+                aria-hidden="true"
+              >
+                <path
+                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Container>
+            <Unstable_Grid2 container>
+              <Typography
+                component={"label"}
+                sx={{
+                  color: "primary.main",
+                }}
                 htmlFor="file-upload-main"
-                className="relative cursor-pointer bg-white rounded-md font-medium text-pinata-purple hover:text-pinata-purple focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pinata-purple"
               >
                 {uploadType === FileType.File ? (
                   <File onChange={onFileChange} />
                 ) : (
                   <Folder onChange={onFileChange} />
                 )}
-              </label>
-              <p className="hidden sm:block pl-1">or drag and drop</p>
-            </div>
+              </Typography>
+              <Typography
+                sx={{
+                  paddingLeft: "0.25rem",
+                  display: {
+                    sm: "block",
+                    xs: "none",
+                  },
+                }}
+              >
+                or drag and drop
+              </Typography>
+            </Unstable_Grid2>
             {selectedFiles.length > 0 ? (
-              <p className="text-xs text-gray-500">
+              <Typography variant={"body2"}>
                 {uploadType === FileType.File
                   ? selectedFiles[0].name
                   : selectedFiles[0].webkitRelativePath.split("/")[0]}{" "}
                 ({selectedFiles.length} files in folder)
-              </p>
+              </Typography>
             ) : (
-              <p className="text-xs text-gray-500">Any file up to 500MB</p>
+              <Typography variant={"body2"}>Any file up to 500MB</Typography>
             )}
-          </div>
-        </div>
+          </Unstable_Grid2>
+        </Unstable_Grid2>
       </Unstable_Grid2>
     </Unstable_Grid2>
   );

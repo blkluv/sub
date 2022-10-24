@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import UploadMedia from "../../Upload/UploadMedia";
 import {
   Box,

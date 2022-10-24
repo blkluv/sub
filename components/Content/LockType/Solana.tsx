@@ -25,6 +25,7 @@ import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
+import { Button, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
 
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
@@ -80,9 +81,9 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   };
   const wallet = useWallet();
   const description = (
-    <p className="mt-4 mb-4 text-md text-muted">
+    <Typography>
       Unlock this content by connecting your wallet to verify you have the required NFT.
-    </p>
+    </Typography>
   );
 
   // TODO
@@ -113,23 +114,26 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <div className="inline-flex w-1/2">
-          <WalletModalProvider className="fixed z-10 inset-0 overflow-y-auto inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6 m-auto">
-            {!wallet.connected ? (
-              <WalletMultiButton className="w-full m-auto inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple" />
-            ) : (
-              <>
-                <BaseLockType
-                  description={description}
-                  fileInfo={fileInfo}
-                  lockName={"nft"}
-                  handleVerify={signData}
-                />
-                <WalletDisconnectButton className="mt-4 w-full m-auto" />
-              </>
-            )}
-          </WalletModalProvider>
-        </div>
+        <WalletModalProvider>
+          {!wallet.connected ? (
+            <Grid2>
+              <Button>
+                <WalletMultiButton />
+              </Button>
+              {description}
+            </Grid2>
+          ) : (
+            <>
+              <BaseLockType
+                description={description}
+                fileInfo={fileInfo}
+                lockName={"nft"}
+                handleVerify={signData}
+              />
+              <WalletDisconnectButton />
+            </>
+          )}
+        </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );

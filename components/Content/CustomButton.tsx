@@ -34,11 +34,7 @@ const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
   }, [fileInfo]);
 
   return (
-    <button
-      onClick={onClick}
-      style={styles}
-      className={`${fileInfo?.customizations?.buttonShape === "rounded" ? "rounded-full" : ""}`}
-    >
+    <button onClick={onClick} style={styles}>
       {loading ? `Verifying ${lockName}...` : `Verify ${lockName}`}
     </button>
   );

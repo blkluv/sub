@@ -9,9 +9,9 @@ const LocationLock = () => {
   };
   const unlockInfo: UnlockInfoLocation = {
     type: "location",
-    lat: 0,
-    long: 0,
-    distance: "0",
+    lat: null,
+    long: null,
+    distance: null,
   };
 
   return (

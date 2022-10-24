@@ -3,11 +3,25 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectAlert } from "../store/selectors/alertSelectors";
 import { clearAlert } from "../store/slices/alertSlice";
+import styled from "@emotion/styled";
+import { Alert as MuiAlert, Box, Container, Typography } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 export enum AlertType {
   Warning = "warning",
   Error = "error",
 }
+const ExclamationIconStyled = styled(ExclamationIcon)`
+  color: ${({ theme }) => theme.palette.warning.main};
+  height: ${({ theme }) => theme.spacing(3)};
+  width: ${({ theme }) => theme.spacing(3)};
+  aria-hidden="true";
+`;
+const CheckIconStyled = styled(CheckIcon)`
+  color: ${({ theme }) => theme.palette.success.main};
+  height: ${({ theme }) => theme.spacing(3)};
+  width: ${({ theme }) => theme.spacing(3)};
+`;
 
 const Alert = () => {
   const { type, message, timeout } = useAppSelector(selectAlert);
@@ -22,34 +36,46 @@ const Alert = () => {
   }
 
   return (
-    <div
-      className={`border-l-4 ${
-        type === AlertType.Warning || type === "error"
-          ? "border-yellow-400 bg-yellow-50"
-          : "border-green-400 bg-green-50"
-      } p-4 fixed w-screen top-0 left-0 z-50`}
+    <Box
+      sx={{
+        borderLeftWidth: "4px",
+        borderColor:
+          type === AlertType.Warning || type === AlertType.Error ? "warning.main" : "success.main",
+        backgroundColor:
+          type === AlertType.Warning || type === AlertType.Error
+            ? "rgba(255, 251, 235)"
+            : "rgb(240 253 244)",
+        top: 0,
+        left: 0,
+        right: 0,
+        position: "fixed",
+        zIndex: 9999,
+        width: "100%",
+        padding: (theme) => theme.spacing(2),
+      }}
     >
-      <div className="flex">
-        <div className="flex-shrink-0">
-          {type === AlertType.Warning || type === AlertType.Error ? (
-            <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-          ) : (
-            <CheckIcon className="h-5 w-5 text-green-400" />
-          )}
-        </div>
-        <div className="ml-3">
-          <p
-            className={`text-sm ${
-              type === AlertType.Warning || type === AlertType.Error
-                ? "text-yellow-700"
-                : "text-green-700"
-            }`}
+      <Grid2 container>
+        {type === AlertType.Warning || type === AlertType.Error ? (
+          <ExclamationIconStyled />
+        ) : (
+          <CheckIconStyled />
+        )}
+        <Container sx={{ marginLeft: (theme) => theme.spacing(2) }}>
+          <Typography
+            sx={{
+              fontSize: (theme) => theme.typography.subtitle1.fontSize,
+              lineHeight: (theme) => theme.typography.subtitle1.lineHeight,
+              color:
+                type === AlertType.Warning || type === AlertType.Error
+                  ? "rgb(161 98 7)"
+                  : "rgb(21 128 61)",
+            }}
           >
             {message}
-          </p>
-        </div>
-      </div>
-    </div>
+          </Typography>
+        </Container>
+      </Grid2>
+    </Box>
   );
 };
 

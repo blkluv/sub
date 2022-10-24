@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Loading from "../../components/Dashboard/Loading";
 import { useRouter } from "next/router";
+import { Unstable_Grid2 } from "@mui/material";
 
 const Twitter = () => {
   const router = useRouter();
@@ -13,11 +14,9 @@ const Twitter = () => {
     }
   }, [router.query]);
   return (
-    <div>
-      <div className="absolute p-4 flex flex-col justify-center align-center h-screen w-screen m-auto text-center">
-        <Loading />
-      </div>
-    </div>
+    <Unstable_Grid2 container justifyContent={"center"}>
+      <Loading />
+    </Unstable_Grid2>
   );
 };
 

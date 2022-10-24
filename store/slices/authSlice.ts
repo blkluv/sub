@@ -7,6 +7,7 @@ import { awsconfig } from "../../constants/awsconfig";
 import { awsauth } from "../../constants/awsauth";
 import gravatar from "gravatar";
 import { getKy, setCredentials } from "../../helpers/ky";
+import { Themes } from "../../theme/themes";
 
 Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
@@ -30,6 +31,7 @@ interface User {
   sub?: string;
   avatar?: string;
   gatewayUrl?: string;
+  theme?: keyof typeof Themes;
 }
 export interface AuthState {
   status: LOGIN_STATUSES;
@@ -40,6 +42,7 @@ export interface AuthState {
 // Initial state
 const initialState = {
   status: LOGIN_STATUSES.idle,
+  theme: "light",
 } as AuthState;
 
 interface UserCredentials {

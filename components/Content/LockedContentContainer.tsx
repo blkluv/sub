@@ -7,6 +7,7 @@ import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
+import { Container, Paper, Typography } from "@mui/material";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -38,32 +39,64 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
 
   const LockType = getLockType(fileInfo.unlockInfo);
   return (
-    <div>
-      {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
-        <Image
-          className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-          src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
-          alt={`${fileInfo.name} preview`}
-          width={100}
-          height={100}
-        />
-      ) : (
-        fileInfo?.thumbnail?.length > 0 && (
+    <Container
+      maxWidth="md"
+      sx={{
+        textAlign: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          padding: (theme) => theme.spacing(4),
+        }}
+      >
+        {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
           <Image
-            className="mb-8 mt-6 w-24 h-24 m-auto rounded-full"
-            src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
+            style={{
+              width: "6rem",
+              height: "6rem",
+              borderRadius: "1000px",
+              margin: "auto",
+              marginBottom: "1rem",
+            }}
+            src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
             alt={`${fileInfo.name} preview`}
             width={100}
             height={100}
           />
-        )
-      )}
-      <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-        <span className="block">{fileInfo.name}</span>
-      </h2>
-      <h4 className="mt-4 text-muted text-xl">{fileInfo.description}</h4>
-      <div className="mt-10 flex justify-center">{LockType}</div>
-    </div>
+        ) : (
+          fileInfo?.thumbnail?.length > 0 && (
+            <Image
+              style={{
+                width: "6rem",
+                height: "6rem",
+                borderRadius: "1000px",
+                margin: "auto",
+                marginBottom: "1rem",
+              }}
+              src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
+              alt={`${fileInfo.name} preview`}
+              width={100}
+              height={100}
+            />
+          )
+        )}
+        <Typography
+          variant="h1"
+          fontWeight="bold"
+          fontSize={52}
+          sx={{ padding: (theme) => theme.spacing(1) }}
+        >
+          {fileInfo.name}
+        </Typography>
+        <Typography variant="h4" fontSize={22}>
+          {fileInfo.description}
+        </Typography>
+        {LockType}
+      </Paper>
+    </Container>
   );
 };
 

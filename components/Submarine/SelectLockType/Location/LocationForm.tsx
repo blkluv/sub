@@ -2,6 +2,9 @@ import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import GoogleMapsCoordsModal from "../GoogleMapsCoordsModal";
 import { useFormikContext, Field } from "formik";
+import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
+import FormikTextfield from "../../../Form/FormikTextfield";
+import { Button, Unstable_Grid2 } from "@mui/material";
 
 const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
@@ -31,87 +34,39 @@ const LocationForm = () => {
   };
 
   return (
-    <div>
-      <button
-        onClick={detectLocation}
-        className="mb-2 text-pinata-purple bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
+    <Unstable_Grid2 container spacing={2}>
+      <Button onClick={detectLocation}>
         {gettingLocation ? "Detecting location..." : "Detect Location"}
-      </button>
-      <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="unlockInfo.lat"
-          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
-        >
-          <span>Latitude* </span>
-          <span className="cursor" aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
-            <InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" />
-          </span>
-        </label>
-        <div className="mt-1 sm:mt-0 sm:col-span-2">
-          <div className="max-w-lg flex">
-            <Field
-              type="text"
-              name="unlockInfo.lat"
-              required
-              id="unlockInfo.lat"
-              autoComplete="off"
-              placeholder="Latitude"
-              className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="unlockInfo.long"
-          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
-        >
-          <span>Longitude* </span>
-          <span className="cursor" aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
-            <InformationCircleIcon className="h-6 w-6 -mt-2 ml-2 text-black" aria-hidden="true" />
-          </span>
-        </label>
-        <div className="mt-1 sm:mt-0 sm:col-span-2">
-          <div className="max-w-lg flex">
-            <Field
-              type="text"
-              name="unlockInfo.long"
-              required
-              id="unlockInfo.long"
-              autoComplete="off"
-              placeholder="Longitude"
-              className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:py-5">
-        <label
-          htmlFor="unlockInfo.distance"
-          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 flex flex-row"
-        >
-          <span>Allowed Range (in miles)*</span>
-        </label>
-        <div className="mt-1 sm:mt-0 sm:col-span-2">
-          <div className="max-w-lg flex">
-            <Field
-              type="number"
-              name="unlockInfo.distance"
-              required
-              id="unlockInfo.distance"
-              autoComplete="off"
-              placeholder="Distance"
-              className="outline-none focus:ring-pinata-purple focus:border-pinata-purple block w-full sm:text-sm border border-gray-200 rounded-md p-2"
-            />
-          </div>
-        </div>
-      </div>
-      <GoogleMapsCoordsModal
-        googleMapsModalOpen={googleMapsModalOpen}
-        setGoogleMapsModalOpen={setGoogleMapsModalOpen}
-      />
-    </div>
+      </Button>
+
+      <Unstable_Grid2>
+        <FormikTextfield
+          name="unlockInfo.lat"
+          label="Latitude"
+          required
+          adornment={
+            <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
+              <InformationCircleIconStyled />
+            </span>
+          }
+        />
+        <FormikTextfield
+          name="unlockInfo.long"
+          label="Longitude"
+          required
+          adornment={
+            <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
+              <InformationCircleIconStyled />
+            </span>
+          }
+        />
+        <FormikTextfield name="unlockInfo.distance" label="Distance" required />
+        <GoogleMapsCoordsModal
+          googleMapsModalOpen={googleMapsModalOpen}
+          setGoogleMapsModalOpen={setGoogleMapsModalOpen}
+        />
+      </Unstable_Grid2>
+    </Unstable_Grid2>
   );
 };
 

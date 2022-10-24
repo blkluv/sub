@@ -14,10 +14,10 @@ const LocationLock = () => {
 
   //TODO - error UI styling
   const unlockInfoSchema = Yup.object().shape({
-    lat: Yup.number().required("Distance is required").typeError("Value not valid."),
-    long: Yup.number().required("Distance is required").typeError("Value not valid."),
+    lat: Yup.number().required("Required").typeError("Value not valid."),
+    long: Yup.number().required("Required").typeError("Value not valid."),
     distance: Yup.number()
-      .required("Distance is required")
+      .required("Required")
       .typeError("Value not valid.")
       .min(0, "Distance must be greater than 0"),
   });

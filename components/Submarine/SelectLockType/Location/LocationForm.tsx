@@ -41,6 +41,7 @@ const LocationForm = () => {
 
       <Unstable_Grid2>
         <FormikTextfield
+          type="text"
           name="unlockInfo.lat"
           label="Latitude"
           required
@@ -51,6 +52,7 @@ const LocationForm = () => {
           }
         />
         <FormikTextfield
+          type="text"
           name="unlockInfo.long"
           label="Longitude"
           required

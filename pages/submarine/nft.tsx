@@ -14,22 +14,20 @@ const Nft = () => {
   // };
 
   //TO DO: check address is valid according to the network (library for this?)
-  const contractRegex = (contract: string, network: string) => {
-    console.log(contract, network);
-    return true;
-  };
+  // const contractRegex = (contract: string, network: string) => {
+  //   console.log(contract, network);
+  //   return true;
+  // };
 
-  //TO DO - finish this schema
   const unlockInfoSchema = Yup.object().shape({
-    network: Yup.string().required("Network is required"),
-    tokenId: Yup.number().required("Distance is required").typeError("Value not valid."),
-    contract: Yup.string()
-      .required("Distance is required")
-      .test("address-format-is-valid", "Address format not valid", (value) =>
-        contractRegex(value, unlockInfoSchema.network)
-      ),
-    // mintAddress:
-    // updateAuthority:
+    network: Yup.string().required("Required"),
+    tokenId: Yup.number().required("Required").typeError("Token id must be a number"),
+    contract: Yup.string().required("Required"),
+    // .test("address-format-is-valid", "Address format not valid", (value) =>
+    //   contractRegex(value, unlockInfoSchema.network)
+    // )
+    mintAddress: Yup.string().required("Required"),
+    updateAuthority: Yup.string().required("Required"),
   });
 
   const unlockInfo: UnlockInfoNFT = {

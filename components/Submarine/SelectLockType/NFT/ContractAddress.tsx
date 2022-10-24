@@ -72,8 +72,8 @@ const ContractAddress = ({ blockchain }) => {
           />
           <FormikTextfield
             type="text"
-            name="unlockInfo.contract"
-            label="Token ID"
+            name="unlockInfo.tokenId"
+            label="Token ID*"
             adornment={
               <span
                 className="cursor"

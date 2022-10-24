@@ -12,7 +12,7 @@ const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
         controls={true}
         playing={true}
         pip={true}
-        muted={false}
+        muted={true}
         stopOnUnmount={true}
         className="md:w-3/4 md:h-3/4 w-full h-full"
         width="100%"

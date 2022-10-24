@@ -118,7 +118,6 @@ export default function Gallery({ content, name }: GalleryProps) {
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8 mt-2">
-        <h2 className="text-xl font-sans font-bold sm:my-4 my-6">{name}</h2>
         {!isDisplaying ? (
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
             {items.map((item) => (
@@ -137,6 +136,7 @@ export default function Gallery({ content, name }: GalleryProps) {
         ) : (
           <div>
             <SingleMediaDisplay
+              name={name}
               url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
               submarinedContent={displayItem}
             />

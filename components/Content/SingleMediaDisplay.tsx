@@ -3,13 +3,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import mime from "mime-types";
 import { SubmarinedContent } from "../../types/SubmarinedContent";
-
+import ImageWrapper from "./MediaWrappers/ImageWrapper";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
+  name: string;
 }
 
-const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps) => {
+const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplayProps) => {
   const [fileType, setFileType] = useState<string>("");
 
   useEffect(() => {
@@ -18,7 +19,6 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
 
   const findFileType = async () => {
     const content_type = mime.lookup(submarinedContent.originalname.trim());
-    console.log("Content type", content_type);
     if (content_type) {
       if (content_type.includes("image")) {
         setFileType("image");
@@ -34,11 +34,12 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
   };
   return (
     <div>
-      <div style={{ position: "relative", width: "100%", paddingBottom: "40%" }}>
+      <h1>{name}</h1>
+      <div>
         {fileType == "video" || fileType == "audio" ? (
-          <EmbeddedPlayer fileType={fileType} url={url} />
+          <EmbeddedPlayer url={url} />
         ) : (
-          <Image src={url} alt={submarinedContent.originalname} layout="fill" objectFit="contain" />
+          <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
         )}
       </div>
     </div>

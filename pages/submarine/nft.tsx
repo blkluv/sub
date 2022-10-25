@@ -8,22 +8,16 @@ import { ethers } from "ethers";
 const Nft = () => {
   const unlockInfoSchema = Yup.object().shape({
     network: Yup.string().required("Required"),
-    tokenId: Yup.number().required("Required").typeError("Token id must be a number"),
-    contract: Yup.string()
-      .required("Required")
-      .test("address-is-valid", "Not a valid address.", (value) => ethers.utils.isAddress(value)),
-    // mintAddress: Yup.string().required("Required"),
-    // updateAuthority: Yup.string().required("Required"),
+    address: Yup.string().required("Required"),
+    value2: Yup.string().required("Required"),
   });
 
   const unlockInfo: UnlockInfoNFT = {
     type: "nft",
     blockchain: BlockchainOptions.Ethereum,
-    tokenId: "",
     network: "",
-    contract: "",
-    mintAddress: "",
-    updateAuthority: "",
+    address: "",
+    value2: "",
   };
   return (
     <SubmarineFileForm unlockInfo={unlockInfo} unlockInfoSchema={unlockInfoSchema}>

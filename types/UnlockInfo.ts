@@ -50,12 +50,10 @@ export enum BlockchainOptions {
 
 export type UnlockInfoNFT = {
   type: "nft";
-  tokenId: string;
   network: string;
-  contract: string;
   blockchain: BlockchainOptions;
-  mintAddress: string;
-  updateAuthority: string;
+  address: string;
+  value2: string;
 };
 
 export type UnlockInfoLocation = {

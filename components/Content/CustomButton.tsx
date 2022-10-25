@@ -10,7 +10,7 @@ const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
       marginTop: 5,
       backgroundColor: null,
       color: null,
-      borderRadius: null,
+      borderRadius: 1000,
     };
     if (fileInfo?.customizations.buttonColor && fileInfo?.customizations?.buttonColor?.hex) {
       style.backgroundColor = fileInfo.customizations.buttonColor.hex;

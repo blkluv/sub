@@ -36,9 +36,12 @@ const CustomizeLockScreen = () => {
 
   return (
     <div>
-      <Unstable_Grid2 container justifyContent={"center"}>
-        <Typography>Background Image</Typography>
-        <Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "5em" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+          <UploadImagePublic
+            label={"Background Image"}
+            setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
+          />
           {background && background.length > 0 ? (
             <Image
               src={`${gatewayUrl}/ipfs/${background}`}
@@ -50,55 +53,54 @@ const CustomizeLockScreen = () => {
             <NoImageIcon />
           )}
         </Box>
-        <UploadImagePublic
-          label={"Upload"}
-          setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
-        />
-      </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"center"}>
-        <Typography>Logo Image</Typography>
-        <Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+          <UploadImagePublic
+            label={"Logo"}
+            setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
+          />
           {logo && logo.length > 0 ? (
             <Image
               src={`${gatewayUrl}/ipfs/${logo}`}
               alt="preview for logo"
-              height={40}
-              width={40}
+              height={160}
+              width={160}
             />
           ) : (
             <NoImageIcon />
           )}
         </Box>
-        <UploadImagePublic
-          label={"Upload"}
-          setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
-        />
-      </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"space-evenly"}>
-        <Typography>Button Color</Typography>
-        <SketchPicker
-          color={values.customizations.buttonColor}
-          onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
-        />
-      </Unstable_Grid2>
-
-      <Unstable_Grid2 container justifyContent={"space-evenly"}>
-        <Typography>Button Text Color</Typography>
-        <SketchPicker
-          color={values.customizations.buttonTextColor}
-          onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
-        />
-      </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"space-evenly"}>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "1em" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+          <Typography>Button Color</Typography>
+          <SketchPicker
+            color={values.customizations.buttonColor}
+            onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
+          />
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+          <Typography>Button Text Color</Typography>
+          <SketchPicker
+            color={values.customizations.buttonTextColor}
+            onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: "flex", padding: "1em" }}>
         <FormControl>
           <FormLabel>Button shape</FormLabel>
-          <Field component={RadioGroup} row name="customizations.buttonShape">
-            <FormControlLabel value="square" control={<Radio />} label="Square" />
+          <Field
+            component={RadioGroup}
+            row
+            name="customizations.buttonShape"
+            defaultValue="rounded"
+          >
             <FormControlLabel value="rounded" control={<Radio />} label="Rounded" />
+            <FormControlLabel value="square" control={<Radio />} label="Square" />
           </Field>
         </FormControl>
-      </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"space-between"}>
+      </Box>
+      <Box sx={{ padding: "1em" }}>
         <Field
           formControl={{ sx: { width: "100%" } }}
           component={Select}
@@ -111,7 +113,7 @@ const CustomizeLockScreen = () => {
             </MenuItem>
           ))}
         </Field>
-      </Unstable_Grid2>
+      </Box>
     </div>
   );
 };

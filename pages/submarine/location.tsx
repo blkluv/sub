@@ -12,14 +12,21 @@ const LocationLock = () => {
     distance: null,
   };
 
-  //TODO - error UI styling
   const unlockInfoSchema = Yup.object().shape({
-    lat: Yup.number().required("Required").typeError("Value not valid."),
-    long: Yup.number().required("Required").typeError("Value not valid."),
+    lat: Yup.number()
+      .required("Required")
+      .typeError("Value not valid.")
+      .min(-90, "Latitude must be between -90 and 90.")
+      .max(90, "Latitude must be between -90 and 90."),
+    long: Yup.number()
+      .required("Required")
+      .typeError("Value not valid.")
+      .min(-180, "Longitude must be between -180 and 180.")
+      .max(180, "Longitude must be between -180 and 180."),
     distance: Yup.number()
       .required("Required")
       .typeError("Value not valid.")
-      .min(0, "Distance must be greater than 0"),
+      .min(1, "Distance must be greater than 0."),
   });
 
   return (

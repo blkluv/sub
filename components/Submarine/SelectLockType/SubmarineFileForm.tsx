@@ -26,7 +26,6 @@ interface SubmarineProps {
   children: ReactNode;
   unlockInfo: UnlockInfo;
   unlockInfoSchema: any;
-  // canSubmit: (values: MetadataUnlockInfo) => boolean;
 }
 
 export interface MetadataUnlockInfo {
@@ -64,6 +63,8 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
     description: Yup.string().required("Required"),
     thumbnail: Yup.string(),
     customizations: Yup.object(),
+    submarineCID: Yup.string().required("Required"),
+    shortId: Yup.string().required("Required"),
   });
   const { edit } = router.query;
   useEffect(() => {
@@ -162,6 +163,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                   <Form>
                     <Container sx={{ marginTop: (theme) => theme.spacing(2) }}>
                       {children}
+                      {/* <pre>{JSON.stringify(props.errors, null, 2)}</pre> */}
                       <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>
                         <Unstable_Grid2 container justifyContent={"end"}>
                           <Button type="submit" disabled={!props.isValid || props.isSubmitting}>

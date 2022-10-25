@@ -7,12 +7,6 @@ import { UnlockInfoRetweet } from "../../types/UnlockInfo";
 import * as Yup from "yup";
 
 const Retweet = () => {
-  // const canSubmit = (values: MetadataUnlockInfo): boolean => {
-  //   const unlockInfo = values.unlockInfo as UnlockInfoRetweet;
-  //   const tweetUrl = unlockInfo.tweetUrl;
-  //   return /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/.test(tweetUrl);
-  // };
-
   const unlockInfo: UnlockInfoRetweet = {
     type: "retweet",
     tweetUrl: "",
@@ -20,8 +14,9 @@ const Retweet = () => {
 
   const unlockInfoSchema = Yup.object().shape({
     tweetUrl: Yup.string()
-      .required("Please enter a tweet url")
-      .matches(/http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/, "Tweet url is not valid."),
+      .required("Required")
+      .matches(/http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/, "Tweet url is not valid.")
+      .max(100, "Url length must be less than 100 characters."),
   });
 
   return (

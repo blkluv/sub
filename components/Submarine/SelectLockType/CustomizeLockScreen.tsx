@@ -22,6 +22,7 @@ import { RadioGroup, Select } from "formik-mui";
 const CustomizeLockScreen = () => {
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
   const background = values.customizations?.backgroundCid;
+  const logo = values.customizations?.logoCid;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   const validFonts = [
@@ -43,7 +44,7 @@ const CustomizeLockScreen = () => {
               src={`${gatewayUrl}/ipfs/${background}`}
               height={160}
               width={160}
-              alt="preview for thumbnail"
+              alt="preview for background"
             />
           ) : (
             <NoImageIcon />
@@ -51,15 +52,15 @@ const CustomizeLockScreen = () => {
         </Box>
         <UploadImagePublic
           label={"Upload"}
-          setIpfsHash={(hash) => setFieldValue("background_cid", hash)}
+          setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
         />
       </Unstable_Grid2>
       <Unstable_Grid2 container justifyContent={"center"}>
         <Typography>Logo Image</Typography>
         <Box>
-          {values.customizations.logoCid && values.customizations.logoCid.length > 0 ? (
+          {logo && logo.length > 0 ? (
             <Image
-              src={`${gatewayUrl}/ipfs/${values.customizations.logoCid}`}
+              src={`${gatewayUrl}/ipfs/${logo}`}
               alt="preview for logo"
               height={40}
               width={40}
@@ -68,7 +69,10 @@ const CustomizeLockScreen = () => {
             <NoImageIcon />
           )}
         </Box>
-        <UploadImagePublic label={"Upload"} setIpfsHash={(hash) => setFieldValue("logo", hash)} />
+        <UploadImagePublic
+          label={"Upload"}
+          setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
+        />
       </Unstable_Grid2>
       <Unstable_Grid2 container justifyContent={"space-evenly"}>
         <Typography>Button Color</Typography>

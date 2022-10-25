@@ -25,7 +25,7 @@ import * as Yup from "yup";
 interface SubmarineProps {
   children: ReactNode;
   unlockInfo: UnlockInfo;
-  unlockInfoSchema: any;
+  unlockInfoSchema: Yup.ObjectSchema<any>;
 }
 
 export interface MetadataUnlockInfo {
@@ -133,12 +133,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
               <CircularProgress size={100} />
             </Container>
           ) : (
-            <Unstable_Grid2
-              container
-              sx={{ width: "90%", margin: "auto", marginTop: "1.5rem" }}
-              direction="column"
-              alignContent={"center"}
-            >
+            <Unstable_Grid2 container direction="column" alignContent={"center"}>
               <Unstable_Grid2 container justifyContent={"space-between"}>
                 <Link passHref href="/submarine/new">
                   <Box height={"2rem"} width={"2rem"} sx={{ cursor: "pointer" }}>
@@ -158,10 +153,10 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                   fileInfo={props.values}
                 />
               </Unstable_Grid2>
-              <Unstable_Grid2 container direction={"row"}>
+              <Unstable_Grid2 container>
                 <Unstable_Grid2 xl={6} xs={12}>
                   <Form>
-                    <Container sx={{ marginTop: (theme) => theme.spacing(2) }}>
+                    <Container>
                       {children}
                       {/* <pre>{JSON.stringify(props.errors, null, 2)}</pre> */}
                       <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>

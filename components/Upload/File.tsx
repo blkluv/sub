@@ -1,20 +1,31 @@
+import { Button } from "@mui/material";
 import React, { useRef } from "react";
 
+import shortUUID from "short-uuid";
 const File = ({ onChange }) => {
   const fileInput = useRef(null);
 
+  const id = shortUUID.generate();
   return (
-    <div>
-      <span>Select a file</span>
+    <>
       <input
-        id="file-upload-main"
-        name="file-upload-main"
+        style={{ display: "none" }}
+        id={id}
+        name={id}
+        multiple
         type="file"
-        className="sr-only"
         ref={fileInput}
         onChange={onChange}
       />
-    </div>
+      <label
+        htmlFor={id}
+        style={{
+          cursor: "pointer",
+        }}
+      >
+        <span>Select a file</span>
+      </label>
+    </>
   );
 };
 

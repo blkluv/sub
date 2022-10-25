@@ -1,5 +1,6 @@
 import { Button, CircularProgress } from "@mui/material";
 import { useRef, useState } from "react";
+import shortUUID from "short-uuid";
 import { getKy } from "../../helpers/ky";
 
 const UploadImagePublic = ({ setIpfsHash, label }) => {
@@ -21,19 +22,20 @@ const UploadImagePublic = ({ setIpfsHash, label }) => {
     setIpfsHash(json.IpfsHash);
   };
 
+  const id = shortUUID.generate();
   return (
     <>
       <input
         accept="image/*"
         style={{ display: "none" }}
-        id="raised-button-file"
+        id={id}
         multiple
         type="file"
         ref={fileInput}
         onChange={(e) => onFileChange(e, setIsUploading)}
       />
 
-      <label htmlFor="raised-button-file">
+      <label htmlFor={id}>
         {!isUploading ? (
           <Button variant="outlined" component="span" disabled={isUploading}>
             {label}

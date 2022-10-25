@@ -1,4 +1,4 @@
-import { Divider, Paper, Typography, Unstable_Grid2 } from "@mui/material";
+import { Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import FileDetail from "./FileDetail";
 
 const LockTypeContainer = ({ children, title, description }) => {

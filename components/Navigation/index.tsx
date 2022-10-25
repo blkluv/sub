@@ -1,14 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Toolbar,
-  Typography,
-  Unstable_Grid2,
-} from "@mui/material";
+import { AppBar, Box, Button, Container, Toolbar, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -39,7 +29,7 @@ export default function Navigation() {
             justifyContent="space-between"
           >
             <Link passHref href="/">
-              <Box>
+              <Box sx={{ cursor: "pointer" }}>
                 <Image height={32} width={47} src="/submarine.png" alt="Submarine Me" />
                 <Typography
                   variant="h6"

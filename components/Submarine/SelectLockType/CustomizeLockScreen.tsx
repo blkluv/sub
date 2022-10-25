@@ -117,7 +117,10 @@ export default CustomizeLockScreen;
 const NoImageIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-40 w-40"
+    style={{
+      width: "10rem",
+      height: "10rem",
+    }}
     fill="none"
     viewBox="0 0 40 40"
     stroke="gray"

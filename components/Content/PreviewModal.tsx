@@ -1,16 +1,8 @@
-import { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
 import { useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import MainLandingContent from "./MainLandingContent";
-import { useState } from "react";
-import { ExclamationIcon } from "@heroicons/react/outline";
-import { useAppDispatch } from "../../store/hooks";
-import { doLogOut } from "../../store/slices/authSlice";
-import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
-import { Box } from "@mui/system";
-import Link from "next/link";
+import { Button, Modal, Box, Unstable_Grid2 } from "@mui/material";
 interface PreviewModalProps {
   previewOpen;
   setPreviewOpen;
@@ -25,8 +17,8 @@ export default function PreviewModal({
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
+    height: "80%",
     transform: "translate(-50%, -50%)",
-
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 2,

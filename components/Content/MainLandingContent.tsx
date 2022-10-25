@@ -29,8 +29,11 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
     content = <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} />;
   }
   return (
-    <div style={getCustomFont(fileInfo)}>
-      <Box sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4) }}>
+    <>
+      <Box
+        sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4) }}
+        style={getCustomFont(fileInfo)}
+      >
         {fileInfo.customizations && fileInfo.customizations.logoCid ? (
           <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
         ) : (
@@ -49,7 +52,7 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
             "linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          minHeight: "75vh",
+          minHeight: "100vh",
           justifyContent: "center",
           alignContent: "center",
           display: "flex",
@@ -58,7 +61,7 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
       >
         {content}
       </Box>
-    </div>
+    </>
   );
 };
 

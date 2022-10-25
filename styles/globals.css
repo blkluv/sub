@@ -1,80 +1,11 @@
-body {
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
   margin: 0;
   padding: 0;
+  border: none;
+  outline: none;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-/*
-.public-content-bg {
-  background: linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%);
-}
-
-.hero-content-bg {
-  background: linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%);
-  background-image: url("../public/background.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.hero-heading-one {
-  position: absolute;
-  width: 598.8px;
-  height: 166.53px;
-  left: 221.21px;
-  top: 210.67px;
-
-  background: linear-gradient(95.71deg, #00bedd 16.8%, #953bed 214.83%);
-  transform: rotate(9.86deg);
-}
-
-.landing-bg {
-  background: linear-gradient(180deg, #e3d1ff 0%, #3fd6ee 100%);
-}
-
-.special-background {
-  background: linear-gradient(180deg, #f1e8ff 7.81%, #e9fcff 100%);
-}
-
-.wallet-adapter-modal {
-  max-width: 60% !important;
-  max-height: 50% !important;
-  margin-top: 15% !important;
-}
-
-.wallet-adapter-button {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 200px;
-}
-
-.wallet-adapter-button i {
-  width: 50px;
-  margin-right: 10px;
-}
-
-.wallet-adapter-button span {
-  margin-left: 5px;
-  color: rgb(153, 153, 153);
-}
-
-#twitter-widget-0 {
-  max-width: 500px !important;
-  width: 500px !important;
-  margin: auto !important;
-}
-
-@media only screen and (max-width: 600px) {
-  .wallet-adapter-modal {
-    max-width: 90% !important;
-    max-height: 50% !important;
-    margin-top: 20% !important;
-  }
-
-  #twitter-widget-0 {
-    width: 150px !important;
-    margin: auto !important;
-  }
-} */

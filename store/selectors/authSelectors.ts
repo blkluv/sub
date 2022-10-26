@@ -15,3 +15,13 @@ export const selectUserAvatar = createSelector([selectUser], (user) => user.avat
 export const selectAuthError = createSelector([selectAuth], (auth) => auth.errorMsg);
 export const selectAuthStatus = createSelector([selectAuth], (auth) => auth.status);
 export const selectGatewayUrl = createSelector([selectUser], (user) => user.gatewayUrl);
+export const selectTheme = createSelector([selectUser], (user) => {
+  // TODO store preferences?
+  if (user.theme) {
+    return user.theme;
+  }
+  if (global.window) {
+    return global.window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return "light";
+});

@@ -1,5 +1,6 @@
 import { MapIcon } from "@heroicons/react/outline";
-import React from "react";
+import { Typography, Unstable_Grid2 } from "@mui/material";
+import Link from "next/link";
 import { getKy } from "../../../helpers/ky";
 import { useAppDispatch } from "../../../store/hooks";
 import { setAlert } from "../../../store/slices/alertSlice";
@@ -56,25 +57,31 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
   };
   const description = (
     <>
-      <p className="text-muted text-sm">
+      <Typography>
         You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of these coordinates
         to unlock this media:
-      </p>
-      <p className="mt-4">
+      </Typography>
+      <Typography
+        paragraph
+        sx={{
+          marginTop: (theme) => theme.spacing(4),
+          color: (theme) => theme.palette.primary.main,
+          textDecoration: "underline",
+        }}
+      >
         <a
-          className="flex flex-row space-around justify-center underline text-pinata-purple"
           href={`https://www.openstreetmap.org/#map=18/${unlockInfo?.lat}/${unlockInfo?.long}`}
           target="_blank"
           rel="noreferrer noopener"
         >
-          <span>
-            {unlockInfo?.lat}, {unlockInfo?.long}
-          </span>
-          <span>
-            <MapIcon className="h-5 ml-2" />
-          </span>
+          <Unstable_Grid2 container justifyContent={"center"}>
+            <span>
+              {unlockInfo?.lat}, {unlockInfo?.long}
+            </span>
+            <MapIcon style={{ marginLeft: "0.5rem" }} height={"1.5rem"} />
+          </Unstable_Grid2>
         </a>
-      </p>
+      </Typography>
     </>
   );
   return (

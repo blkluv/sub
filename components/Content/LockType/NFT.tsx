@@ -1,4 +1,4 @@
-import React from "react";
+import { Button, Typography } from "@mui/material";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
@@ -43,9 +43,9 @@ const NFT = ({ fileInfo }) => {
     }
   };
   const description = (
-    <p className="mt-4 mb-4 text-md text-muted">
+    <Typography>
       Unlock this content by connecting your wallet to verify you have the required NFT.
-    </p>
+    </Typography>
   );
   return (
     <>
@@ -62,19 +62,20 @@ const NFT = ({ fileInfo }) => {
             return (
               <div key={connector.name}>
                 {connector.ready && (
-                  <button
-                    className="m-2 inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
+                  <Button
+                    variant="contained"
                     disabled={!connector.ready}
                     key={connector.id}
                     onClick={() => connect({ connector })}
                   >
                     {connector.name}
                     {!connector.ready && " (unsupported)"}
-                  </button>
+                  </Button>
                 )}
               </div>
             );
           })}
+          {description}
         </>
       )}
     </>

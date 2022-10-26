@@ -1,7 +1,21 @@
-import React, { useState } from "react";
+import { PencilAltIcon, ShareIcon, TrashIcon } from "@heroicons/react/outline";
+import {
+  Avatar,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+  Unstable_Grid2,
+} from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import DesktopTable from "./DesktopTable";
-import MobileTable from "./MobileTable";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, getThumbnail }) => {
   const [file, setFile] = useState(null);
@@ -10,28 +24,76 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
     setFile(thisFile);
     setOpen(true);
   };
-
-  const getLink = (file) => {
-    if (file?.metadata?.keyvalues?.unlockType === "retweet") {
-      return file.metadata.keyvalues.tweetUrl;
-    }
-  };
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
-    <div>
-      <DesktopTable
-        files={files}
-        copyLink={copyLink}
-        getThumbnail={getThumbnail}
-        openDeleteModal={openDeleteModal}
-      />
-      <MobileTable
-        files={files}
-        copyLink={copyLink}
-        openDeleteModal={openDeleteModal}
-        getThumbnail={getThumbnail}
-      />
-
+    <>
+      <List>
+        {files.map((file) => {
+          return (
+            <div key={file.id}>
+              <ListItem
+                secondaryAction={
+                  <Unstable_Grid2 container>
+                    <Link
+                      passHref
+                      href={`/submarine/${file?.unlock_info?.type}?edit=${file.short_id}`}
+                    >
+                      <IconButton edge="end" aria-label="edit">
+                        <PencilAltIcon width={"1.5rem"} />
+                      </IconButton>
+                    </Link>
+                    <IconButton edge="end" onClick={() => copyLink(file)}>
+                      <ShareIcon width={"1.5rem"} />
+                    </IconButton>
+                    <IconButton onClick={(file) => openDeleteModal(file)} aria-label="delete">
+                      <TrashIcon width={"1.5rem"} />
+                    </IconButton>
+                  </Unstable_Grid2>
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar sx={{ backgroundColor: "white" }}>
+                    <Image
+                      alt="Thumbnail"
+                      layout="fixed"
+                      style={{
+                        borderRadius: "9999px",
+                      }}
+                      src={getThumbnail(file)}
+                      height={40}
+                      width={40}
+                    />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={file.name}
+                  disableTypography
+                  secondary={
+                    <>
+                      <Typography variant="body2">
+                        {file.unlock_info?.type}
+                        {file?.unlock_info?.type === "nft" &&
+                          ` - ${file?.unlock_info?.blockchain}`}{" "}
+                      </Typography>
+                      <Typography variant="body2">{makeDatePretty(file.created_at)}</Typography>
+                      <Typography
+                        sx={{
+                          display: isMobile ? "none" : "block",
+                        }}
+                        variant="body2"
+                      >
+                        {file.submarine_cid}
+                      </Typography>
+                    </>
+                  }
+                />
+              </ListItem>
+              <Divider />
+            </div>
+          );
+        })}
+      </List>
       <DeleteModal
         file={file}
         handleDelete={handleDelete}
@@ -39,8 +101,22 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
         setOpen={setOpen}
         loadLinks={loadLinks}
       />
-    </div>
+    </>
   );
 };
 
 export default LinkTable;
+
+const makeDatePretty = (date, locale?): string => {
+  const newDate = new Date(date);
+  const day = newDate.getDate();
+  const month = newDate.getMonth() + 1;
+  const year = newDate.getFullYear();
+
+  switch (locale) {
+    case "en":
+      return `${month}/${day}/${year}`;
+    default:
+      return `${month}/${day}/${year}`;
+  }
+};

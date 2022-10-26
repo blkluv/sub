@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React from "react";
 import { useAppDispatch } from "../../../store/hooks";
 import { setAlert } from "../../../store/slices/alertSlice";
@@ -28,6 +29,7 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
     }
   };
 
+  console.log(fileInfo, isButtonCustom(fileInfo));
   return (
     <div>
       {description}
@@ -39,12 +41,9 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
           loading={verifying}
         />
       ) : (
-        <button
-          onClick={handleClick}
-          className="mt-4 w-full inline-flex shadow-sm items-center justify-center px-5 py-3 text-base font-medium rounded-full text-white bg-pinata-purple hover:bg-pinata-purple"
-        >
+        <Button onClick={handleClick}>
           {verifying ? `Verifying ${lockName}...` : `Verify ${lockName}`}
-        </button>
+        </Button>
       )}
     </div>
   );

@@ -1,7 +1,9 @@
+import { Box } from "@mui/material";
 import Head from "next/head";
 import React from "react";
 import { getContentReturnObject } from "../../pages/api/content/[shortId]";
 import Alert from "../Alert";
+import Pinnie from "../Pinnie";
 
 interface Props {
   children: React.ReactNode;
@@ -96,6 +98,10 @@ window['_fs_namespace'] = 'FS';
         /> */}
       </Head>
       {children}
+
+      <Box sx={{ position: "absolute", bottom: "2.5rem", right: "2.5rem", zIndex: 10 }}>
+        <Pinnie />
+      </Box>
     </>
   );
 };

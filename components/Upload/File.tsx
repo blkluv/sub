@@ -1,20 +1,29 @@
+import { Button } from "@mui/material";
 import React, { useRef } from "react";
 
 const File = ({ onChange }) => {
   const fileInput = useRef(null);
 
   return (
-    <div>
-      <span>Select a file</span>
+    <>
       <input
+        style={{ display: "none" }}
         id="file-upload-main"
         name="file-upload-main"
+        multiple
         type="file"
-        className="sr-only"
         ref={fileInput}
         onChange={onChange}
       />
-    </div>
+      <label
+        htmlFor="raised-button-file"
+        style={{
+          cursor: "pointer",
+        }}
+      >
+        <span>Select a file</span>
+      </label>
+    </>
   );
 };
 

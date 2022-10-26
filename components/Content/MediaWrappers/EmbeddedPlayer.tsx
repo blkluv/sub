@@ -5,8 +5,8 @@ export interface EmbeddedPlayerProps {
 }
 
 const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
-  return (
-    <div style={{ position: "relative", width: "100%", paddingBottom: "10%" }}>
+  if (ReactPlayer.canPlay(url)) {
+    return (
       <ReactPlayer
         url={url}
         controls={true}
@@ -14,13 +14,22 @@ const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
         pip={true}
         muted={true}
         stopOnUnmount={true}
-        className="md:w-3/4 md:h-3/4 w-full h-full"
+        sx={{
+          width: "100%",
+          height: "100%",
+          md: {
+            height: "75%",
+            width: "75%",
+          },
+        }}
         width="100%"
         height="100%"
         onError={() => console.log("Cannot play this Media")}
       />
-    </div>
-  );
+    );
+  } else {
+    return <h1>Oops! It seems that media cannot be played at the moment.</h1>;
+  }
 };
 
 export default EmbeddedPlayer;

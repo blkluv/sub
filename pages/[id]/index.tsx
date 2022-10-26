@@ -5,18 +5,11 @@ import PublicLayout from "../../components/Layout/PublicLayout";
 import { getContentReturnObject } from "../api/content/[shortId]";
 
 const Content = ({ data }: { data: getContentReturnObject & { error: any } }) => {
-  const [isMissing, setIsMissing] = useState(false);
   const gatewayUrl = `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
-
-  useEffect(() => {
-    if (data && data.error) {
-      setIsMissing(true);
-    }
-  }, [data]);
 
   return (
     <PublicLayout fileInfo={data}>
-      <MainLandingContent missing={isMissing} fileInfo={data} gatewayUrl={gatewayUrl} />
+      <MainLandingContent missing={data.error} fileInfo={data} gatewayUrl={gatewayUrl} />
     </PublicLayout>
   );
 };

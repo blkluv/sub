@@ -11,6 +11,8 @@ import { getKy } from "../../helpers/ky";
 import SingleMediaDisplay from "./SingleMediaDisplay";
 import { faImage, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
 import mime from "mime";
+import { IconButton, Paper, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box } from "@mui/system";
 
 interface GalleryProps {
   content: SubmarinedContent;
@@ -116,23 +118,70 @@ export default function Gallery({ content, name }: GalleryProps) {
   };
 
   return (
-    <div className="bg-white">
-      <div className="max-w-2xl mx-auto py-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8 mt-2">
+    <Paper
+      sx={{ padding: (theme) => theme.spacing(2), width: "60%", margin: "auto" }}
+      elevation={3}
+    >
+      <Box
+        sx={{
+          paddingTop: "0.5rem",
+          paddingLeft: "2rem",
+          paddingRight: "2rem",
+          margin: "auto",
+        }}
+      >
         {!isDisplaying ? (
-          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
-            {items.map((item) => (
-              <button key={item.id} onClick={() => displaySingleMedia(item)} className="group">
-                <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-full overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                  <FontAwesomeIcon
-                    icon={getIcon(getName(item.originalname))}
-                    style={{ fontSize: 75, padding: 10 }}
-                  />
-                </div>
-                <h3 className="mt-4 text-sm text-gray-700">{getName(item.originalname)}</h3>
-                {/* <p className="mt-1 text-lg font-medium text-gray-900">{item.cid}</p> */}
-              </button>
-            ))}
-          </div>
+          <Unstable_Grid2
+            container
+            sx={{
+              width: "100%",
+              margin: "auto",
+            }}
+            justifyContent={"center"}
+          >
+            <Typography variant={"h2"} fontWeight={"bold"}>
+              {name}
+            </Typography>
+            <Unstable_Grid2
+              container
+              sx={{
+                width: "100%",
+                margin: "auto",
+                marginTop: "1rem",
+              }}
+              justifyContent={"center"}
+            >
+              {items.map((item) => (
+                <Unstable_Grid2 xs={4} key={item.id}>
+                  <Unstable_Grid2
+                    container
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    alignContent={"center"}
+                  >
+                    <button key={item.id} onClick={() => displaySingleMedia(item)}>
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: 9999,
+                          backgroundColor: "rgb(229 231 235)",
+                        }}
+                      >
+                        <IconButton>
+                          <FontAwesomeIcon
+                            icon={getIcon(getName(item.originalname))}
+                            style={{ fontSize: 35 }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Typography variant={"body2"}>{getName(item.originalname)}</Typography>
+                    </button>
+                  </Unstable_Grid2>
+                </Unstable_Grid2>
+              ))}
+            </Unstable_Grid2>
+          </Unstable_Grid2>
         ) : (
           <div>
             <SingleMediaDisplay
@@ -148,12 +197,12 @@ export default function Gallery({ content, name }: GalleryProps) {
             </button>
           </div>
         )}
-      </div>
+      </Box>
       {content.totalItems > items.length && (
         <div>
           <Pagination handlePageChange={handlePageChange} />
         </div>
       )}
-    </div>
+    </Paper>
   );
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
 import Loading from "../Dashboard/Loading";
 import CustomLogo from "./CustomLogo";
@@ -9,55 +8,60 @@ import LockedContentContainer from "./LockedContentContainer";
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
+import { Box } from "@mui/material";
 
 export interface MainLandingContentProps {
   missing: boolean;
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
-  isPreview?: boolean;
 }
 
-const MainLandingContent = ({
-  fileInfo,
-  gatewayUrl,
-  missing,
-  isPreview = false,
-}: MainLandingContentProps) => {
+const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingContentProps) => {
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
-  if (!fileInfo) {
-    return <Loading />;
-  }
-
+  let content;
   if (missing) {
-    return <Missing />;
+    content = <Missing />;
+  } else if (!fileInfo) {
+    content = <Loading />;
+  } else if (hasUnlockedContent) {
+    content = <UnlockedContentContainer name={fileInfo.name} />;
+  } else {
+    content = <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} />;
   }
-
   return (
-    <div style={getCustomFont(fileInfo)}>
-      <div className="absolute p-4 flex flex-row">
+    <>
+      <Box
+        sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4) }}
+        style={getCustomFont(fileInfo)}
+      >
         {fileInfo.customizations && fileInfo.customizations.logoCid ? (
           <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
         ) : (
           <SubmarineLogoSvg />
         )}
-      </div>
-      <div
+      </Box>
+      <Box
         style={forcedStyle(fileInfo, gatewayUrl)}
-        className={`${
-          !fileInfo?.customizations?.backgroundCid ? "public-content-bg" : ""
-        } bg-cover bg-no-repeat ${
-          isPreview ? "w-full" : "w-screen"
-        } min-h-screen flex flex-col justify-center align-center`}
+        sx={{
+          margin: "auto",
+          backgroundImage: fileInfo.customizations?.backgroundCid
+            ? `url(${gatewayUrl}/ipfs/${fileInfo.customizations?.backgroundCid})`
+            : "none",
+          background:
+            !fileInfo.customizations?.backgroundCid &&
+            "linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%)",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
+          justifyContent: "center",
+          alignContent: "center",
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
-        <div className="p-10 md:w-1/2 w-auto mx-2 h-auto max-h-3/4 text-center flex flex-col align-center md:m-auto bg-white shadow-lg rounded-lg mt-36 mb-36 md:mt-36 md:mb-36">
-          {hasUnlockedContent ? (
-            <UnlockedContentContainer name={fileInfo.name} />
-          ) : (
-            <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} />
-          )}
-        </div>
-      </div>
-    </div>
+        {content}
+      </Box>
+    </>
   );
 };
 

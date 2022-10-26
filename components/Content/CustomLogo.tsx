@@ -1,17 +1,18 @@
+import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
 const CustomLogo = ({ logo, gatewayUrl }) => {
   return (
-    <div className="w-20">
+    <Box sx={{ width: "5rem" }}>
       <Image
         alt="Logo"
         src={logo.includes("https") ? logo : `${gatewayUrl}/ipfs/${logo}`}
-        className="w-8"
+        style={{ width: "2rem" }}
         width={40}
         height={40}
       />
-    </div>
+    </Box>
   );
 };
 

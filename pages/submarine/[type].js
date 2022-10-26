@@ -367,8 +367,8 @@ const UnlockType = () => {
       e.preventDefault();
       setUploading(true);
       let cid;
-      const identifier = fileInfo?.shortId ? fileInfo?.shortId : short.generate();      
-      if (!submarinedFile && selectedFiles && selectedFiles.length > 0) {
+      const identifier = fileInfo?.shortId ? fileInfo?.shortId : short.generate();
+      if (selectedFiles && selectedFiles.length > 0) {
         const data = new FormData();
 
         data.append("name", identifier);
@@ -379,8 +379,15 @@ const UnlockType = () => {
 
         const res = await handleUpload(data);
         cid = res.items[0].cid;
-      } else {
+      } else if (submarinedFile) {
         cid = submarinedFile;
+      } else {
+        setMessage({
+          type: "error",
+          message: "No file selected",
+        });
+        setUploading(false);
+        return;
       }
       const submarinedContent = {
         shortId: identifier,

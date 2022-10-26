@@ -81,7 +81,11 @@ export default function AuthForm() {
             <Typography variant="body1" sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}>
               Or{" "}
               <Link passHref href="/auth/signup">
-                <Typography variant="body1" color="primary.main" sx={{ display: "inline" }}>
+                <Typography
+                  variant="body1"
+                  color="primary.main"
+                  sx={{ cursor: "pointer", display: "inline" }}
+                >
                   sign up here.
                 </Typography>
               </Link>
@@ -181,6 +185,15 @@ export default function AuthForm() {
               direction="column"
               alignContent={"center"}
             >
+              <Link passHref href="/auth/forgotpassword">
+                <Typography
+                  variant={"body1"}
+                  color="primary.main"
+                  sx={{ cursor: "pointer", marginTop: "1rem" }}
+                >
+                  {"Forgot password?"}
+                </Typography>
+              </Link>
               <Typography variant={"body1"} color="error" sx={{ marginTop: "1rem" }}>
                 {authError}
               </Typography>

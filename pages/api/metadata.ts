@@ -54,12 +54,12 @@ export default async function handler(req, res) {
         pinata_user_id: user.userInformation.id,
         unlock_info: obj.unlockInfo,
         customizations: obj.customizations,
+        thumbnail: obj.thumbnail,
       };
-
-      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
-        console.log("Adding thumbnail");
-        theCreationObject.thumbnail = req.body.thumbnail;
-      }
+      // if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+      //   console.log("Adding thumbnail");
+      //   theCreationObject.thumbnail = req.body.thumbnail;
+      // }
       const { error } = await supabase
         .from<definitions["Content"]>("Content")
         .insert([theCreationObject]);
@@ -88,12 +88,13 @@ export default async function handler(req, res) {
         pinata_user_id: user.userInformation.id,
         unlock_info: req.body.unlockInfo,
         customizations: req.body.customizations,
+        thumbnail: req.body.thumbnail,
       };
 
-      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
-        console.log("Adding thumbnail");
-        theCreationObject.thumbnail = req.body.thumbnail;
-      }
+      // if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+      //   console.log("Adding thumbnail");
+      //   theCreationObject.thumbnail = req.body.thumbnail;
+      // }
 
       const { data, error } = await supabase
         .from<definitions["Content"]>("Content")

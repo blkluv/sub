@@ -29,7 +29,6 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
       if (content_type.includes("audio")) {
         setFileType("audio");
       }
-      console.log(content_type);
     }
   };
   return (

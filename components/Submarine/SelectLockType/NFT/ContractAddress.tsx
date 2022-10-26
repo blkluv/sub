@@ -22,7 +22,7 @@ const ContractAddress = ({ blockchain }) => {
         >
           <FormikTextfield
             type="text"
-            name="unlockInfo.address"
+            name="unlockInfo.mintAddress"
             label="Mint Address"
             required
             adornment={
@@ -34,7 +34,7 @@ const ContractAddress = ({ blockchain }) => {
           <Divider variant="middle" flexItem />
           <FormikTextfield
             type="text"
-            name="unlockInfo.value2"
+            name="unlockInfo.updateAuthority"
             label="Update Authority"
             required
             adornment={
@@ -67,13 +67,13 @@ const ContractAddress = ({ blockchain }) => {
         >
           <FormikTextfield
             type="text"
-            name="unlockInfo.address"
+            name="unlockInfo.contract"
             label="Contract Address"
             required
           />
           <FormikTextfield
             type="text"
-            name="unlockInfo.value2"
+            name="unlockInfo.tokenId"
             label="Token ID"
             required
             adornment={

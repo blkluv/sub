@@ -52,8 +52,10 @@ export type UnlockInfoNFT = {
   type: "nft";
   network: string;
   blockchain: BlockchainOptions;
-  address: string;
-  value2: string;
+  mintAddress: string;
+  contract: string;
+  updateAuthority: string;
+  tokenId: string;
 };
 
 export type UnlockInfoLocation = {

@@ -6,7 +6,7 @@ const lightColorPalette: Partial<Palette> = {
   mode: "light",
   primary: {
     light: "#953BED",
-    main: "#8000DB",
+    main: "#2A40D7",
     dark: "#6C00BA",
     contrastText: "#FFFFFF",
   },
@@ -33,7 +33,7 @@ const darkColorPalette: Partial<Palette> = {
   mode: "dark",
   primary: {
     light: "#953BED",
-    main: "#8000DB",
+    main: "#2A40D7",
     dark: "#6C00BA",
     contrastText: "#FFFFFF",
   },
@@ -67,7 +67,7 @@ const darkColorPalette: Partial<Palette> = {
 };
 const typography = {
   typography: {
-    fontFamily: "Mulish,  sans-serif",
+    fontFamily: "SF Pro Text,  sans-serif",
     h1: {
       fontSize: 40,
       fontWeight: 900,

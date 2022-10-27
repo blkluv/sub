@@ -15,6 +15,7 @@ import {
   MenuItem,
   Radio,
   Typography,
+  Unstable_Grid2,
 } from "@mui/material";
 import { RadioGroup, Select } from "formik-mui";
 
@@ -35,8 +36,10 @@ const CustomizeLockScreen = () => {
 
   return (
     <div>
-      <Box sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "5em" }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+      <Unstable_Grid2
+        sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "5em" }}
+      >
+        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <UploadImagePublic
             label={"Background Image"}
             setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
@@ -51,8 +54,8 @@ const CustomizeLockScreen = () => {
           ) : (
             <NoImageIcon />
           )}
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        </Unstable_Grid2>
+        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <UploadImagePublic
             label={"Logo"}
             setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
@@ -67,25 +70,27 @@ const CustomizeLockScreen = () => {
           ) : (
             <NoImageIcon />
           )}
-        </Box>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "1em" }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        </Unstable_Grid2>
+      </Unstable_Grid2>
+      <Unstable_Grid2
+        sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "1em" }}
+      >
+        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <Typography>Button Color</Typography>
           <SketchPicker
             color={values.customizations.buttonColor}
             onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
           />
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        </Unstable_Grid2>
+        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <Typography>Button Text Color</Typography>
           <SketchPicker
             color={values.customizations.buttonTextColor}
             onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
           />
-        </Box>
-      </Box>
-      <Box sx={{ display: "flex", padding: "1em" }}>
+        </Unstable_Grid2>
+      </Unstable_Grid2>
+      <Unstable_Grid2 sx={{ display: "flex", padding: "1em" }}>
         <FormControl>
           <FormLabel>Button shape</FormLabel>
           <Field
@@ -98,8 +103,8 @@ const CustomizeLockScreen = () => {
             <FormControlLabel value="square" control={<Radio />} label="Square" />
           </Field>
         </FormControl>
-      </Box>
-      <Box sx={{ padding: "1em" }}>
+      </Unstable_Grid2>
+      <Unstable_Grid2 sx={{ padding: "1em" }}>
         <Field
           formControl={{ sx: { width: "100%" } }}
           component={Select}
@@ -112,7 +117,7 @@ const CustomizeLockScreen = () => {
             </MenuItem>
           ))}
         </Field>
-      </Box>
+      </Unstable_Grid2>
     </div>
   );
 };

@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import * as FullStory from "@fullstory/browser";
+import { Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
+import Link from "next/link";
+import { Box } from "@mui/system";
+
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   selectAuthError,
@@ -6,7 +11,7 @@ import {
   selectIsMFARequest,
 } from "../../store/selectors/authSelectors";
 import { confirmMFA, doLogin, LOGIN_STATUSES } from "../../store/slices/authSlice";
-import * as FullStory from '@fullstory/browser';
+import { Auth } from "aws-amplify";
 
 export default function AuthForm() {
   const loginStatus = useAppSelector(selectAuthStatus);
@@ -15,118 +20,187 @@ export default function AuthForm() {
 
   const isMFARequest = useAppSelector(selectIsMFARequest);
   const [email, setEmail] = useState("");
+  const [confirmationCode, setConfirmationCode] = useState("");
   const [password, setPassword] = useState("");
 
+  const [invalidCode, setInvalidCode] = useState(false);
   const dispatch = useAppDispatch();
-  const handleValidSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (loginStatus === LOGIN_STATUSES.needsConfirmation) {
+      if (confirmationCode.length !== 6) {
+        return;
+      }
+      try {
+        await Auth.confirmSignUp(email, confirmationCode);
+        dispatch(doLogin({ email, password }));
+      } catch (error) {
+        setInvalidCode(true);
+      }
+      return;
+    }
     if (isMFARequest) {
-      let res;
       if (mfa) {
-        res = dispatch(confirmMFA({ mfa }));
-      } else {
-        //  Should not get here since we're not doing sign up here.
+        dispatch(confirmMFA({ mfa }));
+        return;
       }
     }
 
     dispatch(doLogin({ email, password }));
     //sample FullStory SDK calls
-    FullStory.setVars('page', {
-      userEmail: email
-     });
-    FullStory.event("Logged in", {
+    FullStory.setVars("page", {
       userEmail: email,
-    })
+    });
   };
 
+  const [hasRequestedNewCode, setHasRequestedNewCode] = useState(false);
+  const handleResendConfirmationCode = async (event) => {
+    event.preventDefault();
+    if (hasRequestedNewCode) {
+      return;
+    }
+    setHasRequestedNewCode(true);
+    Auth.resendSignUp(email);
+  };
   return (
-    <>
-      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Sign in with your Pinata account
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+    <Container sx={{ marginTop: "2rem" }} maxWidth="md">
+      <Unstable_Grid2
+        container
+        justifyContent={"center"}
+        direction="column"
+        alignContent={"center"}
+      >
+        <Unstable_Grid2>
+          <Typography variant="h3">Sign in with your Pinata account</Typography>
+          <Unstable_Grid2
+            container
+            justifyContent={"center"}
+            direction="column"
+            alignContent={"center"}
+          >
+            <Typography variant="body1" sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}>
               Or{" "}
-              <a href="https://app.pinata.cloud" className="font-medium text-pinata-purple">
-                sign up here.
-              </a>
-            </p>
-          </div>
-          <form className="mt-8 space-y-6" onSubmit={handleValidSubmit}>
-            {isMFARequest ? (
-              <div>
-                <div className="rounded-md shadow-sm -space-y-px">
-                  <div>
-                    <label htmlFor="mfs" className="sr-only">
-                      Multifactor Authentication Confirmation Code
-                    </label>
-                    <input
-                      id="mfs"
-                      name="mfa"
-                      type="text"
-                      required
-                      value={mfa}
-                      onChange={(e) => setMFA(e.target.value)}
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder="MFA code"
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <input type="hidden" name="remember" defaultValue="true" />
-                <div className="rounded-md shadow-sm -space-y-px">
-                  <div>
-                    <label htmlFor="email-address" className="sr-only">
-                      Email address
-                    </label>
-                    <input
-                      id="email-address"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder="Email address"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="password" className="sr-only">
-                      Password
-                    </label>
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder="Password"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-            <div className="mt-4">
-              <button
-                type="submit"
-                disabled={loginStatus === LOGIN_STATUSES.pending}
-                className="group relative w-full flex-row justify-center align-center sm:h-auto h-16 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-pinata-purple outline-none"
-              >
-                <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>
-              </button>
-              <p className="mt-2 text-center text-sm text-red-600">{authError}</p>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
+              <Link passHref href="/auth/signup">
+                <Typography
+                  variant="body1"
+                  color="primary.main"
+                  sx={{ cursor: "pointer", display: "inline" }}
+                >
+                  sign up here.
+                </Typography>
+              </Link>
+            </Typography>
+          </Unstable_Grid2>
+        </Unstable_Grid2>
+        <form onSubmit={handleSubmit}>
+          {isMFARequest ? (
+            <TextField
+              id="mfs"
+              name="mfa"
+              type="text"
+              required
+              value={mfa}
+              onChange={(e) => setMFA(e.target.value)}
+              placeholder="MFA code"
+            />
+          ) : (
+            <>
+              <TextField
+                fullWidth
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+              />
+              <TextField
+                fullWidth
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+              />
+              {loginStatus === LOGIN_STATUSES.needsConfirmation && (
+                <>
+                  <Typography variant="body1" sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}>
+                    Please check your email for a confirmation code.{" "}
+                    <Typography
+                      variant="body1"
+                      color="primary.main"
+                      sx={{
+                        display: "inline",
+                        cursor: hasRequestedNewCode ? "not-allowed" : "pointer",
+                      }}
+                      onClick={handleResendConfirmationCode}
+                    >
+                      {hasRequestedNewCode ? "Code resent!" : "Click to resend."}
+                    </Typography>
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    id="confirmation-code"
+                    name="confirmation-code"
+                    type="text"
+                    required
+                    value={confirmationCode}
+                    onChange={(e) => setConfirmationCode(e.target.value)}
+                    placeholder="Confirmation Code"
+                  />
+                  <Unstable_Grid2
+                    container
+                    justifyContent={"center"}
+                    direction="column"
+                    alignContent={"center"}
+                  >
+                    <Typography variant={"body1"} color="error" sx={{ marginTop: "1rem" }}>
+                      {invalidCode && "Invalid confirmation code"}
+                    </Typography>
+                  </Unstable_Grid2>
+                </>
+              )}
+            </>
+          )}
+          <Box sx={{ marginTop: "1rem" }}>
+            <Button
+              type="submit"
+              disabled={loginStatus === LOGIN_STATUSES.pending}
+              sx={{
+                height: "auto",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>
+            </Button>
+            <Unstable_Grid2
+              container
+              justifyContent={"center"}
+              direction="column"
+              alignContent={"center"}
+            >
+              <Link passHref href="/auth/forgotpassword">
+                <Typography
+                  variant={"body1"}
+                  color="primary.main"
+                  sx={{ cursor: "pointer", marginTop: "1rem" }}
+                >
+                  {"Forgot password?"}
+                </Typography>
+              </Link>
+              <Typography variant={"body1"} color="error" sx={{ marginTop: "1rem" }}>
+                {authError}
+              </Typography>
+            </Unstable_Grid2>
+          </Box>
+        </form>
+      </Unstable_Grid2>
+    </Container>
   );
 }

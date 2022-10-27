@@ -1,7 +1,11 @@
-import Auth from "../../components/Auth";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectIsAuthenticated } from "../../store/selectors/authSelectors";
 import { withRouter } from "next/router";
+import { useEffect } from "react";
+import SharedHead from "../../components/Layout/SharedHead";
+import Navigation from "../../components/Navigation";
+import AuthForm from "../../components/Auth/AuthForm";
+import { tryLogin } from "../../store/slices/authSlice";
 
 const Login = ({ router }) => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -12,7 +16,17 @@ const Login = ({ router }) => {
       router.push("/");
     }
   }
-  return <Auth />;
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(tryLogin());
+  }, []);
+  return (
+    <>
+      <SharedHead />
+      <Navigation />
+      <AuthForm />
+    </>
+  );
 };
 
 export default withRouter(Login);

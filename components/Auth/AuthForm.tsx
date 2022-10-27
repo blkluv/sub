@@ -75,21 +75,16 @@ export default function AuthForm() {
           <Unstable_Grid2
             container
             justifyContent={"center"}
-            direction="column"
+            direction="row"
             alignContent={"center"}
+            sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}
           >
-            <Typography variant="body1" sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}>
-              Or{" "}
-              <Link passHref href="/auth/signup">
-                <Typography
-                  variant="body1"
-                  color="primary.main"
-                  sx={{ cursor: "pointer", display: "inline" }}
-                >
-                  sign up here.
-                </Typography>
-              </Link>
-            </Typography>
+            <Typography variant="body1">Or&nbsp;</Typography>
+            <Link passHref href="/auth/signup">
+              <Typography variant="body1" color="primary.main" sx={{ cursor: "pointer" }}>
+                sign up here.
+              </Typography>
+            </Link>
           </Unstable_Grid2>
         </Unstable_Grid2>
         <form onSubmit={handleSubmit}>

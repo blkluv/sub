@@ -39,7 +39,8 @@ const UploadMedia = () => {
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUploadFile(event.target.value as FileType);
+    // @ts-ignore
+    setUploadFile((event.target as HTMLInputElement).value);
   };
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget;

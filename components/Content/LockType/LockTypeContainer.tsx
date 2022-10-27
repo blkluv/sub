@@ -29,7 +29,6 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
     }
   };
 
-  console.log(fileInfo, isButtonCustom(fileInfo));
   return (
     <div>
       {description}

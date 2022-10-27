@@ -1,26 +1,16 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  TextField,
-  Typography,
-  Unstable_Grid2,
-} from "@mui/material";
+import { Box, Button, Container, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
 import * as FullStory from "@fullstory/browser";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { Formik, Form, FormikHelpers, Field } from "formik";
+import { useAppDispatch } from "../../store/hooks";
+import { Formik, Form, FormikHelpers } from "formik";
 import FormikTextfield from "../Form/FormikTextfield";
 import * as Yup from "yup";
-import { FormControlLabel, FormLabel, MenuItem, Radio } from "@mui/material";
-import { RadioGroup, Select } from "formik-mui";
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import { setAlert } from "../../store/slices/alertSlice";
 
-const SignUpForm = () => {
+const ForgotPasswordForm = () => {
   const dispatch = useAppDispatch();
   const [authError, setAuthError] = useState("");
 
@@ -31,17 +21,7 @@ const SignUpForm = () => {
   };
 
   const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required")
-      .matches(validationsRegex.name, "Invalid name"),
-    lastName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required")
-      .matches(validationsRegex.name, "Invalid name"),
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email").required("Required").matches(validationsRegex.email),
     password: Yup.string()
       .min(8, "Password must contain at least 8 characters")
       .max(50, "Too Long!")
@@ -50,6 +30,11 @@ const SignUpForm = () => {
         validationsRegex.password,
         "Password must contain at least 8 characters, including UPPER/lowercase, numbers and special characters"
       ),
+    code: Yup.string()
+      .required("Required")
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .min(6, "Must be exactly 6 digits")
+      .max(6, "Must be exactly 6 digits"),
   });
 
   const router = useRouter();
@@ -65,36 +50,43 @@ const SignUpForm = () => {
     //     TODO add FS
   };
 
+  const [codeSent, setCodeSent] = useState(false);
   const initialValues = {
     email: "",
+    code: "",
     password: "",
-    firstName: "",
-    lastName: "",
-    isBuilder: null,
   };
   const onSubmit = async (values, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
     setSubmitting(true);
-    const params = {
-      username: values.email,
-      password: values.password,
-      attributes: {
-        email: values.email,
-        "custom:firstName": values.firstName,
-        "custom:lastName": values.lastName,
-        "custom:userType": values.isBuilder,
-      },
-    };
     try {
-      await Auth.signUp(params);
-      dispatch(
-        setAlert({
-          message: "Account created. Please confirm your email address",
-          type: "success",
-        })
-      );
-      router.push("/");
+      if (codeSent) {
+        await Auth.forgotPasswordSubmit(values.email, values.code, values.password);
+        dispatch(
+          setAlert({
+            message: "Password changed successfully",
+            type: "success",
+          })
+        );
+        setSubmitting(false);
+        router.push("/");
+      } else {
+        await Auth.forgotPassword(values.email);
+        setCodeSent(true);
+        dispatch(
+          setAlert({
+            message: "Confirmation code sent. Please check your email address",
+            type: "success",
+          })
+        );
+      }
     } catch (err) {
-      setAuthError(err.message);
+      if (err.code === "UserNotFoundException") {
+        setAuthError("User not found");
+      } else if (err.code === "CodeMismatchException") {
+        setAuthError("Invalid code");
+      } else {
+        setAuthError("Something went wrong");
+      }
       setSubmitting(false);
     }
   };
@@ -108,7 +100,7 @@ const SignUpForm = () => {
         alignContent={"center"}
       >
         <Typography variant="h3" sx={{ marginBottom: "2rem" }}>
-          Register your Pinata account
+          Recover your password
         </Typography>
         <Formik
           initialValues={initialValues}
@@ -126,41 +118,32 @@ const SignUpForm = () => {
               >
                 <FormikTextfield
                   fullWidth
-                  name="firstName"
-                  label="First Name"
-                  required
-                  autoComplete="off"
-                />
-                <FormikTextfield
-                  fullWidth
-                  name="lastName"
-                  label="Last Name"
-                  required
-                  autoComplete="off"
-                />
-                <FormikTextfield
-                  fullWidth
                   name="email"
                   label="Email address"
                   type="email"
                   required
                   autoComplete="off"
                 />
-                <FormikTextfield
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  required
-                  autoComplete="off"
-                />
-                <FormControl sx={{ margin: "8px" }}>
-                  <FormLabel>Are you a builder or a creator?</FormLabel>
-                  <Field component={RadioGroup} row name="isBuilder">
-                    <FormControlLabel value="builder" control={<Radio />} label="Builder" />
-                    <FormControlLabel value="creator" control={<Radio />} label="Creator" />
-                  </Field>
-                </FormControl>
+                {codeSent && (
+                  <>
+                    <FormikTextfield
+                      fullWidth
+                      name="password"
+                      label="New password"
+                      type="password"
+                      required
+                      autoComplete="off"
+                    />
+                    <FormikTextfield
+                      fullWidth
+                      name="code"
+                      label="Confirmation code"
+                      type="text"
+                      required
+                      autoComplete="off"
+                    />
+                  </>
+                )}
                 <Box sx={{ marginTop: "1rem" }}>
                   <Button
                     type="submit"
@@ -171,19 +154,18 @@ const SignUpForm = () => {
                       width: "100%",
                     }}
                   >
-                    <span>{isSubmitting ? "Signing up..." : "Sign up"}</span>
+                    <span>{isSubmitting ? "Sending code..." : "Forgot password"}</span>
                   </Button>
-                  <Typography
-                    variant={"body1"}
-                    color="error"
-                    sx={{
-                      width: "50%",
-                      margin: "0 auto",
-                      marginTop: "1rem",
-                    }}
+                  <Unstable_Grid2
+                    container
+                    justifyContent={"center"}
+                    direction="column"
+                    alignContent={"center"}
                   >
-                    {authError}
-                  </Typography>
+                    <Typography variant={"body1"} color="error" sx={{ marginTop: "1rem" }}>
+                      {authError}
+                    </Typography>
+                  </Unstable_Grid2>
                 </Box>
               </Unstable_Grid2>
             </Form>
@@ -193,4 +175,4 @@ const SignUpForm = () => {
     </Container>
   );
 };
-export default SignUpForm;
+export default ForgotPasswordForm;

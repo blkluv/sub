@@ -8,7 +8,6 @@ import { useFormikContext } from "formik";
 import { Field } from "formik";
 import { MetadataUnlockInfo } from "./SubmarineFileForm";
 import {
-  Box,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -37,9 +36,14 @@ const CustomizeLockScreen = () => {
   return (
     <div>
       <Unstable_Grid2
-        sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "5em" }}
+        container
+        justifyContent={"left"}
+        direction="row"
+        alignContent={"left"}
+        gap={"5rem"}
+        paddingTop={"1rem"}
       >
-        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        <Unstable_Grid2 container justifyContent={"left"} direction={"column"} gap={"1rem"}>
           <UploadImagePublic
             label={"Background Image"}
             setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
@@ -55,7 +59,7 @@ const CustomizeLockScreen = () => {
             <NoImageIcon />
           )}
         </Unstable_Grid2>
-        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        <Unstable_Grid2 container justifyContent={"left"} direction={"column"} gap={"1rem"}>
           <UploadImagePublic
             label={"Logo"}
             setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
@@ -73,16 +77,21 @@ const CustomizeLockScreen = () => {
         </Unstable_Grid2>
       </Unstable_Grid2>
       <Unstable_Grid2
-        sx={{ display: "flex", justifyContent: "flex-start", padding: "1em", gap: "1em" }}
+        container
+        justifyContent={"left"}
+        direction="row"
+        alignContent={"left"}
+        gap={"3rem"}
+        paddingTop={"1rem"}
       >
-        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        <Unstable_Grid2 container justifyContent={"center"} direction={"column"} gap={"1rem"}>
           <Typography>Button Color</Typography>
           <SketchPicker
             color={values.customizations.buttonColor}
             onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
           />
         </Unstable_Grid2>
-        <Unstable_Grid2 sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        <Unstable_Grid2 container justifyContent={"center"} direction={"column"} gap={"1rem"}>
           <Typography>Button Text Color</Typography>
           <SketchPicker
             color={values.customizations.buttonTextColor}
@@ -90,9 +99,15 @@ const CustomizeLockScreen = () => {
           />
         </Unstable_Grid2>
       </Unstable_Grid2>
-      <Unstable_Grid2 sx={{ display: "flex", padding: "1em" }}>
+      <Unstable_Grid2
+        container
+        justifyContent={"left"}
+        direction="row"
+        alignContent={"left"}
+        paddingTop={"1rem"}
+      >
         <FormControl>
-          <FormLabel>Button shape</FormLabel>
+          <Typography>Button Shape</Typography>
           <Field
             component={RadioGroup}
             row
@@ -104,7 +119,7 @@ const CustomizeLockScreen = () => {
           </Field>
         </FormControl>
       </Unstable_Grid2>
-      <Unstable_Grid2 sx={{ padding: "1em" }}>
+      <Unstable_Grid2 paddingTop={"1rem"}>
         <Field
           formControl={{ sx: { width: "100%" } }}
           component={Select}

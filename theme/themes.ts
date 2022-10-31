@@ -5,9 +5,9 @@ import { Components } from "@mui/material/styles/components";
 const lightColorPalette: Partial<Palette> = {
   mode: "light",
   primary: {
-    light: "#953BED",
+    light: "#FFFFFF",
     main: "#2A40D7",
-    dark: "#6C00BA",
+    dark: "#181818",
     contrastText: "#FFFFFF",
   },
   info: {
@@ -34,7 +34,7 @@ const darkColorPalette: Partial<Palette> = {
   primary: {
     light: "#953BED",
     main: "#2A40D7",
-    dark: "#6C00BA",
+    dark: "#181818",
     contrastText: "#FFFFFF",
   },
   info: {
@@ -67,11 +67,12 @@ const darkColorPalette: Partial<Palette> = {
 };
 const typography = {
   typography: {
-    fontFamily: "SF Pro Text,  sans-serif",
+    fontFamily: "sans-serif",
     h1: {
-      fontSize: 40,
+      fontFamily: "Mulish",
       fontWeight: 900,
-      lineHeight: "44px",
+      fontSize: 34,
+      lineHeight: "36px",
     },
     h2: {
       fontSize: 36,
@@ -169,8 +170,11 @@ const legacy = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow: "0px 1px 3px 0px rgb(226 224 226)",
-          borderRadius: "10px",
+          boxShadow: "4px 12px 40px 6px rgba(0, 0, 0, 0.09)",
+          borderRadius: "30px",
+          "&:hover": {
+            boxShadow: "4px 12px 40px 6px rgba(0, 0, 0, 0.09)",
+          },
         },
       },
     },
@@ -219,9 +223,9 @@ const createModeTheme = (variant: "light" | "dark", baseTheme: Theme) => {
           root: {
             textTransform: "none",
             borderRadius: "100px",
-            height: "48px",
-            padding: "12px 28px",
-            gap: "8px",
+            height: "44px",
+            padding: "10px 20px",
+            gap: "10px",
             width: "fit-content",
           },
         },

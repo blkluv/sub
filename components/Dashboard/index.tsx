@@ -9,19 +9,19 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import { Box, Button, Unstable_Grid2 } from "@mui/material";
-import { Container } from "@mui/system";
-
+import { Button, Typography, Unstable_Grid2 } from "@mui/material";
+import SubmarineModal from "../SubmarineModal/SubmarineModal";
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
 const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
-  const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
-  const [offset, setOffset] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [displayUpgradeModal, setDisplayUpgradeModal] = useState<boolean>(false);
+  const [offset, setOffset] = useState<number>(0);
+  const [submarineOpen, setSubmarineOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   useEffect(() => {
@@ -132,10 +132,18 @@ const Dashboard = () => {
 
   return (
     <>
-      <Unstable_Grid2 container justifyContent={"space-between"} direction="column">
-        <Link passHref href="/submarine/new">
-          <Button>Submarine New File</Button>
-        </Link>
+      <SubmarineModal setOpen={setSubmarineOpen} open={submarineOpen} />
+      <Unstable_Grid2 container direction={"column"} sx={{ marginTop: "3em" }}>
+        <Unstable_Grid2
+          container
+          justifyContent={"space-between"}
+          direction={"row"}
+          alignItems={"center"}
+        >
+          <Typography variant="h1">Submarine Files</Typography>
+          <Button onClick={() => setSubmarineOpen(true)}>Submarine New Files</Button>
+        </Unstable_Grid2>
+        <Typography variant="subtitle2">Find your recently submarined content below </Typography>
         {loading ? (
           <Unstable_Grid2 container justifyContent={"center"}>
             <Loading />

@@ -13,6 +13,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { doLogOut } from "../../store/slices/authSlice";
 import { useAppDispatch } from "../../store/hooks";
+import { Unstable_Grid2 } from "@mui/material";
 
 interface AvatarMenuProps {
   avatarPath: string;
@@ -33,7 +34,7 @@ export default function AvatarMenu({ avatarPath }: AvatarMenuProps) {
   };
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+      <Unstable_Grid2 sx={{ alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
@@ -54,7 +55,7 @@ export default function AvatarMenu({ avatarPath }: AvatarMenuProps) {
             </Avatar>
           </IconButton>
         </Tooltip>
-      </Box>
+      </Unstable_Grid2>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"

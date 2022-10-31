@@ -10,7 +10,6 @@ import { MetadataUnlockInfo } from "./SubmarineFileForm";
 import {
   FormControl,
   FormControlLabel,
-  FormLabel,
   MenuItem,
   Radio,
   Typography,
@@ -35,15 +34,8 @@ const CustomizeLockScreen = () => {
 
   return (
     <div>
-      <Unstable_Grid2
-        container
-        justifyContent={"left"}
-        direction="row"
-        alignContent={"left"}
-        gap={"5rem"}
-        paddingTop={"1rem"}
-      >
-        <Unstable_Grid2 container justifyContent={"left"} direction={"column"} gap={"1rem"}>
+      <Unstable_Grid2 container gap={"5em"} paddingTop={"1em"}>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
           <UploadImagePublic
             label={"Background Image"}
             setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
@@ -59,7 +51,7 @@ const CustomizeLockScreen = () => {
             <NoImageIcon />
           )}
         </Unstable_Grid2>
-        <Unstable_Grid2 container justifyContent={"left"} direction={"column"} gap={"1rem"}>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
           <UploadImagePublic
             label={"Logo"}
             setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
@@ -76,22 +68,15 @@ const CustomizeLockScreen = () => {
           )}
         </Unstable_Grid2>
       </Unstable_Grid2>
-      <Unstable_Grid2
-        container
-        justifyContent={"left"}
-        direction="row"
-        alignContent={"left"}
-        gap={"3rem"}
-        paddingTop={"1rem"}
-      >
-        <Unstable_Grid2 container justifyContent={"center"} direction={"column"} gap={"1rem"}>
+      <Unstable_Grid2 container gap={"3rem"} paddingTop={"1rem"}>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
           <Typography>Button Color</Typography>
           <SketchPicker
             color={values.customizations.buttonColor}
             onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
           />
         </Unstable_Grid2>
-        <Unstable_Grid2 container justifyContent={"center"} direction={"column"} gap={"1rem"}>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
           <Typography>Button Text Color</Typography>
           <SketchPicker
             color={values.customizations.buttonTextColor}
@@ -99,13 +84,7 @@ const CustomizeLockScreen = () => {
           />
         </Unstable_Grid2>
       </Unstable_Grid2>
-      <Unstable_Grid2
-        container
-        justifyContent={"left"}
-        direction="row"
-        alignContent={"left"}
-        paddingTop={"1rem"}
-      >
+      <Unstable_Grid2 container paddingTop={"1rem"}>
         <FormControl>
           <Typography>Button Shape</Typography>
           <Field
@@ -119,7 +98,7 @@ const CustomizeLockScreen = () => {
           </Field>
         </FormControl>
       </Unstable_Grid2>
-      <Unstable_Grid2 paddingTop={"1rem"}>
+      <Unstable_Grid2 paddingTop={"1em"}>
         <Field
           formControl={{ sx: { width: "100%" } }}
           component={Select}
@@ -143,8 +122,8 @@ const NoImageIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     style={{
-      width: "10rem",
-      height: "10rem",
+      width: "10em",
+      height: "10em",
     }}
     fill="none"
     viewBox="0 0 40 40"

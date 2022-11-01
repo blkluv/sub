@@ -140,10 +140,14 @@ const Dashboard = () => {
           direction={"row"}
           alignItems={"center"}
         >
-          <Typography variant="h1">Submarine Files</Typography>
+          <Unstable_Grid2 container direction={"column"}>
+            <Typography variant="h1">Submarine Files</Typography>
+            <Typography variant="subtitle2">
+              Find your recently submarined content below{" "}
+            </Typography>
+          </Unstable_Grid2>
           <Button onClick={() => setSubmarineOpen(true)}>Submarine New Files</Button>
         </Unstable_Grid2>
-        <Typography variant="subtitle2">Find your recently submarined content below </Typography>
         {loading ? (
           <Unstable_Grid2 container justifyContent={"center"}>
             <Loading />

@@ -13,6 +13,8 @@ const FormikTextfield = ({
   const formik = useFormikContext();
   return (
     <Field
+      fullwidth
+      variant="standard"
       component={TextField}
       name={name}
       label={label}
@@ -25,7 +27,6 @@ const FormikTextfield = ({
       inputProps={{
         maxLength: maxLength,
       }}
-      sx={{ m: 1 }}
       autoComplete="off"
       helperText={formik.touched[name] && formik.errors[name]}
       {...props}

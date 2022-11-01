@@ -1,11 +1,12 @@
 import React from "react";
+import CustomizationForm from "../../Customization/CustomizationForm";
+import FileDetailForm from "../FileDetailForm";
 import LockTypeContainer from "../LockTypeContainer";
 import TwitterForm from "./TwitterForm";
 
 const Twitter = () => {
-  const description =
-    "Upload media that can only be unlocked if the person trying to access it retweets a tweet you specify.";
-  const title = "Allow content to be unlocked by a Retweet";
+  const description = "Allow content to be unlocked by a retweet.";
+  const title = "Retweet";
   return (
     <LockTypeContainer title={title} description={description}>
       <TwitterForm />

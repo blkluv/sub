@@ -5,9 +5,9 @@ import { Components } from "@mui/material/styles/components";
 const lightColorPalette: Partial<Palette> = {
   mode: "light",
   primary: {
-    light: "#FFFFFF",
+    light: "#FAFAFA",
     main: "#2A40D7",
-    dark: "#181818",
+    dark: "#313131",
     contrastText: "#FFFFFF",
   },
   info: {
@@ -67,19 +67,21 @@ const darkColorPalette: Partial<Palette> = {
 };
 const typography = {
   typography: {
-    fontFamily: "sans-serif",
+    // fontFamily: "sans",
     h1: {
       fontFamily: "Mulish",
       fontWeight: 900,
-      fontSize: 34,
+      fontSize: 40,
       lineHeight: "36px",
     },
     h2: {
-      fontSize: 36,
+      fontFamily: "Mulish",
+      fontSize: 34,
       fontWeight: 900,
       lineHeight: "40px",
     },
     h3: {
+      fontFamily: "Mulish",
       fontSize: 32,
       fontWeight: 900,
       lineHeight: "36px",
@@ -90,14 +92,15 @@ const typography = {
       lineHeight: "32px",
     },
     h5: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: 600,
       lineHeight: "28px",
     },
     h6: {
-      fontSize: 20,
+      fontFamily: "Source Sans Pro",
+      fontSize: 16,
       fontWeight: 600,
-      lineHeight: "28px",
+      lineHeight: "24px",
     },
     subtitle1: {
       fontSize: 18,

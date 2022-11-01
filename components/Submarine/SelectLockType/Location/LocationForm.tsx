@@ -1,10 +1,10 @@
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import GoogleMapsCoordsModal from "../GoogleMapsCoordsModal";
-import { useFormikContext, Field } from "formik";
+import { useFormikContext } from "formik";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
 import FormikTextfield from "../../../Form/FormikTextfield";
-import { Button, Unstable_Grid2 } from "@mui/material";
+import { Button, Typography, Unstable_Grid2 } from "@mui/material";
 
 const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
@@ -34,38 +34,41 @@ const LocationForm = () => {
   };
 
   return (
-    <Unstable_Grid2 container spacing={2}>
-      <Button onClick={detectLocation}>
-        {gettingLocation ? "Detecting location..." : "Detect Location"}
-      </Button>
-
-      <Unstable_Grid2>
-        <FormikTextfield
-          name="unlockInfo.lat"
-          label="Latitude"
-          required
-          adornment={
-            <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
-              <InformationCircleIconStyled />
-            </span>
-          }
-        />
-        <FormikTextfield
-          name="unlockInfo.long"
-          label="Longitude"
-          required
-          adornment={
-            <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
-              <InformationCircleIconStyled />
-            </span>
-          }
-        />
-        <FormikTextfield name="unlockInfo.distance" label="Distance" required />
-        <GoogleMapsCoordsModal
-          googleMapsModalOpen={googleMapsModalOpen}
-          setGoogleMapsModalOpen={setGoogleMapsModalOpen}
-        />
+    <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>
+      <Unstable_Grid2
+        container
+        sx={{ gap: "1em", justifyContent: "space-between", alignItems: "center" }}
+      >
+        <Typography variant="h5">Location Details</Typography>
+        <Button variant="outlined" onClick={detectLocation}>
+          {gettingLocation ? "Detecting location..." : "Detect Location"}
+        </Button>
       </Unstable_Grid2>
+      <FormikTextfield
+        name="unlockInfo.lat"
+        label="Latitude"
+        required
+        adornment={
+          <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
+            <InformationCircleIconStyled />
+          </span>
+        }
+      />
+      <FormikTextfield
+        name="unlockInfo.long"
+        label="Longitude"
+        required
+        adornment={
+          <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
+            <InformationCircleIconStyled />
+          </span>
+        }
+      />
+      <FormikTextfield name="unlockInfo.distance" label="Allowed Range (in miles)" required />
+      <GoogleMapsCoordsModal
+        googleMapsModalOpen={googleMapsModalOpen}
+        setGoogleMapsModalOpen={setGoogleMapsModalOpen}
+      />
     </Unstable_Grid2>
   );
 };

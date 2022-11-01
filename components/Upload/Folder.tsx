@@ -26,7 +26,7 @@ const Folder = ({ onChange }) => {
           cursor: "pointer",
         }}
       >
-        <span>Select a folder</span>
+        <span>browse your files.</span>
       </label>
     </>
   );

@@ -16,12 +16,12 @@ const File = ({ onChange }) => {
         onChange={onChange}
       />
       <label
-        htmlFor="raised-button-file"
+        htmlFor="file-upload-main"
         style={{
           cursor: "pointer",
         }}
       >
-        <span>Select a file</span>
+        <span>browse your files.</span>
       </label>
     </>
   );

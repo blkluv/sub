@@ -21,7 +21,7 @@ export const selectTheme = createSelector([selectUser], (user) => {
     return user.theme;
   }
   if (global.window) {
-    return global.window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    return global.window.matchMedia("(prefers-color-scheme: light)").matches ? "dark" : "light";
   }
   return "light";
 });

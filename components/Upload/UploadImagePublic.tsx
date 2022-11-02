@@ -6,9 +6,6 @@ const UploadImagePublic = ({ setIpfsHash, label }) => {
   const fileInput = useRef(null);
 
   const [isUploading, setIsUploading] = useState(false);
-  if (isUploading) {
-    return <div>Uploading...</div>;
-  }
 
   const onFileChange = async (e, setIsUploading) => {
     const file = e.target.files?.[0];
@@ -30,16 +27,16 @@ const UploadImagePublic = ({ setIpfsHash, label }) => {
       <input
         accept="image/*"
         style={{ display: "none" }}
-        id="raised-button-file"
+        id={`button-file-${label}`}
         multiple
         type="file"
         ref={fileInput}
         onChange={(e) => onFileChange(e, setIsUploading)}
       />
 
-      <label htmlFor="raised-button-file">
-        <Button variant="outlined" component="span">
-          {label}
+      <label htmlFor={`button-file-${label}`}>
+        <Button size="small" variant="outlined" component="span">
+          {!isUploading ? label : "Uploading"}
         </Button>
       </label>
     </>

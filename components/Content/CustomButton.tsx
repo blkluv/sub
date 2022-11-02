@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 
 const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
   const [styles, setStyles] = useState({
@@ -27,16 +28,18 @@ const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
       style.color = "#fff";
     }
 
-    if (fileInfo?.customizations?.buttonShape === "rounded") {
+    if (fileInfo?.customizations?.buttonShape === "square") {
+      style.borderRadius = 5;
+    } else {
       style.borderRadius = 1000;
     }
     setStyles(style);
   }, [fileInfo]);
 
   return (
-    <button onClick={onClick} style={styles}>
+    <Button onClick={onClick} style={styles}>
       {loading ? `Verifying ${lockName}...` : `Verify ${lockName}`}
-    </button>
+    </Button>
   );
 };
 

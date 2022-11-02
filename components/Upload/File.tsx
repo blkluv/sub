@@ -16,7 +16,7 @@ const File = ({ onChange }) => {
         onChange={onChange}
       />
       <label
-        htmlFor="raised-button-file"
+        htmlFor="file-upload-main"
         style={{
           cursor: "pointer",
         }}

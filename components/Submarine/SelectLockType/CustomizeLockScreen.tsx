@@ -8,10 +8,8 @@ import { useFormikContext } from "formik";
 import { Field } from "formik";
 import { MetadataUnlockInfo } from "./SubmarineFileForm";
 import {
-  Box,
   FormControl,
   FormControlLabel,
-  FormLabel,
   MenuItem,
   Radio,
   Typography,
@@ -22,6 +20,7 @@ import { RadioGroup, Select } from "formik-mui";
 const CustomizeLockScreen = () => {
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
   const background = values.customizations?.backgroundCid;
+  const logo = values.customizations?.logoCid;
   const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   const validFonts = [
@@ -35,66 +34,71 @@ const CustomizeLockScreen = () => {
 
   return (
     <div>
-      <Unstable_Grid2 container justifyContent={"center"}>
-        <Typography>Background Image</Typography>
-        <Box>
+      <Unstable_Grid2 container gap={"5em"} paddingTop={"1em"}>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
+          <UploadImagePublic
+            label={"Background Image"}
+            setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
+          />
           {background && background.length > 0 ? (
             <Image
               src={`${gatewayUrl}/ipfs/${background}`}
               height={160}
               width={160}
-              alt="preview for thumbnail"
+              alt="preview for background"
             />
           ) : (
             <NoImageIcon />
           )}
-        </Box>
-        <UploadImagePublic
-          label={"Upload"}
-          setIpfsHash={(hash) => setFieldValue("background_cid", hash)}
-        />
-      </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"center"}>
-        <Typography>Logo Image</Typography>
-        <Box>
-          {values.customizations.logoCid && values.customizations.logoCid.length > 0 ? (
+        </Unstable_Grid2>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
+          <UploadImagePublic
+            label={"Logo"}
+            setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
+          />
+          {logo && logo.length > 0 ? (
             <Image
-              src={`${gatewayUrl}/ipfs/${values.customizations.logoCid}`}
+              src={`${gatewayUrl}/ipfs/${logo}`}
               alt="preview for logo"
-              height={40}
-              width={40}
+              height={160}
+              width={160}
             />
           ) : (
             <NoImageIcon />
           )}
-        </Box>
-        <UploadImagePublic label={"Upload"} setIpfsHash={(hash) => setFieldValue("logo", hash)} />
+        </Unstable_Grid2>
       </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"space-evenly"}>
-        <Typography>Button Color</Typography>
-        <SketchPicker
-          color={values.customizations.buttonColor}
-          onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
-        />
+      <Unstable_Grid2 container gap={"3rem"} paddingTop={"1rem"}>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
+          <Typography>Button Color</Typography>
+          <SketchPicker
+            color={values.customizations.buttonColor}
+            onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
+          />
+        </Unstable_Grid2>
+        <Unstable_Grid2 container direction={"column"} gap={"1em"}>
+          <Typography>Button Text Color</Typography>
+          <SketchPicker
+            color={values.customizations.buttonTextColor}
+            onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
+          />
+        </Unstable_Grid2>
       </Unstable_Grid2>
-
-      <Unstable_Grid2 container justifyContent={"space-evenly"}>
-        <Typography>Button Text Color</Typography>
-        <SketchPicker
-          color={values.customizations.buttonTextColor}
-          onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
-        />
-      </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"space-evenly"}>
+      <Unstable_Grid2 container paddingTop={"1rem"}>
         <FormControl>
-          <FormLabel>Button shape</FormLabel>
-          <Field component={RadioGroup} row name="customizations.buttonShape">
-            <FormControlLabel value="square" control={<Radio />} label="Square" />
+          <Typography>Button Shape</Typography>
+          <Field
+            component={RadioGroup}
+            row
+            name="customizations.buttonShape"
+            defaultValue="rounded"
+          >
             <FormControlLabel value="rounded" control={<Radio />} label="Rounded" />
+            <FormControlLabel value="square" control={<Radio />} label="Square" />
           </Field>
         </FormControl>
       </Unstable_Grid2>
-      <Unstable_Grid2 container justifyContent={"space-between"}>
+      <Unstable_Grid2 paddingTop={"1em"}>
         <Field
           formControl={{ sx: { width: "100%" } }}
           component={Select}
@@ -118,8 +122,8 @@ const NoImageIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     style={{
-      width: "10rem",
-      height: "10rem",
+      width: "10em",
+      height: "10em",
     }}
     fill="none"
     viewBox="0 0 40 40"

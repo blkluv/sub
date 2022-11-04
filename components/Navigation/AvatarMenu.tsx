@@ -44,15 +44,14 @@ export default function AvatarMenu({ avatarPath }: AvatarMenuProps) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
+            {/* TO DO: Add user image here */}
             <Avatar
               src={avatarPath}
               sx={{
                 background: "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
                 borderRadius: "10015px",
               }}
-            >
-              M
-            </Avatar>
+            ></Avatar>
           </IconButton>
         </Tooltip>
       </Unstable_Grid2>
@@ -91,7 +90,8 @@ export default function AvatarMenu({ avatarPath }: AvatarMenuProps) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
+        {/* TO DO: Add menu functionality  */}
+        {/* <MenuItem>
           <Avatar /> My account
         </MenuItem>
         <Divider />
@@ -100,7 +100,7 @@ export default function AvatarMenu({ avatarPath }: AvatarMenuProps) {
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleLogOut}>
           <ListItemIcon>
             <Logout fontSize="small" />

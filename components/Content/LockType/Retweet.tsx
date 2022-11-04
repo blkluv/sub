@@ -1,4 +1,4 @@
-import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -54,7 +54,7 @@ const Retweet = ({ fileInfo }) => {
         color: (theme) => theme.palette.primary.contrastText,
       }}
     >
-      Connect your Twitter account and<br></br>retweet the tweet to unlock the content.
+      Connect your Twitter account and<br></br>retweet the tweet to unlock the content
     </Typography>
   );
   const tweetId =
@@ -64,7 +64,9 @@ const Retweet = ({ fileInfo }) => {
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
       <Container>
         <Unstable_Grid2 container justifyContent={"center"}>
-          {tweetId && <Tweet tweetId={tweetId} />}
+          <Box sx={{ width: 500, height: 300, overflowY: "scroll" }}>
+            {tweetId && <Tweet tweetId={tweetId} />}
+          </Box>
           <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(1, 0, 0, 0) }} />
         </Unstable_Grid2>
         <BaseLockType

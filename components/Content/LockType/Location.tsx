@@ -56,6 +56,7 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
   };
   const description = (
     <>
+      <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
       <Typography
         variant="h6"
         sx={{
@@ -96,7 +97,6 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
           </Unstable_Grid2>
         </a>
       </Typography>
-      <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
     </>
   );
   return (

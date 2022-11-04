@@ -40,12 +40,15 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
   const LockType = getLockType(fileInfo.unlockInfo);
   return (
     <Container sx={{ width: "fit-content" }}>
-      <Box sx={{ position: "relative", zIndex: "2", top: "75px", left: "225px" }}>
+      <Box sx={{ position: "relative", zIndex: "2", top: "70px", left: "220px" }}>
+        {!fileInfo?.thumbnail?.length && (
+          <Image height={70} width={70} src="/submarine.png" alt="Submarine Me" />
+        )}
         {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
           <Image
             style={{
-              width: "5em",
-              height: "5em",
+              width: "70px",
+              height: "70px",
               borderRadius: "1000px",
               margin: "auto",
               marginBottom: "1rem",
@@ -59,8 +62,8 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
           fileInfo?.thumbnail?.length > 0 && (
             <Image
               style={{
-                width: "6rem",
-                height: "6rem",
+                width: "70px",
+                height: "70px",
                 borderRadius: "1000px",
                 margin: "auto",
                 marginBottom: "1rem",
@@ -94,7 +97,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
         <Typography
           variant="h1"
           sx={{
-            padding: (theme) => theme.spacing(1),
+            marginTop: (theme) => theme.spacing(3),
             color: (theme) => theme.palette.primary.contrastText,
           }}
         >

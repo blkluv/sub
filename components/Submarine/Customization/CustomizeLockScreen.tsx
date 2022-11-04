@@ -44,15 +44,17 @@ const CustomizeLockScreen = () => {
       <Typography variant="h6">Logo Image</Typography>
       <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {logo && logo.length > 0 ? (
-          <Image src={`${gatewayUrl}/ipfs/${logo}`} alt="preview for logo" height={48} width={48} />
+          // <Box sx={{borderRadius: "8px", overflow: "hidden", width: (theme) => theme.spacing(7), height: (theme) => theme.spacing(7)}}>
+          <Image src={`${gatewayUrl}/ipfs/${logo}`} alt="preview for logo" height={56} width={56} />
         ) : (
+          // </Box>
           <Box
             sx={{
               display: "flex",
               border: "1px solid #C8C8C8",
-              height: "60px",
-              width: "60px",
-              borderRadius: "30px",
+              height: (theme) => theme.spacing(7),
+              width: (theme) => theme.spacing(7),
+              borderRadius: "8px",
               backgroundColor: (theme) => theme.palette.grey[100],
               alignItems: "center",
               justifyContent: "center",
@@ -69,12 +71,14 @@ const CustomizeLockScreen = () => {
       <Typography variant="h6">Background Image</Typography>
       <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {background && background.length > 0 ? (
-          <Image
-            src={`${gatewayUrl}/ipfs/${background}`}
-            height={160}
-            width={160}
-            alt="preview for background"
-          />
+          <Box sx={{ borderRadius: "8px", overflow: "hidden", width: 160, height: 160 }}>
+            <Image
+              src={`${gatewayUrl}/ipfs/${background}`}
+              height={160}
+              width={160}
+              alt="preview for background"
+            />
+          </Box>
         ) : (
           <Card
             sx={{

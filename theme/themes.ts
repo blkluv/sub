@@ -67,7 +67,7 @@ const darkColorPalette: Partial<Palette> = {
 };
 const typography = {
   typography: {
-    // fontFamily: "sans",
+    fontFamily: "sans",
     h1: {
       fontFamily: "Mulish",
       fontWeight: 900,
@@ -98,7 +98,7 @@ const typography = {
     },
     h6: {
       fontFamily: "Source Sans Pro",
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: 600,
       lineHeight: "24px",
     },

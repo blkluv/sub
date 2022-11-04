@@ -4,7 +4,6 @@ import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileFor
 import MainLandingContent from "./MainLandingContent";
 import { Unstable_Grid2, Dialog, Paper, IconButton, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box } from "@mui/system";
 interface PreviewModalProps {
   previewOpen;
   setPreviewOpen;
@@ -19,7 +18,7 @@ export default function PreviewModal({
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
-    width: 600,
+    width: "70vw",
     borderRadius: "30px",
     transform: "translate(-50%, -50%)",
     bgcolor: "background.paper",

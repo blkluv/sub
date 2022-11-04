@@ -9,7 +9,7 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import { Button, Divider, Typography, Unstable_Grid2 } from "@mui/material";
+import { Button, Divider, Typography, Unstable_Grid2, useMediaQuery } from "@mui/material";
 import SubmarineModal from "../SubmarineModal/SubmarineModal";
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -146,6 +146,7 @@ const Dashboard = () => {
               Find your recently submarined content below{" "}
             </Typography>
           </Unstable_Grid2>
+          {/* TODO create a drop down menu - no modal for mobile */}
           <Button onClick={() => setSubmarineOpen(true)}>Submarine New Files</Button>
         </Unstable_Grid2>
         <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(7, 0, 0, 0) }} />

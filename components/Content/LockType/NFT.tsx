@@ -44,13 +44,13 @@ const NFT = ({ fileInfo }) => {
   };
   const description = (
     <Typography
-      variant="body1"
+      variant="h6"
       sx={{
         padding: (theme) => theme.spacing(1),
         color: (theme) => theme.palette.primary.contrastText,
       }}
     >
-      Unlock this content by connecting your wallet to verify you have the required NFT.
+      Connect your wallet to unlock content
     </Typography>
   );
   return (

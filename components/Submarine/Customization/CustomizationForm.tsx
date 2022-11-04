@@ -21,12 +21,21 @@ const CustomizationForm = () => {
       <Typography variant="h6">Select a thumbnail image (optional)</Typography>
       <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {thumbnail && thumbnail.length && thumbnail.length > 0 ? (
-          <Image
-            src={`${gatewayUrl}/ipfs/${thumbnail}`}
-            height={48}
-            width={48}
-            alt="preview for thumbnail"
-          />
+          <Box
+            sx={{
+              borderRadius: "30px",
+              overflow: "hidden",
+              width: (theme) => theme.spacing(7),
+              height: (theme) => theme.spacing(7),
+            }}
+          >
+            <Image
+              src={`${gatewayUrl}/ipfs/${thumbnail}`}
+              height={56}
+              width={56}
+              alt="preview for thumbnail"
+            />
+          </Box>
         ) : (
           <Box
             sx={{
@@ -34,7 +43,7 @@ const CustomizationForm = () => {
               border: "1px solid #C8C8C8",
               height: (theme) => theme.spacing(7),
               width: (theme) => theme.spacing(7),
-              borderRadius: "8px",
+              borderRadius: "30px",
               backgroundColor: (theme) => theme.palette.grey[100],
               alignItems: "center",
               justifyContent: "center",

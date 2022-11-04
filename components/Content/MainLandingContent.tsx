@@ -22,7 +22,11 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
 
   useEffect(() => {
     const path = window.location.pathname;
-    if (path.includes("/submarine")) {
+    if (
+      path.includes("/submarine/nft") ||
+      path.includes("/submarine/location") ||
+      path.includes("/submarine/retweet")
+    ) {
       setIsPreview(true);
     }
   }, []);

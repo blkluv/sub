@@ -41,6 +41,7 @@ const UploadPrivateMedia = () => {
 
   console.log({ values });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // @ts-ignore
     setUploadFile((event.target as HTMLInputElement).value);
   };
   interface HTMLInputEvent extends Event {

@@ -12,7 +12,7 @@ const UnlockedContentContainer = ({ name }) => {
       {submarinedContent.directory ? (
         <Gallery name={name} content={submarinedContent} />
       ) : (
-        <SingleMediaDisplay url={url} submarinedContent={submarinedContent} />
+        <SingleMediaDisplay name={name} url={url} submarinedContent={submarinedContent} />
       )}
     </div>
   );

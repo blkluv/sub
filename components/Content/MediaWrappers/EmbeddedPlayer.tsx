@@ -2,10 +2,9 @@ import ReactPlayer from "react-player";
 
 export interface EmbeddedPlayerProps {
   url: string;
-  fileType: string;
 }
 
-const EmbeddedPlayer = ({ url, fileType }: EmbeddedPlayerProps) => {
+const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
   if (ReactPlayer.canPlay(url)) {
     return (
       <ReactPlayer

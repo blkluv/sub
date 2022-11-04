@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UploadMedia from "../../Upload/UploadMedia";
+import UploadPrivateMedia from "../../Upload/UploadPrivateMedia";
 import {
   Box,
   FormControlLabel,
@@ -86,7 +86,7 @@ const FileDetail = () => {
           />
         </Unstable_Grid2>
       </Unstable_Grid2>
-      <UploadMedia />
+      <UploadPrivateMedia />
     </Unstable_Grid2>
   );
 };

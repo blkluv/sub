@@ -20,11 +20,12 @@ import {
   Typography,
   Unstable_Grid2,
 } from "@mui/material";
+import * as Yup from "yup";
 
 interface SubmarineProps {
   children: ReactNode;
   unlockInfo: UnlockInfo;
-  canSubmit: (values: MetadataUnlockInfo) => boolean;
+  unlockInfoSchema: Yup.ObjectSchema<any>;
 }
 
 export interface MetadataUnlockInfo {
@@ -37,7 +38,7 @@ export interface MetadataUnlockInfo {
   shortId: string;
 }
 
-const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) => {
+const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: SubmarineProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -56,6 +57,15 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     ...baseInitialValues,
   });
 
+  const SubmarineFormSchema = Yup.object().shape({
+    unlockInfo: unlockInfoSchema,
+    name: Yup.string().required("Required"),
+    description: Yup.string().required("Required"),
+    thumbnail: Yup.string(),
+    customizations: Yup.object(),
+    submarineCID: Yup.string().required("Required"),
+    shortId: Yup.string().required("Required"),
+  });
   const { edit } = router.query;
   useEffect(() => {
     if (router.query && edit) {
@@ -107,7 +117,13 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
 
   return (
     <Layout>
-      <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
+      <Formik
+        initialValues={initialValues}
+        enableReinitialize
+        onSubmit={onSubmit}
+        validationSchema={SubmarineFormSchema}
+        isInitialValid={false}
+      >
         {(props) =>
           props.isSubmitting ? (
             <Container sx={{ textAlign: "center", padding: 4, marginBottom: 10 }}>
@@ -142,12 +158,10 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                   <Form>
                     <Container>
                       {children}
+                      {/* <pre>{JSON.stringify(props.errors, null, 2)}</pre> */}
                       <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>
                         <Unstable_Grid2 container justifyContent={"end"}>
-                          <Button
-                            type="submit"
-                            disabled={!canSubmit(props.values) || props.isSubmitting}
-                          >
+                          <Button type="submit" disabled={!props.isValid || props.isSubmitting}>
                             {props.isSubmitting ? "Processing..." : "Upload and Continue"}
                           </Button>
                         </Unstable_Grid2>

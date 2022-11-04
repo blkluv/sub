@@ -22,15 +22,11 @@ const ContractAddress = ({ blockchain }) => {
         >
           <FormikTextfield
             type="text"
-            name="unlockInfo.nft"
-            label="Update authority"
+            name="unlockInfo.mintAddress"
+            label="Mint Address"
             required
             adornment={
-              <span
-                style={{ cursor: "pointer" }}
-                aria-label="button"
-                onClick={() => setUpdateAuthorityModalOpen(true)}
-              >
+              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
                 <InformationCircleIconStyled />
               </span>
             }
@@ -38,10 +34,15 @@ const ContractAddress = ({ blockchain }) => {
           <Divider variant="middle" flexItem />
           <FormikTextfield
             type="text"
-            name="unlockInfo.mintAddress"
-            label="Mint Address"
+            name="unlockInfo.updateAuthority"
+            label="Update Authority"
+            required
             adornment={
-              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
+              <span
+                style={{ cursor: "pointer" }}
+                aria-label="button"
+                onClick={() => setUpdateAuthorityModalOpen(true)}
+              >
                 <InformationCircleIconStyled />
               </span>
             }
@@ -72,8 +73,9 @@ const ContractAddress = ({ blockchain }) => {
           />
           <FormikTextfield
             type="text"
-            name="unlockInfo.contract"
+            name="unlockInfo.tokenId"
             label="Token ID"
+            required
             adornment={
               <span
                 style={{ cursor: "pointer" }}

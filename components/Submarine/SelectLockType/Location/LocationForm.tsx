@@ -5,6 +5,7 @@ import { useFormikContext, Field } from "formik";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
 import FormikTextfield from "../../../Form/FormikTextfield";
 import { Button, Unstable_Grid2 } from "@mui/material";
+import { TextField } from "formik-mui";
 
 const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
@@ -40,7 +41,9 @@ const LocationForm = () => {
       </Button>
 
       <Unstable_Grid2>
-        <FormikTextfield
+        <Field
+          sx={{ m: 1 }}
+          component={TextField}
           name="unlockInfo.lat"
           label="Latitude"
           required
@@ -50,7 +53,9 @@ const LocationForm = () => {
             </span>
           }
         />
-        <FormikTextfield
+        <Field
+          sx={{ m: 1 }}
+          component={TextField}
           name="unlockInfo.long"
           label="Longitude"
           required
@@ -60,7 +65,7 @@ const LocationForm = () => {
             </span>
           }
         />
-        <FormikTextfield name="unlockInfo.distance" label="Distance" required />
+        <Field sx={{ m: 1 }} name="unlockInfo.distance" label="Distance" component={TextField} />
         <GoogleMapsCoordsModal
           googleMapsModalOpen={googleMapsModalOpen}
           setGoogleMapsModalOpen={setGoogleMapsModalOpen}

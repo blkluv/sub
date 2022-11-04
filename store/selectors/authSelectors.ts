@@ -18,7 +18,7 @@ export const selectGatewayUrl = createSelector([selectUser], (user) => user.gate
 export const selectTheme = createSelector([selectUser], (user) => {
   // TODO store preferences?
   if (user.theme) {
-    return user.theme;
+    return "light";
   }
   if (global.window) {
     return global.window.matchMedia("(prefers-color-scheme: light)").matches ? "dark" : "light";

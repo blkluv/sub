@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
-import UpgradeModal from "./UpgradeModal";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
@@ -9,64 +8,20 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import { Box, Button, Unstable_Grid2 } from "@mui/material";
-import { Container } from "@mui/system";
-
-const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
+import { Button, Unstable_Grid2 } from "@mui/material";
 
 const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
-  const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
   const [offset, setOffset] = useState(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
 
   useEffect(() => {
-    checkForPlan();
+    loadLinks(offset);
   }, []);
-
-  const isValidPaidPlan = (userPlanInfo) => {
-    if (
-      userPlanInfo?.subscriptionItems[0]?.type === "PROFESSIONAL" ||
-      userPlanInfo?.subscriptionItems[0]?.type === "EXTRA_MANAGED_GATEWAY"
-    ) {
-      return true;
-    }
-
-    if (NEW_PLANS.includes(userPlanInfo?.plan?.nickname)) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const checkForPlan = async () => {
-    const userPlanInfo = await getUserBillingInfo();
-    if (!userPlanInfo) {
-      setLoading(false);
-      setDisplayUpgradeModal(true);
-    } else if (!isValidPaidPlan(userPlanInfo)) {
-      setLoading(false);
-      setDisplayUpgradeModal(true);
-    } else {
-      loadLinks(offset);
-    }
-  };
-
-  const getUserBillingInfo = async () => {
-    try {
-      const ky = getKy();
-      const res = await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`);
-      const userJson = await res.json();
-      return userJson;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
 
   const handleChangePage = async (direction) => {
     let newOffset = offset;
@@ -155,7 +110,6 @@ const Dashboard = () => {
           </>
         )}
       </Unstable_Grid2>
-      {displayUpgradeModal && <UpgradeModal />}
     </>
   );
 };

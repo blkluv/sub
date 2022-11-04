@@ -1,0 +1,513 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
+
+.pinata-flex-landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 85vh;
+  width: 85%;
+  margin: auto;
+  line-height: 2rem;
+  text-align: left;
+}
+
+.pinata-flex-landing p {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.pinata-flex-landing h1 {
+  font-size: 48px;
+  line-height: 3rem;
+  margin-bottom: 20px;
+}
+
+.pinata-landing-white,
+.pinata-landing-white h1,
+.pinata-landing-white h2,
+.pinata-landing-white h3,
+.pinata-landing-white h4 {
+  background: #fff;
+  color: #000 !important;
+}
+
+.pinata-landing-yellow,
+.pinata-landing-yellow h1,
+.pinata-landing-yellow h2,
+.pinata-landing-yellow h3,
+.pinata-landing-yellow h4 {
+  background: #ffe000;
+  color: #000;
+}
+
+.pinata-landing-blue,
+.pinata-landing-blue h1,
+.pinata-landing-blue h2,
+.pinata-landing-blue h3,
+.pinata-landing-blue h4 {
+  background: #00bedd;
+  color: #fff;
+}
+
+.pinata-landing-purple,
+.pinata-landing-purple h1,
+.pinata-landing-purple h2,
+.pinata-landing-purple h3,
+.pinata-landing-purple h4 {
+  background: #8c00f1;
+  color: #fff;
+}
+
+.pinata-main-pinnie {
+  width: 90%;
+  margin: auto;
+}
+
+.pinata-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.pinata-flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.pinata-flex-center {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pinata-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  height: 500px;
+}
+
+.pinata-responsive-table {
+  min-height: 30vh;
+  min-width: 85% !important;
+  overflow: visible;
+}
+
+.pinata-file-upload {
+  display: none;
+}
+
+.pinata-custom-file-upload {
+  border: 1px dashed #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pinata-keyvalue-table {
+  margin-top: 25px;
+}
+
+.pinata-key-value-table-body {
+  margin-bottom: 15px;
+}
+
+.pinata-link-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #495057;
+}
+
+.pinata-big-btn {
+  width: 250px;
+  height: 60px;
+}
+
+.pinata-small-nav-logo {
+  max-width: 70px;
+}
+
+.pinata-small-nav {
+  display: none !important;
+}
+
+.pinata-large-nav {
+  display: block !important;
+}
+
+.pinata-landing-img {
+  max-width: 85%;
+  max-height: 500px;
+  margin: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.pinata-no-box {
+  box-shadow: none !important;
+}
+
+.pinata-landing-section-b {
+  width: 100vw;
+  background: #fff;
+}
+
+.pinata-nav li a,
+.pinata-link {
+  color: #282828;
+  font-size: 18px;
+}
+
+.pinata-pricing-page-logos {
+  max-width: 50px;
+}
+
+.pinata-pricing-faq {
+  max-width: 65%;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.pinata-extra-contain {
+  max-width: 85%;
+  margin: auto;
+}
+
+.pinata-page-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.pinata-active {
+  color: #ffe000 !important;
+}
+
+.pinata-docs-indent {
+  margin-left: 15px;
+}
+
+.pinata-about-svg {
+  width: 200px;
+  height: 400px;
+  margin: auto;
+  margin: 10px;
+}
+
+.pinata-black {
+  color: #000 !important;
+}
+
+.form-control::placeholder {
+  color: #e0e0e0 !important;
+}
+
+.form-control::-moz-placeholder {
+  color: #e0e0e0;
+}
+
+.pinata-file-upload-border {
+  border: #00bedd 2px solid;
+}
+
+.pinata-cid-upload-custom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#pinata-cid-upload {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.pinata-cid-verified button,
+.pinata-cid-verified h4,
+.pinata-cid-verified h5 {
+  margin-top: 25px;
+}
+
+.pinata-domain-input::after {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  content: attr(data-placeholder);
+  pointer-events: none;
+  opacity: 0.5;
+  font-size: 14px;
+}
+
+.pinata-domain-availability {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-right: 10px;
+  margin-top: 15px;
+}
+
+.pinata-region {
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+  cursor: pointer;
+  background: #eee;
+}
+
+.pinata-region-selected {
+  border: #00bedd 1px solid !important;
+}
+
+.pinata-region-small-icon {
+  height: 25px;
+}
+.pinata-landing-final-section {
+  padding-bottom: 60px;
+}
+
+.pinata-standout {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+}
+
+.pinata-current-plan-pinnie {
+  width: 40px;
+}
+
+.pinata-mobile-hamburger {
+  display: none;
+}
+
+.pinata-horizontal-layout-profile-menu {
+  position: absolute;
+  right: 5px;
+}
+
+.pinata-mono {
+  font-family: "Roboto Mono", monospace;
+}
+
+.pinata-no-edit:hover {
+  cursor: not-allowed;
+}
+
+.dropzone {
+  border: none !important;
+}
+
+.pinata-progress-nav {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.pinata-step {
+  padding: 5px;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  color: #000;
+  border-radius: 1000px;
+}
+
+.pinata-active-step {
+  padding: 5px;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  background-color: #8c00f1;
+  color: #fff;
+  border-radius: 1000px;
+}
+
+.pinata-file-uploader {
+  text-align: center;
+}
+
+.pinata-file-uploader.settings {
+  margin-bottom: 15px;
+}
+
+.pinata-cursor {
+  cursor: pointer;
+}
+
+.pinata-no-click {
+  cursor: not-allowed;
+}
+
+.pinata-table-head th {
+  padding-left: 5px !important;
+}
+
+@media screen and (max-width: 700px) {
+  .pinata-main-pinnie {
+    margin-top: 10px;
+  }
+  .pinata-large-nav {
+    display: none !important;
+  }
+
+  .pinata-small-nav {
+    display: block !important;
+  }
+
+  .pinata-center {
+    height: 250px;
+  }
+
+  .pinata-landing-img {
+    max-height: 250px;
+  }
+
+  .pinata-landing-final-section {
+    padding-bottom: 150px;
+  }
+}
+
+#pinata-pricing-cards-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5em;
+  position: relative;
+}
+
+.pinata-pricing-cards-active {
+  border: 6px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(120deg, var(--purple), orange);
+}
+
+.card-body {
+  z-index: 1;
+  background-color: white;
+}
+
+@media screen and (max-width: 960px) and (min-width: 769px) {
+  #pinata-pricing-cards-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #pinata-pricing-cards-list {
+    grid-template-columns: auto;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .pinata-mobile-hamburger {
+    display: block;
+  }
+
+  .pinata-vertical-menu {
+    display: block !important;
+  }
+}
+
+.general-modal .btn {
+  margin-right: 15px;
+}
+.general-modal .content {
+  margin-bottom: 20px;
+}
+
+.gateways-buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tooltip-metrics-item {
+  margin: 0;
+}
+
+.MuiIconButton-root.tooltip-metrics-button {
+  padding: 0;
+}
+
+.metric-near {
+  background-color: #f8e7be !important;
+}
+.metric-exceeded {
+  background-color: #f8bdbd !important;
+}
+
+.upload-progress-label {
+  margin-top: 10px;
+}
+
+.metric-value-column {
+  width: 160px;
+}
+
+.alert-container {
+  position: fixed;
+  z-index: 10000;
+  width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0;
+  margin-top: 35px;
+  margin-left: calc(50% - 300px);
+}
+
+.footer {
+  position: relative !important;
+  padding: 30px 0;
+}
+
+.updating-plan-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+.gateway-select-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.enterprise-banner-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+}
+
+.enterprise-banner-content h2,
+.enterprise-banner-content p {
+  color: #fff;
+  margin-bottom: 15px;
+}

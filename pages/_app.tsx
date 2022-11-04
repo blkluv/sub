@@ -6,6 +6,8 @@ import { AppProps } from "next/app";
 import { wrapper } from "../store/store";
 import { IntercomProvider } from "react-use-intercom";
 import ThemeProvider from "../theme/ThemeProvider";
+import "../styles/scss/bootstrap.scss";
+import "../styles/pinataCustomStyles.css";
 
 import { useEffect } from "react";
 import * as FullStory from "@fullstory/browser";

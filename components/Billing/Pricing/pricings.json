@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "title": "Free",
+    "description": "Welcome to Pinata",
+    "icon": "bx-walk",
+    "pinata": "purple",
+    "color": "#fff",
+    "price": "0",
+    "duration": "Per month",
+    "link": "sign up",
+    "features": [
+      { "title": "1 GB storage" },
+      { "title": "API Access" },
+      { "title": "Pinata Upload" },
+      { "title": "Pin Manager" }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Individual",
+    "description": "A place for your digital world",
+    "icon": "bx-run",
+    "pinata": "magenta",
+    "color": "#fff",
+    "price": "0.15",
+    "duration": "Per GB per month",
+    "link": "sign up",
+    "features": [
+      { "title": "Unlimited storage" },
+      { "title": "API Access" },
+      { "title": "Pinata Upload" },
+      { "title": "Pin Manager" }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Professional",
+    "description": "Speed at scale",
+    "icon": "bx-cycling",
+    "pinata": "blue",
+    "color": "#fff",
+    "price": "20",
+    "duration": "Per month",
+    "link": "sign up",
+    "features": [
+      { "title": "1 Dedicated IPFS Gateway" },
+      { "title": "100GB bandwidth included per month" },
+      { "title": "Additional bandwidth at $0.05/gb" },
+      { "title": "Unlimited storage at $0.15/gb" },
+      { "title": "Additional gateways at $10 each per month" }
+    ]
+  }
+]

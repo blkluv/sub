@@ -33,11 +33,10 @@ export default function AuthForm() {
       }
       try {
         await Auth.confirmSignUp(email, confirmationCode);
-        dispatch(doLogin({ email, password }));
       } catch (error) {
         setInvalidCode(true);
+        return;
       }
-      return;
     }
     if (isMFARequest) {
       if (mfa) {
@@ -62,6 +61,7 @@ export default function AuthForm() {
     setHasRequestedNewCode(true);
     Auth.resendSignUp(email);
   };
+
   return (
     <Container sx={{ marginTop: "2rem" }} maxWidth="md">
       <Unstable_Grid2
@@ -184,12 +184,16 @@ export default function AuthForm() {
                 <Typography
                   variant={"body1"}
                   color="primary.main"
-                  sx={{ cursor: "pointer", marginTop: "1rem" }}
+                  sx={{ cursor: "pointer", paddingTop: "1rem", margin: "0 auto" }}
                 >
                   {"Forgot password?"}
                 </Typography>
               </Link>
-              <Typography variant={"body1"} color="error" sx={{ marginTop: "1rem" }}>
+              <Typography
+                variant={"body1"}
+                color="error"
+                sx={{ paddingTop: "1rem", margin: "0 auto" }}
+              >
                 {authError}
               </Typography>
             </Unstable_Grid2>

@@ -20,6 +20,7 @@ const Login = ({ router }) => {
   useEffect(() => {
     dispatch(tryLogin());
   }, []);
+
   return (
     <>
       <SharedHead />

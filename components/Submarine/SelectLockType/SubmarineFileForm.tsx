@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React, { ReactNode, useEffect, useState } from "react";
 import PreviewModal from "../../Content/PreviewModal";
-import Layout from "../../Layout";
+import PrivateLayout from "../../Layout";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -106,7 +106,7 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
   };
 
   return (
-    <Layout>
+    <PrivateLayout>
       <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
         {(props) =>
           props.isSubmitting ? (
@@ -173,7 +173,7 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
           )
         }
       </Formik>
-    </Layout>
+    </PrivateLayout>
   );
 };
 

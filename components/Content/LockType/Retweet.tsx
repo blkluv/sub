@@ -54,7 +54,7 @@ const Retweet = ({ fileInfo }) => {
         color: (theme) => theme.palette.primary.contrastText,
       }}
     >
-      Unlock this content by retweeting the above tweet and signing in with your Twitter account.
+      Connect your Twitter account and<br></br>retweet the tweet to unlock the content.
     </Typography>
   );
   const tweetId =

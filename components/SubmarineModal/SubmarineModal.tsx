@@ -17,8 +17,11 @@ const SubmarineModal = ({ open, setOpen }) => {
         }}
         maxWidth="lg"
       >
-        <Unstable_Grid2 container justifyContent={"space-between"}>
-          <Typography sx={{ margin: (theme) => theme.spacing(0, 0, 2, 0) }} variant="h3">
+        <Unstable_Grid2
+          container
+          sx={{ justifyContent: "space-between", alignItems: "flex-start" }}
+        >
+          <Typography sx={{ margin: (theme) => theme.spacing(0, 0, 2, 0) }} variant="h2">
             How you&apos;d like your submarined <br></br> content to be unlocked?
           </Typography>
           <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>

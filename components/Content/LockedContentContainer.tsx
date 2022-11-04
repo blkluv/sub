@@ -7,7 +7,7 @@ import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
-import { Box, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -39,52 +39,58 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
 
   const LockType = getLockType(fileInfo.unlockInfo);
   return (
-    <Unstable_Grid2 container>
-      <Unstable_Grid2
-        sx={{
-          padding: (theme) => theme.spacing(4),
-          margin: (theme) => theme.spacing(4, 4, 4, 4),
-          backgroundColor: (theme) => theme.palette.primary.dark,
-          opacity: "0.85",
-          borderRadius: "48px",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-        }}
-        container
-        direction={"column"}
-      >
-        <Box>
-          {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
+    <Container sx={{ width: "fit-content" }}>
+      <Box sx={{ position: "relative", zIndex: "2", top: "75px", left: "225px" }}>
+        {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
+          <Image
+            style={{
+              width: "5em",
+              height: "5em",
+              borderRadius: "1000px",
+              margin: "auto",
+              marginBottom: "1rem",
+            }}
+            src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
+            alt={`${fileInfo.name} preview`}
+            width={100}
+            height={100}
+          />
+        ) : (
+          fileInfo?.thumbnail?.length > 0 && (
             <Image
               style={{
                 width: "6rem",
                 height: "6rem",
                 borderRadius: "1000px",
+                margin: "auto",
+                marginBottom: "1rem",
               }}
-              src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
+              src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
               alt={`${fileInfo.name} preview`}
               width={100}
               height={100}
             />
-          ) : (
-            fileInfo?.thumbnail?.length > 0 && (
-              <Image
-                style={{
-                  width: "6rem",
-                  height: "6rem",
-                  borderRadius: "1000px",
-                  margin: "auto",
-                  marginBottom: "1rem",
-                }}
-                src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
-                alt={`${fileInfo.name} preview`}
-                width={100}
-                height={100}
-              />
-            )
-          )}
-        </Box>
+          )
+        )}
+      </Box>
+      <Paper
+        elevation={3}
+        sx={{
+          position: "relative",
+          left: "0",
+          right: "0",
+          marginLeft: "auto",
+          marginRight: "auto",
+          padding: (theme) => theme.spacing(4),
+          margin: (theme) => theme.spacing(4, 4, 4, 4),
+          backgroundColor: (theme) => theme.palette.primary.dark,
+          opacity: "0.9",
+          borderRadius: "48px",
+          justifyContent: "center",
+          width: 450,
+          textAlign: "center",
+        }}
+      >
         <Typography
           variant="h1"
           sx={{
@@ -105,8 +111,8 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
           {fileInfo.description}
         </Typography>
         {LockType}
-      </Unstable_Grid2>
-    </Unstable_Grid2>
+      </Paper>
+    </Container>
   );
 };
 

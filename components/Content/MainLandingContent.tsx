@@ -8,7 +8,8 @@ import LockedContentContainer from "./LockedContentContainer";
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
-import { Unstable_Grid2, Box } from "@mui/material";
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export interface MainLandingContentProps {
   missing: boolean;
@@ -17,6 +18,16 @@ export interface MainLandingContentProps {
 }
 
 const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingContentProps) => {
+  const [isPreview, setIsPreview] = useState<boolean>(false);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes("/submarine")) {
+      setIsPreview(true);
+    }
+  }, []);
+
+  console.log(isPreview);
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
   let content;
   if (missing) {
@@ -29,35 +40,39 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
     content = <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} />;
   }
   return (
-    <Unstable_Grid2 container>
+    <>
       <Box
+        sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4), width: "fit-content" }}
+        style={getCustomFont(fileInfo)}
+      >
+        {fileInfo.customizations && fileInfo.customizations.logoCid ? (
+          <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
+        ) : (
+          <SubmarineLogoSvg />
+        )}
+      </Box>
+      <Box
+        style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
           backgroundImage: fileInfo.customizations?.backgroundCid
             ? `url(${gatewayUrl}/ipfs/${fileInfo.customizations?.backgroundCid})`
             : "none",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
           background:
             !fileInfo.customizations?.backgroundCid &&
             "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
-          borderRadius: "30px",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          minHeight: isPreview ? "90vh" : "100vh",
+          justifyContent: "center",
           alignContent: "center",
-          padding: (theme) => theme.spacing(2, 2, 0, 2),
+          display: "flex",
+          flexDirection: "column",
+          borderRadius: isPreview && "45px",
         }}
-        style={forcedStyle(fileInfo, gatewayUrl)}
       >
-        <Unstable_Grid2 style={getCustomFont(fileInfo)}>
-          {fileInfo.customizations && fileInfo.customizations.logoCid ? (
-            <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
-          ) : (
-            <SubmarineLogoSvg />
-          )}
-        </Unstable_Grid2>
-        <Unstable_Grid2 container direction={"column"}>
-          {content}
-        </Unstable_Grid2>
+        {content}
       </Box>
-    </Unstable_Grid2>
+    </>
   );
 };
 

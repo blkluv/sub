@@ -17,8 +17,8 @@ const UnlockTypeCardFactory = () => {
       <Unstable_Grid2
         container
         direction="row"
-        spacing={2}
-        sx={{ padding: "1rem", margin: "1rem 0 1rem 0", height: "20rem" }}
+        spacing={1}
+        sx={{ padding: (theme) => theme.spacing(1), margin: (theme) => theme.spacing(2, 0, 0, 0) }}
       >
         <UnlockTypeCard
           setUnlockType={setUnlockType}
@@ -41,16 +41,18 @@ const UnlockTypeCardFactory = () => {
           helperText={locationText}
           type="location"
         />
-        <Unstable_Grid2 xs={12} sm={6} md={3}>
+        <Unstable_Grid2 xs={12} sm={6} lg={3}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Unstable_Grid2 xs={2}>
-                <Typography variant="h1" sx={{ color: "darkGrey" }}>
+                <Typography variant="h3" sx={{ color: (theme) => theme.palette.grey[500] }}>
                   Credit/Debit Card Payment
                 </Typography>
               </Unstable_Grid2>
-              <Unstable_Grid2 xs={10} sx={{ marginTop: "1em" }}>
-                <Typography sx={{ color: "darkGrey" }}>Coming Soon</Typography>
+              <Unstable_Grid2 xs={10} sx={{ margin: (theme) => theme.spacing(0, 0, 2, 0) }}>
+                <Typography sx={{ color: (theme) => theme.palette.grey[500] }}>
+                  Coming Soon
+                </Typography>
               </Unstable_Grid2>
             </CardContent>
           </Card>

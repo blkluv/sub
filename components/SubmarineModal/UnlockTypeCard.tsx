@@ -16,7 +16,7 @@ export const UnlockTypeCard = ({
   unlockType,
 }: UnlockTypeCardProps) => {
   return (
-    <Unstable_Grid2 xs={12} sm={6} md={3}>
+    <Unstable_Grid2 xs={12} sm={6} lg={3}>
       <Link href={`/submarine/${unlockType}`} sx={{ textDecoration: "none" }}>
         <Card
           sx={{
@@ -31,13 +31,19 @@ export const UnlockTypeCard = ({
         >
           <CardContent>
             <Unstable_Grid2 container direction={"column"}>
-              <Unstable_Grid2 xs={2}>
-                <Typography sx={{ color: unlockType === type && "#FEFEFE;" }} variant="h1">
+              <Unstable_Grid2>
+                <Typography
+                  sx={{ color: (theme) => unlockType === type && theme.palette.primary.light }}
+                  variant="h3"
+                >
                   {title}
                 </Typography>
               </Unstable_Grid2>
-              <Unstable_Grid2 xs={10} sx={{ marginTop: "1em" }}>
-                <Typography sx={{ color: unlockType === type && "#FEFEFE;" }}>
+              <Unstable_Grid2>
+                <Typography
+                  variant="body1"
+                  sx={{ color: (theme) => unlockType === type && theme.palette.primary.light }}
+                >
                   {helperText}
                 </Typography>
               </Unstable_Grid2>

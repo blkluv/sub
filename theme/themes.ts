@@ -71,23 +71,23 @@ const typography = {
     h1: {
       fontFamily: "Mulish",
       fontWeight: 900,
-      fontSize: 40,
+      fontSize: 35,
       lineHeight: "36px",
     },
     h2: {
       fontFamily: "Mulish",
-      fontSize: 34,
+      fontSize: 32,
       fontWeight: 900,
       lineHeight: "40px",
     },
     h3: {
       fontFamily: "Mulish",
-      fontSize: 32,
+      fontSize: 25,
       fontWeight: 900,
       lineHeight: "36px",
     },
     h4: {
-      fontSize: 28,
+      fontSize: 22,
       fontWeight: 600,
       lineHeight: "32px",
     },
@@ -109,7 +109,7 @@ const typography = {
     },
     subtitle2: {
       fontSize: 16,
-      fontWeight: 400,
+      fontWeight: 200,
       lineHeight: "24px",
     },
     body1: {

@@ -9,7 +9,7 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import { Button, Typography, Unstable_Grid2 } from "@mui/material";
+import { Button, Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import SubmarineModal from "../SubmarineModal/SubmarineModal";
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -142,12 +142,14 @@ const Dashboard = () => {
         >
           <Unstable_Grid2 container direction={"column"}>
             <Typography variant="h1">Submarine Files</Typography>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" sx={{ color: (theme) => theme.palette.grey[500] }}>
               Find your recently submarined content below{" "}
             </Typography>
           </Unstable_Grid2>
           <Button onClick={() => setSubmarineOpen(true)}>Submarine New Files</Button>
         </Unstable_Grid2>
+        <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(7, 0, 0, 0) }} />
+
         {loading ? (
           <Unstable_Grid2 container justifyContent={"center"}>
             <Loading />

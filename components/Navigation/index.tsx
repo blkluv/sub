@@ -22,8 +22,8 @@ export default function Navigation() {
           "linear-gradient(0deg, rgba(249, 249, 249, 0.94), rgba(249, 249, 249, 0.94)), rgba(30, 30, 30, 0.75)",
         backdropFilter: "blur(10px)",
         height: "6em",
-        padding: "20px",
         width: "100vw",
+        justifyContent: "center",
       }}
     >
       <Toolbar>

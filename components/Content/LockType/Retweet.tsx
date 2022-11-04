@@ -1,4 +1,4 @@
-import { Box, Typography, Unstable_Grid2 } from "@mui/material";
+import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -47,7 +47,13 @@ const Retweet = ({ fileInfo }) => {
     }
   };
   const description = (
-    <Typography>
+    <Typography
+      variant="h6"
+      sx={{
+        padding: (theme) => theme.spacing(1),
+        color: (theme) => theme.palette.primary.contrastText,
+      }}
+    >
       Unlock this content by retweeting the above tweet and signing in with your Twitter account.
     </Typography>
   );
@@ -56,9 +62,10 @@ const Retweet = ({ fileInfo }) => {
     fileInfo?.unlockInfo?.tweetUrl.split("status/")?.[1]?.split("?")?.[0];
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
-      <Container sx={{ padding: (theme) => theme.spacing(4) }}>
+      <Container>
         <Unstable_Grid2 container justifyContent={"center"}>
           {tweetId && <Tweet tweetId={tweetId} />}
+          <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(1, 0, 0, 0) }} />
         </Unstable_Grid2>
         <BaseLockType
           description={description}

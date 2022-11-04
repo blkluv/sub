@@ -7,13 +7,13 @@ import { useFormikContext } from "formik";
 import { Field } from "formik";
 import { MetadataUnlockInfo } from "../SelectLockType/SubmarineFileForm";
 import {
+  Box,
   Button,
   Card,
   FormControlLabel,
   MenuItem,
   Popover,
   Radio,
-  SvgIcon,
   Typography,
   Unstable_Grid2,
 } from "@mui/material";
@@ -42,21 +42,24 @@ const CustomizeLockScreen = () => {
   return (
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginBottom: "2em" }}>
       <Typography variant="h6">Logo Image</Typography>
-      <Unstable_Grid2 container gap={"2em"}>
+      <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {logo && logo.length > 0 ? (
           <Image src={`${gatewayUrl}/ipfs/${logo}`} alt="preview for logo" height={48} width={48} />
         ) : (
-          <SvgIcon
+          <Box
             sx={{
-              height: (theme) => theme.spacing(6),
-              width: (theme) => theme.spacing(6),
+              display: "flex",
+              border: "1px solid #C8C8C8",
+              height: "60px",
+              width: "60px",
               borderRadius: "30px",
-              backgroundColor: (theme) => theme.palette.grey[300],
-              color: (theme) => theme.palette.grey[500],
+              backgroundColor: (theme) => theme.palette.grey[100],
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-          </SvgIcon>
+            <Image height={27} width={40} src="/submarine.png" alt="Submarine Me" />
+          </Box>
         )}
         <UploadImagePublic
           label={"Select a logo image"}
@@ -64,7 +67,7 @@ const CustomizeLockScreen = () => {
         />
       </Unstable_Grid2>
       <Typography variant="h6">Background Image</Typography>
-      <Unstable_Grid2 container gap={"2em"}>
+      <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {background && background.length > 0 ? (
           <Image
             src={`${gatewayUrl}/ipfs/${background}`}
@@ -76,8 +79,8 @@ const CustomizeLockScreen = () => {
           <Card
             sx={{
               backgroundImage: "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
-              height: (theme) => theme.spacing(6),
-              width: (theme) => theme.spacing(6),
+              height: "60px",
+              width: "60px",
               borderRadius: "8px",
             }}
           ></Card>

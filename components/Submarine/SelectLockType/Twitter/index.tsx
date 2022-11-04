@@ -1,6 +1,4 @@
 import React from "react";
-import CustomizationForm from "../../Customization/CustomizationForm";
-import FileDetailForm from "../FileDetailForm";
 import LockTypeContainer from "../LockTypeContainer";
 import TwitterForm from "./TwitterForm";
 

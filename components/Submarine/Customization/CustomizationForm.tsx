@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FormControlLabel, SvgIcon, Switch, Typography, Unstable_Grid2 } from "@mui/material";
+import { FormControlLabel, Box, Switch, Typography, Unstable_Grid2 } from "@mui/material";
 import CustomizeLockScreen from "./CustomizeLockScreen";
 import Image from "next/image";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";
@@ -19,7 +19,7 @@ const CustomizationForm = () => {
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>
       <Typography variant="h5">Customization</Typography>
       <Typography variant="h6">Select a thumbnail image (optional)</Typography>
-      <Unstable_Grid2 container gap={"2em"}>
+      <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {thumbnail && thumbnail.length && thumbnail.length > 0 ? (
           <Image
             src={`${gatewayUrl}/ipfs/${thumbnail}`}
@@ -28,17 +28,20 @@ const CustomizationForm = () => {
             alt="preview for thumbnail"
           />
         ) : (
-          <SvgIcon
+          <Box
             sx={{
-              height: (theme) => theme.spacing(6),
-              width: (theme) => theme.spacing(6),
+              display: "flex",
+              border: "1px solid #C8C8C8",
+              height: (theme) => theme.spacing(7),
+              width: (theme) => theme.spacing(7),
               borderRadius: "8px",
-              backgroundColor: (theme) => theme.palette.grey[300],
-              color: (theme) => theme.palette.grey[500],
+              backgroundColor: (theme) => theme.palette.grey[100],
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            {/* <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /> */}
-          </SvgIcon>
+            <Image height={27} width={40} src="/submarine.png" alt="Submarine Me" />
+          </Box>
         )}
         <UploadImagePublic
           label={"Select a thumbnail image"}

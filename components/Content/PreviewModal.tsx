@@ -17,7 +17,8 @@ export default function PreviewModal({
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
-    height: "80%",
+    width: 550,
+    borderRadius: "30px",
     transform: "translate(-50%, -50%)",
     bgcolor: "background.paper",
     boxShadow: 24,
@@ -32,20 +33,14 @@ export default function PreviewModal({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Unstable_Grid2 container spacing={0} direction={"column"}>
+        <Unstable_Grid2
+          container
+          spacing={0}
+          direction={"column"}
+          sx={{ gap: (theme) => theme.spacing(2), alignItems: "center", maxHeight: "90%" }}
+        >
           <MainLandingContent missing={false} fileInfo={fileInfo} gatewayUrl={gatewayUrl} />
-
-          <Unstable_Grid2
-            container
-            justifyContent={"flex-end"}
-            spacing={0}
-            sx={{ padding: 1 }}
-            direction={"row"}
-          >
-            <Button onClick={() => setOpen(false)} variant="outlined">
-              Close
-            </Button>
-          </Unstable_Grid2>
+          <Button onClick={() => setOpen(false)}>Close</Button>
         </Unstable_Grid2>
       </Box>
     </Modal>

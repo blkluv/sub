@@ -1,6 +1,5 @@
-import { MapIcon } from "@heroicons/react/outline";
-import { Typography, Unstable_Grid2 } from "@mui/material";
-import Link from "next/link";
+import MapIcon from "@mui/icons-material/Map";
+import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { getKy } from "../../../helpers/ky";
 import { useAppDispatch } from "../../../store/hooks";
 import { setAlert } from "../../../store/slices/alertSlice";
@@ -57,14 +56,19 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
   };
   const description = (
     <>
-      <Typography>
+      <Typography
+        variant="h6"
+        sx={{
+          padding: (theme) => theme.spacing(1),
+          color: (theme) => theme.palette.primary.contrastText,
+        }}
+      >
         You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of these coordinates
         to unlock this media:
       </Typography>
       <Typography
         paragraph
         sx={{
-          marginTop: (theme) => theme.spacing(4),
           color: (theme) => theme.palette.primary.main,
           textDecoration: "underline",
         }}
@@ -74,14 +78,25 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <Unstable_Grid2 container justifyContent={"center"}>
-            <span>
-              {unlockInfo?.lat}, {unlockInfo?.long}
-            </span>
-            <MapIcon style={{ marginLeft: "0.5rem" }} height={"1.5rem"} />
+          <Unstable_Grid2 container sx={{ justifyContent: "center", alignItems: "center" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                padding: (theme) => theme.spacing(1),
+                color: (theme) => theme.palette.primary.contrastText,
+              }}
+            >
+              {unlockInfo?.lat}, <br /> {unlockInfo?.long}
+            </Typography>
+            <MapIcon
+              style={{ marginLeft: "0.5rem" }}
+              height={"1.5rem"}
+              sx={{ color: (theme) => theme.palette.primary.contrastText }}
+            />
           </Unstable_Grid2>
         </a>
       </Typography>
+      <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
     </>
   );
   return (

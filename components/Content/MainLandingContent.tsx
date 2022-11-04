@@ -8,7 +8,7 @@ import LockedContentContainer from "./LockedContentContainer";
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
-import { Box } from "@mui/material";
+import { Unstable_Grid2, Box } from "@mui/material";
 
 export interface MainLandingContentProps {
   missing: boolean;
@@ -29,39 +29,35 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
     content = <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} />;
   }
   return (
-    <>
+    <Unstable_Grid2 container>
       <Box
-        sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4) }}
-        style={getCustomFont(fileInfo)}
-      >
-        {fileInfo.customizations && fileInfo.customizations.logoCid ? (
-          <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
-        ) : (
-          <SubmarineLogoSvg />
-        )}
-      </Box>
-      <Box
-        style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
-          margin: "auto",
           backgroundImage: fileInfo.customizations?.backgroundCid
             ? `url(${gatewayUrl}/ipfs/${fileInfo.customizations?.backgroundCid})`
             : "none",
-          background:
-            !fileInfo.customizations?.backgroundCid &&
-            "linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
-          justifyContent: "center",
+          background:
+            !fileInfo.customizations?.backgroundCid &&
+            "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
+          borderRadius: "30px",
           alignContent: "center",
-          display: "flex",
-          flexDirection: "column",
+          padding: (theme) => theme.spacing(2, 2, 0, 2),
         }}
+        style={forcedStyle(fileInfo, gatewayUrl)}
       >
-        {content}
+        <Unstable_Grid2 style={getCustomFont(fileInfo)}>
+          {fileInfo.customizations && fileInfo.customizations.logoCid ? (
+            <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
+          ) : (
+            <SubmarineLogoSvg />
+          )}
+        </Unstable_Grid2>
+        <Unstable_Grid2 container direction={"column"}>
+          {content}
+        </Unstable_Grid2>
       </Box>
-    </>
+    </Unstable_Grid2>
   );
 };
 

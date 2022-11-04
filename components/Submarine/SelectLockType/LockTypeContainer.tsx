@@ -17,7 +17,11 @@ const LockTypeContainer = ({ children, title, description }) => {
         }}
       >
         <Typography variant="h2">{title}</Typography>
-        <Typography variant="subtitle2" sx={{ color: "darkGrey" }} paragraph>
+        <Typography
+          variant="subtitle2"
+          sx={{ color: (theme) => theme.palette.grey[500] }}
+          paragraph
+        >
           {description}
         </Typography>
       </Unstable_Grid2>

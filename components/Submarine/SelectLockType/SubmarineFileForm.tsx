@@ -117,16 +117,20 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
               <CircularProgress size={100} />
             </Container>
           ) : (
-            <Unstable_Grid2 container direction="column" alignContent={"center"}>
-              <Unstable_Grid2 container justifyContent={"space-between"}>
-                <Link passHref href="/submarine/new">
+            <Unstable_Grid2 container direction="column">
+              <Unstable_Grid2
+                container
+                justifyContent={"space-between"}
+                sx={{ margin: (theme) => theme.spacing(2), alignItems: "center" }}
+              >
+                <Link passHref href="/">
                   <Box height={"2rem"} width={"2rem"} sx={{ cursor: "pointer" }}>
                     <ArrowLeftIcon />
                   </Box>
                 </Link>
                 <Box
                   sx={{
-                    display: { xs: "block", xl: "none" },
+                    display: { xs: "block", lg: "none" },
                   }}
                 >
                   <Button onClick={() => setPreviewOpen(true)}>Preview</Button>
@@ -137,12 +141,12 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                   fileInfo={props.values}
                 />
               </Unstable_Grid2>
-              <Unstable_Grid2 container>
-                <Unstable_Grid2 xl={6} xs={12}>
+              <Unstable_Grid2 container sx={{ marginTop: (theme) => theme.spacing(2) }}>
+                <Unstable_Grid2 lg={6} xs={12}>
                   <Form>
                     <Container>
                       {children}
-                      <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>
+                      <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
                         <Unstable_Grid2 container justifyContent={"end"}>
                           <Button
                             type="submit"
@@ -155,18 +159,18 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                     </Container>
                   </Form>
                 </Unstable_Grid2>
-                <Unstable_Grid2 xl={6}>
-                  <Box
-                    sx={{
-                      display: { xs: "none", xl: "block" },
-                    }}
-                  >
-                    <MainLandingContent
-                      missing={false}
-                      fileInfo={props.values}
-                      gatewayUrl={gatewayUrl}
-                    />
-                  </Box>
+                <Unstable_Grid2
+                  lg={6}
+                  sx={{
+                    padding: (theme) => theme.spacing(0, 2, 0, 2),
+                    display: { lg: "block", xs: "none" },
+                  }}
+                >
+                  <MainLandingContent
+                    missing={false}
+                    fileInfo={props.values}
+                    gatewayUrl={gatewayUrl}
+                  />
                 </Unstable_Grid2>
               </Unstable_Grid2>
             </Unstable_Grid2>

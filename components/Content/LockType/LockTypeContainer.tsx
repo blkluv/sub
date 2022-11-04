@@ -40,7 +40,7 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
           loading={verifying}
         />
       ) : (
-        <Button onClick={handleClick}>
+        <Button style={{ padding: 10, marginTop: 5 }} onClick={handleClick}>
           {verifying ? `Verifying ${lockName}...` : `Verify ${lockName}`}
         </Button>
       )}

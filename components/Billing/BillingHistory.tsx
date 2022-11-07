@@ -82,7 +82,9 @@ const BillingHistory = ({ billingHistory, getBillingHistory, hasMore }: BillingH
   };
 
   const getTo = (nextNum: number) => {
-    return billingHistory.length === 5 ? billingHistory.length : nextNum - billingHistory.length;
+    return billingHistory.length === LIMIT
+      ? billingHistory.length
+      : nextNum - billingHistory.length;
   };
 
   useEffect(() => {
@@ -104,24 +106,29 @@ const BillingHistory = ({ billingHistory, getBillingHistory, hasMore }: BillingH
             </TableHead>
             <TableBody>{billingHistory.map((h) => renderInvoice(h))}</TableBody>
           </Table>
-          <TablePagination
-            count={-1}
-            page={currentPage}
-            onPageChange={handlePageChange}
-            rowsPerPage={LIMIT}
-            nextIconButtonProps={{
-              disabled: loading || (paginationDirection === "next" && !hasMore),
-            }}
-            backIconButtonProps={{ disabled: loading || paginationDirection !== "next" }}
-            sx={{
-              "& .MuiTablePagination-selectLabel, & .MuiInputBase-root": {
-                display: "none",
-              },
-            }}
-            labelDisplayedRows={({ from, to, count }) => (!loading ? `${from}-${getTo(to)}` : "")}
-            rowsPerPageOptions={[5]}
-            component={"div"}
-          />
+          {billingHistory?.length > 0 && (
+            <TablePagination
+              count={-1}
+              page={currentPage}
+              onPageChange={handlePageChange}
+              rowsPerPage={LIMIT}
+              nextIconButtonProps={{
+                disabled:
+                  loading ||
+                  (paginationDirection === null && !hasMore) ||
+                  (paginationDirection === "next" && !hasMore),
+              }}
+              backIconButtonProps={{ disabled: loading || paginationDirection !== "next" }}
+              sx={{
+                "& .MuiTablePagination-selectLabel, & .MuiInputBase-root": {
+                  display: "none",
+                },
+              }}
+              labelDisplayedRows={({ from, to, count }) => (!loading ? `${from}-${getTo(to)}` : "")}
+              rowsPerPageOptions={[5]}
+              component={"div"}
+            />
+          )}
         </CardContent>
       </Card>
     );

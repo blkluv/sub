@@ -1,13 +1,12 @@
 import {
   Box,
   Button,
+  Checkbox,
   Container,
   FormControl,
-  TextField,
   Typography,
   Unstable_Grid2,
 } from "@mui/material";
-import Link from "next/link";
 import * as FullStory from "@fullstory/browser";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -50,20 +49,10 @@ const SignUpForm = () => {
         validationsRegex.password,
         "Password must contain at least 8 characters, including UPPER/lowercase, numbers and special characters"
       ),
+    confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
 
   const router = useRouter();
-  const handleValidSubmit = async (event) => {
-    //     dispatch(doLogin({ email, password }));
-    //sample FullStory SDK calls
-    // FullStory.setVars("page", {
-    //   userEmail: email,
-    // });
-    // FullStory.event("Sign up", {
-    //   userEmail: email,
-    // });
-    //     TODO add FS
-  };
 
   const initialValues = {
     email: "",
@@ -71,6 +60,7 @@ const SignUpForm = () => {
     firstName: "",
     lastName: "",
     isBuilder: null,
+    howToUse: [],
   };
   const onSubmit = async (values, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
     setSubmitting(true);
@@ -92,11 +82,24 @@ const SignUpForm = () => {
           type: "success",
         })
       );
+      FullStory.event("Sign up", {
+        userEmail: values.email,
+        howToUse: values.howToUse,
+      });
       router.push("/");
     } catch (err) {
       setAuthError(err.message);
       setSubmitting(false);
     }
+  };
+
+  const checkboxOptions = {
+    videos: "Videos",
+    images: "Images",
+    audioFiles: "Audio Files",
+    website: "Website / Web Apps",
+    models: "3D Models",
+    other: "Other",
   };
 
   return (
@@ -116,7 +119,7 @@ const SignUpForm = () => {
           validationSchema={SignupSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, errors, touched }) => (
+          {({ isSubmitting, values }) => (
             <Form>
               <Unstable_Grid2
                 container
@@ -154,12 +157,37 @@ const SignUpForm = () => {
                   required
                   autoComplete="off"
                 />
+                <FormikTextfield
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  required
+                  autoComplete="off"
+                />
                 <FormControl sx={{ margin: "8px" }}>
                   <FormLabel>Are you a builder or a creator?</FormLabel>
                   <Field component={RadioGroup} row name="isBuilder">
                     <FormControlLabel value="builder" control={<Radio />} label="Builder" />
                     <FormControlLabel value="creator" control={<Radio />} label="Creator" />
                   </Field>
+                </FormControl>
+
+                <FormControl sx={{ margin: "8px" }}>
+                  <FormLabel>How will you use Submarine.me?</FormLabel>
+                  {Object.entries(checkboxOptions).map(([key, label]) => (
+                    <Field
+                      sx={{ spacing: "0.25 rem", marginBottom: 0 }}
+                      type="checkbox"
+                      name="howToUse"
+                      value={key}
+                      key={key}
+                      as={FormControlLabel}
+                      control={<Checkbox />}
+                      checked={values.howToUse.includes(key)}
+                      label={label}
+                    />
+                  ))}
                 </FormControl>
                 <Box sx={{ marginTop: "1rem" }}>
                   <Button

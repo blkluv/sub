@@ -3,23 +3,15 @@ import { connect } from "react-redux";
 import PaymentInfo from "./PaymentInfo";
 import BillingHistory from "./BillingHistory";
 import CurrentPlanInfo from "./CurrentPlanInfo";
-// import {
-// } from "../../store/user/user.actions";
 import { retrieveStripeCustomer } from "../../store/legacy/billing/billing.actions";
 import { BillingState, Plan } from "../../store/legacy/billing/types";
 import { CircularProgress, Grid, Typography } from "@mui/material";
-// import { User, UserState } from "../../store/user/types";
-import { Gateways } from "../../store/legacy/gateways/types";
 import { createGateway } from "../../store/legacy/gateways/gateway.actions";
 
 interface UsageCardProps {
   data: any;
   billing: BillingState;
-  changePlan: (newPlan: Plan) => Promise<{ plan: Plan; nextPlan: Plan }>;
-  //  gateways: Gateways;
-  //  user: UserState;
   apiKeys: any;
-  //   createGateway: (gatewayInfo: { subdomain: string; restricted?: boolean }, update: boolean) => any;
   updatingPlan: boolean;
 }
 
@@ -79,7 +71,6 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: any) => {
   return {
-    //    user: state.user,
     apiKeys: state.apiKeys,
   };
 };

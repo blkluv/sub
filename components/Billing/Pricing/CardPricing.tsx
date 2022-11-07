@@ -61,12 +61,7 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
               </div>
             </div>
             {currentPlan?.type !== plan.type && nextPlan?.type !== plan.type && (
-              <Button
-                disabled={currentPlan?.type === plan.type || disabled}
-                onClick={() => action(plan)}
-                size="large"
-                sx={{ marginTop: 2 }}
-              >
+              <Button onClick={() => action(plan)} size="large" sx={{ marginTop: 2 }}>
                 Select {plan.nickname}
               </Button>
             )}

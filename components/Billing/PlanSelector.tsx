@@ -20,6 +20,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
 import { User, UserState } from "../../store/legacy/user/types";
 import ConfirmationModal from "../shared/ConfirmationModal";
+import * as FullStory from "@fullstory/browser";
 
 interface ChangePlanRes {
   plan: Plan;
@@ -53,7 +54,7 @@ const PlanSelector = ({
 }: PlanSelectorProps) => {
   const [changePlanModalOpen, setChangePlanModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [planToChangeTo, setPlanChoice] = useState<any>(null);
+  const [planToChangeTo, setPlanChoice] = useState<Plan>(null);
   const [planChoiceConfirmationOpen, setPlanChangeConfirmationOpen] = useState(false);
   const [openCardModal, setOpenCardModal] = useState(false); //Boolean or null if no default
   const [openBillingAddressModal, setOpenBillingAddressModal] = useState(false);
@@ -63,8 +64,6 @@ const PlanSelector = ({
     gateways: Gateways;
   } | null>(null);
 
-  //  const location: any = useLocation();
-  const location = {};
   const dispatch = useAppDispatch();
 
   const changePlanLocal = async (planToChangeTo: Plan) => {
@@ -93,42 +92,41 @@ const PlanSelector = ({
     }
   };
 
-  // Scroll to anchor hash
-  useEffect(() => {
-    const scrollToHashElement = () => {
-      const { hash } = window.location;
-      const elementToScroll = document.getElementById(hash?.replace("#", ""));
+  // // Scroll to anchor hash
+  // useEffect(() => {
+  //   const scrollToHashElement = () => {
+  //     const { hash } = window.location;
+  //     const elementToScroll = document.getElementById(hash?.replace("#", ""));
 
-      if (!elementToScroll) return;
+  //     if (!elementToScroll) return;
 
-      window.scrollTo({
-        top: elementToScroll.offsetTop - 75,
-        behavior: "smooth",
-      });
-    };
+  //     window.scrollTo({
+  //       top: elementToScroll.offsetTop - 75,
+  //       behavior: "smooth",
+  //     });
+  //   };
 
-    scrollToHashElement();
-    window.addEventListener("hashchange", scrollToHashElement);
-    return window.removeEventListener("hashchange", scrollToHashElement);
-  }, []);
+  //   scrollToHashElement();
+  //   window.addEventListener("hashchange", scrollToHashElement);
+  //   return window.removeEventListener("hashchange", scrollToHashElement);
+  // }, []);
 
-  useEffect(() => {
-    // check if user came from marketing site and wants to change plan
-    if (location?.state?.registerFromMarketing) {
-      const currentPlan = billing?.activePricingPlan;
-      const desiredPlan = billing?.billing_plans?.find(
-        (item) => item.nickname === location?.state?.desiredPlan
-      );
-      if (desiredPlan && currentPlan) {
-        handlePlanChoice(desiredPlan);
-        localStorage.removeItem("pinata-registration-plan-selection");
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   // check if user came from marketing site and wants to change plan
+  //   if (location?.state?.registerFromMarketing) {
+  //     const currentPlan = billing?.activePricingPlan;
+  //     const desiredPlan = billing?.billing_plans?.find(
+  //       (item) => item.nickname === location?.state?.desiredPlan
+  //     );
+  //     if (desiredPlan && currentPlan) {
+  //       handlePlanChoice(desiredPlan);
+  //       localStorage.removeItem("pinata-registration-plan-selection");
+  //     }
+  //   }
+  // }, []);
 
   const handlePlanChoice = async (plan: Plan) => {
     setPlanChoice(plan);
-    console.log(plan);
     if (!billing.stripe_customer.paymentMethods.length && plan.type !== planTypes.FREE.type) {
       // if there is no payment method -> add credit card
       setOpenCardModal(true);
@@ -153,9 +151,11 @@ const PlanSelector = ({
   const confirmProfessionalUpgrade = async () => {
     setLoading(true);
     try {
-      console.log(billing);
       if (billing.stripe_customer) {
-        console.log("change plan!");
+        FullStory.event("Upgrade plan", {
+          userEmail: user.user.email,
+          newPlan: planToChangeTo.name,
+        });
         await changePlanLocal(planToChangeTo);
       }
     } catch (error) {
@@ -183,6 +183,10 @@ const PlanSelector = ({
     setLoading(true);
     try {
       await changePlanLocal(planToChangeTo);
+      FullStory.event("Downgrade plan", {
+        userEmail: user.user.email,
+        newPlan: planToChangeTo.name,
+      });
     } catch (error) {
       console.log(error);
     } finally {

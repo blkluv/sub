@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogContent, Typography } from "@mui/material";
-// import { PaymentMethod } from "../../store/billing/types";
+import { PaymentMethod } from "../../store/legacy/billing/types";
 import { PinataDialogTitle } from "../shared/Dialog";
 
 interface RemoveCardModalProps {

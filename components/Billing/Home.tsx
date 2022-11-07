@@ -13,7 +13,6 @@ import {
   getAllBillingPlans,
 } from "../../store/legacy/billing/billing.actions";
 import { getUsageMetrics } from "../../store/legacy/metrics/metrics.actions";
-import { killGateways, checkUsage } from "../../store/legacy/gateways/gateway.actions";
 import type { BillingState, Plan } from "../../store/legacy/billing/types";
 import type { MetricsState } from "../../store/legacy/metrics/types";
 import { PinataDialogTitle } from "../shared/Dialog";
@@ -26,7 +25,6 @@ interface BillingProps {
   billing: BillingState;
   changePlan: (newPlan: Plan) => any;
   gateways: { gateways: any };
-  killGateways: any;
   metrics: MetricsState;
   getUsageMetrics: () => any;
   getAllBillingPlans: () => any;
@@ -52,33 +50,6 @@ const Home = (props: BillingProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatingPlan, setUpdatingPlan] = useState(false);
   const [metricsInterval, setMetricsInterval] = useState<any>(null);
-  //   const { search } = useLocation();
-  const search = "a";
-  const upgradeToEnterprise = new URLSearchParams(search).get("upgradeToEnterprise");
-
-  useEffect(() => {
-    if (upgradeToEnterprise) {
-      location.href = "#enterprise-banner";
-      //      handleEnterpriseContact();
-    }
-    setIsModalOpen(true);
-  }, []);
-
-  useEffect(() => {
-    if (metricsInterval) {
-      clearInterval(metricsInterval);
-      setUpdatingPlan(false);
-      //      window.Intercom("shutdown");
-      const reloadTimeout = setTimeout(() => {
-        // window.Intercom('boot', {
-        //   app_id: process.env.REACT_APP_INTERCOM_ID
-        // });
-        getUsageMetrics();
-      }, 1500);
-      return () => clearTimeout(reloadTimeout);
-    }
-    setUpdatingPlan(false);
-  }, [metrics.metrics.metricsAccount.fileCount.limit]);
 
   useEffect(() => {
     const timer = setInterval(getUsageMetrics, 60000);
@@ -96,6 +67,7 @@ const Home = (props: BillingProps) => {
     };
   }, []);
 
+  const hasFreePlan = billing?.activePricingPlan?.type === planTypes.FREE.type;
   return (
     <Container maxWidth={"xl"}>
       {/* Show modal-notification for users who're using old-plan system */}
@@ -124,14 +96,20 @@ const Home = (props: BillingProps) => {
       )}
       {/* Render Breadcrumbs */}
       <Typography variant="h3">Billing</Typography>
-      {(billing?.activePricingPlan?.name || billing?.activePricingPlan?.isLegacy) && (
-        <UsageCard
-          data={data}
-          billing={billing}
-          changePlan={changePlan}
-          updatingPlan={updatingPlan}
-        />
+      {hasFreePlan && (
+        <Typography
+          variant="body1"
+          sx={{
+            color: "text.secondary",
+            mt: 1,
+            paddingLeft: 2,
+          }}
+        >
+          In order to use Submarine.me, please upgrade your free account to a paid Pinata account.
+        </Typography>
       )}
+      {(billing?.activePricingPlan?.name || billing?.activePricingPlan?.isLegacy) &&
+        !hasFreePlan && <UsageCard data={data} billing={billing} updatingPlan={updatingPlan} />}
       <PlanSelector
         data={data}
         billing={billing}
@@ -161,8 +139,6 @@ export default connect(mapStateToProps, {
   detachStripeSourceFromCustomer,
   setDefaultCard,
   changePlan,
-  killGateways,
-  checkUsage,
   getBillingHistory,
   getUsageMetrics,
 })(Home);

@@ -1,14 +1,6 @@
 import { useState } from "react";
 import UploadMedia from "../../Upload/UploadMedia";
-import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  SvgIcon,
-  Switch,
-  Typography,
-  Unstable_Grid2,
-} from "@mui/material";
+import { Box, FormControlLabel, SvgIcon, Switch, Typography, Unstable_Grid2 } from "@mui/material";
 import CustomizeLockScreen from "./CustomizeLockScreen";
 import Image from "next/image";
 import { selectGatewayUrl } from "../../../store/selectors/authSelectors";

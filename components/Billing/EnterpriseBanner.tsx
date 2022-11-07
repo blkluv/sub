@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Box, Button } from "@mui/material";
+import { useIntercom } from "react-use-intercom";
 
 const Container = styled(Box)`
   display: flex;
@@ -28,11 +29,12 @@ const H2 = styled.h2`
   margin-bottom: 15px;
 `;
 const EnterpriseBanner = () => {
+  const { showNewMessages, update } = useIntercom();
   const handleEnterpriseContact = () => {
-    // window.Intercom("showNewMessage", "I'd like to upgrade to the enterprise plan");
-    // window.Intercom("update", {
-    //   enterpriseUpgradeRequested: true,
-    // });
+    showNewMessages("I'd like to upgrade to the enterprise plan");
+    update({
+      customAttributes: { enterpriseUpgradeRequested: true },
+    });
   };
 
   return (

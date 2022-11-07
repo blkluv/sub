@@ -18,7 +18,7 @@ import {
   Unstable_Grid2,
   useMediaQuery,
 } from "@mui/material";
-import SubmarineModal from "../SubmarineModal/SubmarineModal";
+import SubmarineModal from "../Submarine/SubmarineModal/SubmarineModal";
 import { useRouter } from "next/router";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];

@@ -54,7 +54,7 @@ const Retweet = ({ fileInfo }) => {
         color: (theme) => theme.palette.primary.contrastText,
       }}
     >
-      Connect your Twitter account and<br></br>retweet the tweet to unlock the content
+      Connect your Twitter account and<br></br>retweet the tweet to unlock content
     </Typography>
   );
   const tweetId =

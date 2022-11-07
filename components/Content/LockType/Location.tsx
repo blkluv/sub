@@ -65,7 +65,7 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
         }}
       >
         You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of these coordinates
-        to unlock this media:
+        to unlock content:
       </Typography>
       <Typography
         paragraph

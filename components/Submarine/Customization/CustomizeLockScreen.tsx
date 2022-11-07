@@ -11,6 +11,7 @@ import {
   Button,
   Card,
   FormControlLabel,
+  IconButton,
   MenuItem,
   Popover,
   Radio,
@@ -18,6 +19,7 @@ import {
   Unstable_Grid2,
 } from "@mui/material";
 import { RadioGroup, Select } from "formik-mui";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 
 const CustomizeLockScreen = () => {
@@ -44,10 +46,21 @@ const CustomizeLockScreen = () => {
       <Typography variant="h6">Logo Image</Typography>
       <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {logo && logo.length > 0 ? (
-          // <Box sx={{borderRadius: "8px", overflow: "hidden", width: (theme) => theme.spacing(7), height: (theme) => theme.spacing(7)}}>
-          <Image src={`${gatewayUrl}/ipfs/${logo}`} alt="preview for logo" height={56} width={56} />
+          <Unstable_Grid2 container>
+            <IconButton
+              sx={{ height: "40px", width: "40px" }}
+              onClick={() => setFieldValue("customizations.logoCid", "")}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Image
+              src={`${gatewayUrl}/ipfs/${logo}`}
+              alt="preview for logo"
+              height={56}
+              width={56}
+            />
+          </Unstable_Grid2>
         ) : (
-          // </Box>
           <Box
             sx={{
               display: "flex",
@@ -71,14 +84,22 @@ const CustomizeLockScreen = () => {
       <Typography variant="h6">Background Image</Typography>
       <Unstable_Grid2 container gap={"2em"} sx={{ alignItems: "center" }}>
         {background && background.length > 0 ? (
-          <Box sx={{ borderRadius: "8px", overflow: "hidden", width: 160, height: 160 }}>
-            <Image
-              src={`${gatewayUrl}/ipfs/${background}`}
-              height={160}
-              width={160}
-              alt="preview for background"
-            />
-          </Box>
+          <Unstable_Grid2 container>
+            <IconButton
+              sx={{ height: "40px", width: "40px" }}
+              onClick={() => setFieldValue("customizations.backgroundCid", "")}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box sx={{ borderRadius: "8px", overflow: "hidden", width: 160, height: 160 }}>
+              <Image
+                src={`${gatewayUrl}/ipfs/${background}`}
+                height={160}
+                width={160}
+                alt="preview for background"
+              />
+            </Box>
+          </Unstable_Grid2>
         ) : (
           <Card
             sx={{
@@ -97,78 +118,97 @@ const CustomizeLockScreen = () => {
       <Typography variant="h6">Button Shape</Typography>
       <Field component={RadioGroup} name="customizations.buttonShape" defaultValue="rounded">
         <FormControlLabel value="rounded" control={<Radio />} label="Rounded" />
-        <FormControlLabel value="square" control={<Radio />} label="Square" />
+        <FormControlLabel value="square" control={<Radio />} label="Squared" />
       </Field>
       <Typography variant="h6">Button Color</Typography>
-      <Unstable_Grid2 container sx={{ gap: "2em" }}>
-        <Card
-          sx={{
-            backgroundColor: values.customizations.buttonColor
-              ? values.customizations.buttonColor.hex
-              : "white",
-            height: (theme) => theme.spacing(6),
-            width: (theme) => theme.spacing(6),
-            borderRadius: "30px",
-          }}
-        ></Card>
-        <Button
-          onClick={(event) => setAnchorBttn(event.currentTarget)}
-          variant="outlined"
-          aria-describedby="bttnColorBttn"
-        >
-          Select a color
-        </Button>
-        <Popover
-          id="bttnColorBttn"
-          open={Boolean(anchorBttn)}
-          anchorEl={anchorBttn}
-          onClose={() => setAnchorBttn(null)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <ChromePicker
-            color={values.customizations.buttonColor}
-            onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
-          />
-        </Popover>
+      <Unstable_Grid2 container>
+        {values.customizations.buttonColor && (
+          <IconButton
+            sx={{ height: "40px", width: "40px" }}
+            onClick={() => setFieldValue("customizations.buttonColor", undefined)}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+        <Unstable_Grid2 container sx={{ gap: "2em" }}>
+          <Card
+            sx={{
+              backgroundColor: values.customizations.buttonColor
+                ? values.customizations.buttonColor.hex
+                : (theme) => theme.palette.primary.light,
+              height: (theme) => theme.spacing(6),
+              width: (theme) => theme.spacing(6),
+              borderRadius: "30px",
+            }}
+          ></Card>
+          <Button
+            onClick={(event) => setAnchorBttn(event.currentTarget)}
+            variant="outlined"
+            aria-describedby="bttnColorBttn"
+          >
+            Select a color
+          </Button>
+          <Popover
+            id="bttnColorBttn"
+            open={Boolean(anchorBttn)}
+            anchorEl={anchorBttn}
+            onClose={() => setAnchorBttn(null)}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <ChromePicker
+              color={values.customizations.buttonColor}
+              onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
+            />
+          </Popover>
+        </Unstable_Grid2>
       </Unstable_Grid2>
       <Typography variant="h6">Button Text Color</Typography>
-      <Unstable_Grid2 container sx={{ gap: "2em" }}>
-        <Card
-          sx={{
-            backgroundColor: values.customizations.buttonTextColor
-              ? values.customizations.buttonTextColor.hex
-              : "white",
-            height: (theme) => theme.spacing(6),
-            width: (theme) => theme.spacing(6),
-            borderRadius: "30px",
-          }}
-        ></Card>
-        <Button
-          onClick={(event) => setAnchorFont(event.currentTarget)}
-          variant="outlined"
-          aria-describedby="fontColorBttn"
-        >
-          Select a color
-        </Button>
-        `
-        <Popover
-          id="fontColorBttn"
-          open={Boolean(anchorFont)}
-          anchorEl={anchorFont}
-          onClose={() => setAnchorFont(null)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <ChromePicker
-            color={values.customizations.buttonTextColor}
-            onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
-          />
-        </Popover>
+      <Unstable_Grid2 container>
+        {values.customizations.buttonTextColor && (
+          <IconButton
+            sx={{ height: "40px", width: "40px" }}
+            onClick={() => setFieldValue("customizations.buttonTextColor", undefined)}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+        <Unstable_Grid2 container sx={{ gap: "2em" }}>
+          <Card
+            sx={{
+              backgroundColor: values.customizations.buttonTextColor
+                ? values.customizations.buttonTextColor.hex
+                : (theme) => theme.palette.primary.dark,
+              height: (theme) => theme.spacing(6),
+              width: (theme) => theme.spacing(6),
+              borderRadius: "30px",
+            }}
+          ></Card>
+          <Button
+            onClick={(event) => setAnchorFont(event.currentTarget)}
+            variant="outlined"
+            aria-describedby="fontColorBttn"
+          >
+            Select a color
+          </Button>
+          <Popover
+            id="fontColorBttn"
+            open={Boolean(anchorFont)}
+            anchorEl={anchorFont}
+            onClose={() => setAnchorFont(null)}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <ChromePicker
+              color={values.customizations.buttonTextColor}
+              onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
+            />
+          </Popover>
+        </Unstable_Grid2>
       </Unstable_Grid2>
       <Field
         formControl={{ sx: { width: "100%" } }}

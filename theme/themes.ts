@@ -98,7 +98,7 @@ const typography = {
     },
     h6: {
       fontFamily: "Source Sans Pro",
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: 600,
       lineHeight: "24px",
     },

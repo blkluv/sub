@@ -16,7 +16,7 @@ const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
     if (fileInfo?.customizations.buttonColor && fileInfo?.customizations?.buttonColor?.hex) {
       style.backgroundColor = fileInfo.customizations.buttonColor.hex;
     } else {
-      style.backgroundColor = "#8000DB";
+      style.backgroundColor = "#FAFAFA";
     }
 
     if (
@@ -25,7 +25,7 @@ const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
     ) {
       style.color = fileInfo.customizations.buttonTextColor.hex;
     } else {
-      style.color = "#fff";
+      style.color = "#181818";
     }
 
     if (fileInfo?.customizations?.buttonShape === "square") {

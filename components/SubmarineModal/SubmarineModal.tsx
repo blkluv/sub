@@ -10,7 +10,7 @@ const SubmarineModal = ({ open, setOpen }) => {
         onClose={() => setOpen(false)}
         PaperProps={{
           sx: {
-            width: 900,
+            width: "70vw",
             borderRadius: "30px",
             padding: (theme) => theme.spacing(3),
           },
@@ -21,7 +21,7 @@ const SubmarineModal = ({ open, setOpen }) => {
           container
           sx={{ justifyContent: "space-between", alignItems: "flex-start" }}
         >
-          <Typography sx={{ margin: (theme) => theme.spacing(0, 0, 2, 0) }} variant="h2">
+          <Typography sx={{ margin: (theme) => theme.spacing(2, 0, 2, 0) }} variant="h2">
             How you&apos;d like your submarined <br></br> content to be unlocked?
           </Typography>
           <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>

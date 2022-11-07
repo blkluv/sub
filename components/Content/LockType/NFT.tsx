@@ -71,6 +71,13 @@ const NFT = ({ fileInfo }) => {
               <div key={connector.name} style={{ marginTop: "8px" }}>
                 {connector.ready && (
                   <Button
+                    sx={{
+                      width: "343px",
+                      height: "44px",
+                      backgroundColor: (theme) => theme.palette.primary.light,
+                      color: "black",
+                      "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+                    }}
                     disabled={!connector.ready}
                     key={connector.id}
                     onClick={() => connect({ connector })}

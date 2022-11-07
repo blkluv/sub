@@ -64,9 +64,11 @@ const Retweet = ({ fileInfo }) => {
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
       <Container>
         <Unstable_Grid2 container justifyContent={"center"}>
-          <Box sx={{ width: 500, height: 300, overflowY: "scroll" }}>
-            {tweetId && <Tweet tweetId={tweetId} />}
-          </Box>
+          {tweetId && (
+            <Box sx={{ width: 500, height: 300, overflowY: "scroll" }}>
+              {tweetId && <Tweet tweetId={tweetId} />}
+            </Box>
+          )}
           <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(1, 0, 0, 0) }} />
         </Unstable_Grid2>
         <BaseLockType

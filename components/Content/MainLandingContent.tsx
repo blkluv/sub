@@ -19,19 +19,13 @@ export interface MainLandingContentProps {
 
 const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingContentProps) => {
   const [isPreview, setIsPreview] = useState<boolean>(false);
-
   useEffect(() => {
     const path = window.location.pathname;
-    if (
-      path.includes("/submarine/nft") ||
-      path.includes("/submarine/location") ||
-      path.includes("/submarine/retweet")
-    ) {
+    if (path == "/submarine/nft" || path == "/submarine/location" || path == "/submarine/retweet") {
       setIsPreview(true);
     }
   }, []);
 
-  console.log(isPreview);
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
   let content;
   if (missing) {
@@ -66,7 +60,7 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
             "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          minHeight: isPreview ? "90vh" : "100vh",
+          height: isPreview ? "90vh" : "100vh",
           justifyContent: "center",
           alignContent: "center",
           display: "flex",

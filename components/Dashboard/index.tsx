@@ -114,7 +114,7 @@ const Dashboard = () => {
       const ky = getKy();
       await ky(`/api/metadata`, {
         method: "DELETE",
-        body: JSON.stringify({ id }),
+        json: { id },
         timeout: 2147483647,
       });
     } catch (error) {

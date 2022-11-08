@@ -56,12 +56,13 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
     unlockInfo,
     ...baseInitialValues,
   });
+  const [isInitialValid, setIsInitialValid] = useState(false);
 
   const SubmarineFormSchema = Yup.object().shape({
     unlockInfo: unlockInfoSchema,
     name: Yup.string().required("Required"),
     description: Yup.string().required("Required"),
-    thumbnail: Yup.string(),
+    thumbnail: Yup.string().nullable(),
     customizations: Yup.object(),
     submarineCID: Yup.string().required("Required"),
     shortId: Yup.string().required("Required"),
@@ -72,7 +73,17 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
       const ky = getKy();
       ky(`/api/content/${edit}`).then((res) =>
         res.json().then((json) => {
-          setInitialValues({ ...json, selectedFiles: [] });
+          setIsInitialValid(true);
+          const initialValues = {
+            unlockInfo: json.unlockInfo,
+            name: json.name,
+            description: json.description,
+            thumbnail: json.thumbnail,
+            customizations: json.customizations,
+            submarineCID: json.submarineCID,
+            shortId: json.shortId,
+          };
+          setInitialValues(initialValues);
         })
       );
     }
@@ -92,7 +103,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
     const ky = getKy();
     await ky(`/api/metadata`, {
       method: edit ? "PUT" : "POST",
-      body: JSON.stringify(submarinedContent),
+      json: submarinedContent,
       timeout: false,
     })
       .then(() => {
@@ -122,7 +133,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
         enableReinitialize
         onSubmit={onSubmit}
         validationSchema={SubmarineFormSchema}
-        isInitialValid={false}
+        isInitialValid={isInitialValid}
       >
         {(props) =>
           props.isSubmitting ? (
@@ -158,7 +169,6 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                   <Form>
                     <Container>
                       {children}
-                      {/* <pre>{JSON.stringify(props.errors, null, 2)}</pre> */}
                       <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>
                         <Unstable_Grid2 container justifyContent={"end"}>
                           <Button type="submit" disabled={!props.isValid || props.isSubmitting}>

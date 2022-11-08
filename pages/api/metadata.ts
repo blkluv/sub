@@ -9,7 +9,7 @@ const supabase = getSupabaseClient();
 const schema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
   description: Joi.string().min(1).max(400).required(),
-  thumbnail: Joi.string().min(0).max(100).optional(),
+  thumbnail: Joi.string().min(0).max(100).optional().allow(null, ""),
   submarineCID: Joi.string().min(1).max(100).required(),
   unlockInfo: Joi.object({
     type: Joi.string().min(1).max(100).required(),

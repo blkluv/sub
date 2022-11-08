@@ -18,7 +18,7 @@ const UnlockTypeCardFactory = () => {
         container
         direction="row"
         spacing={1}
-        sx={{ padding: (theme) => theme.spacing(1), margin: (theme) => theme.spacing(2, 0, 0, 0) }}
+        sx={{ margin: (theme) => theme.spacing(2, 0, 2, 0) }}
       >
         <UnlockTypeCard
           setUnlockType={setUnlockType}

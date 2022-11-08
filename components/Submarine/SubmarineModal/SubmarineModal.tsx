@@ -10,7 +10,7 @@ const SubmarineModal = ({ open, setOpen }) => {
         onClose={() => setOpen(false)}
         PaperProps={{
           sx: {
-            width: "70vw",
+            width: "65vw",
             borderRadius: "30px",
             padding: (theme) => theme.spacing(3),
           },
@@ -21,15 +21,28 @@ const SubmarineModal = ({ open, setOpen }) => {
           container
           sx={{ justifyContent: "space-between", alignItems: "flex-start" }}
         >
-          <Typography sx={{ margin: (theme) => theme.spacing(2, 0, 2, 0) }} variant="h2">
-            How you&apos;d like your submarined <br></br> content to be unlocked?
-          </Typography>
-          <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>
-            <CloseIcon onClick={() => setOpen(false)} />
-          </IconButton>
+          <Unstable_Grid2
+            container
+            sx={{
+              backgroundColor: (theme) => theme.palette.primary.light,
+              width: "100%",
+              padding: (theme) => theme.spacing(3),
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <Typography variant="h2">
+              How you&apos;d like your submarined <br></br> content to be unlocked?
+            </Typography>
+            <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>
+              <CloseIcon onClick={() => setOpen(false)} />
+            </IconButton>
+          </Unstable_Grid2>
+          <Divider sx={{ width: "100%" }} />
+          <Unstable_Grid2 container sx={{ margin: (theme) => theme.spacing(2, 0, 2, 0) }}>
+            <UnlockTypeCardFactory />
+          </Unstable_Grid2>
         </Unstable_Grid2>
-        <Divider />
-        <UnlockTypeCardFactory />
       </Dialog>
     </div>
   );

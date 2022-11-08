@@ -24,16 +24,18 @@ export const UnlockTypeCard = ({
               unlockType === type
                 ? `linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)`
                 : "#FFFFF",
-            "&:hover": { boxShadow: "4px 12px 40px 6px rgba(0, 0, 0, 0.09)" },
             height: "100%",
           }}
-          onClick={() => setUnlockType(type)}
+          onMouseOver={() => setUnlockType(type)}
         >
           <CardContent>
             <Unstable_Grid2 container direction={"column"}>
               <Unstable_Grid2>
                 <Typography
-                  sx={{ color: (theme) => unlockType === type && theme.palette.primary.light }}
+                  sx={{
+                    color: (theme) => unlockType === type && theme.palette.primary.light,
+                    "&:hover": { color: (theme) => theme.palette.primary.light },
+                  }}
                   variant="h3"
                 >
                   {title}
@@ -42,7 +44,10 @@ export const UnlockTypeCard = ({
               <Unstable_Grid2>
                 <Typography
                   variant="body1"
-                  sx={{ color: (theme) => unlockType === type && theme.palette.primary.light }}
+                  sx={{
+                    color: (theme) => unlockType === type && theme.palette.primary.light,
+                    "&:hover": { color: (theme) => theme.palette.primary.light },
+                  }}
                 >
                   {helperText}
                 </Typography>

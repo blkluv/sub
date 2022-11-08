@@ -26,7 +26,8 @@ const LocationLock = () => {
     distance: Yup.number()
       .required("Required")
       .typeError("Value not valid.")
-      .min(1, "Distance must be greater than 0."),
+      .min(1, "Distance must be greater than 0.")
+      .max(6000, "Distance cannot exceed 6000 miles"),
   });
 
   return (

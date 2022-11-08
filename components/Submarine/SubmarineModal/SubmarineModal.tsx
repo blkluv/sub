@@ -12,7 +12,6 @@ const SubmarineModal = ({ open, setOpen }) => {
           sx: {
             width: "65vw",
             borderRadius: "30px",
-            padding: (theme) => theme.spacing(3),
           },
         }}
         maxWidth="lg"
@@ -26,9 +25,9 @@ const SubmarineModal = ({ open, setOpen }) => {
             sx={{
               backgroundColor: (theme) => theme.palette.primary.light,
               width: "100%",
-              padding: (theme) => theme.spacing(3),
               justifyContent: "space-between",
               alignItems: "flex-start",
+              padding: (theme) => theme.spacing(3),
             }}
           >
             <Typography variant="h2">
@@ -39,7 +38,13 @@ const SubmarineModal = ({ open, setOpen }) => {
             </IconButton>
           </Unstable_Grid2>
           <Divider sx={{ width: "100%" }} />
-          <Unstable_Grid2 container sx={{ margin: (theme) => theme.spacing(2, 0, 2, 0) }}>
+          <Unstable_Grid2
+            container
+            sx={{
+              margin: (theme) => theme.spacing(2, 0, 2, 0),
+              padding: (theme) => theme.spacing(0, 3, 0, 3),
+            }}
+          >
             <UnlockTypeCardFactory />
           </Unstable_Grid2>
         </Unstable_Grid2>

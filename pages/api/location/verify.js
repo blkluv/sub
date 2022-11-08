@@ -23,12 +23,16 @@ export default async function handler(req, res) {
       const info = await getUserContentCombo(shortId);
 
       const { unlock_info, submarine_cid, Users } = info;
+      if (unlock_info.type !== "location") {
+        res.status(403).send("Not a location lock type");
+        return;
+      }
       const { lat, long, distance } = unlock_info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = Users;
       const distanceFrom = getDistanceFrom(userLong, userLat, long, lat);
 
       if (distanceFrom > parseFloat(distance)) {
-        return res.status(401).send("Not in the right location");
+        return res.status(403).send("Not in the right location");
       }
 
       const responseObj = await getSubmarinedContent(

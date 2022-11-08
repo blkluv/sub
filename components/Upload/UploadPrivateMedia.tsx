@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import File from "./File";
 import Folder from "./Folder";
 import { useFormikContext } from "formik";
@@ -14,6 +14,7 @@ import {
   Typography,
   RadioGroup,
   Unstable_Grid2,
+  CircularProgress,
   Box,
 } from "@mui/material";
 
@@ -22,10 +23,10 @@ enum FileType {
   Folder = "folder",
 }
 
-const UploadMedia = () => {
+const UploadPrivateMedia = () => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null[]>([]);
   const [dragOverActive, setDragOverActive] = useState(false);
-
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const dragOverHandler = (ev) => {
     ev.preventDefault();
     setDragOverActive(true);
@@ -35,7 +36,9 @@ const UploadMedia = () => {
 
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
 
+  console.log({ values });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // @ts-ignore
     setUploadFile(event.target.value as FileType);
   };
   interface HTMLInputEvent extends Event {
@@ -43,8 +46,10 @@ const UploadMedia = () => {
   }
   const dispatch = useAppDispatch();
   const onFileChange = async (e: HTMLInputEvent, type) => {
+    setIsUploading(true);
     const FILE_SIZE_LIMIT = 500000000; // 500MB
     const files = e.target.files;
+    console.log("uploading files to private gateway");
     setSelectedFiles(files);
     for (let i = 0; i < files.length; i++) {
       if (files[i].size > FILE_SIZE_LIMIT) {
@@ -79,6 +84,7 @@ const UploadMedia = () => {
     const resJson: ContentResponseTO = await res.json();
     setFieldValue("submarineCID", resJson.items[0].cid);
     setFieldValue("shortId", identifier);
+    setIsUploading(false);
   };
 
   const dragExitHandler = (ev) => {
@@ -171,4 +177,4 @@ const UploadMedia = () => {
   );
 };
 
-export default UploadMedia;
+export default UploadPrivateMedia;

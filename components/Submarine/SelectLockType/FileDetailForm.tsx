@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UploadMedia from "../../Upload/UploadMedia";
+import UploadPrivateMedia from "../../Upload/UploadPrivateMedia";
 import { Typography, Unstable_Grid2 } from "@mui/material";
 import FormikTextfield from "../../Form/FormikTextfield";
 
@@ -15,7 +15,7 @@ const FileDetailForm = () => {
         required
         maxLength={400}
       />
-      <UploadMedia />
+      <UploadPrivateMedia />
     </Unstable_Grid2>
   );
 };

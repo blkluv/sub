@@ -56,7 +56,6 @@ export default async function handler(req, res) {
         customizations: obj.customizations,
         thumbnail: obj.thumbnail,
       };
-
       // if (req.body.thumbnail && req.body.thumbnail.length > 0) {
       //   console.log("Adding thumbnail");
       //   theCreationObject.thumbnail = req.body.thumbnail;

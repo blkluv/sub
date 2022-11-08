@@ -16,8 +16,19 @@ const ContractAddress = ({ blockchain }) => {
         <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
           <FormikTextfield
             type="text"
-            name="unlockInfo.nft"
-            label="Update authority"
+            name="unlockInfo.mintAddress"
+            label="Mint Address"
+            required
+            adornment={
+              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
+                <InformationCircleIconStyled />
+              </span>
+            }
+          />
+          <FormikTextfield
+            type="text"
+            name="unlockInfo.updateAuthority"
+            label="Update Authority"
             required
             adornment={
               <span
@@ -25,16 +36,6 @@ const ContractAddress = ({ blockchain }) => {
                 aria-label="button"
                 onClick={() => setUpdateAuthorityModalOpen(true)}
               >
-                <InformationCircleIconStyled />
-              </span>
-            }
-          />
-          <FormikTextfield
-            type="text"
-            name="unlockInfo.mintAddress"
-            label="Mint Address"
-            adornment={
-              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
                 <InformationCircleIconStyled />
               </span>
             }
@@ -60,8 +61,9 @@ const ContractAddress = ({ blockchain }) => {
           />
           <FormikTextfield
             type="text"
-            name="unlockInfo.contract"
+            name="unlockInfo.tokenId"
             label="Token ID"
+            required
             adornment={
               <span
                 style={{ cursor: "pointer" }}

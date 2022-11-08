@@ -8,6 +8,7 @@ import { awsauth } from "../../constants/awsauth";
 import gravatar from "gravatar";
 import { getKy, setCredentials } from "../../helpers/ky";
 import { Themes } from "../../theme/themes";
+import * as FullStory from "@fullstory/browser";
 
 Amplify.configure(awsconfig);
 Auth.configure({ oauth: awsauth });
@@ -18,6 +19,7 @@ export enum LOGIN_STATUSES {
   fulfilled = "FULFILLED",
   rejected = "REJECTED",
   MFARequest = "MFA_REQUEST",
+  needsConfirmation = "NEEDS_CONFIRMATION",
 }
 
 // we use this to temporarily store CognitoUser for MFA login.
@@ -91,6 +93,10 @@ export const doLogin = createAsyncThunk(
       };
     } else {
       const user = await getUser();
+
+      FullStory.event("Logged in", {
+        userEmail: email,
+      });
       return { user, status: "OK" };
     }
   }
@@ -173,9 +179,13 @@ export const authSlice = createSlice({
       state.errorMsg = message;
     });
     builder.addCase(doLogin.rejected, (state, { error }) => {
-      state.status = LOGIN_STATUSES.rejected;
-      const { message } = error;
-      state.errorMsg = message;
+      if (error.code === "UserNotConfirmedException") {
+        state.status = LOGIN_STATUSES.needsConfirmation;
+      } else {
+        state.status = LOGIN_STATUSES.rejected;
+        const { message } = error;
+        state.errorMsg = message;
+      }
     });
 
     builder.addCase(doLogOut.fulfilled, (state) => {

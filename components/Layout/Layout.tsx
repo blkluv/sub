@@ -41,7 +41,6 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
   // TODO add loading spinner
   const layout = isAuthenticated ? (
     <>
-      <Alert />
       <Header />
       <Container maxWidth={"lg"} sx={{ marginTop: (theme) => theme.spacing(2) }}>
         <main>{children}</main>

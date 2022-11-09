@@ -20,8 +20,11 @@ export const selectTheme = createSelector([selectUser], (user) => {
   if (user.theme) {
     return "light";
   }
+  // if (global.window) {
+  //   return global.window.matchMedia("(prefers-color-scheme: dark").matches ? "dark" : "light";
+  // }
   if (global.window) {
-    return global.window.matchMedia("(prefers-color-scheme: light)").matches ? "dark" : "light";
+    return "light";
   }
   return "light";
 });

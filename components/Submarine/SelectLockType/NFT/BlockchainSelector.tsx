@@ -6,12 +6,12 @@ import { Select } from "formik-mui";
 const BlockchainSelector = () => {
   return (
     <Field
-      formControl={{ sx: { width: "100%" } }}
+      fullwidth
       component={Select}
       id="unlockInfo.blockchain"
       name="unlockInfo.blockchain"
       label="Blockchain"
-      required={true}
+      variant="standard"
     >
       {Object.entries(BlockchainOptions).map(([key, value]) => (
         <MenuItem key={key} value={value}>

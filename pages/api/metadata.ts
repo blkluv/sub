@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   }
   if (req.method === "POST") {
     try {
-      const obj = JSON.parse(req.body || {});
+      const obj = req.body;
       await schema.validateAsync(obj);
       const theCreationObject: definitions["Content"] = {
         id: uuidv4(),

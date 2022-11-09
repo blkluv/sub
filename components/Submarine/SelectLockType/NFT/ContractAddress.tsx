@@ -1,5 +1,4 @@
-import { Divider } from "@mui/material";
-import { Box } from "@mui/system";
+import { Unstable_Grid2 } from "@mui/material";
 import { useState } from "react";
 import FormikTextfield from "../../../Form/FormikTextfield";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
@@ -14,12 +13,7 @@ const ContractAddress = ({ blockchain }) => {
   switch (blockchain) {
     case "Solana":
       return (
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
+        <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
           <FormikTextfield
             type="text"
             name="unlockInfo.mintAddress"
@@ -31,7 +25,6 @@ const ContractAddress = ({ blockchain }) => {
               </span>
             }
           />
-          <Divider variant="middle" flexItem />
           <FormikTextfield
             type="text"
             name="unlockInfo.updateAuthority"
@@ -55,16 +48,11 @@ const ContractAddress = ({ blockchain }) => {
             mintAddressModalOpen={mintAddressModalOpen}
             setMintAddressModalOpen={setMintAddressModalOpen}
           />
-        </Box>
+        </Unstable_Grid2>
       );
     default:
       return (
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
+        <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
           <FormikTextfield
             type="text"
             name="unlockInfo.contract"
@@ -87,7 +75,7 @@ const ContractAddress = ({ blockchain }) => {
             }
           />
           <TokenIdModal open={tokenIdModalOpen} setOpen={setTokenIdModalOpen} />
-        </Box>
+        </Unstable_Grid2>
       );
   }
 };

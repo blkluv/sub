@@ -9,9 +9,7 @@ import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileFor
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
 import {
-  FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   Typography,
   RadioGroup,
@@ -19,7 +17,6 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-import { Container } from "@mui/system";
 
 enum FileType {
   File = "file",
@@ -42,7 +39,7 @@ const UploadPrivateMedia = () => {
   console.log({ values });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
-    setUploadFile((event.target as HTMLInputElement).value);
+    setUploadFile(event.target.value as FileType);
   };
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget;
@@ -128,95 +125,55 @@ const UploadPrivateMedia = () => {
   };
 
   return (
-    <Unstable_Grid2 container spacing={0}>
-      <Unstable_Grid2>
-        <>
-          <FormLabel> Are you Submarining a single file or a folder?</FormLabel>
-          <RadioGroup row value={uploadType} onChange={handleChange}>
-            <FormControlLabel value={FileType.Folder} control={<Radio />} label="Folder" />
-            <FormControlLabel value={FileType.File} control={<Radio />} label="File" />
-          </RadioGroup>
-        </>
-        <Unstable_Grid2
-          container
-          spacing={0}
-          justifyContent="center"
-          onDragOver={dragOverHandler}
-          onDrop={dropHandler}
-          onDragLeave={dragExitHandler}
+    <>
+      <Typography variant="h6"> Are you Submarining a single file or a folder?</Typography>
+      <RadioGroup value={uploadType} onChange={handleChange}>
+        <FormControlLabel value={FileType.File} control={<Radio />} label="Single File" />
+        <FormControlLabel value={FileType.Folder} control={<Radio />} label="Folder" />
+      </RadioGroup>
+      <Unstable_Grid2
+        container
+        onDragOver={dragOverHandler}
+        onDrop={dropHandler}
+        onDragLeave={dragExitHandler}
+        sx={{
+          width: "100%",
+          height: "5em",
+          // TO DO: add this color to theme
+          border: (theme) => `2px dashed #C8C8C8`,
+          borderRadius: "8px",
+          backgroundColor: (theme) => theme.palette.primary.light,
+          alignContent: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography sx={{ display: { sm: "block", nxs: "none", color: "#C8C8C8" } }}>
+          Drag or drop a file here or
+        </Typography>
+        <Typography
+          component={"label"}
           sx={{
-            borderWidth: 2,
-            borderColor: dragOverActive ? "primary.main" : "grey.400",
-            borderStyle: "dashed",
-            borderRadius: 1,
+            paddingLeft: "0.25rem",
+            color: "primary.main",
           }}
+          htmlFor="file-upload-main"
         >
-          {isUploading ? (
-            <CircularProgress />
+          {uploadType === FileType.File ? (
+            <File onChange={onFileChange} />
           ) : (
-            <Unstable_Grid2>
-              <Container>
-                <svg
-                  style={{
-                    width: "3rem",
-                    height: "3rem",
-                    margin: "auto",
-                    color: "gray",
-                  }}
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Container>
-              <Unstable_Grid2 container>
-                <Typography
-                  component={"label"}
-                  sx={{
-                    color: "primary.main",
-                  }}
-                  htmlFor="file-upload-main"
-                >
-                  {uploadType === FileType.File ? (
-                    <File onChange={onFileChange} />
-                  ) : (
-                    <Folder onChange={onFileChange} />
-                  )}
-                </Typography>
-                <Typography
-                  sx={{
-                    paddingLeft: "0.25rem",
-                    display: {
-                      sm: "block",
-                      xs: "none",
-                    },
-                  }}
-                >
-                  or drag and drop
-                </Typography>
-              </Unstable_Grid2>
-              {selectedFiles.length > 0 ? (
-                <Typography variant={"body2"}>
-                  {uploadType === FileType.File
-                    ? selectedFiles[0].name
-                    : selectedFiles[0].webkitRelativePath.split("/")[0]}{" "}
-                  ({selectedFiles.length} files in folder)
-                </Typography>
-              ) : (
-                <Typography variant={"body2"}>Any file up to 500MB</Typography>
-              )}
-            </Unstable_Grid2>
+            <Folder onChange={onFileChange} />
           )}
-        </Unstable_Grid2>
+        </Typography>
+        {selectedFiles.length > 0 && (
+          <Typography variant={"body2"}>
+            {uploadType === FileType.File
+              ? selectedFiles[0].name
+              : selectedFiles[0].webkitRelativePath.split("/")[0]}{" "}
+            ({selectedFiles.length} files in folder)
+          </Typography>
+        )}
       </Unstable_Grid2>
-    </Unstable_Grid2>
+    </>
   );
 };
 

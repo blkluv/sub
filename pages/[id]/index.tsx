@@ -1,5 +1,5 @@
+import { Box } from "@mui/system";
 import ky from "ky";
-import React, { useEffect, useState } from "react";
 import MainLandingContent from "../../components/Content/MainLandingContent";
 import PublicLayout from "../../components/Layout/PublicLayout";
 import { getContentReturnObject } from "../api/content/[shortId]";
@@ -9,7 +9,9 @@ const Content = ({ data }: { data: getContentReturnObject & { error: any } }) =>
 
   return (
     <PublicLayout fileInfo={data}>
-      <MainLandingContent missing={data.error} fileInfo={data} gatewayUrl={gatewayUrl} />
+      <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
+        <MainLandingContent missing={data.error} fileInfo={data} gatewayUrl={gatewayUrl} />
+      </Box>
     </PublicLayout>
   );
 };

@@ -25,7 +25,7 @@ import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
-import { Button, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
+import { Button, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
 
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
@@ -81,8 +81,14 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   };
   const wallet = useWallet();
   const description = (
-    <Typography>
-      Unlock this content by connecting your wallet to verify you have the required NFT.
+    <Typography
+      variant="h6"
+      sx={{
+        padding: (theme) => theme.spacing(1),
+        color: (theme) => theme.palette.primary.contrastText,
+      }}
+    >
+      Connect your wallet to unlock content
     </Typography>
   );
 
@@ -117,6 +123,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
         <WalletModalProvider>
           {!wallet.connected ? (
             <Grid2>
+              <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
               <Button>
                 <WalletMultiButton />
               </Button>

@@ -67,19 +67,25 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={file.name}
+                  primary={<Typography variant="h6">{file.name}</Typography>}
                   disableTypography
                   secondary={
                     <>
-                      <Typography variant="body2">
+                      <Typography variant="subtitle2">
                         {file.unlock_info?.type}
                         {file?.unlock_info?.type === "nft" &&
                           ` - ${file?.unlock_info?.blockchain}`}{" "}
                       </Typography>
-                      <Typography variant="body2">{makeDatePretty(file.created_at)}</Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: (theme) => theme.palette.grey[600] }}
+                      >
+                        {makeDatePretty(file.created_at)}
+                      </Typography>
                       <Typography
                         sx={{
                           display: isMobile ? "none" : "block",
+                          color: (theme) => theme.palette.grey[600],
                         }}
                         variant="body2"
                       >

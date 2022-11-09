@@ -1,18 +1,11 @@
-import { Unstable_Grid2 } from "@mui/material";
-import { Field } from "formik";
-import { TextField } from "formik-mui";
+import { Typography, Unstable_Grid2 } from "@mui/material";
+import FormikTextfield from "../../../Form/FormikTextfield";
 
 export default function TwitterForm() {
   return (
-    <Unstable_Grid2 container spacing={0}>
-      <Field
-        sx={{ m: 1 }}
-        component={TextField}
-        name="unlockInfo.tweetUrl"
-        label="Tweet URL"
-        required
-        autoComplete="off"
-      />
+    <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>
+      <Typography variant="h5">Tweet Details</Typography>
+      <FormikTextfield name="unlockInfo.tweetUrl" label="Tweet URL" required autoComplete="off" />
     </Unstable_Grid2>
   );
 }

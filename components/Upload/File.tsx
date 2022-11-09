@@ -23,7 +23,7 @@ const File = ({ onChange }) => {
           cursor: "pointer",
         }}
       >
-        <span>Select a file</span>
+        <span>browse your files.</span>
       </label>
     </>
   );

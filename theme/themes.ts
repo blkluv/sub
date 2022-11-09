@@ -5,9 +5,9 @@ import { Components } from "@mui/material/styles/components";
 const lightColorPalette: Partial<Palette> = {
   mode: "light",
   primary: {
-    light: "#953BED",
-    main: "#8000DB",
-    dark: "#6C00BA",
+    light: "#FAFAFA",
+    main: "#2A40D7",
+    dark: "#313131",
     contrastText: "#FFFFFF",
   },
   info: {
@@ -33,8 +33,8 @@ const darkColorPalette: Partial<Palette> = {
   mode: "dark",
   primary: {
     light: "#953BED",
-    main: "#8000DB",
-    dark: "#6C00BA",
+    main: "#2A40D7",
+    dark: "#181818",
     contrastText: "#FFFFFF",
   },
   info: {
@@ -67,36 +67,40 @@ const darkColorPalette: Partial<Palette> = {
 };
 const typography = {
   typography: {
-    fontFamily: "Mulish,  sans-serif",
+    fontFamily: "sans",
     h1: {
-      fontSize: 40,
+      fontFamily: "Mulish",
       fontWeight: 900,
-      lineHeight: "44px",
+      fontSize: 35,
+      lineHeight: "36px",
     },
     h2: {
-      fontSize: 36,
+      fontFamily: "Mulish",
+      fontSize: 32,
       fontWeight: 900,
       lineHeight: "40px",
     },
     h3: {
-      fontSize: 32,
+      fontFamily: "Mulish",
+      fontSize: 25,
       fontWeight: 900,
       lineHeight: "36px",
     },
     h4: {
-      fontSize: 28,
+      fontSize: 22,
       fontWeight: 600,
       lineHeight: "32px",
     },
     h5: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: 600,
       lineHeight: "28px",
     },
     h6: {
-      fontSize: 20,
+      fontFamily: "Source Sans Pro",
+      fontSize: 16,
       fontWeight: 600,
-      lineHeight: "28px",
+      lineHeight: "24px",
     },
     subtitle1: {
       fontSize: 18,
@@ -105,7 +109,7 @@ const typography = {
     },
     subtitle2: {
       fontSize: 16,
-      fontWeight: 400,
+      fontWeight: 200,
       lineHeight: "24px",
     },
     body1: {
@@ -169,8 +173,11 @@ const legacy = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow: "0px 1px 3px 0px rgb(226 224 226)",
-          borderRadius: "10px",
+          boxShadow: "4px 12px 40px 6px rgba(0, 0, 0, 0.09)",
+          borderRadius: "30px",
+          "&:hover": {
+            boxShadow: "4px 12px 40px 6px rgba(0, 0, 0, 0.09)",
+          },
         },
       },
     },
@@ -219,9 +226,9 @@ const createModeTheme = (variant: "light" | "dark", baseTheme: Theme) => {
           root: {
             textTransform: "none",
             borderRadius: "100px",
-            height: "48px",
-            padding: "12px 28px",
-            gap: "8px",
+            height: "44px",
+            padding: "10px 20px",
+            gap: "10px",
             width: "fit-content",
           },
         },

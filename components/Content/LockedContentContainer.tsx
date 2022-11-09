@@ -7,7 +7,7 @@ import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
-import { Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -39,59 +39,77 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
 
   const LockType = getLockType(fileInfo.unlockInfo);
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        textAlign: "center",
-        justifyContent: "center",
-      }}
-    >
+    <Container>
       <Paper
         elevation={3}
         sx={{
+          position: "relative",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "70px",
           padding: (theme) => theme.spacing(4),
+          backgroundColor: (theme) => theme.palette.primary.dark,
+          opacity: "0.9",
+          borderRadius: "48px",
+          textAlign: "center",
         }}
       >
-        {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
-          <Image
-            style={{
-              width: "6rem",
-              height: "6rem",
-              borderRadius: "1000px",
-              margin: "auto",
-              marginBottom: "1rem",
-            }}
-            src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
-            alt={`${fileInfo.name} preview`}
-            width={100}
-            height={100}
-          />
-        ) : (
-          fileInfo?.thumbnail?.length > 0 && (
+        <Box
+          sx={{
+            position: "relative",
+            marginTop: "-50px",
+          }}
+        >
+          {!fileInfo?.thumbnail?.length && (
+            <Image height={70} width={70} src="/submarine.png" alt="Submarine Me" />
+          )}
+          {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
             <Image
               style={{
-                width: "6rem",
-                height: "6rem",
+                width: "70px",
+                height: "70px",
                 borderRadius: "1000px",
-                margin: "auto",
-                marginBottom: "1rem",
               }}
-              src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
+              src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
               alt={`${fileInfo.name} preview`}
-              width={100}
-              height={100}
+              width={70}
+              height={70}
             />
-          )
-        )}
+          ) : (
+            fileInfo?.thumbnail?.length > 0 && (
+              <Image
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  borderRadius: "1000px",
+                  margin: "auto",
+                  marginBottom: "1rem",
+                }}
+                src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
+                alt={`${fileInfo.name} preview`}
+                width={70}
+                height={70}
+              />
+            )
+          )}
+        </Box>
         <Typography
           variant="h1"
-          fontWeight="bold"
-          fontSize={52}
-          sx={{ padding: (theme) => theme.spacing(1) }}
+          sx={{
+            marginTop: (theme) => theme.spacing(3),
+            color: (theme) => theme.palette.primary.contrastText,
+          }}
         >
           {fileInfo.name}
         </Typography>
-        <Typography variant="h4" fontSize={22}>
+        <Typography
+          variant="subtitle2"
+          sx={{
+            padding: (theme) => theme.spacing(1),
+            color: (theme) => theme.palette.primary.contrastText,
+            opacity: ".75",
+          }}
+        >
           {fileInfo.description}
         </Typography>
         {LockType}

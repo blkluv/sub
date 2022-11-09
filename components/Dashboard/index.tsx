@@ -9,8 +9,17 @@ import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import { Box, Button, Unstable_Grid2 } from "@mui/material";
-import { Container } from "@mui/system";
+import {
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  Typography,
+  Unstable_Grid2,
+  useMediaQuery,
+} from "@mui/material";
+import SubmarineModal from "../Submarine/SubmarineModal/SubmarineModal";
+import { useRouter } from "next/router";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -18,11 +27,16 @@ const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
-  const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
-  const [offset, setOffset] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [displayUpgradeModal, setDisplayUpgradeModal] = useState<boolean>(false);
+  const [offset, setOffset] = useState<number>(0);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
+  const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const selectMenuOpen = Boolean(anchorEl);
+  const router = useRouter();
 
   useEffect(() => {
     checkForPlan();
@@ -130,12 +144,61 @@ const Dashboard = () => {
     }
   };
 
+  const handleSubmarineClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (isMobile) {
+      setAnchorEl(event.currentTarget);
+    } else {
+      setModalOpen(true);
+    }
+  };
+
   return (
     <>
-      <Unstable_Grid2 container justifyContent={"space-between"} direction="column">
-        <Link passHref href="/submarine/new">
-          <Button>Submarine New File</Button>
-        </Link>
+      <SubmarineModal setOpen={setModalOpen} open={modalOpen} />
+      <Unstable_Grid2 container direction={"column"} sx={{ marginTop: "3em" }}>
+        <Unstable_Grid2
+          container
+          justifyContent={"space-between"}
+          direction={"row"}
+          alignItems={"center"}
+        >
+          <Unstable_Grid2 container direction={"column"}>
+            <Typography variant="h1">Submarine Files</Typography>
+            <Typography variant="subtitle2" sx={{ color: (theme) => theme.palette.grey[500] }}>
+              Find your recently submarined content below{" "}
+            </Typography>
+          </Unstable_Grid2>
+          <Button
+            sx={{ "&:hover": { backgroundColor: (theme) => theme.palette.primary.main } }}
+            onClick={(e) => handleSubmarineClick(e)}
+          >
+            Submarine New Files
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={selectMenuOpen}
+            onClose={(e) => setAnchorEl(null)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <Link href={"/submarine/nft"} passHref>
+              <MenuItem onClick={(e) => setAnchorEl(null)}>NFT Ownership</MenuItem>
+            </Link>
+            <Link href={"/submarine/retweet"} passHref>
+              <MenuItem onClick={(e) => setAnchorEl(null)}>Retweet</MenuItem>
+            </Link>
+            <Link href={"/submarine/location"} passHref>
+              <MenuItem onClick={(e) => setAnchorEl(null)}>Location</MenuItem>
+            </Link>
+            <MenuItem disabled={true} onClick={(e) => setAnchorEl(null)}>
+              Credit/Debit Card (coming soon)
+            </MenuItem>
+          </Menu>
+        </Unstable_Grid2>
+        <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(7, 0, 0, 0) }} />
+
         {loading ? (
           <Unstable_Grid2 container justifyContent={"center"}>
             <Loading />

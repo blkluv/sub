@@ -8,25 +8,24 @@ import LockedContentContainer from "./LockedContentContainer";
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export interface MainLandingContentProps {
   missing: boolean;
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
+  isPreview?: boolean;
 }
 
-const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingContentProps) => {
-  const [isPreview, setIsPreview] = useState<boolean>(false);
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (path == "/submarine/nft" || path == "/submarine/location" || path == "/submarine/retweet") {
-      setIsPreview(true);
-    }
-  }, []);
-
+const MainLandingContent = ({
+  fileInfo,
+  gatewayUrl,
+  missing,
+  isPreview = false,
+}: MainLandingContentProps) => {
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
+
   let content;
   if (missing) {
     content = <Missing />;
@@ -60,12 +59,10 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
             "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          height: isPreview ? "90vh" : "100vh",
+          width: "100%",
+          zIndex: -1,
           justifyContent: "center",
-          alignContent: "center",
-          display: "flex",
-          flexDirection: "column",
-          borderRadius: isPreview && "45px",
+          borderRadius: isPreview ? "45px" : 0,
         }}
       >
         {content}

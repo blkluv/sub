@@ -170,31 +170,30 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
               </Unstable_Grid2>
               <Unstable_Grid2 container sx={{ marginTop: (theme) => theme.spacing(2) }}>
                 <Unstable_Grid2 lg={6} xs={12}>
-                  <Form>
-                    <Container>
-                      {children}
-                      <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
-                        <Unstable_Grid2 container justifyContent={"end"}>
-                          <Button type="submit" disabled={!props.isValid || props.isSubmitting}>
-                            {props.isSubmitting ? "Processing..." : "Upload and Continue"}
-                          </Button>
-                        </Unstable_Grid2>
-                      </Box>
-                    </Container>
-                  </Form>
+                  <Form>{children}</Form>
                 </Unstable_Grid2>
                 <Unstable_Grid2
                   lg={6}
                   sx={{
                     padding: (theme) => theme.spacing(0, 2, 0, 2),
-                    display: { lg: "block", xs: "none" },
+                    display: { lg: "flex", xs: "none" },
                   }}
                 >
                   <MainLandingContent
                     missing={false}
                     fileInfo={props.values}
                     gatewayUrl={gatewayUrl}
+                    isPreview
                   />
+                </Unstable_Grid2>
+                <Unstable_Grid2 container xs={12}>
+                  <Unstable_Grid2 lgOffset={4}>
+                    <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
+                      <Button type="submit" disabled={!props.isValid || props.isSubmitting}>
+                        {props.isSubmitting ? "Processing..." : "Upload and Continue"}
+                      </Button>
+                    </Box>
+                  </Unstable_Grid2>
                 </Unstable_Grid2>
               </Unstable_Grid2>
             </Unstable_Grid2>

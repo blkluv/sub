@@ -39,61 +39,60 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
 
   const LockType = getLockType(fileInfo.unlockInfo);
   return (
-    <Container sx={{ width: "fit-content" }}>
-      <Box sx={{ position: "relative", zIndex: "2", top: "70px", left: "220px" }}>
-        {!fileInfo?.thumbnail?.length && (
-          <Image height={70} width={70} src="/submarine.png" alt="Submarine Me" />
-        )}
-        {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
-          <Image
-            style={{
-              width: "70px",
-              height: "70px",
-              borderRadius: "1000px",
-              margin: "auto",
-              marginBottom: "1rem",
-            }}
-            src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
-            alt={`${fileInfo.name} preview`}
-            width={100}
-            height={100}
-          />
-        ) : (
-          fileInfo?.thumbnail?.length > 0 && (
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          position: "relative",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "70px",
+          padding: (theme) => theme.spacing(4),
+          backgroundColor: (theme) => theme.palette.primary.dark,
+          opacity: "0.9",
+          borderRadius: "48px",
+          textAlign: "center",
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            marginTop: "-50px",
+          }}
+        >
+          {!fileInfo?.thumbnail?.length && (
+            <Image height={70} width={70} src="/submarine.png" alt="Submarine Me" />
+          )}
+          {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
             <Image
               style={{
                 width: "70px",
                 height: "70px",
                 borderRadius: "1000px",
-                margin: "auto",
-                marginBottom: "1rem",
               }}
-              src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
+              src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
               alt={`${fileInfo.name} preview`}
-              width={100}
-              height={100}
+              width={70}
+              height={70}
             />
-          )
-        )}
-      </Box>
-      <Paper
-        elevation={3}
-        sx={{
-          position: "relative",
-          left: "0",
-          right: "0",
-          marginLeft: "auto",
-          marginRight: "auto",
-          padding: (theme) => theme.spacing(4),
-          margin: (theme) => theme.spacing(4, 4, 4, 4),
-          backgroundColor: (theme) => theme.palette.primary.dark,
-          opacity: "0.9",
-          borderRadius: "48px",
-          justifyContent: "center",
-          width: 450,
-          textAlign: "center",
-        }}
-      >
+          ) : (
+            fileInfo?.thumbnail?.length > 0 && (
+              <Image
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  borderRadius: "1000px",
+                  margin: "auto",
+                  marginBottom: "1rem",
+                }}
+                src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
+                alt={`${fileInfo.name} preview`}
+                width={70}
+                height={70}
+              />
+            )
+          )}
+        </Box>
         <Typography
           variant="h1"
           sx={{

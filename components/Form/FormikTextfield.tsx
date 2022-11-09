@@ -16,6 +16,7 @@ const FormikTextfield = ({
       fullwidth
       variant="standard"
       component={TextField}
+      InputLabelProps={{ shrink: true }}
       name={name}
       label={label}
       type={type}

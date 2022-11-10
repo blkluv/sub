@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React, { ReactNode, useEffect, useState } from "react";
-import PreviewModal from "../../Content/PreviewModal";
+import PreviewModal from "../../Content/PreviewDialog";
 import Layout from "../../Layout";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";

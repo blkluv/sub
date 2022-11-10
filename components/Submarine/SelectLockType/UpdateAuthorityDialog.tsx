@@ -22,7 +22,7 @@ export default function UpdateAuthorityDialog({
       sx={{
         "& .MuiDialog-paper": {
           width: "70vw",
-          borderRadius: "30px",
+          borderRadius: "20px",
           padding: (theme) => theme.spacing(1),
         },
       }}

@@ -16,7 +16,7 @@ const SubmarineModal = ({ open, setOpen }) => {
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        sx={{ "& .MuiDialog-paper": { width: "60vw", borderRadius: "30px" } }}
+        sx={{ "& .MuiDialog-paper": { width: "60vw", borderRadius: "20px" } }}
         maxWidth="lg"
       >
         <Unstable_Grid2

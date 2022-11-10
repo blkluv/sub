@@ -19,7 +19,7 @@ export default function PreviewModal({
     top: "50%",
     left: "50%",
     width: "70vw",
-    borderRadius: "30px",
+    borderRadius: "20px",
     transform: "translate(-50%, -50%)",
     bgcolor: "background.paper",
     boxShadow: 24,

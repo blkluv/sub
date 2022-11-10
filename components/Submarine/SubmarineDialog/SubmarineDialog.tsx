@@ -1,8 +1,6 @@
 import {
   Dialog,
-  Box,
   IconButton,
-  Divider,
   Typography,
   Unstable_Grid2,
   DialogTitle,

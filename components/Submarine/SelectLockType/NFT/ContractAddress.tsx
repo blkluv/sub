@@ -4,11 +4,11 @@ import FormikTextfield from "../../../Form/FormikTextfield";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
 import MintAddressModal from "../MintAddressModal";
 import TokenIdModal from "../TokenIdModal";
-import UpdateAuthorityModal from "../UpdateAuthorityModal";
+import UpdateAuthorityDialog from "../UpdateAuthorityDialog";
 
 const ContractAddress = ({ blockchain }) => {
   const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
-  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
+  const [updateAuthorityDialogOpen, setUpdateAuthorityDialogOpen] = useState(false);
   const [mintAddressModalOpen, setMintAddressModalOpen] = useState(false);
   switch (blockchain) {
     case "Solana":
@@ -34,15 +34,15 @@ const ContractAddress = ({ blockchain }) => {
               <span
                 style={{ cursor: "pointer" }}
                 aria-label="button"
-                onClick={() => setUpdateAuthorityModalOpen(true)}
+                onClick={() => setUpdateAuthorityDialogOpen(true)}
               >
                 <InformationCircleIconStyled />
               </span>
             }
           />
-          <UpdateAuthorityModal
-            updateAuthorityModalOpen={updateAuthorityModalOpen}
-            setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen}
+          <UpdateAuthorityDialog
+            updateAuthorityDialogOpen={updateAuthorityDialogOpen}
+            setUpdateAuthorityDialogOpen={setUpdateAuthorityDialogOpen}
           />
           <MintAddressModal
             mintAddressModalOpen={mintAddressModalOpen}

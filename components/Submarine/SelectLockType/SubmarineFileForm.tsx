@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import PreviewModal from "../../Content/PreviewModal";
 import Layout from "../../Layout";
 import { getKy } from "../../../helpers/ky";
@@ -67,7 +67,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
       .test(
         "Thumbnail is being uploaded",
         "Thumbnail is being uploaded",
-        (value) => !value.includes("blob:")
+        (value) => !value || !value.includes("blob:")
       ),
     customizations: Yup.object(),
     submarineCID: Yup.string().required("Required"),

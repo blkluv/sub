@@ -15,7 +15,7 @@ import { useFormikContext } from "formik";
 import { MetadataUnlockInfo } from "../SelectLockType/SubmarineFileForm";
 import UploadImagePublic from "../../Upload/UploadImagePublic";
 import CloseIcon from "@mui/icons-material/Close";
-import React from "react";
+import ThumbnailImage from "../../Form/ThumbnailImage";
 
 const CustomizationForm = () => {
   const [customize, setCustomize] = useState(false);
@@ -28,7 +28,7 @@ const CustomizationForm = () => {
       <Typography variant="h5">Customization</Typography>
       <Typography variant="h6">Select a thumbnail image (optional)</Typography>
       <Unstable_Grid2 container sx={{ alignItems: "center" }}>
-        {thumbnail && thumbnail.length && thumbnail.length > 0 && (
+        {thumbnail && (
           <IconButton
             sx={{ height: "40px", width: "40px" }}
             onClick={() => setFieldValue("thumbnail", "")}
@@ -36,8 +36,8 @@ const CustomizationForm = () => {
             <CloseIcon />
           </IconButton>
         )}
-        <Unstable_Grid2 container gap={2}>
-          {thumbnail && thumbnail.length && thumbnail.length > 0 ? (
+        <Unstable_Grid2 container gap={2} alignItems="center">
+          {thumbnail ? (
             <Box
               sx={{
                 borderRadius: "30px",
@@ -46,12 +46,7 @@ const CustomizationForm = () => {
                 height: (theme) => theme.spacing(7),
               }}
             >
-              <Image
-                src={`${gatewayUrl}/ipfs/${thumbnail}`}
-                height={56}
-                width={56}
-                alt="preview for thumbnail"
-              />
+              <ThumbnailImage gatewayUrl={gatewayUrl} thumbnail={thumbnail} />
             </Box>
           ) : (
             <Box

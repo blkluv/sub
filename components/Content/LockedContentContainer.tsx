@@ -1,5 +1,3 @@
-import Image from "next/future/image";
-import React from "react";
 import LocationUnlock from "./LockType/Location";
 import Solana from "./LockType/Solana";
 import NFT from "./LockType/NFT";
@@ -8,6 +6,7 @@ import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileFor
 import { UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
+import ThumbnailImage from "../Form/ThumbnailImage";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -60,38 +59,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
             marginTop: "-50px",
           }}
         >
-          {!fileInfo?.thumbnail?.length && (
-            <Image height={70} width={70} src="/submarine.png" alt="Submarine Me" />
-          )}
-          {fileInfo?.thumbnail?.length > 0 && typeof fileInfo.thumbnail === "string" ? (
-            <Image
-              style={{
-                width: "70px",
-                height: "70px",
-                borderRadius: "1000px",
-              }}
-              src={`${gatewayUrl}/ipfs/${fileInfo.thumbnail}`}
-              alt={`${fileInfo.name} preview`}
-              width={70}
-              height={70}
-            />
-          ) : (
-            fileInfo?.thumbnail?.length > 0 && (
-              <Image
-                style={{
-                  width: "70px",
-                  height: "70px",
-                  borderRadius: "1000px",
-                  margin: "auto",
-                  marginBottom: "1rem",
-                }}
-                src={fileInfo?.thumbnail && fileInfo?.thumbnail[0]}
-                alt={`${fileInfo.name} preview`}
-                width={70}
-                height={70}
-              />
-            )
-          )}
+          <ThumbnailImage gatewayUrl={gatewayUrl} thumbnail={fileInfo.thumbnail} />
         </Box>
         <Typography
           variant="h1"

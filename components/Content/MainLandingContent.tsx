@@ -8,8 +8,7 @@ import LockedContentContainer from "./LockedContentContainer";
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
-import { Box, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Unstable_Grid2, useMediaQuery } from "@mui/material";
 
 export interface MainLandingContentProps {
   missing: boolean;
@@ -48,7 +47,10 @@ const MainLandingContent = ({
           <SubmarineLogoSvg />
         )}
       </Box>
-      <Box
+      <Unstable_Grid2
+        container
+        justifyContent="center"
+        alignItems="center"
         style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
           backgroundImage: fileInfo.customizations?.backgroundCid
@@ -60,13 +62,12 @@ const MainLandingContent = ({
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           width: "100%",
-          zIndex: -1,
           justifyContent: "center",
           borderRadius: isPreview ? "45px" : 0,
         }}
       >
         {content}
-      </Box>
+      </Unstable_Grid2>
     </>
   );
 };

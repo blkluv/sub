@@ -29,9 +29,8 @@ import { Button, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/mater
 
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
-  const dispatch = useAppDispatch();
-  const signData = async (): Promise<SubmarinedContent | void> => {
-    try {
+  const signData = async (): Promise<SubmarinedContent> => {
+    return new Promise(async (resolve, reject) => {
       const { shortId, submarineCID, unlockInfo } = fileInfo;
       if (unlockInfo.type === "nft") {
         const { updateAuthority, blockchain, tokenId, network, mintAddress } = unlockInfo;
@@ -48,10 +47,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
         const fullMessage = getMessagetoSign(messageToSign.updateAuthority, messageToSign.id);
         const message = new TextEncoder().encode(fullMessage);
         if (!signMessage) {
-          dispatch(
-            setAlert({ message: "Wallet does not support message signing!", type: "error" })
-          );
-          return;
+          reject("Wallet does not support message signing!");
         }
 
         const signatureRaw = await signMessage(message);
@@ -73,11 +69,11 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
             },
           })
           .json();
-        return data;
+        resolve(data);
+      } else {
+        reject('Unlock type is not "nft"');
       }
-    } catch (error) {
-      throw error;
-    }
+    });
   };
   const wallet = useWallet();
   const description = (

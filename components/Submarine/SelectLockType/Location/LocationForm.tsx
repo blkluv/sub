@@ -1,6 +1,6 @@
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
-import GoogleMapsCoordsModal from "../GoogleMapsCoordsModal";
+import GoogleMapsCoordsDialog from "../GoogleMapsCoordsDialog";
 import { useFormikContext } from "formik";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
 import FormikTextfield from "../../../Form/FormikTextfield";
@@ -9,7 +9,7 @@ import { TextField } from "formik-mui";
 
 const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
-  const [googleMapsModalOpen, setGoogleMapsModalOpen] = useState(false);
+  const [googleMapsDialogOpen, setGoogleMapsDialogOpen] = useState(false);
   const { setFieldValue } = useFormikContext();
   const detectLocation = async (e) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ const LocationForm = () => {
         label="Latitude"
         required
         adornment={
-          <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
+          <span aria-label="button" onClick={() => setGoogleMapsDialogOpen(true)}>
             <InformationCircleIconStyled />
           </span>
         }
@@ -60,15 +60,15 @@ const LocationForm = () => {
         label="Longitude"
         required
         adornment={
-          <span aria-label="button" onClick={() => setGoogleMapsModalOpen(true)}>
+          <span aria-label="button" onClick={() => setGoogleMapsDialogOpen(true)}>
             <InformationCircleIconStyled />
           </span>
         }
       />
       <FormikTextfield name="unlockInfo.distance" label="Allowed Range (in miles)" required />
-      <GoogleMapsCoordsModal
-        googleMapsModalOpen={googleMapsModalOpen}
-        setGoogleMapsModalOpen={setGoogleMapsModalOpen}
+      <GoogleMapsCoordsDialog
+        googleMapsDialogOpen={googleMapsDialogOpen}
+        setGoogleMapsDialogOpen={setGoogleMapsDialogOpen}
       />
     </Unstable_Grid2>
   );

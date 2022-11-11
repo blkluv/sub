@@ -114,13 +114,13 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const { offset } = req.query;
+      // const { offset } = req.query;
 
       let { data: Content, error } = await supabase
         .from<definitions["Content"]>("Content")
         .select("*")
         .eq("pinata_user_id", user.userInformation.id)
-        .range(offset, offset + 4)
+        // .range(offset, offset + 4)
         .order("created_at", { ascending: false });
 
       if (error) {

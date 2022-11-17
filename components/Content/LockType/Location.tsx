@@ -12,16 +12,14 @@ interface LocationProps {
   fileInfo: MetadataUnlockInfo;
 }
 const LocationUnlock = ({ fileInfo }: LocationProps) => {
-  const dispatch = useAppDispatch();
   const unlockInfo: UnlockInfoLocation =
     fileInfo.unlockInfo.type === "location" && fileInfo.unlockInfo;
 
-  const verifyLocation = async (): Promise<SubmarinedContent | void> => {
-    if (!navigator.geolocation) {
-      dispatch(setAlert({ type: "error", message: "Your device does not support geolocation" }));
-      return;
-    }
-    const promise = new Promise<SubmarinedContent>((resolve, reject) => {
+  const verifyLocation = async (): Promise<SubmarinedContent> => {
+    return new Promise<SubmarinedContent>((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject("Your device does not support geolocation");
+      }
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const latitude = position.coords.latitude;
@@ -39,20 +37,13 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
               .json();
             resolve(data);
           } catch (error) {
-            dispatch(setAlert({ type: "error", message: error.response.statusText }));
+            reject("Could not verify location");
           }
         },
-        (error) => {
-          dispatch(
-            setAlert({
-              type: "error",
-              message: "Location services may be disabled on your device, please enable them.",
-            })
-          );
-        }
+        // error callback
+        () => reject("Location services may be disabled on your device, please enable them.")
       );
     });
-    return promise;
   };
   const description = (
     <>

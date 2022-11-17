@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import PreviewModal from "../../Content/PreviewModal";
 import Layout from "../../Layout";
 import { getKy } from "../../../helpers/ky";
@@ -62,7 +62,13 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
     unlockInfo: unlockInfoSchema,
     name: Yup.string().required("Required"),
     description: Yup.string().required("Required"),
-    thumbnail: Yup.string().nullable(),
+    thumbnail: Yup.string()
+      .nullable()
+      .test(
+        "Thumbnail is being uploaded",
+        "Thumbnail is being uploaded",
+        (value) => !value || !value.includes("blob:")
+      ),
     customizations: Yup.object(),
     submarineCID: Yup.string().required("Required"),
     shortId: Yup.string().required("Required"),
@@ -189,7 +195,11 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                 <Unstable_Grid2 container xs={12}>
                   <Unstable_Grid2 lgOffset={4}>
                     <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
-                      <Button type="submit" disabled={!props.isValid || props.isSubmitting}>
+                      <Button
+                        type="submit"
+                        onClick={(e) => props.handleSubmit()}
+                        disabled={!props.isValid || props.isSubmitting}
+                      >
                         {props.isSubmitting ? "Processing..." : "Upload and Continue"}
                       </Button>
                     </Box>

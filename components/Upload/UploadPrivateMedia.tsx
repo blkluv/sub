@@ -36,7 +36,6 @@ const UploadPrivateMedia = () => {
 
   const { values, setFieldValue } = useFormikContext<MetadataUnlockInfo>();
 
-  console.log({ values });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
     setUploadFile(event.target.value as FileType);

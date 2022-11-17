@@ -9,7 +9,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: `*.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`,
+        hostname: `**.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`,
       },
     ],
   },

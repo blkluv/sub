@@ -1,7 +1,6 @@
-import { Box, Divider, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { Tweet } from "react-twitter-widgets";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
@@ -22,29 +21,30 @@ const Retweet = ({ fileInfo }) => {
     }
   };
   const router = useRouter();
-  useEffect(() => {
-    const { oauth_token, oauth_verifier } = router.query;
-    if (oauth_token && oauth_verifier) {
-      handleVerification(oauth_token, oauth_verifier);
-    }
-  }, [router.query]);
 
-  const handleVerification = async (
-    oauth_token,
-    oauth_verifier
-  ): Promise<SubmarinedContent | void> => {
-    const ky = getKy();
-    const res = await ky
-      .get(
-        `/api/twitter/oauth/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}&shortId=${
-          window.location.pathname.split("/")[1]
-        }`
-      )
-      .catch((err) => {});
-    if (res) {
-      const data: SubmarinedContent = await res.json();
-      return data;
-    }
+  const { oauth_token, oauth_verifier } = router.query;
+  const hasConnectedTwitter = oauth_token && oauth_verifier;
+
+  const handleVerification = async (): Promise<SubmarinedContent> => {
+    return new Promise<SubmarinedContent>(async (resolve, reject) => {
+      const { oauth_token, oauth_verifier } = router.query;
+      if (!oauth_token || !oauth_verifier) {
+        reject("Could not verify retweet");
+      }
+      const ky = getKy();
+      const res = await ky
+        .get(
+          `/api/twitter/oauth/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}&shortId=${
+            window.location.pathname.split("/")[1]
+          }`
+        )
+        .catch((err) => reject("Could not verify retweet"));
+      if (res) {
+        const data: SubmarinedContent = await res.json();
+        resolve(data);
+      }
+      reject("Could not verify retweet");
+    });
   };
   const description = (
     <Typography
@@ -69,12 +69,26 @@ const Retweet = ({ fileInfo }) => {
           )}
           <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(1, 0, 0, 0) }} />
         </Unstable_Grid2>
-        <BaseLockType
-          description={description}
-          fileInfo={fileInfo}
-          lockName={"retweet"}
-          handleVerify={twitterAuth}
-        />
+        {hasConnectedTwitter ? (
+          <BaseLockType
+            description={description}
+            fileInfo={fileInfo}
+            lockName={"retweet"}
+            handleVerify={handleVerification}
+          />
+        ) : (
+          <Button
+            variant="contained"
+            onClick={twitterAuth}
+            sx={{
+              marginTop: (theme) => theme.spacing(2),
+              backgroundColor: (theme) => theme.palette.primary.light,
+              color: "black",
+            }}
+          >
+            Connect Twitter
+          </Button>
+        )}
       </Container>
     </Unstable_Grid2>
   );

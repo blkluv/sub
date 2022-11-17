@@ -10,8 +10,9 @@ const Missing = () => {
         sx={{
           textAlign: "center",
           height: "auto",
-          width: "100%",
+          alignSelf: "center",
           padding: (theme) => theme.spacing(4),
+          margin: (theme) => theme.spacing(4),
           backgroundColor: "white",
           boxShadow: (theme) => theme.shadows[5],
           borderRadius: (theme) => theme.shape.borderRadius,

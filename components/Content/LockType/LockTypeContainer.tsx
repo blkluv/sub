@@ -9,7 +9,7 @@ import CustomButton from "../CustomButton";
 
 interface BaseLockTypeProps {
   fileInfo: MetadataUnlockInfo;
-  handleVerify: () => Promise<SubmarinedContent | void>;
+  handleVerify: () => Promise<SubmarinedContent>;
   description: JSX.Element;
   lockName: string;
 }
@@ -22,10 +22,11 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
       const submarinedContent = await handleVerify();
       if (submarinedContent) {
         dispatch(setSubmarinedContent(submarinedContent));
-        setVerifying(false);
       }
+      setVerifying(false);
     } catch (err) {
-      setAlert({ type: "error", message: err });
+      dispatch(setAlert({ type: "error", message: err }));
+      setVerifying(false);
     }
   };
 

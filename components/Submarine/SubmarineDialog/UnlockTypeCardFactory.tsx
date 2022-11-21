@@ -13,7 +13,6 @@ const UnlockTypeCardFactory = () => {
 
   return (
     <>
-      <Divider />
       <Unstable_Grid2
         container
         direction="row"

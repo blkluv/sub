@@ -2,14 +2,14 @@ import { Unstable_Grid2 } from "@mui/material";
 import { useState } from "react";
 import FormikTextfield from "../../../Form/FormikTextfield";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
-import MintAddressModal from "../MintAddressModal";
-import TokenIdModal from "../TokenIdModal";
-import UpdateAuthorityModal from "../UpdateAuthorityModal";
+import MintAddressDialog from "../MintAddressDialog";
+import TokenIdDialog from "../TokenIdDialog";
+import UpdateAuthorityDialog from "../UpdateAuthorityDialog";
 
 const ContractAddress = ({ blockchain }) => {
-  const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
-  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
-  const [mintAddressModalOpen, setMintAddressModalOpen] = useState(false);
+  const [tokenIdDialogOpen, setTokenIdDialogOpen] = useState(false);
+  const [updateAuthorityDialogOpen, setUpdateAuthorityDialogOpen] = useState(false);
+  const [mintAddressDialogOpen, setMintAddressDialogOpen] = useState(false);
   switch (blockchain) {
     case "Solana":
       return (
@@ -20,7 +20,7 @@ const ContractAddress = ({ blockchain }) => {
             label="Mint Address"
             required
             adornment={
-              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
+              <span aria-label="button" onClick={() => setMintAddressDialogOpen(true)}>
                 <InformationCircleIconStyled />
               </span>
             }
@@ -34,19 +34,19 @@ const ContractAddress = ({ blockchain }) => {
               <span
                 style={{ cursor: "pointer" }}
                 aria-label="button"
-                onClick={() => setUpdateAuthorityModalOpen(true)}
+                onClick={() => setUpdateAuthorityDialogOpen(true)}
               >
                 <InformationCircleIconStyled />
               </span>
             }
           />
-          <UpdateAuthorityModal
-            updateAuthorityModalOpen={updateAuthorityModalOpen}
-            setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen}
+          <UpdateAuthorityDialog
+            updateAuthorityDialogOpen={updateAuthorityDialogOpen}
+            setUpdateAuthorityDialogOpen={setUpdateAuthorityDialogOpen}
           />
-          <MintAddressModal
-            mintAddressModalOpen={mintAddressModalOpen}
-            setMintAddressModalOpen={setMintAddressModalOpen}
+          <MintAddressDialog
+            mintAddressDialogOpen={mintAddressDialogOpen}
+            setMintAddressDialogOpen={setMintAddressDialogOpen}
           />
         </Unstable_Grid2>
       );
@@ -68,13 +68,13 @@ const ContractAddress = ({ blockchain }) => {
               <span
                 style={{ cursor: "pointer" }}
                 aria-label="button"
-                onClick={() => setTokenIdModalOpen(true)}
+                onClick={() => setTokenIdDialogOpen(true)}
               >
                 <InformationCircleIconStyled />
               </span>
             }
           />
-          <TokenIdModal open={tokenIdModalOpen} setOpen={setTokenIdModalOpen} />
+          <TokenIdDialog open={tokenIdDialogOpen} setOpen={setTokenIdDialogOpen} />
         </Unstable_Grid2>
       );
   }

@@ -1,5 +1,5 @@
 import { Button, Divider, Typography } from "@mui/material";
-import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import BaseLockType from "./LockTypeContainer";
@@ -64,7 +64,6 @@ const NFT = ({ fileInfo }) => {
         />
       ) : (
         <>
-          <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
           {description}
           {connectors.map((connector) => {
             return (
@@ -72,8 +71,8 @@ const NFT = ({ fileInfo }) => {
                 {connector.ready && (
                   <Button
                     sx={{
-                      width: "343px",
-                      height: "44px",
+                      width: "90%",
+                      maxWidth: "300px",
                       backgroundColor: (theme) => theme.palette.primary.light,
                       color: "black",
                       "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },

@@ -2,24 +2,16 @@ import React, { useEffect, useState } from "react";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
 import UpgradeModal from "./UpgradeModal";
-import Pagination from "./Pagination";
+import AppPagination from "./AppPagination";
+
 import Loading from "./Loading";
 import placeholder from "../../public/submarine.png";
 import { getKy } from "../../helpers/ky";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
-import {
-  Button,
-  Divider,
-  Menu,
-  MenuItem,
-  Typography,
-  Unstable_Grid2,
-  useMediaQuery,
-} from "@mui/material";
-import SubmarineModal from "../Submarine/SubmarineModal/SubmarineModal";
-import { useRouter } from "next/router";
+import { Button, Divider, Menu, MenuItem, Typography, Unstable_Grid2 } from "@mui/material";
+import SubmarineDialog from "../Submarine/SubmarineDialog/SubmarineDialog";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -27,18 +19,20 @@ const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
+  const [data, setData] = useState([]);
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState<boolean>(false);
-  const [offset, setOffset] = useState<number>(0);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const selectMenuOpen = Boolean(anchorEl);
-  const router = useRouter();
+  const [page, setPage] = useState<number>(1);
+  const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
+    loadLinks();
     checkForPlan();
   }, []);
 
@@ -66,7 +60,7 @@ const Dashboard = () => {
       setLoading(false);
       setDisplayUpgradeModal(true);
     } else {
-      loadLinks(offset);
+      loadLinks();
     }
   };
 
@@ -82,33 +76,22 @@ const Dashboard = () => {
     }
   };
 
-  const handleChangePage = async (direction) => {
-    let newOffset = offset;
-
-    if (direction === "forward") {
-      newOffset = offset + LIMIT;
-    } else {
-      if (offset > 0) {
-        newOffset = offset - LIMIT;
-      }
-    }
-    setLoading(true);
-    const json = await loadLinks(newOffset);
-    if (json && json.length > 0) {
-      setOffset(newOffset);
-    }
-    setLoading(false);
+  const handleChangePage = async (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    const offset = value * LIMIT - LIMIT;
+    const fileRange = data.slice(offset, offset + LIMIT);
+    setFiles(fileRange);
   };
 
-  const loadLinks = async (newOffset) => {
+  const loadLinks = async () => {
     const ky = getKy();
-    const res = await ky.get(`/api/metadata?offset=${newOffset}`);
-
+    const res = await ky.get(`/api/metadata`);
     const json = await res.json();
     if (json && json.length > 0) {
-      setFiles(json);
+      setCount(Math.ceil(json.length / LIMIT));
+      setFiles(json.slice(0, LIMIT));
+      setData(json);
     }
-
     setLoading(false);
     return json;
   };
@@ -148,13 +131,13 @@ const Dashboard = () => {
     if (isMobile) {
       setAnchorEl(event.currentTarget);
     } else {
-      setModalOpen(true);
+      setDialogOpen(true);
     }
   };
 
   return (
     <>
-      <SubmarineModal setOpen={setModalOpen} open={modalOpen} />
+      <SubmarineDialog setOpen={setDialogOpen} open={dialogOpen} />
       <Unstable_Grid2 container direction={"column"} sx={{ marginTop: "3em" }}>
         <Unstable_Grid2
           container
@@ -197,24 +180,28 @@ const Dashboard = () => {
             </MenuItem>
           </Menu>
         </Unstable_Grid2>
-        <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(7, 0, 0, 0) }} />
+        <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(4, 0, 0, 0) }} />
 
         {loading ? (
-          <Unstable_Grid2 container justifyContent={"center"}>
-            <Loading />
-          </Unstable_Grid2>
+          <Loading />
         ) : (
           <>
-            <LinkTable
-              copyLink={copyLink}
-              files={files}
-              handleDelete={handleDelete}
-              open={open}
-              setOpen={setOpen}
-              loadLinks={loadLinks}
-              getThumbnail={getThumbnail}
-            />
-            <Pagination handlePageChange={handleChangePage} />
+            <Unstable_Grid2 container direction={"column"} gap={3}>
+              <LinkTable
+                copyLink={copyLink}
+                files={files}
+                handleDelete={handleDelete}
+                open={open}
+                setOpen={setOpen}
+                loadLinks={loadLinks}
+                getThumbnail={getThumbnail}
+              />
+              {data && data.length > 0 && (
+                <Unstable_Grid2 sx={{ margin: "auto" }}>
+                  <AppPagination page={page} count={count} handleChange={handleChangePage} />
+                </Unstable_Grid2>
+              )}
+            </Unstable_Grid2>
           </>
         )}
       </Unstable_Grid2>

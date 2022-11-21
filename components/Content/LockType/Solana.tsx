@@ -4,7 +4,7 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import BaseLockType from "./LockTypeContainer";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
@@ -19,8 +19,6 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import bs58 from "bs58";
-import { useAppDispatch } from "../../../store/hooks";
-import { setAlert } from "../../../store/slices/alertSlice";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
@@ -119,9 +117,16 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
         <WalletModalProvider>
           {!wallet.connected ? (
             <Grid2>
-              <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
-              <Button>
-                <WalletMultiButton />
+              <Button
+                sx={{
+                  width: "90%",
+                  maxWidth: "300px",
+                  backgroundColor: (theme) => theme.palette.primary.light,
+                  color: "black",
+                  "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+                }}
+              >
+                <WalletMultiButton style={{ backgroundColor: "transparent" }} />
               </Button>
               {description}
             </Grid2>

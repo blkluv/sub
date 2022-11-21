@@ -1,4 +1,12 @@
-import { Dialog, Box, IconButton, Divider, Typography, Unstable_Grid2 } from "@mui/material";
+import {
+  Dialog,
+  IconButton,
+  Typography,
+  Unstable_Grid2,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import UnlockTypeCardFactory from "./UnlockTypeCardFactory";
 
@@ -8,12 +16,7 @@ const SubmarineModal = ({ open, setOpen }) => {
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        PaperProps={{
-          sx: {
-            width: "65vw",
-            borderRadius: "30px",
-          },
-        }}
+        sx={{ "& .MuiDialog-paper": { width: "60vw", borderRadius: "20px" } }}
         maxWidth="lg"
       >
         <Unstable_Grid2
@@ -30,23 +33,20 @@ const SubmarineModal = ({ open, setOpen }) => {
               padding: (theme) => theme.spacing(3),
             }}
           >
-            <Typography variant="h2">
-              How you&apos;d like your submarined <br></br> content to be unlocked?
-            </Typography>
-            <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>
-              <CloseIcon onClick={() => setOpen(false)} />
-            </IconButton>
+            <DialogTitle>
+              <Typography variant="h2">
+                How would you like your content <br></br> to be unlocked?
+              </Typography>
+            </DialogTitle>
+            <DialogActions>
+              <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>
+                <CloseIcon onClick={() => setOpen(false)} />
+              </IconButton>
+            </DialogActions>
           </Unstable_Grid2>
-          <Divider sx={{ width: "100%" }} />
-          <Unstable_Grid2
-            container
-            sx={{
-              margin: (theme) => theme.spacing(2, 0, 2, 0),
-              padding: (theme) => theme.spacing(0, 3, 0, 3),
-            }}
-          >
+          <DialogContent>
             <UnlockTypeCardFactory />
-          </Unstable_Grid2>
+          </DialogContent>
         </Unstable_Grid2>
       </Dialog>
     </div>

@@ -67,7 +67,6 @@ const Retweet = ({ fileInfo }) => {
           {tweetId && (
             <Box sx={{ overflowY: "hidden" }}>{tweetId && <Tweet tweetId={tweetId} />}</Box>
           )}
-          <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(1, 0, 0, 0) }} />
         </Unstable_Grid2>
         {hasConnectedTwitter ? (
           <BaseLockType

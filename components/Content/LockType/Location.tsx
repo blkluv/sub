@@ -47,7 +47,6 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
   };
   const description = (
     <>
-      <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
       <Typography
         variant="h6"
         sx={{

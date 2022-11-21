@@ -1,15 +1,12 @@
 import Image from "next/image";
 import maps from "./Location/googlemaps.png";
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
-  Unstable_Grid2,
 } from "@mui/material";
 import InformationCircleIconStyled from "../../Form/InformationCircleIconStyled";
 
@@ -17,17 +14,6 @@ export default function GoogleMapsCoordsDialog({
   googleMapsDialogOpen: open,
   setGoogleMapsDialogOpen: setOpen,
 }) {
-  const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 950,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 2,
-  };
-
   return (
     <Dialog
       open={open}

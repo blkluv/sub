@@ -180,12 +180,10 @@ const Dashboard = () => {
             </MenuItem>
           </Menu>
         </Unstable_Grid2>
-        <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(7, 0, 0, 0) }} />
+        <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(4, 0, 0, 0) }} />
 
         {loading ? (
-          <Unstable_Grid2 container justifyContent={"center"}>
-            <Loading />
-          </Unstable_Grid2>
+          <Loading />
         ) : (
           <>
             <Unstable_Grid2 container direction={"column"} gap={3}>

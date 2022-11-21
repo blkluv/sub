@@ -46,6 +46,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
           marginLeft: "auto",
           marginRight: "auto",
           marginTop: "70px",
+          marginBottom: "20px",
           padding: (theme) => theme.spacing(4),
           backgroundColor: (theme) => theme.palette.primary.dark,
           opacity: "0.9",
@@ -64,11 +65,11 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
         <Typography
           variant="h1"
           sx={{
-            marginTop: (theme) => theme.spacing(3),
+            marginTop: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
           }}
         >
-          {fileInfo.name}
+          {fileInfo.name || "Title"}
         </Typography>
         <Typography
           variant="subtitle2"
@@ -78,7 +79,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
             opacity: ".75",
           }}
         >
-          {fileInfo.description}
+          {fileInfo.description || "Description"}
         </Typography>
         {LockType}
       </Paper>

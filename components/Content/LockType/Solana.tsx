@@ -120,8 +120,16 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
           {!wallet.connected ? (
             <Grid2>
               <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(2, 0, 2, 0) }} />
-              <Button>
-                <WalletMultiButton />
+              <Button
+                sx={{
+                  width: "343px",
+                  height: "44px",
+                  backgroundColor: (theme) => theme.palette.primary.light,
+                  color: "black",
+                  "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+                }}
+              >
+                <WalletMultiButton style={{ backgroundColor: "transparent" }} />
               </Button>
               {description}
             </Grid2>

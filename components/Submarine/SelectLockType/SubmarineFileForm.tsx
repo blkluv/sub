@@ -183,6 +183,10 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                   sx={{
                     padding: (theme) => theme.spacing(0, 2, 0, 2),
                     display: { lg: "flex", xs: "none" },
+                    height: "100vh",
+                    position: "sticky",
+                    top: 150,
+                    alignSelf: "flex-start",
                   }}
                 >
                   <MainLandingContent
@@ -192,18 +196,18 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                     isPreview
                   />
                 </Unstable_Grid2>
-                <Unstable_Grid2 container xs={12}>
-                  <Unstable_Grid2 lgOffset={4}>
-                    <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
-                      <Button
-                        type="submit"
-                        onClick={(e) => props.handleSubmit()}
-                        disabled={!props.isValid || props.isSubmitting}
-                      >
-                        {props.isSubmitting ? "Processing..." : "Upload and Continue"}
-                      </Button>
-                    </Box>
-                  </Unstable_Grid2>
+              </Unstable_Grid2>
+              <Unstable_Grid2 container xs={12}>
+                <Unstable_Grid2 lgOffset={4}>
+                  <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
+                    <Button
+                      type="submit"
+                      onClick={(e) => props.handleSubmit()}
+                      disabled={!props.isValid || props.isSubmitting}
+                    >
+                      {props.isSubmitting ? "Processing..." : "Upload and Continue"}
+                    </Button>
+                  </Box>
                 </Unstable_Grid2>
               </Unstable_Grid2>
             </Unstable_Grid2>

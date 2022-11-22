@@ -99,7 +99,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { data, error } = await supabase
         .from<definitions["Content"]>("Content")
         .update(theCreationObject)
-        .eq("short_id", req.body.shortId);
+        .eq("short_id", req.body.shortId)
+        .eq("pinata_user_id", user.userInformation.id);
 
       if (error) {
         throw error;

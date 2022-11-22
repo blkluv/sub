@@ -3,7 +3,7 @@ import { Field } from "formik";
 import { Select } from "formik-mui";
 
 const networkOptions = {
-  Ethereum: ["Mainnet", "Rinkeby"],
+  Ethereum: ["Mainnet", "Goerli"],
   Polygon: ["Mainnet", "Mumbai"],
   Avalanche: ["Mainnet", "Fuji"],
   Solana: ["Mainnet-Beta", "Devnet"],

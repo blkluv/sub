@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   } else if (req.method === "GET") {
     let user = null;
     try {
-      user = await getUserSession(req.headers.authorization);
+      user = await getUserSession(req);
       if (!user) {
         return res.status(401).send("Unauthorized");
       }

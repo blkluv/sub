@@ -4,7 +4,7 @@ import { validate as uuidValidate } from "uuid";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { getUserSession } from "../../helpers/user.helpers";
 import { definitions } from "../../types/supabase";
-
+import type { NextApiRequest, NextApiResponse } from "next";
 const supabase = getSupabaseClient();
 const schema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
@@ -35,8 +35,8 @@ const schema = Joi.object({
   shortId: Joi.string().min(1).max(100).required(),
 });
 
-export default async function handler(req, res) {
-  const user = await getUserSession(req.headers.authorization);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const user = await getUserSession(req);
 
   if (!user) {
     res.status(401).send("Unauthorized");

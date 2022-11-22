@@ -102,10 +102,13 @@ export default function Gallery({ content, name }: GalleryProps) {
   };
 
   const getIcon = (filename) => {
+    if (!filename) {
+      return null;
+    }
     const extension = filename.substr(filename.lastIndexOf(".") + 1);
     const type = getType(extension);
     let icon = null;
-    if (type && mainThree.includes(type.split("/")[0])) {
+    if (type && mainThree.includes(type.split("/")?.[0])) {
       icon = iconMapper(type.split("/")[0]);
     } else {
       icon = iconMapper(type);

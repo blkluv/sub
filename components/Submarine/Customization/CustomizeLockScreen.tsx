@@ -111,12 +111,12 @@ const CustomizeLockScreen = () => {
           ></Card>
         )}
         <UploadImagePublic
-          label={"Select a background image"}
+          label={"Select an image"}
           setIpfsHash={(hash) => setFieldValue("customizations.backgroundCid", hash)}
         />
       </Unstable_Grid2>
       <Typography variant="h6">Button Shape</Typography>
-      <Field component={RadioGroup} name="customizations.buttonShape" defaultValue="rounded">
+      <Field component={RadioGroup} row name="customizations.buttonShape" defaultValue="rounded">
         <FormControlLabel value="rounded" control={<Radio />} label="Rounded" />
         <FormControlLabel value="square" control={<Radio />} label="Squared" />
       </Field>

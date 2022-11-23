@@ -126,7 +126,7 @@ const UploadPrivateMedia = () => {
   return (
     <>
       <Typography variant="h6"> Are you Submarining a single file or a folder?</Typography>
-      <RadioGroup value={uploadType} onChange={handleChange}>
+      <RadioGroup row value={uploadType} onChange={handleChange}>
         <FormControlLabel value={FileType.File} control={<Radio />} label="Single File" />
         <FormControlLabel value={FileType.Folder} control={<Radio />} label="Folder" />
       </RadioGroup>
@@ -147,7 +147,7 @@ const UploadPrivateMedia = () => {
         }}
       >
         <Typography sx={{ display: { sm: "block", nxs: "none", color: "#C8C8C8" } }}>
-          Drag or drop a file here or
+          Drag or drop a {uploadType === FileType.File ? "file" : "folder"} here or
         </Typography>
         <Typography
           component={"label"}

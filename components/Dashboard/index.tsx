@@ -147,12 +147,18 @@ const Dashboard = () => {
         >
           <Unstable_Grid2 container direction={"column"}>
             <Typography variant="h1">Submarine Files</Typography>
-            <Typography variant="subtitle2" sx={{ color: (theme) => theme.palette.grey[500] }}>
-              Find your recently submarined content below{" "}
+            <Typography
+              variant="subtitle2"
+              sx={{ color: (theme) => theme.palette.grey[700], fontWeight: 300 }}
+            >
+              Find your recently submarined content below
             </Typography>
           </Unstable_Grid2>
           <Button
-            sx={{ "&:hover": { backgroundColor: (theme) => theme.palette.primary.main } }}
+            sx={{
+              "&:hover": { backgroundColor: (theme) => theme.palette.primary.main },
+              marginTop: "1em",
+            }}
             onClick={(e) => handleSubmarineClick(e)}
           >
             Submarine New Files

@@ -146,7 +146,7 @@ const Dashboard = () => {
           alignItems={"center"}
         >
           <Unstable_Grid2 container direction={"column"}>
-            <Typography variant="h1">Submarine Files</Typography>
+            <Typography variant="h1">Submarined Files</Typography>
             <Typography
               variant="subtitle2"
               sx={{

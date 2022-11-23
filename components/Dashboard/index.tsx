@@ -149,7 +149,11 @@ const Dashboard = () => {
             <Typography variant="h1">Submarine Files</Typography>
             <Typography
               variant="subtitle2"
-              sx={{ color: (theme) => theme.palette.grey[700], fontWeight: 300 }}
+              sx={{
+                color: (theme) => theme.palette.grey[700],
+                fontWeight: 300,
+                marginTop: "0.5em",
+              }}
             >
               Find your recently submarined content below
             </Typography>

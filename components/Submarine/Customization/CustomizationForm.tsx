@@ -73,7 +73,6 @@ const CustomizationForm = () => {
       <FormControlLabel
         control={
           <Switch
-            defaultChecked
             checked={customize}
             onChange={(e) => setCustomize(e.target.checked)}
             inputProps={{ "aria-label": "controlled" }}

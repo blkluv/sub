@@ -65,7 +65,7 @@ const CustomizationForm = () => {
             </Box>
           )}
           <UploadImagePublic
-            label={"Select a thumbnail image"}
+            label={"Select an image"}
             setIpfsHash={(hash) => setFieldValue("thumbnail", hash)}
           />
         </Unstable_Grid2>

@@ -38,17 +38,6 @@ const ForgotPasswordForm = () => {
   });
 
   const router = useRouter();
-  const handleValidSubmit = async (event) => {
-    //     dispatch(doLogin({ email, password }));
-    //sample FullStory SDK calls
-    // FullStory.setVars("page", {
-    //   userEmail: email,
-    // });
-    // FullStory.event("Sign up", {
-    //   userEmail: email,
-    // });
-    //     TODO add FS
-  };
 
   const [codeSent, setCodeSent] = useState(false);
   const initialValues = {

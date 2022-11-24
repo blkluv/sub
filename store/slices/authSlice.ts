@@ -139,6 +139,17 @@ const getGatewayUrl = async (): Promise<string> => {
   return gw;
 };
 
+export const refreshGatewayUrl = createAsyncThunk("auth/refreshGatewayUrl", async () => {
+  const ky = getKy();
+  const r = await ky("/api/users", {
+    method: "GET",
+  });
+  const re = await r.json();
+  const gw = re.pinata_gateway_subdomain;
+  localStorage.setItem("pinata_gateway_subdomain", gw);
+  return gw;
+});
+
 export const tryLogin = createAsyncThunk("auth/tryLogin", async (): Promise<Login | MFA> => {
   const user = await getUser();
   const userWithAvatar = await setAvatar(user);
@@ -191,6 +202,14 @@ export const authSlice = createSlice({
     builder.addCase(doLogOut.fulfilled, (state) => {
       state.user = null;
     });
+
+    builder.addCase(refreshGatewayUrl.fulfilled, (state, { payload }) => {
+      if (state.user && payload !== state.user.gatewayUrl) {
+        const gatewayUrl = `https://${payload}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
+        state.user.gatewayUrl = gatewayUrl;
+      }
+    });
+
     builder.addMatcher(isPendingLogin, (state) => {
       state.errorMsg = null;
       state.status = LOGIN_STATUSES.pending;

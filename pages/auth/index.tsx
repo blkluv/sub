@@ -5,10 +5,11 @@ import { useEffect } from "react";
 import SharedHead from "../../components/Layout/SharedHead";
 import Navigation from "../../components/Navigation";
 import AuthForm from "../../components/Auth/AuthForm";
-import { tryLogin } from "../../store/slices/authSlice";
+import { refreshGatewayUrl, tryLogin } from "../../store/slices/authSlice";
 
 const Login = ({ router }) => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const dispatch = useAppDispatch();
   if (isAuthenticated) {
     if (router.query.from) {
       router.push(router.query.from);
@@ -16,10 +17,14 @@ const Login = ({ router }) => {
       router.push("/");
     }
   }
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    isAuthenticated && dispatch(refreshGatewayUrl());
+  }, [isAuthenticated]);
+
   useEffect(() => {
     dispatch(tryLogin());
   }, []);
+
   return (
     <>
       <SharedHead />

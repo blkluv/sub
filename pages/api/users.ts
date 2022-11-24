@@ -102,7 +102,11 @@ export default async function handler(req, res) {
 
       const gateways = await getGateways(req);
       if (!gateways || !gateways.items || !gateways.items.rows || gateways.items.rows.length < 1) {
-        return res.status(403).send("User Has No Gateways");
+        return res
+          .status(403)
+          .json(
+            "User Has No Gateways.\r\n Please create a gateway on app.pinata.cloud to continue."
+          );
       } else {
         const { data, error } = await supabase
           .from("Users")

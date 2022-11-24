@@ -118,8 +118,8 @@ const getUser = async (): Promise<User> => {
       gatewayUrl,
     };
   } catch (err) {
-    console.log(err);
-    throw new Error("Server error");
+    const errorMsg = await err.response.json();
+    throw new Error(errorMsg);
   }
   return user.attributes;
 };

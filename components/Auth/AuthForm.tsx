@@ -80,7 +80,7 @@ export default function AuthForm() {
             sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}
           >
             <Typography variant="body1">Or&nbsp;</Typography>
-            <Link passHref href="/auth/signup">
+            <Link passHref href="https://app.pinata.cloud">
               <Typography variant="body1" color="primary.main" sx={{ cursor: "pointer" }}>
                 sign up here.
               </Typography>
@@ -184,12 +184,17 @@ export default function AuthForm() {
                 <Typography
                   variant={"body1"}
                   color="primary.main"
-                  sx={{ cursor: "pointer", marginTop: "1rem" }}
+                  sx={{ cursor: "pointer", marginTop: "1rem", textAlign: "center" }}
                 >
                   {"Forgot password?"}
                 </Typography>
               </Link>
-              <Typography variant={"body1"} color="error" sx={{ marginTop: "1rem" }}>
+              <Typography
+                variant={"body1"}
+                color="error"
+                component="pre"
+                sx={{ marginTop: "1rem", textAlign: "center" }}
+              >
                 {authError}
               </Typography>
             </Unstable_Grid2>

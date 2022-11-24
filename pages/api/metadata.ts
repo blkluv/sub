@@ -4,12 +4,12 @@ import { validate as uuidValidate } from "uuid";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { getUserSession } from "../../helpers/user.helpers";
 import { definitions } from "../../types/supabase";
-
+import type { NextApiRequest, NextApiResponse } from "next";
 const supabase = getSupabaseClient();
 const schema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
   description: Joi.string().min(1).max(400).required(),
-  thumbnail: Joi.string().min(0).max(100).optional(),
+  thumbnail: Joi.string().min(0).max(100).optional().allow(null, ""),
   submarineCID: Joi.string().min(1).max(100).required(),
   unlockInfo: Joi.object({
     type: Joi.string().min(1).max(100).required(),
@@ -35,15 +35,15 @@ const schema = Joi.object({
   shortId: Joi.string().min(1).max(100).required(),
 });
 
-export default async function handler(req, res) {
-  const user = await getUserSession(req.headers.authorization);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const user = await getUserSession(req);
 
   if (!user) {
     res.status(401).send("Unauthorized");
   }
   if (req.method === "POST") {
     try {
-      const obj = JSON.parse(req.body || {});
+      const obj = req.body;
       await schema.validateAsync(obj);
       const theCreationObject: definitions["Content"] = {
         id: uuidv4(),
@@ -54,12 +54,12 @@ export default async function handler(req, res) {
         pinata_user_id: user.userInformation.id,
         unlock_info: obj.unlockInfo,
         customizations: obj.customizations,
+        thumbnail: obj.thumbnail,
       };
-
-      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
-        console.log("Adding thumbnail");
-        theCreationObject.thumbnail = req.body.thumbnail;
-      }
+      // if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+      //   console.log("Adding thumbnail");
+      //   theCreationObject.thumbnail = req.body.thumbnail;
+      // }
       const { error } = await supabase
         .from<definitions["Content"]>("Content")
         .insert([theCreationObject]);
@@ -88,17 +88,19 @@ export default async function handler(req, res) {
         pinata_user_id: user.userInformation.id,
         unlock_info: req.body.unlockInfo,
         customizations: req.body.customizations,
+        thumbnail: req.body.thumbnail,
       };
 
-      if (req.body.thumbnail && req.body.thumbnail.length > 0) {
-        console.log("Adding thumbnail");
-        theCreationObject.thumbnail = req.body.thumbnail;
-      }
+      // if (req.body.thumbnail && req.body.thumbnail.length > 0) {
+      //   console.log("Adding thumbnail");
+      //   theCreationObject.thumbnail = req.body.thumbnail;
+      // }
 
       const { data, error } = await supabase
         .from<definitions["Content"]>("Content")
         .update(theCreationObject)
-        .eq("short_id", req.body.shortId);
+        .eq("short_id", req.body.shortId)
+        .eq("pinata_user_id", user.userInformation.id);
 
       if (error) {
         throw error;
@@ -113,13 +115,13 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const { offset } = req.query;
+      // const { offset } = req.query;
 
       let { data: Content, error } = await supabase
         .from<definitions["Content"]>("Content")
         .select("*")
         .eq("pinata_user_id", user.userInformation.id)
-        .range(offset, offset + 4)
+        // .range(offset, offset + 4)
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -133,7 +135,7 @@ export default async function handler(req, res) {
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else if (req.method === "DELETE") {
-    const { id } = JSON.parse(req.body);
+    const { id } = req.body;
     if (!id || !uuidValidate(id)) {
       return res.status(401).send("No valid id passed in");
     } else {

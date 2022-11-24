@@ -13,7 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import DeleteModal from "./DeleteModal";
+import DeleteDialog from "./DeleteModal";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { makeDatePretty } from "../../helpers/makeDatePretty";
@@ -47,7 +47,7 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
                     <IconButton edge="end" onClick={() => copyLink(file)}>
                       <ShareIcon width={"1.5rem"} />
                     </IconButton>
-                    <IconButton onClick={(file) => openDeleteModal(file)} aria-label="delete">
+                    <IconButton onClick={(e) => openDeleteModal(file)} aria-label="delete">
                       <TrashIcon width={"1.5rem"} />
                     </IconButton>
                   </Unstable_Grid2>
@@ -68,19 +68,25 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={file.name}
+                  primary={<Typography variant="h6">{file.name}</Typography>}
                   disableTypography
                   secondary={
                     <>
-                      <Typography variant="body2">
+                      <Typography variant="subtitle2">
                         {file.unlock_info?.type}
                         {file?.unlock_info?.type === "nft" &&
                           ` - ${file?.unlock_info?.blockchain}`}{" "}
                       </Typography>
-                      <Typography variant="body2">{makeDatePretty(file.created_at)}</Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: (theme) => theme.palette.grey[600] }}
+                      >
+                        {makeDatePretty(file.created_at)}
+                      </Typography>
                       <Typography
                         sx={{
                           display: isMobile ? "none" : "block",
+                          color: (theme) => theme.palette.grey[600],
                         }}
                         variant="body2"
                       >
@@ -95,7 +101,7 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
           );
         })}
       </List>
-      <DeleteModal
+      <DeleteDialog
         file={file}
         handleDelete={handleDelete}
         open={open}

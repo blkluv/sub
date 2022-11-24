@@ -9,7 +9,7 @@ import CustomButton from "../CustomButton";
 
 interface BaseLockTypeProps {
   fileInfo: MetadataUnlockInfo;
-  handleVerify: () => Promise<SubmarinedContent | void>;
+  handleVerify: () => Promise<SubmarinedContent>;
   description: JSX.Element;
   lockName: string;
 }
@@ -22,14 +22,14 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
       const submarinedContent = await handleVerify();
       if (submarinedContent) {
         dispatch(setSubmarinedContent(submarinedContent));
-        setVerifying(false);
       }
+      setVerifying(false);
     } catch (err) {
-      setAlert({ type: "error", message: err });
+      dispatch(setAlert({ type: "error", message: err }));
+      setVerifying(false);
     }
   };
 
-  console.log(fileInfo, isButtonCustom(fileInfo));
   return (
     <div>
       {description}
@@ -41,7 +41,14 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
           loading={verifying}
         />
       ) : (
-        <Button onClick={handleClick}>
+        <Button
+          sx={{
+            backgroundColor: (theme) => theme.palette.primary.light,
+            color: "black",
+            "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+          }}
+          onClick={handleClick}
+        >
           {verifying ? `Verifying ${lockName}...` : `Verify ${lockName}`}
         </Button>
       )}

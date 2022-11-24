@@ -1,5 +1,5 @@
-import { Button, Typography } from "@mui/material";
-import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+import { Button, Divider, Typography } from "@mui/material";
+import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import BaseLockType from "./LockTypeContainer";
@@ -43,8 +43,14 @@ const NFT = ({ fileInfo }) => {
     }
   };
   const description = (
-    <Typography>
-      Unlock this content by connecting your wallet to verify you have the required NFT.
+    <Typography
+      variant="h6"
+      sx={{
+        padding: (theme) => theme.spacing(1),
+        color: (theme) => theme.palette.primary.contrastText,
+      }}
+    >
+      Connect your wallet to unlock content
     </Typography>
   );
   return (
@@ -58,12 +64,19 @@ const NFT = ({ fileInfo }) => {
         />
       ) : (
         <>
+          {description}
           {connectors.map((connector) => {
             return (
-              <div key={connector.name}>
+              <div key={connector.name} style={{ marginTop: "8px" }}>
                 {connector.ready && (
                   <Button
-                    variant="contained"
+                    sx={{
+                      width: "90%",
+                      maxWidth: "300px",
+                      backgroundColor: (theme) => theme.palette.primary.light,
+                      color: "black",
+                      "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+                    }}
                     disabled={!connector.ready}
                     key={connector.id}
                     onClick={() => connect({ connector })}
@@ -75,7 +88,6 @@ const NFT = ({ fileInfo }) => {
               </div>
             );
           })}
-          {description}
         </>
       )}
     </>

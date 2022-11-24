@@ -13,7 +13,9 @@ const FormikTextfield = ({
   const formik = useFormikContext();
   return (
     <Field
+      variant="standard"
       component={TextField}
+      InputLabelProps={{ shrink: true }}
       name={name}
       label={label}
       type={type}
@@ -23,9 +25,9 @@ const FormikTextfield = ({
         endAdornment: <InputAdornment position="end">{adornment}</InputAdornment>,
       }}
       inputProps={{
+        fullwidth: "true",
         maxLength: maxLength,
       }}
-      sx={{ m: 1 }}
       autoComplete="off"
       helperText={formik.touched[name] && formik.errors[name]}
       {...props}

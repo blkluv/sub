@@ -50,10 +50,16 @@ export default function Footer() {
       sx={{ padding: (theme) => theme.spacing(3, 1), marginTop: (theme) => theme.spacing(6) }}
     >
       <Divider>
-        <Grid2 container justifyContent={"space-between"}>
+        <Grid2
+          container
+          direction="column"
+          justifyContent={"space-between"}
+          alignContent={"center"}
+        >
           <Typography color={"gray"}>
-            &copy; {new Date().getFullYear()} Pinata Technologies, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} Pinata Technologies, Inc.
           </Typography>
+          <Typography color={"gray"}> All rights reserved.</Typography>
         </Grid2>
       </Divider>
     </Container>

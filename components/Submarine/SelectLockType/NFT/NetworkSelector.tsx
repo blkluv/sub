@@ -3,7 +3,7 @@ import { Field } from "formik";
 import { Select } from "formik-mui";
 
 const networkOptions = {
-  Ethereum: ["Mainnet", "Rinkeby"],
+  Ethereum: ["Mainnet", "Goerli"],
   Polygon: ["Mainnet", "Mumbai"],
   Avalanche: ["Mainnet", "Fuji"],
   Solana: ["Mainnet-Beta", "Devnet"],
@@ -12,11 +12,12 @@ const networkOptions = {
 const NetworkSelector = ({ blockchain }) => {
   return (
     <Field
-      formControl={{ sx: { width: "100%" } }}
       component={Select}
       id="unlockInfo.network"
       name="unlockInfo.network"
       label="Network"
+      fullwidth
+      variant="standard"
     >
       {networkOptions[blockchain].map((o) => (
         <MenuItem key={o} value={o}>

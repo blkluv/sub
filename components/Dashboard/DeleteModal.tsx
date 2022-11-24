@@ -1,7 +1,15 @@
-import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 
-export default function DeleteModal({ file, handleDelete, loadLinks, open, setOpen }) {
+export default function DeleteDialog({ file: fileProp, handleDelete, loadLinks, open, setOpen }) {
+  const [file, setFile] = useState(fileProp);
   const deleteLink = async () => {
     if (!file.id) {
       throw "No file id";
@@ -11,39 +19,33 @@ export default function DeleteModal({ file, handleDelete, loadLinks, open, setOp
     setOpen(false);
   };
 
-  const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 2,
+  useEffect(() => {
+    setFile(fileProp);
+  }, [fileProp]);
+
+  const handleCancel = () => {
+    setOpen(false);
   };
+
   return (
-    <Modal
+    <Dialog
+      sx={{ "& .MuiDialog-paper": { width: "80%", maxHeight: 435 } }}
+      maxWidth="xs"
       open={open}
       onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Delete submarined link
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Are you sure you want to delete {file?.name}?
-        </Typography>
-        <Unstable_Grid2 container justifyContent={"flex-end"}>
-          <Button onClick={() => setOpen(false)} variant="outlined">
-            Cancel
-          </Button>
-          <Button onClick={deleteLink} color="error">
-            Delete
-          </Button>
-        </Unstable_Grid2>
-      </Box>
-    </Modal>
+      <DialogTitle>Delete submarined link</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Are you sure you want to delete {file?.name}?</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus variant="outlined" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button color="error" onClick={deleteLink}>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

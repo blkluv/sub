@@ -8,16 +8,23 @@ import LockedContentContainer from "./LockedContentContainer";
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
-import { Box } from "@mui/material";
+import { Box, Unstable_Grid2, useMediaQuery } from "@mui/material";
 
 export interface MainLandingContentProps {
   missing: boolean;
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
+  isPreview?: boolean;
 }
 
-const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingContentProps) => {
+const MainLandingContent = ({
+  fileInfo,
+  gatewayUrl,
+  missing,
+  isPreview = false,
+}: MainLandingContentProps) => {
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
+
   let content;
   if (missing) {
     content = <Missing />;
@@ -31,7 +38,7 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
   return (
     <>
       <Box
-        sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4) }}
+        sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4), width: "fit-content" }}
         style={getCustomFont(fileInfo)}
       >
         {fileInfo.customizations && fileInfo.customizations.logoCid ? (
@@ -40,27 +47,27 @@ const MainLandingContent = ({ fileInfo, gatewayUrl, missing }: MainLandingConten
           <SubmarineLogoSvg />
         )}
       </Box>
-      <Box
+      <Unstable_Grid2
+        container
+        justifyContent="center"
+        alignItems="center"
         style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
-          margin: "auto",
           backgroundImage: fileInfo.customizations?.backgroundCid
             ? `url(${gatewayUrl}/ipfs/${fileInfo.customizations?.backgroundCid})`
             : "none",
           background:
             !fileInfo.customizations?.backgroundCid &&
-            "linear-gradient(180deg, #b6ece2 0%, #9c6bc3 100%)",
+            "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
+          width: "100%",
           justifyContent: "center",
-          alignContent: "center",
-          display: "flex",
-          flexDirection: "column",
+          borderRadius: isPreview ? "45px" : 0,
         }}
       >
         {content}
-      </Box>
+      </Unstable_Grid2>
     </>
   );
 };

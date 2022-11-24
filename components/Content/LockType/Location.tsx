@@ -1,6 +1,5 @@
-import { MapIcon } from "@heroicons/react/outline";
-import { Typography, Unstable_Grid2 } from "@mui/material";
-import Link from "next/link";
+import MapIcon from "@mui/icons-material/Map";
+import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { getKy } from "../../../helpers/ky";
 import { useAppDispatch } from "../../../store/hooks";
 import { setAlert } from "../../../store/slices/alertSlice";
@@ -13,16 +12,14 @@ interface LocationProps {
   fileInfo: MetadataUnlockInfo;
 }
 const LocationUnlock = ({ fileInfo }: LocationProps) => {
-  const dispatch = useAppDispatch();
   const unlockInfo: UnlockInfoLocation =
     fileInfo.unlockInfo.type === "location" && fileInfo.unlockInfo;
 
-  const verifyLocation = async (): Promise<SubmarinedContent | void> => {
-    if (!navigator.geolocation) {
-      dispatch(setAlert({ type: "error", message: "Your device does not support geolocation" }));
-      return;
-    }
-    const promise = new Promise<SubmarinedContent>((resolve, reject) => {
+  const verifyLocation = async (): Promise<SubmarinedContent> => {
+    return new Promise<SubmarinedContent>((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject("Your device does not support geolocation");
+      }
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const latitude = position.coords.latitude;
@@ -40,31 +37,29 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
               .json();
             resolve(data);
           } catch (error) {
-            dispatch(setAlert({ type: "error", message: error.response.statusText }));
+            reject("Could not verify location");
           }
         },
-        (error) => {
-          dispatch(
-            setAlert({
-              type: "error",
-              message: "Location services may be disabled on your device, please enable them.",
-            })
-          );
-        }
+        // error callback
+        () => reject("Location services may be disabled on your device, please enable them.")
       );
     });
-    return promise;
   };
   const description = (
     <>
-      <Typography>
+      <Typography
+        variant="h6"
+        sx={{
+          padding: (theme) => theme.spacing(1),
+          color: (theme) => theme.palette.primary.contrastText,
+        }}
+      >
         You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of these coordinates
-        to unlock this media:
+        to unlock content:
       </Typography>
       <Typography
         paragraph
         sx={{
-          marginTop: (theme) => theme.spacing(4),
           color: (theme) => theme.palette.primary.main,
           textDecoration: "underline",
         }}
@@ -74,11 +69,21 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <Unstable_Grid2 container justifyContent={"center"}>
-            <span>
-              {unlockInfo?.lat}, {unlockInfo?.long}
-            </span>
-            <MapIcon style={{ marginLeft: "0.5rem" }} height={"1.5rem"} />
+          <Unstable_Grid2 container sx={{ justifyContent: "center", alignItems: "center" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                padding: (theme) => theme.spacing(1),
+                color: (theme) => theme.palette.primary.contrastText,
+              }}
+            >
+              {unlockInfo?.lat}, <br /> {unlockInfo?.long}
+            </Typography>
+            <MapIcon
+              style={{ marginLeft: "0.5rem" }}
+              height={"1.5rem"}
+              sx={{ color: (theme) => theme.palette.primary.contrastText }}
+            />
           </Unstable_Grid2>
         </a>
       </Typography>

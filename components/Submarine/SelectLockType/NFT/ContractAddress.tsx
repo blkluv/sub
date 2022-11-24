@@ -1,69 +1,58 @@
-import { Divider } from "@mui/material";
-import { Box } from "@mui/system";
+import { Unstable_Grid2 } from "@mui/material";
 import { useState } from "react";
 import FormikTextfield from "../../../Form/FormikTextfield";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
-import MintAddressModal from "../MintAddressModal";
-import TokenIdModal from "../TokenIdModal";
-import UpdateAuthorityModal from "../UpdateAuthorityModal";
+import MintAddressDialog from "../MintAddressDialog";
+import TokenIdDialog from "../TokenIdDialog";
+import UpdateAuthorityDialog from "../UpdateAuthorityDialog";
 
 const ContractAddress = ({ blockchain }) => {
-  const [tokenIdModalOpen, setTokenIdModalOpen] = useState(false);
-  const [updateAuthorityModalOpen, setUpdateAuthorityModalOpen] = useState(false);
-  const [mintAddressModalOpen, setMintAddressModalOpen] = useState(false);
+  const [tokenIdDialogOpen, setTokenIdDialogOpen] = useState(false);
+  const [updateAuthorityDialogOpen, setUpdateAuthorityDialogOpen] = useState(false);
+  const [mintAddressDialogOpen, setMintAddressDialogOpen] = useState(false);
   switch (blockchain) {
     case "Solana":
       return (
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
+        <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
           <FormikTextfield
             type="text"
-            name="unlockInfo.nft"
-            label="Update authority"
+            name="unlockInfo.mintAddress"
+            label="Mint Address"
+            required
+            adornment={
+              <span aria-label="button" onClick={() => setMintAddressDialogOpen(true)}>
+                <InformationCircleIconStyled />
+              </span>
+            }
+          />
+          <FormikTextfield
+            type="text"
+            name="unlockInfo.updateAuthority"
+            label="Update Authority"
             required
             adornment={
               <span
                 style={{ cursor: "pointer" }}
                 aria-label="button"
-                onClick={() => setUpdateAuthorityModalOpen(true)}
+                onClick={() => setUpdateAuthorityDialogOpen(true)}
               >
                 <InformationCircleIconStyled />
               </span>
             }
           />
-          <Divider variant="middle" flexItem />
-          <FormikTextfield
-            type="text"
-            name="unlockInfo.mintAddress"
-            label="Mint Address"
-            adornment={
-              <span aria-label="button" onClick={() => setMintAddressModalOpen(true)}>
-                <InformationCircleIconStyled />
-              </span>
-            }
+          <UpdateAuthorityDialog
+            updateAuthorityDialogOpen={updateAuthorityDialogOpen}
+            setUpdateAuthorityDialogOpen={setUpdateAuthorityDialogOpen}
           />
-          <UpdateAuthorityModal
-            updateAuthorityModalOpen={updateAuthorityModalOpen}
-            setUpdateAuthorityModalOpen={setUpdateAuthorityModalOpen}
+          <MintAddressDialog
+            mintAddressDialogOpen={mintAddressDialogOpen}
+            setMintAddressDialogOpen={setMintAddressDialogOpen}
           />
-          <MintAddressModal
-            mintAddressModalOpen={mintAddressModalOpen}
-            setMintAddressModalOpen={setMintAddressModalOpen}
-          />
-        </Box>
+        </Unstable_Grid2>
       );
     default:
       return (
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
+        <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
           <FormikTextfield
             type="text"
             name="unlockInfo.contract"
@@ -72,20 +61,21 @@ const ContractAddress = ({ blockchain }) => {
           />
           <FormikTextfield
             type="text"
-            name="unlockInfo.contract"
+            name="unlockInfo.tokenId"
             label="Token ID"
+            required
             adornment={
               <span
                 style={{ cursor: "pointer" }}
                 aria-label="button"
-                onClick={() => setTokenIdModalOpen(true)}
+                onClick={() => setTokenIdDialogOpen(true)}
               >
                 <InformationCircleIconStyled />
               </span>
             }
           />
-          <TokenIdModal open={tokenIdModalOpen} setOpen={setTokenIdModalOpen} />
-        </Box>
+          <TokenIdDialog open={tokenIdDialogOpen} setOpen={setTokenIdDialogOpen} />
+        </Unstable_Grid2>
       );
   }
 };

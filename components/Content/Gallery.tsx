@@ -102,10 +102,13 @@ export default function Gallery({ content, name }: GalleryProps) {
   };
 
   const getIcon = (filename) => {
+    if (!filename) {
+      return null;
+    }
     const extension = filename.substr(filename.lastIndexOf(".") + 1);
     const type = getType(extension);
     let icon = null;
-    if (type && mainThree.includes(type.split("/")[0])) {
+    if (type && mainThree.includes(type.split("/")?.[0])) {
       icon = iconMapper(type.split("/")[0]);
     } else {
       icon = iconMapper(type);
@@ -185,10 +188,16 @@ export default function Gallery({ content, name }: GalleryProps) {
         ) : (
           <div>
             <SingleMediaDisplay
+              name={name}
               url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
               submarinedContent={displayItem}
             />
-            <button onClick={() => setIsDisplaying(false)}>Back</button>
+            <button
+              className={`ml-3 inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium rounded-full text-white bg-pinata-purple`}
+              onClick={() => setIsDisplaying(false)}
+            >
+              Back
+            </button>
           </div>
         )}
       </Box>

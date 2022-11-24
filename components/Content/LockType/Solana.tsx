@@ -4,7 +4,7 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import BaseLockType from "./LockTypeContainer";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
@@ -19,19 +19,16 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import bs58 from "bs58";
-import { useAppDispatch } from "../../../store/hooks";
-import { setAlert } from "../../../store/slices/alertSlice";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
-import { Button, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
+import { Button, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
 
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
-  const dispatch = useAppDispatch();
-  const signData = async (): Promise<SubmarinedContent | void> => {
-    try {
+  const signData = async (): Promise<SubmarinedContent> => {
+    return new Promise(async (resolve, reject) => {
       const { shortId, submarineCID, unlockInfo } = fileInfo;
       if (unlockInfo.type === "nft") {
         const { updateAuthority, blockchain, tokenId, network, mintAddress } = unlockInfo;
@@ -48,10 +45,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
         const fullMessage = getMessagetoSign(messageToSign.updateAuthority, messageToSign.id);
         const message = new TextEncoder().encode(fullMessage);
         if (!signMessage) {
-          dispatch(
-            setAlert({ message: "Wallet does not support message signing!", type: "error" })
-          );
-          return;
+          reject("Wallet does not support message signing!");
         }
 
         const signatureRaw = await signMessage(message);
@@ -73,16 +67,22 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
             },
           })
           .json();
-        return data;
+        resolve(data);
+      } else {
+        reject('Unlock type is not "nft"');
       }
-    } catch (error) {
-      throw error;
-    }
+    });
   };
   const wallet = useWallet();
   const description = (
-    <Typography>
-      Unlock this content by connecting your wallet to verify you have the required NFT.
+    <Typography
+      variant="h6"
+      sx={{
+        padding: (theme) => theme.spacing(1),
+        color: (theme) => theme.palette.primary.contrastText,
+      }}
+    >
+      Connect your wallet to unlock content
     </Typography>
   );
 
@@ -117,8 +117,16 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
         <WalletModalProvider>
           {!wallet.connected ? (
             <Grid2>
-              <Button>
-                <WalletMultiButton />
+              <Button
+                sx={{
+                  width: "90%",
+                  maxWidth: "300px",
+                  backgroundColor: (theme) => theme.palette.primary.light,
+                  color: "black",
+                  "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+                }}
+              >
+                <WalletMultiButton style={{ backgroundColor: "transparent" }} />
               </Button>
               {description}
             </Grid2>

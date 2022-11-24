@@ -1,7 +1,6 @@
-import { Box, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { Tweet } from "react-twitter-widgets";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
@@ -22,33 +21,40 @@ const Retweet = ({ fileInfo }) => {
     }
   };
   const router = useRouter();
-  useEffect(() => {
-    const { oauth_token, oauth_verifier } = router.query;
-    if (oauth_token && oauth_verifier) {
-      handleVerification(oauth_token, oauth_verifier);
-    }
-  }, [router.query]);
 
-  const handleVerification = async (
-    oauth_token,
-    oauth_verifier
-  ): Promise<SubmarinedContent | void> => {
-    const ky = getKy();
-    const res = await ky
-      .get(
-        `/api/twitter/oauth/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}&shortId=${
-          window.location.pathname.split("/")[1]
-        }`
-      )
-      .catch((err) => {});
-    if (res) {
-      const data: SubmarinedContent = await res.json();
-      return data;
-    }
+  const { oauth_token, oauth_verifier } = router.query;
+  const hasConnectedTwitter = oauth_token && oauth_verifier;
+
+  const handleVerification = async (): Promise<SubmarinedContent> => {
+    return new Promise<SubmarinedContent>(async (resolve, reject) => {
+      const { oauth_token, oauth_verifier } = router.query;
+      if (!oauth_token || !oauth_verifier) {
+        reject("Could not verify retweet");
+      }
+      const ky = getKy();
+      const res = await ky
+        .get(
+          `/api/twitter/oauth/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}&shortId=${
+            window.location.pathname.split("/")[1]
+          }`
+        )
+        .catch((err) => reject("Could not verify retweet"));
+      if (res) {
+        const data: SubmarinedContent = await res.json();
+        resolve(data);
+      }
+      reject("Could not verify retweet");
+    });
   };
   const description = (
-    <Typography>
-      Unlock this content by retweeting the above tweet and signing in with your Twitter account.
+    <Typography
+      variant="h6"
+      sx={{
+        padding: (theme) => theme.spacing(1),
+        color: (theme) => theme.palette.primary.contrastText,
+      }}
+    >
+      Connect your Twitter account and<br></br>retweet the tweet to unlock content
     </Typography>
   );
   const tweetId =
@@ -56,16 +62,32 @@ const Retweet = ({ fileInfo }) => {
     fileInfo?.unlockInfo?.tweetUrl.split("status/")?.[1]?.split("?")?.[0];
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
-      <Container sx={{ padding: (theme) => theme.spacing(4) }}>
+      <Container>
         <Unstable_Grid2 container justifyContent={"center"}>
-          {tweetId && <Tweet tweetId={tweetId} />}
+          {tweetId && (
+            <Box sx={{ overflowY: "hidden" }}>{tweetId && <Tweet tweetId={tweetId} />}</Box>
+          )}
         </Unstable_Grid2>
-        <BaseLockType
-          description={description}
-          fileInfo={fileInfo}
-          lockName={"retweet"}
-          handleVerify={twitterAuth}
-        />
+        {hasConnectedTwitter ? (
+          <BaseLockType
+            description={description}
+            fileInfo={fileInfo}
+            lockName={"retweet"}
+            handleVerify={handleVerification}
+          />
+        ) : (
+          <Button
+            variant="contained"
+            onClick={twitterAuth}
+            sx={{
+              marginTop: (theme) => theme.spacing(2),
+              backgroundColor: (theme) => theme.palette.primary.light,
+              color: "black",
+            }}
+          >
+            Connect Twitter
+          </Button>
+        )}
       </Container>
     </Unstable_Grid2>
   );

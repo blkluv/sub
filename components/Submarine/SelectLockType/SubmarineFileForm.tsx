@@ -1,8 +1,8 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import React, { ReactNode, useEffect, useState } from "react";
-import PreviewModal from "../../Content/PreviewModal";
+import { ReactNode, useEffect, useState } from "react";
 import PrivateLayout from "../../Layout";
+import PreviewModal from "../../Content/PreviewDialog";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -20,11 +20,12 @@ import {
   Typography,
   Unstable_Grid2,
 } from "@mui/material";
+import * as Yup from "yup";
 
 interface SubmarineProps {
   children: ReactNode;
   unlockInfo: UnlockInfo;
-  canSubmit: (values: MetadataUnlockInfo) => boolean;
+  unlockInfoSchema: Yup.ObjectSchema<any>;
 }
 
 export interface MetadataUnlockInfo {
@@ -37,7 +38,7 @@ export interface MetadataUnlockInfo {
   shortId: string;
 }
 
-const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) => {
+const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: SubmarineProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -55,14 +56,40 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     unlockInfo,
     ...baseInitialValues,
   });
+  const [isInitialValid, setIsInitialValid] = useState(false);
 
+  const SubmarineFormSchema = Yup.object().shape({
+    unlockInfo: unlockInfoSchema,
+    name: Yup.string().required("Required"),
+    description: Yup.string().required("Required"),
+    thumbnail: Yup.string()
+      .nullable()
+      .test(
+        "Thumbnail is being uploaded",
+        "Thumbnail is being uploaded",
+        (value) => !value || !value.includes("blob:")
+      ),
+    customizations: Yup.object(),
+    submarineCID: Yup.string().required("Required"),
+    shortId: Yup.string().required("Required"),
+  });
   const { edit } = router.query;
   useEffect(() => {
     if (router.query && edit) {
       const ky = getKy();
       ky(`/api/content/${edit}`).then((res) =>
         res.json().then((json) => {
-          setInitialValues({ ...json, selectedFiles: [] });
+          setIsInitialValid(true);
+          const initialValues = {
+            unlockInfo: json.unlockInfo,
+            name: json.name,
+            description: json.description,
+            thumbnail: json.thumbnail,
+            customizations: json.customizations,
+            submarineCID: json.submarineCID,
+            shortId: json.shortId,
+          };
+          setInitialValues(initialValues);
         })
       );
     }
@@ -82,7 +109,7 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
     const ky = getKy();
     await ky(`/api/metadata`, {
       method: edit ? "PUT" : "POST",
-      body: JSON.stringify(submarinedContent),
+      json: submarinedContent,
       timeout: false,
     })
       .then(() => {
@@ -107,7 +134,13 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
 
   return (
     <PrivateLayout>
-      <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
+      <Formik
+        initialValues={initialValues}
+        enableReinitialize
+        onSubmit={onSubmit}
+        validationSchema={SubmarineFormSchema}
+        isInitialValid={isInitialValid}
+      >
         {(props) =>
           props.isSubmitting ? (
             <Container sx={{ textAlign: "center", padding: 4, marginBottom: 10 }}>
@@ -117,16 +150,20 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
               <CircularProgress size={100} />
             </Container>
           ) : (
-            <Unstable_Grid2 container direction="column" alignContent={"center"}>
-              <Unstable_Grid2 container justifyContent={"space-between"}>
-                <Link passHref href="/submarine/new">
+            <Unstable_Grid2 container direction="column">
+              <Unstable_Grid2
+                container
+                justifyContent={"space-between"}
+                sx={{ margin: (theme) => theme.spacing(2), alignItems: "center" }}
+              >
+                <Link passHref href="/">
                   <Box height={"2rem"} width={"2rem"} sx={{ cursor: "pointer" }}>
                     <ArrowLeftIcon />
                   </Box>
                 </Link>
                 <Box
                   sx={{
-                    display: { xs: "block", xl: "none" },
+                    display: { xs: "block", lg: "none" },
                   }}
                 >
                   <Button onClick={() => setPreviewOpen(true)}>Preview</Button>
@@ -137,35 +174,39 @@ const SubmarineFileForm = ({ children, canSubmit, unlockInfo }: SubmarineProps) 
                   fileInfo={props.values}
                 />
               </Unstable_Grid2>
-              <Unstable_Grid2 container>
-                <Unstable_Grid2 xl={6} xs={12}>
-                  <Form>
-                    <Container>
-                      {children}
-                      <Box sx={{ padding: (theme) => theme.spacing(2, 0, 0, 0) }}>
-                        <Unstable_Grid2 container justifyContent={"end"}>
-                          <Button
-                            type="submit"
-                            disabled={!canSubmit(props.values) || props.isSubmitting}
-                          >
-                            {props.isSubmitting ? "Processing..." : "Upload and Continue"}
-                          </Button>
-                        </Unstable_Grid2>
-                      </Box>
-                    </Container>
-                  </Form>
+              <Unstable_Grid2 container sx={{ marginTop: (theme) => theme.spacing(2) }}>
+                <Unstable_Grid2 lg={6} xs={12}>
+                  <Form>{children}</Form>
                 </Unstable_Grid2>
-                <Unstable_Grid2 xl={6}>
-                  <Box
-                    sx={{
-                      display: { xs: "none", xl: "block" },
-                    }}
-                  >
-                    <MainLandingContent
-                      missing={false}
-                      fileInfo={props.values}
-                      gatewayUrl={gatewayUrl}
-                    />
+                <Unstable_Grid2
+                  lg={6}
+                  sx={{
+                    padding: (theme) => theme.spacing(0, 2, 0, 2),
+                    display: { lg: "flex", xs: "none" },
+                    height: "90vh",
+                    position: "sticky",
+                    top: "4.5em",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  <MainLandingContent
+                    missing={false}
+                    fileInfo={props.values}
+                    gatewayUrl={gatewayUrl}
+                    isPreview
+                  />
+                </Unstable_Grid2>
+              </Unstable_Grid2>
+              <Unstable_Grid2 container xs={12}>
+                <Unstable_Grid2 lgOffset={4}>
+                  <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
+                    <Button
+                      type="submit"
+                      onClick={(e) => props.handleSubmit()}
+                      disabled={!props.isValid || props.isSubmitting}
+                    >
+                      {props.isSubmitting ? "Processing..." : "Upload and Continue"}
+                    </Button>
                   </Box>
                 </Unstable_Grid2>
               </Unstable_Grid2>

@@ -5,27 +5,27 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, provider, webSocketProvider } = configureChains(defaultChains, [publicProvider()]);
+const client = createClient({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: {
+        appName: "Submarine.me",
+      },
+    }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
 const WagmiProvider = ({ children }) => {
-  const client = createClient({
-    autoConnect: true,
-    connectors: [
-      new MetaMaskConnector({ chains }),
-      new CoinbaseWalletConnector({
-        chains,
-        options: {
-          appName: "Submarine.me",
-        },
-      }),
-      new WalletConnectConnector({
-        chains,
-        options: {
-          qrcode: true,
-        },
-      }),
-    ],
-    provider,
-    webSocketProvider,
-  });
   return <WagmiConfig client={client}>{children}</WagmiConfig>;
 };
 

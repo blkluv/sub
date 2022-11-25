@@ -10,7 +10,7 @@ const NFT = ({ fileInfo }) => {
   const { connect, connectors } = useConnect();
   const { signMessageAsync } = useSignMessage();
 
-  const handleSign = async () => {
+  const handleSign = async (): Promise<SubmarinedContent> => {
     return new Promise(async (resolve, reject) => {
       // ts safety check
       if (fileInfo.unlockInfo.type === "nft") {
@@ -46,6 +46,7 @@ const NFT = ({ fileInfo }) => {
             })
             .json();
           resolve(content);
+          return;
         } catch (err) {
           reject("Could not verify NFT ownership");
         }

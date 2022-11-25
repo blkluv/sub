@@ -1,6 +1,7 @@
 import { Button, Divider, Typography } from "@mui/material";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { getKy } from "../../../helpers/ky";
+import { useAppDispatch } from "../../../store/hooks";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import BaseLockType from "./LockTypeContainer";
 
@@ -10,37 +11,46 @@ const NFT = ({ fileInfo }) => {
   const { signMessageAsync } = useSignMessage();
 
   const handleSign = async () => {
-    try {
+    return new Promise(async (resolve, reject) => {
       // ts safety check
       if (fileInfo.unlockInfo.type === "nft") {
         const { shortId, submarineCID, unlockInfo } = fileInfo;
         const { contract, blockchain, tokenId, network } = unlockInfo;
+        if (!contract || !blockchain || !tokenId || !network) {
+          reject("Missing unlock info");
+          return;
+        }
         const ky = getKy();
         const messageToSign: any = await ky
           .get(`/api/verify?contract=${contract}&shortId=${shortId}`)
           .json();
         const messageData: string = messageToSign.message;
-        const signature = await signMessageAsync({ message: messageData });
-        const content: SubmarinedContent = await ky
-          .post("/api/verify", {
-            json: {
-              address: address,
-              signature,
-              network,
-              contractAddress: contract,
-              blockchain,
-              tokenId,
-              CID: submarineCID,
-              shortId: shortId,
-              messageId: messageToSign.session.id,
-            },
-          })
-          .json();
-        return content;
+        const signature = await signMessageAsync({ message: messageData }).catch(() => {
+          reject("Signature failed");
+          return;
+        });
+        try {
+          const content: SubmarinedContent = await ky
+            .post("/api/verify", {
+              json: {
+                address: address,
+                signature,
+                network,
+                contractAddress: contract,
+                blockchain,
+                tokenId,
+                CID: submarineCID,
+                shortId: shortId,
+                messageId: messageToSign.session.id,
+              },
+            })
+            .json();
+          resolve(content);
+        } catch (err) {
+          reject("Could not verify NFT ownership");
+        }
       }
-    } catch (error) {
-      alert(error.message);
-    }
+    });
   };
   const description = (
     <Typography

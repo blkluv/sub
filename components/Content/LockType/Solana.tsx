@@ -75,6 +75,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const theme = useTheme();
   const buttonStyle = {
     width: "90%",
+    maxWidth: "150px",
     marginTop: "0.5em",
     padding: theme.spacing(1),
     color: "black",

@@ -1,30 +1,16 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import {
-  WalletDisconnectButton,
-  WalletModalProvider,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
-import { useMemo } from "react";
 import BaseLockType from "./LockTypeContainer";
-import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  LedgerWalletAdapter,
-  PhantomWalletAdapter,
-  SlopeWalletAdapter,
-  SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
-  TorusWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import { clusterApiUrl } from "@solana/web3.js";
 import bs58 from "bs58";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
-import { Button, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
+import { Button, createTheme, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
+import { WalletDisconnectButton, WalletMultiButton } from "@solana/wallet-adapter-material-ui";
+import styled from "@emotion/styled";
+import { useTheme } from "@emotion/react";
 
+import { ThemeProvider } from "@mui/material";
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
   const signData = async (): Promise<SubmarinedContent> => {
@@ -86,64 +72,33 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
     </Typography>
   );
 
-  // TODO
-  // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-  const network = WalletAdapterNetwork.Devnet;
+  const theme = useTheme();
+  const buttonStyle = {
+    width: "90%",
+    marginTop: "0.5em",
+    padding: theme.spacing(1),
+    color: "black",
+    backgroundColor: theme.palette.primary.light,
+  };
 
-  // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-  // @solana/wallet-adapter-wallets includes all the adapters but supports tree shaking and lazy loading --
-  // Only the wallets you configure here will be compiled into your application, and only the dependencies
-  // of wallets that your users connect to will be loaded.
-
-  // TODO do we need all of this???
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SlopeWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
-      new TorusWalletAdapter(),
-      new LedgerWalletAdapter(),
-      new SolletWalletAdapter({ network }),
-      new SolletExtensionWalletAdapter({ network }),
-    ],
-    [network]
-  );
-
-  return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          {!wallet.connected ? (
-            <Grid2>
-              <Button
-                sx={{
-                  width: "90%",
-                  maxWidth: "300px",
-                  backgroundColor: (theme) => theme.palette.primary.light,
-                  color: "black",
-                  "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
-                }}
-              >
-                <WalletMultiButton style={{ backgroundColor: "transparent" }} />
-              </Button>
-              {description}
-            </Grid2>
-          ) : (
-            <>
-              <BaseLockType
-                description={description}
-                fileInfo={fileInfo}
-                lockName={"nft"}
-                handleVerify={signData}
-              />
-              <WalletDisconnectButton />
-            </>
-          )}
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+  return !wallet.connected ? (
+    <Grid2>
+      <Grid2 container direction={"column"} alignContent={"center"}>
+        <WalletMultiButton style={buttonStyle} />
+        {wallet.autoConnect && <WalletDisconnectButton style={buttonStyle} />}
+      </Grid2>
+      {description}
+    </Grid2>
+  ) : (
+    <>
+      <BaseLockType
+        description={description}
+        fileInfo={fileInfo}
+        lockName={"nft"}
+        handleVerify={signData}
+      />
+      <WalletDisconnectButton />
+    </>
   );
 };
 

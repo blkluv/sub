@@ -63,7 +63,6 @@ const ContractAddress = ({ blockchain }) => {
             type="text"
             name="unlockInfo.tokenId"
             label="Token ID"
-            required
             adornment={
               <span
                 style={{ cursor: "pointer" }}

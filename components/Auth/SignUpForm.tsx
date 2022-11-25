@@ -1,21 +1,11 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  TextField,
-  Typography,
-  Unstable_Grid2,
-} from "@mui/material";
-import Link from "next/link";
-import * as FullStory from "@fullstory/browser";
+import { Box, Button, Container, FormControl, Typography, Unstable_Grid2 } from "@mui/material";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { Formik, Form, FormikHelpers, Field } from "formik";
 import FormikTextfield from "../Form/FormikTextfield";
 import * as Yup from "yup";
-import { FormControlLabel, FormLabel, MenuItem, Radio } from "@mui/material";
-import { RadioGroup, Select } from "formik-mui";
+import { FormControlLabel, FormLabel, Radio } from "@mui/material";
+import { RadioGroup } from "formik-mui";
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import { setAlert } from "../../store/slices/alertSlice";

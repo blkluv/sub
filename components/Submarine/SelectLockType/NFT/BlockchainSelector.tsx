@@ -6,7 +6,9 @@ import { Select } from "formik-mui";
 const BlockchainSelector = () => {
   return (
     <Field
-      fullwidth
+      inputProps={{
+        fullwidth: "true",
+      }}
       component={Select}
       id="unlockInfo.blockchain"
       name="unlockInfo.blockchain"

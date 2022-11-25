@@ -16,7 +16,7 @@ const NFT = ({ fileInfo }) => {
       if (fileInfo.unlockInfo.type === "nft") {
         const { shortId, submarineCID, unlockInfo } = fileInfo;
         const { contract, blockchain, tokenId, network } = unlockInfo;
-        if (!contract || !blockchain || !tokenId || !network) {
+        if (!contract || !blockchain || !network) {
           reject("Missing unlock info");
           return;
         }

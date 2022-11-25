@@ -7,6 +7,7 @@ import { UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
+import SolanaProvider from "./LockType/SolanaProvider";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -26,7 +27,11 @@ const LockedContentContainer = ({
         return <LocationUnlock fileInfo={fileInfo} />;
       case "nft":
         if (unlockInfo.blockchain === "Solana") {
-          return <Solana fileInfo={fileInfo} />;
+          return (
+            <SolanaProvider>
+              <Solana fileInfo={fileInfo} />
+            </SolanaProvider>
+          );
         } else if (EVMChains.includes(unlockInfo.blockchain)) {
           return (
             <WagmiProvider>

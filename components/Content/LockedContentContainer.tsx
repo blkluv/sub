@@ -12,8 +12,13 @@ export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
+  isPreview: boolean;
 }
-const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainerProps) => {
+const LockedContentContainer = ({
+  fileInfo,
+  gatewayUrl,
+  isPreview,
+}: LockedContentContainerProps) => {
   const getLockType = (unlockInfo: UnlockInfo) => {
     const type = unlockInfo.type;
     switch (type) {
@@ -30,7 +35,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
           );
         }
       case "retweet":
-        return <Retweet fileInfo={fileInfo} />;
+        return <Retweet fileInfo={fileInfo} isPreview={isPreview} />;
       default:
         return <div>Unknown lock type</div>;
     }

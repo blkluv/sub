@@ -33,7 +33,9 @@ const MainLandingContent = ({
   } else if (hasUnlockedContent) {
     content = <UnlockedContentContainer name={fileInfo.name} />;
   } else {
-    content = <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} />;
+    content = (
+      <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} isPreview={isPreview} />
+    );
   }
   return (
     <>

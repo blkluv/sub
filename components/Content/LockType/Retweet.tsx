@@ -1,12 +1,13 @@
 import { Box, Button, Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
-import { Tweet } from "react-twitter-widgets";
+import { TwitterTweetEmbed } from "react-twitter-embed";
+
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import BaseLockType from "./LockTypeContainer";
 
-const Retweet = ({ fileInfo }) => {
+const Retweet = ({ fileInfo, isPreview }) => {
   const twitterAuth = async () => {
     try {
       localStorage.setItem("sub-id", window.location.pathname.split("/")[1]);
@@ -60,14 +61,24 @@ const Retweet = ({ fileInfo }) => {
   const tweetId =
     fileInfo?.unlockInfo?.tweetUrl &&
     fileInfo?.unlockInfo?.tweetUrl.split("status/")?.[1]?.split("?")?.[0];
+  const containerOptions = isPreview
+    ? {
+        xs: 12,
+      }
+    : {
+        xs: 12,
+        md: 6,
+      };
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
       <Container>
-        <Unstable_Grid2 container justifyContent={"center"}>
-          {tweetId && (
-            <Box sx={{ overflowY: "hidden" }}>{tweetId && <Tweet tweetId={tweetId} />}</Box>
-          )}
-        </Unstable_Grid2>
+        {tweetId && (
+          <Unstable_Grid2 container justifyContent={"center"}>
+            <Unstable_Grid2 {...containerOptions}>
+              <TwitterTweetEmbed options={{ conversation: "none" }} tweetId={tweetId} />
+            </Unstable_Grid2>
+          </Unstable_Grid2>
+        )}
         {hasConnectedTwitter ? (
           <BaseLockType
             description={description}

@@ -20,6 +20,7 @@ const UploadImagePublic = ({ setIpfsHash, label }) => {
     const json = await res.json();
     setIsUploading(false);
     setIpfsHash(json.IpfsHash);
+    fileInput.current.value = null;
   };
 
   const id = shortUUID.generate();

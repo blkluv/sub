@@ -1,7 +1,6 @@
-import { Button, Divider, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { getKy } from "../../../helpers/ky";
-import { useAppDispatch } from "../../../store/hooks";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import BaseLockType from "./LockTypeContainer";
 

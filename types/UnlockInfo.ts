@@ -48,14 +48,19 @@ export enum BlockchainOptions {
   Avalanche = "Avalanche",
 }
 
-export type UnlockInfoNFT = {
+export type UnlockInfoETH = {
+  type: "nft";
+  network: string;
+  blockchain: BlockchainOptions;
+  contract: string;
+  tokenId?: string;
+};
+export type UnlockInfoSolana = {
   type: "nft";
   network: string;
   blockchain: BlockchainOptions;
   mintAddress: string;
-  contract: string;
   updateAuthority: string;
-  tokenId: string;
 };
 
 export type UnlockInfoLocation = {
@@ -64,4 +69,5 @@ export type UnlockInfoLocation = {
   type: "location";
   distance: string;
 };
+export type UnlockInfoNFT = UnlockInfoETH | UnlockInfoSolana;
 export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;

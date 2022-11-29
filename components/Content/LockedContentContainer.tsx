@@ -3,7 +3,7 @@ import Solana from "./LockType/Solana";
 import NFT from "./LockType/NFT";
 import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
-import { UnlockInfo } from "../../types/UnlockInfo";
+import { BlockchainOptions, UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
@@ -26,7 +26,7 @@ const LockedContentContainer = ({
       case "location":
         return <LocationUnlock fileInfo={fileInfo} />;
       case "nft":
-        if (unlockInfo.blockchain === "Solana") {
+        if (unlockInfo.blockchain === BlockchainOptions.Solana) {
           return (
             <SolanaProvider>
               <Solana fileInfo={fileInfo} />

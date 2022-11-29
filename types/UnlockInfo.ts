@@ -48,20 +48,19 @@ export enum BlockchainOptions {
   Avalanche = "Avalanche",
 }
 
-export type UnlockInfoETH = {
+type SharedNFTTypes = {
   type: "nft";
   network: string;
   blockchain: BlockchainOptions;
+};
+export interface UnlockInfoETH extends SharedNFTTypes {
   contract: string;
   tokenId?: string;
-};
-export type UnlockInfoSolana = {
-  type: "nft";
-  network: string;
-  blockchain: BlockchainOptions;
+}
+export interface UnlockInfoSolana extends SharedNFTTypes {
   mintAddress: string;
   updateAuthority: string;
-};
+}
 
 export type UnlockInfoLocation = {
   lat: number;

@@ -8,6 +8,7 @@ import { getMessagetoSign } from "../../../helpers/messageToSign";
 import { Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
 import { WalletDisconnectButton, WalletMultiButton } from "@solana/wallet-adapter-material-ui";
 import { useTheme } from "@emotion/react";
+import { UnlockInfoSolana } from "../../../types/UnlockInfo";
 
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
@@ -15,7 +16,9 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
     return new Promise(async (resolve, reject) => {
       const { shortId, submarineCID, unlockInfo } = fileInfo;
       if (unlockInfo.type === "nft") {
-        const { updateAuthority, blockchain, tokenId, network, mintAddress } = unlockInfo;
+        // @ts-ignore
+        const unlockInfoSolana: UnlockInfoSolana = unlockInfo;
+        const { updateAuthority, blockchain, network, mintAddress } = unlockInfoSolana;
         const ky = getKy();
         const messageToSign: {
           id: string;
@@ -44,7 +47,6 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
               updateAuthority,
               mintAddress,
               blockchain,
-              tokenId,
               CID: submarineCID,
               shortId: shortId,
               message: messageToSign,

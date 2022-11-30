@@ -19,6 +19,7 @@ const Content = ({ data }: { data: getContentReturnObject & { error: any } }) =>
 export async function getServerSideProps(context) {
   try {
     const host = process.env.NEXT_PUBLIC_VERCEL_URL;
+    console.log("URL TO BE QUERIED", `https://${host}/api/content/${context.query.id}`);
     const res = await ky(`https://${host}/api/content/${context.query.id}`, {
       method: "GET",
     });

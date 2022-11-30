@@ -1,0 +1,1718 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"ContentPreviewTO": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"pin_cid": {
+						"type": "string"
+					},
+					"pin_id": {
+						"type": "string"
+					},
+					"preview_cid": {
+						"type": "string"
+					},
+					"preview_pin_id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"pin_cid",
+					"pin_id",
+					"preview_cid",
+					"preview_pin_id",
+					"title",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContentPreviewResponseTo": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"preview": {
+						"$ref": "#/components/schemas/ContentPreviewTO"
+					}
+				},
+				"required": [
+					"status",
+					"preview"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BaseResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"item": {}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAccountDefaultPreview": {
+				"properties": {
+					"previewId": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"previewId",
+					"title",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MetadataTO": {
+				"description": "A key/value object that can be associated with a piece of content in Pinata.",
+				"properties": {},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContentTO": {
+				"description": "A piece of content that is stored in the pinata system.",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"cid": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"mimeType": {
+						"type": "string"
+					},
+					"originalname": {
+						"type": "string"
+					},
+					"size": {
+						"type": "number",
+						"format": "double"
+					},
+					"metadata": {
+						"$ref": "#/components/schemas/MetadataTO"
+					},
+					"pinToIPFS": {
+						"type": "boolean"
+					},
+					"isDuplicate": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"cid",
+					"size"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContentResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"item": {
+						"$ref": "#/components/schemas/ContentTO"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/ContentTO"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContentRequestTO": {
+				"properties": {
+					"cidVersion": {
+						"type": "number",
+						"format": "double"
+					},
+					"wrapWithDirectory": {
+						"type": "boolean"
+					},
+					"pinToIPFS": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"metadata": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"additionalProperties": false,
+								"type": "object"
+							}
+						]
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"JsonRequestTO": {
+				"description": "A JSON object content request that will be saved to the Pinata network.",
+				"properties": {
+					"cidVersion": {
+						"type": "number",
+						"format": "double"
+					},
+					"wrapWithDirectory": {
+						"type": "boolean"
+					},
+					"pinToIPFS": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"metadata": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"additionalProperties": false,
+								"type": "object"
+							}
+						]
+					},
+					"content": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"additionalProperties": false,
+								"type": "object"
+							}
+						]
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContentUpdateTO": {
+				"properties": {
+					"pinToIPFS": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ShortenUrlResponseTo": {
+				"properties": {
+					"short_url": {
+						"type": "string"
+					},
+					"long_url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"short_url",
+					"long_url"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GatewayTO": {
+				"description": "A Pinata IPFS Gateway.",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"domain": {
+						"type": "string"
+					},
+					"restrict": {
+						"type": "boolean"
+					},
+					"dnsId": {
+						"type": "string"
+					},
+					"zoneId": {
+						"type": "string"
+					},
+					"organizationId": {
+						"type": "string"
+					},
+					"pinningServiceCustomerId": {
+						"type": "string"
+					},
+					"customDomains": {
+						"items": {},
+						"type": "array"
+					},
+					"settings": {}
+				},
+				"required": [
+					"id",
+					"domain",
+					"restrict",
+					"dnsId",
+					"zoneId",
+					"organizationId",
+					"pinningServiceCustomerId",
+					"customDomains",
+					"settings"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GatewayResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"item": {
+						"$ref": "#/components/schemas/GatewayTO"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/GatewayTO"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ExistsReponse": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"exists": {
+						"type": "boolean"
+					},
+					"valid": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"status",
+					"exists"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RestrictedReponse": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"restricted": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"status",
+					"restricted"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomDomainTO": {
+				"description": "A custom domain (joeswebsite.com) that can be mapped to a Pinata Gateway.",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"sslValidationStatus": {
+						"type": "string"
+					},
+					"domainValidationStatus": {
+						"type": "string"
+					},
+					"domain": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"sslValidationStatus",
+					"domainValidationStatus",
+					"domain"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomDomainResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"item": {
+						"$ref": "#/components/schemas/CustomDomainTO"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/CustomDomainTO"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GatewayDefaultContentTo": {
+				"properties": {
+					"cid": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"cid"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GatewayContentResponseTo": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"content": {
+						"$ref": "#/components/schemas/GatewayDefaultContentTo"
+					},
+					"statusText": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GatewaySettingRecord": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"value": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProtectGatewayWithHostsDto": {
+				"properties": {
+					"host": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"host"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProtectGatewayWithIPDto": {
+				"properties": {
+					"ip": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"ip"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserTO": {
+				"description": "A single user on the Pinata system.",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"organizationId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"role",
+					"status",
+					"organizationId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"item": {
+						"$ref": "#/components/schemas/UserTO"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/UserTO"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserStatusResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"gateways": {
+						"type": "number",
+						"format": "double"
+					},
+					"domains": {
+						"type": "number",
+						"format": "double"
+					},
+					"uniqueFileSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"privateFileSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"publicFileSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"storedFileSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"pendingRemoval": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"status",
+					"gateways",
+					"domains",
+					"uniqueFileSize",
+					"privateFileSize",
+					"publicFileSize",
+					"storedFileSize",
+					"pendingRemoval"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UnfurlingTO": {
+				"properties": {
+					"thumbnailUrl": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"thumbnailUrl",
+					"title",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UnfurlingResponseTO": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"item": {
+						"$ref": "#/components/schemas/UnfurlingTO"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/UnfurlingTO"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UtilizationTo": {
+				"properties": {
+					"total": {
+						"properties": {
+							"bytes": {
+								"properties": {
+									"storedData": {
+										"properties": {},
+										"additionalProperties": {
+											"type": "number",
+											"format": "double"
+										},
+										"type": "object"
+									},
+									"transferData": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"storedData",
+									"transferData"
+								],
+								"type": "object"
+							},
+							"pins": {
+								"properties": {},
+								"additionalProperties": {
+									"type": "number",
+									"format": "double"
+								},
+								"type": "object"
+							},
+							"optimizations": {
+								"properties": {
+									"streamedDataMinutes": {
+										"type": "number",
+										"format": "double"
+									},
+									"imageRequests": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"streamedDataMinutes",
+									"imageRequests"
+								],
+								"type": "object"
+							},
+							"gatewayRequests": {
+								"type": "number",
+								"format": "double"
+							},
+							"customDomains": {
+								"type": "number",
+								"format": "double"
+							},
+							"gateways": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"bytes",
+							"pins",
+							"optimizations",
+							"gatewayRequests",
+							"customDomains",
+							"gateways"
+						],
+						"type": "object"
+					},
+					"collectionDate": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"total",
+					"collectionDate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UtilizationResponseTo": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"statusText": {
+						"type": "string"
+					},
+					"totalItems": {
+						"type": "number",
+						"format": "double"
+					},
+					"item": {
+						"$ref": "#/components/schemas/UtilizationTo"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/UtilizationTo"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"JWTRequest": {
+				"properties": {
+					"timeoutSeconds": {
+						"type": "number",
+						"format": "double",
+						"default": 30
+					},
+					"contentIds": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"default": []
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"basic": {
+				"type": "http",
+				"scheme": "basic"
+			},
+			"bearerAuth": {
+				"description": "JWT Authorization",
+				"type": "http",
+				"scheme": "bearer",
+				"in": "header",
+				"bearerFormat": "JWT"
+			},
+			"ApiKeyAuth": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "token"
+			}
+		}
+	},
+	"info": {
+		"title": "pinata-api",
+		"version": "1.6.1",
+		"description": "The Pinata API is a content storage and IPFS distribution platform.",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"email": "support@pinata.cloud",
+			"url": "https://pinata.cloud/support",
+			"name": "pinata"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/preview/content/{contentId}": {
+			"get": {
+				"operationId": "GetContentPreview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentPreviewResponseTo"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "contentId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "SetContentPreview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentPreviewResponseTo"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "contentId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
+		"/preview/content/{previewId}": {
+			"delete": {
+				"operationId": "RemoveContentPreview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BaseResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "previewId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/preview/account": {
+			"get": {
+				"operationId": "GetAccountDefaultPreview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentPreviewResponseTo"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": []
+			},
+			"put": {
+				"operationId": "SetAccountDefaultPreview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BaseResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAccountDefaultPreview"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "RemoveAccountDefaultPreview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BaseResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/content": {
+			"post": {
+				"operationId": "AddContent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Adds content to the system.  This can handle one or more files but does not support directories.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ContentRequestTO"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetContent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Allows for the retrieval of content listings one page at a time.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 50,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "includepaths",
+						"required": false,
+						"schema": {
+							"default": false,
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "cidContains",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "name",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "originalname",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "pinSizeMin",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "pinSizeMax",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "pinToIPFS",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "createdAtStart",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "createdAtEnd",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "metadata",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "orderBy",
+						"required": false,
+						"schema": {
+							"default": "created_at",
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"required": false,
+						"schema": {
+							"default": "desc",
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/content/json": {
+			"post": {
+				"operationId": "AddJsonContent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Takes a json payload as the body of the post and saves it into the content store.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/JsonRequestTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/content/{id}/list": {
+			"get": {
+				"operationId": "GetChildContent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Allows for the retrieval of content listings one page at a time.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "includepaths",
+						"required": false,
+						"schema": {
+							"default": false,
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 50,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/content/{id}": {
+			"delete": {
+				"operationId": "DeleteContent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Removes content from the system.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"operationId": "FindById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Starts the process of removing content from the system.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Sets the provided metadata onto the given piece of content.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ContentUpdateTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/content/{id}/metadata": {
+			"put": {
+				"operationId": "SetMetadata",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContentResponseTO"
+								}
+							}
+						}
+					}
+				},
+				"description": "Sets the provided metadata onto the given piece of content.",
+				"security": [
+					{
+						"accesstoken": []
+					},
+					{
+						"key-auth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
+		"/content/{id}/shorten": {
+			"post": {
+				"operationId": "ShortenUrl",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShortenUrlResponseTo"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/utilization/latest": {
+			"get": {
+				"operationId": "UtilizationForUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UtilizationResponseTo"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/utilization/window": {
+			"get": {
+				"operationId": "UtilizationForWindow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UtilizationResponseTo"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": true,
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/auth/keys": {
+			"get": {
+				"operationId": "GetKeys",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"key-auth": []
+					},
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateKey",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"key-auth": []
+					},
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/auth/keys/{id}": {
+			"delete": {
+				"operationId": "DeleteKey",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"key-auth": []
+					},
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/auth/content/jwt": {
+			"post": {
+				"operationId": "CreateScopedJWT",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"key-auth": []
+					},
+					{
+						"accesstoken": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/JWTRequest"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1"
+		}
+	]
+}

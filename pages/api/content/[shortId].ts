@@ -1,24 +1,31 @@
-import { getUserContentCombo } from "../../../repositories/content";
-import { Customizations, UnlockInfo } from "../../../types/UnlockInfo";
+import { getSupabaseClient } from "../../../helpers/supabase";
 
-export interface getContentReturnObject {
-  id: string;
-  name: string;
-  description: string;
-  thumbnail: string;
-  submarineCID: string;
-  unlockInfo: UnlockInfo;
-  shortId: string;
-  customizations: Customizations;
-  gatewayUrl: string;
-}
+const supabase = getSupabaseClient();
+
 export default async function handler(req, res) {
   try {
     if (!req.query.shortId) {
       return res.status(401).send("Please provide a shortId");
     }
 
-    const theContent = await getUserContentCombo(req.query.shortId);
+    let { data: Content, error } = await supabase
+      .from("Content")
+      .select("*")
+      .eq("short_id", req.query.shortId);
+
+    if (error) {
+      throw error;
+    }
+
+    if (!Content || !Content[0]) {
+      throw "Couldn't find content";
+    }
+
+    const theContent = Content[0];
+    const { data: User } = await supabase
+      .from("Users")
+      .select("*")
+      .eq("pinata_user_id", theContent.pinata_user_id);
     const returnObject = {
       id: theContent.id,
       name: theContent.name,
@@ -28,7 +35,7 @@ export default async function handler(req, res) {
       unlockInfo: theContent.unlock_info,
       shortId: theContent.short_id,
       customizations: theContent.customizations,
-      gatewayUrl: theContent.Users.pinata_gateway_subdomain,
+      gatewayUrl: User[0].pinata_gateway_subdomain,
     };
 
     return res.status(200).json(returnObject);

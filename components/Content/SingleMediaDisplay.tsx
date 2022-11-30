@@ -33,7 +33,6 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
   };
   return (
     <div>
-      <h2 className="text-xl font-sans font-bold sm:my-4 my-6">{name}</h2>
       <div>
         {fileType == "video" || fileType == "audio" ? (
           <EmbeddedPlayer url={url} />

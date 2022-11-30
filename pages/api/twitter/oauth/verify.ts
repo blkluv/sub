@@ -25,7 +25,7 @@ export default withSession(async (req, res) => {
         appSecret: process.env.CONSUMER_SECRET,
       });
       const authLink = await client.generateAuthLink(
-        `${process.env.NEXT_PUBLIC_VERCEL_URL}${process.env.CONSUMER_CALLBACK}`
+        `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${process.env.CONSUMER_CALLBACK}`
       );
       const obj = {
         oauth_token: authLink.oauth_token,

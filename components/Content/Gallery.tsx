@@ -9,7 +9,13 @@ import { useAppDispatch } from "../../store/hooks";
 import { setSubmarinedContent } from "../../store/slices/submarinedContentSlice";
 import { getKy } from "../../helpers/ky";
 import SingleMediaDisplay from "./SingleMediaDisplay";
-import { faImage, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faImage,
+  faMusic,
+  faVideo,
+  faFileZipper,
+  faFileDownload,
+} from "@fortawesome/free-solid-svg-icons";
 import mime from "mime";
 import { IconButton, Paper, Typography, Unstable_Grid2, Button, Box } from "@mui/material";
 
@@ -22,6 +28,7 @@ export const iconMapper = (type) => {
     image: faImage,
     audio: faMusic,
     video: faVideo,
+    zip: faFileZipper,
     "application/pdf": "fa-file-pdf-o",
     "application/msword": "fa-file-word-o",
     "application/vnd.ms-word": "fa-file-word-o",
@@ -36,8 +43,8 @@ export const iconMapper = (type) => {
     "text/plain": "fa-file-text-o",
     "text/html": "fa-file-code-o",
     "application/json": "fa-file-code-o",
-    "application/gzip": "fa-file-archive-o",
-    "application/zip": "fa-file-archive-o",
+    "application/gzip": faFileDownload,
+    "application/zip": faFileDownload,
   };
   return map[type];
 };
@@ -51,7 +58,7 @@ export default function Gallery({ content, name }: GalleryProps) {
   const [offset, setOffset] = useState(0);
   const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
   const [displayItem, setDisplayItem] = useState(null);
-  const mainThree = ["image", "audio", "video"];
+  const mainThree = ["image", "audio", "video", "zip"];
   const limit = 10;
   const dispatch = useAppDispatch();
 
@@ -194,7 +201,9 @@ export default function Gallery({ content, name }: GalleryProps) {
                 submarinedContent={displayItem}
               />
             </Unstable_Grid2>
-            <Button onClick={() => setIsDisplaying(false)}>Back</Button>
+            <Button sx={{ bottom: "-10%" }} onClick={() => setIsDisplaying(false)}>
+              Back
+            </Button>
           </Unstable_Grid2>
         )}
       </Unstable_Grid2>

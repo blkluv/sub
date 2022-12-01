@@ -1,4 +1,3 @@
-import { Unstable_Grid2 } from "@mui/material";
 import ReactPlayer from "react-player";
 
 export interface EmbeddedPlayerProps {

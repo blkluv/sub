@@ -1,10 +1,10 @@
 import EmbeddedPlayer from "./MediaWrappers/EmbeddedPlayer";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import mime from "mime-types";
 import { SubmarinedContent } from "../../types/SubmarinedContent";
 import ImageWrapper from "./MediaWrappers/ImageWrapper";
-import { Unstable_Grid2 } from "@mui/material";
+import { Box } from "@mui/material";
+import DownloadFile from "./MediaWrappers/DownloadFile";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
@@ -33,13 +33,21 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
     }
   };
   return (
-    <Unstable_Grid2>
+    <Box
+      sx={{
+        position: "relative",
+        height: "70vh",
+        width: "70vw",
+      }}
+    >
       {fileType == "video" || fileType == "audio" ? (
         <EmbeddedPlayer url={url} />
-      ) : (
+      ) : fileType == "image" ? (
         <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
+      ) : (
+        <DownloadFile url={url} />
       )}
-    </Unstable_Grid2>
+    </Box>
   );
 };
 

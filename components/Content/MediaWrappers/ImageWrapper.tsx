@@ -1,3 +1,4 @@
+import { Unstable_Grid2 } from "@mui/material";
 import Image from "next/image";
 
 export interface ImageWrapperProps {
@@ -6,11 +7,7 @@ export interface ImageWrapperProps {
 }
 
 const ImageWrapper = ({ url, orginialname }: ImageWrapperProps) => {
-  return (
-    <div style={{ position: "relative", width: "100%", paddingBottom: "60%" }}>
-      <Image src={url} alt={orginialname} layout="fill" objectFit="contain" />
-    </div>
-  );
+  return <Image src={url} alt={orginialname} layout="fill" objectFit="contain" />;
 };
 
 export default ImageWrapper;

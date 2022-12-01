@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import mime from "mime-types";
 import { SubmarinedContent } from "../../types/SubmarinedContent";
 import ImageWrapper from "./MediaWrappers/ImageWrapper";
+import { Unstable_Grid2 } from "@mui/material";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
@@ -32,15 +33,13 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
     }
   };
   return (
-    <div>
-      <div>
-        {fileType == "video" || fileType == "audio" ? (
-          <EmbeddedPlayer url={url} />
-        ) : (
-          <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
-        )}
-      </div>
-    </div>
+    <Unstable_Grid2>
+      {fileType == "video" || fileType == "audio" ? (
+        <EmbeddedPlayer url={url} />
+      ) : (
+        <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
+      )}
+    </Unstable_Grid2>
   );
 };
 

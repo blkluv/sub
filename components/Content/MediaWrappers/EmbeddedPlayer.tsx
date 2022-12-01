@@ -1,3 +1,4 @@
+import { Unstable_Grid2 } from "@mui/material";
 import ReactPlayer from "react-player";
 
 export interface EmbeddedPlayerProps {
@@ -13,14 +14,6 @@ const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
       pip={true}
       muted={true}
       stopOnUnmount={true}
-      sx={{
-        width: "100%",
-        height: "100%",
-        md: {
-          height: "75%",
-          width: "75%",
-        },
-      }}
       width="100%"
       height="100%"
       onError={() => console.log("Cannot play this Media")}

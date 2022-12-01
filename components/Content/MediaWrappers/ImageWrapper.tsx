@@ -1,4 +1,3 @@
-import { Unstable_Grid2 } from "@mui/material";
 import Image from "next/image";
 
 export interface ImageWrapperProps {

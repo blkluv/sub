@@ -14,7 +14,7 @@ const Nft = () => {
     network: Yup.string().required("Required"),
     tokenId: Yup.number().when("blockchain", {
       is: (blockchain) => EVMChain.includes(blockchain),
-      then: Yup.number().required("Required").typeError("Token id must be a number"),
+      then: Yup.number().typeError("Token id must be a number"),
     }),
     contract: Yup.string().when("blockchain", {
       is: (blockchain) => EVMChain.includes(blockchain),

@@ -77,7 +77,6 @@ export const doLogOut = createAsyncThunk("auth/logout", async () => {
   console.log({ b });
   Auth.signOut();
   localStorage.removeItem("pinata_gateway_subdomain");
-  Cookies.remove("fs", { domain: "localhost" });
 });
 
 export const doLogin = createAsyncThunk(

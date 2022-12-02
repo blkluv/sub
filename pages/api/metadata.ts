@@ -83,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const theCreationObject: Omit<definitions["Content"], "id"> = {
         name: req.body.name,
         description: req.body.description,
-        submarine_cid: req.body.submarineCID,
+        submarine_cid: req.body.submarineCID || req.body.submarineCid,
         short_id: req.body.shortId,
         pinata_user_id: user.userInformation.id,
         unlock_info: req.body.unlockInfo,

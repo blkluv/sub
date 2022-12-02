@@ -44,6 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     try {
       const obj = req.body;
+      obj.submarineCID = obj.submarineCID || obj.submarineCid;
       await schema.validateAsync(obj);
       const theCreationObject: definitions["Content"] = {
         id: uuidv4(),
@@ -77,18 +78,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "PUT") {
     try {
-      await schema.validateAsync(req.body);
+      const obj = req.body;
+      obj.submarineCID = obj.submarineCID || obj.submarineCid;
+      await schema.validateAsync(obj);
       console.log("validation success");
 
       const theCreationObject: Omit<definitions["Content"], "id"> = {
-        name: req.body.name,
-        description: req.body.description,
-        submarine_cid: req.body.submarineCID || req.body.submarineCid,
-        short_id: req.body.shortId,
+        name: obj.name,
+        description: obj.description,
+        submarine_cid: obj.submarineCID,
+        short_id: obj.shortId,
         pinata_user_id: user.userInformation.id,
-        unlock_info: req.body.unlockInfo,
-        customizations: req.body.customizations,
-        thumbnail: req.body.thumbnail,
+        unlock_info: obj.unlockInfo,
+        customizations: obj.customizations,
+        thumbnail: obj.thumbnail,
       };
 
       // if (req.body.thumbnail && req.body.thumbnail.length > 0) {

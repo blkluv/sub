@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 
 const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
-  const [styles, setStyles] = useState({
-    padding: 10,
-  });
+  const [styles, setStyles] = useState({});
   useEffect(() => {
     const style = {
-      padding: 15,
-      marginTop: 5,
+      width: "90%",
+      maxWidth: "300px",
       backgroundColor: null,
       color: null,
       borderRadius: null,

@@ -1,9 +1,10 @@
 import EmbeddedPlayer from "./MediaWrappers/EmbeddedPlayer";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import mime from "mime-types";
 import { SubmarinedContent } from "../../types/SubmarinedContent";
 import ImageWrapper from "./MediaWrappers/ImageWrapper";
+import { Box } from "@mui/material";
+import DownloadFile from "./MediaWrappers/DownloadFile";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
@@ -32,16 +33,21 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
     }
   };
   return (
-    <div>
-      <h2 className="text-xl font-sans font-bold sm:my-4 my-6">{name}</h2>
-      <div>
-        {fileType == "video" || fileType == "audio" ? (
-          <EmbeddedPlayer url={url} />
-        ) : (
-          <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
-        )}
-      </div>
-    </div>
+    <Box
+      sx={{
+        position: "relative",
+        height: "70vh",
+        width: "70vw",
+      }}
+    >
+      {fileType == "video" || fileType == "audio" ? (
+        <EmbeddedPlayer url={url} />
+      ) : fileType == "image" ? (
+        <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
+      ) : (
+        <DownloadFile url={url} />
+      )}
+    </Box>
   );
 };
 

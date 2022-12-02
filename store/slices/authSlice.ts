@@ -4,14 +4,12 @@ import Auth from "@aws-amplify/auth";
 import Amplify from "@aws-amplify/core";
 // import { Hub } from "@aws-amplify/core";
 import { awsconfig } from "../../constants/awsconfig";
-import { awsauth } from "../../constants/awsauth";
 import gravatar from "gravatar";
 import { getKy, setCredentials } from "../../helpers/ky";
 import { Themes } from "../../theme/themes";
 import * as FullStory from "@fullstory/browser";
 
 Amplify.configure(awsconfig);
-Auth.configure({ oauth: awsauth });
 
 export enum LOGIN_STATUSES {
   idle = "IDLE",

@@ -3,7 +3,6 @@ import { useState } from "react";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
 import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const HelpMenu = () => {
@@ -37,7 +36,9 @@ const HelpMenu = () => {
         {/* <MenuItem onClick={() => window.open('https://medium.com/pinata', '_blank')}>
                     <SchoolOutlinedIcon sx={{ marginRight: 2 }} fontSize={'medium'} /> Tutorials
                 </MenuItem> */}
-        <MenuItem onClick={() => window.open("https://pinata.canny.io/feature-requests", "_blank")}>
+        <MenuItem
+          onClick={() => window.open("https://submarineme.canny.io/feature-requests", "_blank")}
+        >
           <StarOutlineRoundedIcon sx={{ marginRight: 2 }} fontSize={"medium"} /> Feature Request
         </MenuItem>
         <MenuItem

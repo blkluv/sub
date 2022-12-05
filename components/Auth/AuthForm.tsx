@@ -80,7 +80,7 @@ export default function AuthForm() {
             sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}
           >
             <Typography variant="body1">Or&nbsp;</Typography>
-            <Link passHref href="https://app.pinata.cloud">
+            <Link passHref href="/auth/signup">
               <Typography variant="body1" color="primary.main" sx={{ cursor: "pointer" }}>
                 sign up here.
               </Typography>

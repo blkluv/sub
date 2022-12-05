@@ -16,7 +16,9 @@ const NetworkSelector = ({ blockchain }) => {
       id="unlockInfo.network"
       name="unlockInfo.network"
       label="Network"
-      fullwidth
+      inputProps={{
+        fullwidth: "true",
+      }}
       variant="standard"
     >
       {networkOptions[blockchain].map((o) => (

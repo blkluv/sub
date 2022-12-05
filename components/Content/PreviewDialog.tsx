@@ -19,7 +19,12 @@ export default function PreviewModal({
   return (
     <Dialog
       PaperProps={{
-        sx: { borderRadius: "30px", backgroundColor: "transparent", boxShadow: "none" },
+        sx: {
+          borderRadius: "30px",
+          margin: "10px",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+        },
       }}
       onClose={() => setOpen(false)}
       open={open}

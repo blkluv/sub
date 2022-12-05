@@ -99,7 +99,7 @@ window['_fs_namespace'] = 'FS';
       </Head>
       {children}
 
-      <Box sx={{ position: "absolute", bottom: "15px", right: "30px", zIndex: 10 }}>
+      <Box sx={{ position: "fixed", bottom: "15px", right: "15px", zIndex: 10 }}>
         <Pinnie />
       </Box>
     </>

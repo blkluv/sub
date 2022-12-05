@@ -77,7 +77,7 @@ const CustomizeLockScreen = () => {
           </Box>
         )}
         <UploadImagePublic
-          label={"Select a logo image"}
+          label={"Select an image"}
           setIpfsHash={(hash) => setFieldValue("customizations.logoCid", hash)}
         />
       </Unstable_Grid2>

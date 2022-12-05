@@ -183,7 +183,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                   sx={{
                     padding: (theme) => theme.spacing(0, 2, 0, 2),
                     display: { lg: "flex", xs: "none" },
-                    height: "90vh",
+                    height: "90%",
                     position: "sticky",
                     top: "4.5em",
                     alignSelf: "flex-start",

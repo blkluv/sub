@@ -9,10 +9,15 @@ import { useAppDispatch } from "../../store/hooks";
 import { setSubmarinedContent } from "../../store/slices/submarinedContentSlice";
 import { getKy } from "../../helpers/ky";
 import SingleMediaDisplay from "./SingleMediaDisplay";
-import { faImage, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faImage,
+  faMusic,
+  faVideo,
+  faFileZipper,
+  faFileDownload,
+} from "@fortawesome/free-solid-svg-icons";
 import mime from "mime";
-import { IconButton, Paper, Typography, Unstable_Grid2 } from "@mui/material";
-import { Box } from "@mui/system";
+import { IconButton, Paper, Typography, Unstable_Grid2, Button, Box } from "@mui/material";
 
 interface GalleryProps {
   content: SubmarinedContent;
@@ -23,6 +28,7 @@ export const iconMapper = (type) => {
     image: faImage,
     audio: faMusic,
     video: faVideo,
+    zip: faFileZipper,
     "application/pdf": "fa-file-pdf-o",
     "application/msword": "fa-file-word-o",
     "application/vnd.ms-word": "fa-file-word-o",
@@ -37,8 +43,8 @@ export const iconMapper = (type) => {
     "text/plain": "fa-file-text-o",
     "text/html": "fa-file-code-o",
     "application/json": "fa-file-code-o",
-    "application/gzip": "fa-file-archive-o",
-    "application/zip": "fa-file-archive-o",
+    "application/gzip": faFileDownload,
+    "application/zip": faFileDownload,
   };
   return map[type];
 };
@@ -52,7 +58,7 @@ export default function Gallery({ content, name }: GalleryProps) {
   const [offset, setOffset] = useState(0);
   const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
   const [displayItem, setDisplayItem] = useState(null);
-  const mainThree = ["image", "audio", "video"];
+  const mainThree = ["image", "audio", "video", "zip"];
   const limit = 10;
   const dispatch = useAppDispatch();
 
@@ -121,18 +127,8 @@ export default function Gallery({ content, name }: GalleryProps) {
   };
 
   return (
-    <Paper
-      sx={{ padding: (theme) => theme.spacing(2), width: "60%", margin: "auto" }}
-      elevation={3}
-    >
-      <Box
-        sx={{
-          paddingTop: "0.5rem",
-          paddingLeft: "2rem",
-          paddingRight: "2rem",
-          margin: "auto",
-        }}
-      >
+    <Paper sx={{ p: (theme) => theme.spacing(5), borderRadius: "20px", borderColor: "green" }}>
+      <Unstable_Grid2 container>
         {!isDisplaying ? (
           <Unstable_Grid2
             container
@@ -162,49 +158,59 @@ export default function Gallery({ content, name }: GalleryProps) {
                     alignItems={"center"}
                     alignContent={"center"}
                   >
-                    <button key={item.id} onClick={() => displaySingleMedia(item)}>
-                      <Box
-                        sx={{
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: 9999,
-                          backgroundColor: "rgb(229 231 235)",
-                        }}
-                      >
+                    <Box
+                      sx={{ textAlign: "center" }}
+                      key={item.id}
+                      onClick={() => displaySingleMedia(item)}
+                    >
+                      <Unstable_Grid2 container justifyContent={"center"}>
                         <IconButton>
                           <FontAwesomeIcon
                             icon={getIcon(getName(item.originalname))}
-                            style={{ fontSize: 35 }}
+                            style={{ fontSize: 60 }}
                           />
                         </IconButton>
-                      </Box>
+                      </Unstable_Grid2>
                       <Typography variant={"body2"}>{getName(item.originalname)}</Typography>
-                    </button>
+                    </Box>
                   </Unstable_Grid2>
                 </Unstable_Grid2>
               ))}
             </Unstable_Grid2>
           </Unstable_Grid2>
         ) : (
-          <div>
-            <SingleMediaDisplay
-              name={name}
-              url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
-              submarinedContent={displayItem}
-            />
-            <button
-              className={`ml-3 inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium rounded-full text-white bg-pinata-purple`}
-              onClick={() => setIsDisplaying(false)}
+          <Unstable_Grid2
+            container
+            flexDirection={"column"}
+            alignItems={"center"}
+            gap={"2rem"}
+            position={"relative"}
+          >
+            <Unstable_Grid2
+              container
+              sx={{
+                position: "relative",
+                height: "60vh",
+                width: "60vw",
+                justifyContent: "center",
+              }}
             >
+              <SingleMediaDisplay
+                name={name}
+                url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
+                submarinedContent={displayItem}
+              />
+            </Unstable_Grid2>
+            <Button sx={{ bottom: "-10%" }} onClick={() => setIsDisplaying(false)}>
               Back
-            </button>
-          </div>
+            </Button>
+          </Unstable_Grid2>
         )}
-      </Box>
+      </Unstable_Grid2>
       {content.totalItems > items.length && (
-        <div>
+        <Box>
           <Pagination handlePageChange={handlePageChange} />
-        </div>
+        </Box>
       )}
     </Paper>
   );

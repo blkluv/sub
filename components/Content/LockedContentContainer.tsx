@@ -7,13 +7,19 @@ import { UnlockInfo } from "../../types/UnlockInfo";
 import WagmiProvider from "../Wagmi/Provider";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
+import SolanaProvider from "./LockType/SolanaProvider";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
+  isPreview: boolean;
 }
-const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainerProps) => {
+const LockedContentContainer = ({
+  fileInfo,
+  gatewayUrl,
+  isPreview,
+}: LockedContentContainerProps) => {
   const getLockType = (unlockInfo: UnlockInfo) => {
     const type = unlockInfo.type;
     switch (type) {
@@ -21,7 +27,11 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
         return <LocationUnlock fileInfo={fileInfo} />;
       case "nft":
         if (unlockInfo.blockchain === "Solana") {
-          return <Solana fileInfo={fileInfo} />;
+          return (
+            <SolanaProvider>
+              <Solana fileInfo={fileInfo} />
+            </SolanaProvider>
+          );
         } else if (EVMChains.includes(unlockInfo.blockchain)) {
           return (
             <WagmiProvider>
@@ -30,7 +40,7 @@ const LockedContentContainer = ({ fileInfo, gatewayUrl }: LockedContentContainer
           );
         }
       case "retweet":
-        return <Retweet fileInfo={fileInfo} />;
+        return <Retweet fileInfo={fileInfo} isPreview={isPreview} />;
       default:
         return <div>Unknown lock type</div>;
     }

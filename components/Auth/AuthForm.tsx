@@ -94,9 +94,11 @@ export default function AuthForm() {
               name="mfa"
               type="text"
               required
+              fullWidth
               value={mfa}
               onChange={(e) => setMFA(e.target.value)}
               placeholder="MFA code"
+              sx={{ paddingTop: "0.25rem" }}
             />
           ) : (
             <>
@@ -110,6 +112,7 @@ export default function AuthForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
+                sx={{ paddingTop: "0.25rem" }}
               />
               <TextField
                 fullWidth
@@ -121,6 +124,7 @@ export default function AuthForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
+                sx={{ paddingTop: "0.25rem" }}
               />
               {loginStatus === LOGIN_STATUSES.needsConfirmation && (
                 <>

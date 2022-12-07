@@ -8,6 +8,7 @@ import WagmiProvider from "../Wagmi/Provider";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
 import SolanaProvider from "./LockType/SolanaProvider";
+import FlowUnlock from "./LockType/Flow";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -32,6 +33,8 @@ const LockedContentContainer = ({
               <Solana fileInfo={fileInfo} />
             </SolanaProvider>
           );
+        } else if (unlockInfo.blockchain === BlockchainOptions.Flow) {
+          return <FlowUnlock fileInfo={fileInfo} />;
         } else if (EVMChains.includes(unlockInfo.blockchain)) {
           return (
             <WagmiProvider>

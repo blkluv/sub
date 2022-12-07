@@ -46,6 +46,7 @@ export enum BlockchainOptions {
   Solana = "Solana",
   Polygon = "Polygon",
   Avalanche = "Avalanche",
+  Flow = "Flow",
 }
 
 type SharedNFTTypes = {
@@ -60,6 +61,9 @@ export interface UnlockInfoETH extends SharedNFTTypes {
 export interface UnlockInfoSolana extends SharedNFTTypes {
   mintAddress: string;
   updateAuthority: string;
+}
+export interface UnlockInfoFlow extends SharedNFTTypes {
+  contract: string;
 }
 
 export type UnlockInfoLocation = {

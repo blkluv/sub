@@ -75,16 +75,27 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const theme = useTheme();
   const buttonStyle = {
     width: "90%",
-    maxWidth: "150px",
-    marginTop: "0.5em",
-    padding: theme.spacing(1),
-    color: "black",
+
+    maxWidth: "300px",
+    borderRadius: 1000,
+    ...(fileInfo?.customizations?.buttonShape === "square" && {
+      borderRadius: 2,
+    }),
     backgroundColor: theme.palette.primary.light,
+    ...(fileInfo?.customizations.buttonColor &&
+      fileInfo?.customizations?.buttonColor?.hex && {
+        backgroundColor: fileInfo.customizations.buttonColor.hex,
+      }),
+    color: "#000000",
+    ...(fileInfo?.customizations?.buttonTextColor &&
+      fileInfo?.customizations?.buttonTextColor.hex && {
+        color: fileInfo.customizations.buttonTextColor.hex,
+      }),
   };
 
   return !wallet.connected ? (
     <Grid2>
-      <Grid2 container direction={"column"} alignContent={"center"}>
+      <Grid2 container direction={"column"} alignContent={"center"} gap={"1rem"}>
         <WalletMultiButton style={buttonStyle} />
         {wallet.autoConnect && <WalletDisconnectButton style={buttonStyle} />}
       </Grid2>

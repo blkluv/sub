@@ -201,6 +201,12 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                 <Unstable_Grid2 lgOffset={4}>
                   <Box sx={{ padding: (theme) => theme.spacing(2, 0, 2, 0) }}>
                     <Button
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: (theme) => theme.palette.primary.main,
+                          color: (theme) => theme.palette.primary.contrastText,
+                        },
+                      }}
                       type="submit"
                       onClick={(e) => props.handleSubmit()}
                       disabled={!props.isValid || props.isSubmitting}

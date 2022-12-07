@@ -43,9 +43,10 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
       ) : (
         <Button
           sx={{
+            width: "90%",
+            maxWidth: "300px",
             backgroundColor: (theme) => theme.palette.primary.light,
-            color: "black",
-            "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+            color: "#000000",
           }}
           onClick={handleClick}
         >

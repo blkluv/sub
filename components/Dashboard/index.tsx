@@ -160,7 +160,10 @@ const Dashboard = () => {
           </Unstable_Grid2>
           <Button
             sx={{
-              "&:hover": { backgroundColor: (theme) => theme.palette.primary.main },
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.primary.main,
+                color: (theme) => theme.palette.primary.contrastText,
+              },
               marginTop: "1em",
             }}
             onClick={(e) => handleSubmarineClick(e)}

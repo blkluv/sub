@@ -36,9 +36,7 @@ const HelpMenu = () => {
         {/* <MenuItem onClick={() => window.open('https://medium.com/pinata', '_blank')}>
                     <SchoolOutlinedIcon sx={{ marginRight: 2 }} fontSize={'medium'} /> Tutorials
                 </MenuItem> */}
-        <MenuItem
-          onClick={() => window.open("https://submarineme.canny.io/feature-requests", "_blank")}
-        >
+        <MenuItem onClick={() => window.open(process.env.NEXT_PUBLIC_CANNY_DOMAIN, "_blank")}>
           <StarOutlineRoundedIcon sx={{ marginRight: 2 }} fontSize={"medium"} /> Feature Request
         </MenuItem>
         <MenuItem

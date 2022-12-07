@@ -63,7 +63,7 @@ export default function AuthForm() {
   };
 
   return (
-    <Container sx={{ marginTop: "2rem" }} maxWidth="md">
+    <Container sx={{ marginTop: "2rem" }} maxWidth="sm">
       <Unstable_Grid2
         container
         justifyContent={"center"}

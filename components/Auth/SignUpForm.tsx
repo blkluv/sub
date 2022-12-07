@@ -4,6 +4,7 @@ import {
   Checkbox,
   Container,
   FormControl,
+  FormHelperText,
   Typography,
   Unstable_Grid2,
 } from "@mui/material";
@@ -25,21 +26,12 @@ const SignUpForm = () => {
 
   const validationsRegex: Record<string, RegExp> = {
     // any encoding letters allowed
-    name: /^[a-zA-Z\s]+$/,
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&#%^])[A-Za-z\d$@$!%*?&#%^]{8,}/,
   };
 
   const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required")
-      .matches(validationsRegex.name, "Invalid name"),
-    lastName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required")
-      .matches(validationsRegex.name, "Invalid name"),
+    firstName: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
+    lastName: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .min(8, "Password must contain at least 8 characters")
@@ -50,6 +42,9 @@ const SignUpForm = () => {
         "Password must contain at least 8 characters, including UPPER/lowercase, numbers and special characters"
       ),
     confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
+    isBuilder: Yup.string()
+      .required("Required")
+      .matches(/^(builder|creator)/, "Required"),
   });
 
   const router = useRouter();
@@ -59,7 +54,7 @@ const SignUpForm = () => {
     password: "",
     firstName: "",
     lastName: "",
-    isBuilder: null,
+    isBuilder: "",
     howToUse: [],
   };
   const onSubmit = async (values, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
@@ -103,14 +98,14 @@ const SignUpForm = () => {
   };
 
   return (
-    <Container sx={{ marginTop: "2rem" }} maxWidth="md" fixed>
+    <Container sx={{ marginTop: "2rem" }} maxWidth="xs">
       <Unstable_Grid2
         container
         justifyContent={"center"}
         direction="column"
         alignContent={"center"}
       >
-        <Typography variant="h3" sx={{ marginBottom: "2rem" }}>
+        <Typography variant="h3" sx={{ marginBottom: "2rem", textAlign: "center" }}>
           Register your Pinata account
         </Typography>
         <Formik
@@ -119,7 +114,7 @@ const SignUpForm = () => {
           validationSchema={SignupSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, values }) => (
+          {({ isSubmitting, values, errors, touched }) => (
             <Form>
               <Unstable_Grid2
                 container
@@ -170,6 +165,11 @@ const SignUpForm = () => {
                   <Field component={RadioGroup} row name="isBuilder">
                     <FormControlLabel value="builder" control={<Radio />} label="Builder" />
                     <FormControlLabel value="creator" control={<Radio />} label="Creator" />
+                    {touched.isBuilder && errors.isBuilder && (
+                      <FormHelperText sx={{ color: "red" }}>
+                        {errors.isBuilder && "Required"}
+                      </FormHelperText>
+                    )}
                   </Field>
                 </FormControl>
 

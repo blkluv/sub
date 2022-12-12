@@ -33,17 +33,8 @@ const HelpMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        {/* <MenuItem onClick={() => window.open('https://medium.com/pinata', '_blank')}>
-                    <SchoolOutlinedIcon sx={{ marginRight: 2 }} fontSize={'medium'} /> Tutorials
-                </MenuItem> */}
         <MenuItem onClick={() => window.open(process.env.NEXT_PUBLIC_CANNY_DOMAIN, "_blank")}>
           <StarOutlineRoundedIcon sx={{ marginRight: 2 }} fontSize={"medium"} /> Feature Request
-        </MenuItem>
-        <MenuItem
-          onClick={() => window.open("https://docs.pinata.cloud/pinata-submarine-api", "_blank")}
-        >
-          <AutoStoriesOutlinedIcon sx={{ marginRight: 2 }} fontSize={"small"} />
-          Documentation
         </MenuItem>
       </Menu>
     </Box>

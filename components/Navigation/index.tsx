@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useAppSelector } from "../../store/hooks";
 import { selectIsAuthenticated, selectUserAvatar } from "../../store/selectors/authSelectors";
 import AvatarMenu from "./AvatarMenu";
+import HelpMenu from "./HelpMenu";
 
 export default function Navigation() {
   const avatarPath = useAppSelector(selectUserAvatar); // TODO - add avatar to user {isAuthenticated && <ProfileDropDown avatar={avatar} />}
@@ -35,7 +36,12 @@ export default function Navigation() {
                 <Image height={32} width={47} src="/submarine.png" alt="Submarine Me" />
               </Box>
             </Link>
-            {isAuthenticated && <AvatarMenu avatarPath={avatarPath} />}
+            {isAuthenticated && (
+              <Unstable_Grid2 container>
+                <HelpMenu />
+                <AvatarMenu avatarPath={avatarPath} />
+              </Unstable_Grid2>
+            )}
           </Unstable_Grid2>
         </Container>
       </Toolbar>

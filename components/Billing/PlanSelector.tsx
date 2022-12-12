@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { connect } from "react-redux";
 // import { useLocation } from "react-router-dom";
-import { Grid, Alert, List } from "@mui/material";
+import { Grid, Alert, List, Typography, Unstable_Grid2 } from "@mui/material";
 import CardPricing from "./Pricing/CardPricing";
 //import BillingAddressModal from "./BillingAddressModal";
 import AddCardModal from "./AddCardModal";
@@ -229,18 +229,19 @@ const PlanSelector = ({
         </Alert>
       ) : (
         !!billing?.billing_plans?.length && (
-          <List id="pinata-pricing-cards-list">
+          <Unstable_Grid2 container spacing={"1rem"}>
             {billing?.billing_plans.map((pricing: BillingPlan) => (
-              <CardPricing
-                disabled={pricing.type === planTypes.FREE.type}
-                plan={pricing}
-                key={pricing.id}
-                action={handlePlanChoice}
-                currentPlan={billing?.activePricingPlan}
-                nextPlan={billing?.nextPlan}
-              />
+              <Unstable_Grid2 key={pricing.id} sm={3} xs={12}>
+                <CardPricing
+                  disabled={pricing.type === planTypes.FREE.type}
+                  plan={pricing}
+                  action={handlePlanChoice}
+                  currentPlan={billing?.activePricingPlan}
+                  nextPlan={billing?.nextPlan}
+                />
+              </Unstable_Grid2>
             ))}
-          </List>
+          </Unstable_Grid2>
         )
       )}
       {changePlanModalOpen && (

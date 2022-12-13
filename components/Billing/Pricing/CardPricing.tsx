@@ -52,10 +52,35 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
               )}
               {currentPlan?.type === plan.type && (
                 <Button
-                  sx={{ backgroundColor: "white", color: "#2a40d7", marginTop: 2, width: "90%" }}
+                  disabled={currentPlan?.type === plan.type}
+                  sx={{
+                    marginTop: 2,
+                    width: "90%",
+                    ":disabled": {
+                      backgroundColor: "white",
+                    },
+                  }}
                 >
                   Current Plan
                 </Button>
+              )}
+              {nextPlan?.type === plan.type && currentPlan?.type !== plan.type && (
+                <Button disabled={nextPlan?.type === plan.type} sx={{ marginTop: 2, width: "90%" }}>
+                  Your Next Plan
+                </Button>
+              )}
+              {currentPlan?.type === plan.type && nextPlan && nextPlan.type !== plan.type && (
+                <>
+                  <Button
+                    sx={{ backgroundColor: "white", color: "#2a40d7", marginTop: 2, width: "90%" }}
+                    onClick={() => action(plan)}
+                  >
+                    Keep Current Plan
+                  </Button>
+                  <Typography variant="caption" sx={{ marginTop: 2 }}>
+                    Your plan will be downgraded
+                  </Typography>
+                </>
               )}
             </Unstable_Grid2>
           </Unstable_Grid2>
@@ -77,21 +102,6 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
                 </Unstable_Grid2>
               )} */}
             {/* do not allow user click one more time to the already chosen plan */}
-            {nextPlan?.type === plan.type && currentPlan?.type !== plan.type && (
-              <Button disabled={nextPlan?.type === plan.type} size="large" sx={{ marginTop: 2 }}>
-                Your Next Plan
-              </Button>
-            )}
-            {currentPlan?.type === plan.type && nextPlan && nextPlan.type !== plan.type && (
-              <Unstable_Grid2>
-                <Typography variant="caption" sx={{ marginTop: 2 }}>
-                  Your plan will be downgraded
-                </Typography>
-                <Button size="large" onClick={() => action(plan)}>
-                  Keep my current plan
-                </Button>
-              </Unstable_Grid2>
-            )}
           </Unstable_Grid2>
         </Unstable_Grid2>
       </CardContent>

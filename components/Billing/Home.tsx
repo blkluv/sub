@@ -129,7 +129,11 @@ const Home = (props: BillingProps) => {
 
       {billing?.activePricingPlan?.type !== planTypes.ENTERPRISE.type && <EnterpriseBanner />}
       <Unstable_Grid2 sx={{ textAlign: "center", marginTop: "2rem" }}>
-        <CancelDialog />
+        <CancelDialog
+          billing={billing}
+          changePlan={changePlan}
+          scheduleUsageMetrics={scheduleUsageMetrics}
+        />
       </Unstable_Grid2>
     </Container>
   );

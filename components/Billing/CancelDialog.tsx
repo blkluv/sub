@@ -14,16 +14,36 @@ import { CheckboxWithLabel } from "formik-material-ui";
 import { Formik, Form, Field } from "formik";
 import { FormLabel, Typography } from "@mui/material";
 import * as Yup from "yup";
+import * as FullStory from "@fullstory/browser";
+import { useAppSelector } from "../../store/hooks";
+import { selectUser } from "../../store/selectors/authSelectors";
+import type { BillingState, Plan } from "../../store/legacy/billing/types";
 
-export default function CancelDialog() {
+interface ChangePlanRes {
+  plan: Plan;
+  nextPlan: Plan;
+}
+interface PlanCancelProps {
+  billing: BillingState;
+  changePlan: (newPlan: Plan) => Promise<ChangePlanRes>;
+  scheduleUsageMetrics: (...props: any) => any;
+}
+
+export default function CancelDialog({
+  billing,
+  changePlan,
+  scheduleUsageMetrics,
+}: PlanCancelProps) {
+  const user = useAppSelector(selectUser);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const userReasons = [
     {
-      label: "Missing features I need",
+      label: "Missing desired features",
       value: "missingFeatures",
     },
     {
-      label: "Switching to an alternative production",
+      label: "Switching to an alternative product",
       value: "altProduct",
     },
     {
@@ -48,8 +68,26 @@ export default function CancelDialog() {
     setOpen(false);
   };
 
-  const handleCancellation = (values) => {
+  const handleCancellation = async (values) => {
+    setLoading(true);
+    try {
+      const changePlanRes: ChangePlanRes = await changePlan(billing.billing_plans[0]);
+      // if (!changePlanRes.nextPlan) {
+      //   scheduleUsageMetrics();
+      // }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+
     console.log("User Reasons: ", values);
+    FullStory.event("User Cancellation", {
+      user_reasons: values,
+      user_email: user.email,
+      user_firstName: user.firstname,
+      user_lastName: user.lastname,
+      user_gateway: user.gatewayUrl,
+    });
     setOpen(false);
   };
 

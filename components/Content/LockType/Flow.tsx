@@ -12,10 +12,8 @@ const FlowUnlock = ({ fileInfo }) => {
   interface LocationProps {
     fileInfo: MetadataUnlockInfo;
   }
-
-  const [flowUser, setFlowUser] = useState();
-  useEffect(() => fcl.currentUser.subscribe(setFlowUser), []);
-  console.log({ flowUser });
+  // const [flowUser, setFlowUser] = useState();
+  // useEffect(() => fcl.currentUser.subscribe(setFlowUser), []);
   const verify = async (): Promise<SubmarinedContent> => {
     return new Promise(async (resolve, reject) => {
       const unlockInfo = fileInfo.unlockInfo as UnlockInfoFlow;
@@ -34,7 +32,11 @@ const FlowUnlock = ({ fileInfo }) => {
       const encoded = Buffer.from(message).toString("hex");
       const currentUser = fcl.currentUser();
       const signature = await currentUser.signUserMessage(encoded);
-      const content = await ky.post("/api/flow/verify", { json: signature }).json();
+
+      console.log({ signature });
+      if (!signature.message) {
+        const content = await ky.post("/api/flow/verify", { json: signature }).json();
+      }
       // Request authorization from the user's wallet.
       // This will open a pop-up window that allows the
       // user to sign in to their wallet and authorize

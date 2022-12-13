@@ -3,7 +3,7 @@ import fcl from "../../../flow/fcl";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
 import { getSupabaseClient } from "../../../helpers/supabase";
 import { withSessionRoute } from "../../../helpers/withSession";
-
+import { getAddressMaps, scripts } from "flow-catalog";
 // const supabase = getSupabaseClient();
 type Session = {
   contract: string;
@@ -43,28 +43,6 @@ const handler = async (req, res) => {
 export default withSessionRoute(handler);
 
 async function verifyNFTOwnershipOnFlowBlockchain(contract, address) {
-  const script = `
-    import NonFungibleToken from 0xNonFungibleToken
-    import Submarine from 0xSubmarine
-
-    pub fun main(address: Address): Bool {
-      let collectionRef = getAccount(address)
-        .getCapability(/public/SubmarineNFTCollection)!
-        .borrow<&{NonFungibleToken.CollectionPublic}>()
-        ?? panic("Could not borrow capability from public collection")
-
-      return collectionRef.checkMintingPermission(address: address)
-    }
-  `;
-  const args = [fcl.arg(address, t.Address)];
-  const encoded = await fcl.send([
-    fcl.script(script),
-    fcl.args(args),
-    fcl.proposer(fcl.authz),
-    fcl.payer(fcl.authz),
-    fcl.authorizations([fcl.authz]),
-    fcl.limit(100),
-  ]);
-  const decoded = await fcl.decode(encoded);
-  return decoded;
+  const addressMap = await getAddressMaps();
+  console.log(await scripts.getNftsCountInAccount(addressMap, [address]));
 }

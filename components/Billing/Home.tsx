@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
-import { Button, Container, Dialog, DialogActions, DialogContent, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Typography,
+  Unstable_Grid2,
+} from "@mui/material";
 import UsageCard from "./UsageCard";
 import PlanSelector from "./PlanSelector";
 import {
@@ -119,6 +127,19 @@ const Home = (props: BillingProps) => {
       />
 
       {billing?.activePricingPlan?.type !== planTypes.ENTERPRISE.type && <EnterpriseBanner />}
+      <Unstable_Grid2 sx={{ textAlign: "center" }}>
+        <Button
+          variant="outlined"
+          sx={{
+            marginTop: "1rem",
+            backgroundColor: "transparent",
+            color: "#181818",
+            borderColor: "#C8C8C8",
+          }}
+        >
+          Cancel Subscription
+        </Button>
+      </Unstable_Grid2>
     </Container>
   );
 };

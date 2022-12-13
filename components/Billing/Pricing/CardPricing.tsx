@@ -1,15 +1,8 @@
 import styled from "@emotion/styled";
-import {
-  Button,
-  Card,
-  CardContent,
-  ListItem,
-  Tooltip,
-  Typography,
-  Unstable_Grid2,
-} from "@mui/material";
+import { Button, Card, CardContent, Typography, Unstable_Grid2 } from "@mui/material";
 import { BillingPlan, Plan } from "../../../store/legacy/billing/types";
 import CheckIcon from "@mui/icons-material/Check";
+import Image from "next/image";
 
 interface CardPricingProps {
   plan: BillingPlan;
@@ -37,6 +30,12 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
       <CardContent sx={{ height: "100%" }}>
         <Unstable_Grid2 container flexDirection={"column"} gap={"2rem"}>
           <Unstable_Grid2>
+            <Unstable_Grid2>
+              <Image height={32} width={32} src="/pinniedark.png" alt="Pinata logo" />
+              {plan.type !== 0 && (
+                <Image height={32} width={46} src="/submarine.png" alt="Submarine.me logo" />
+              )}
+            </Unstable_Grid2>
             <Typography variant="h4">{plan.nickname}</Typography>
             <Typography variant="subtitle2">{plan.subtitle}</Typography>
           </Unstable_Grid2>

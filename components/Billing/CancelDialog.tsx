@@ -1,14 +1,44 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Unstable_Grid2,
+} from "@mui/material";
+import { useState } from "react";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import { CheckboxWithLabel } from "formik-material-ui";
+import { Formik, Form, Field } from "formik";
+import { FormLabel, Typography } from "@mui/material";
+import * as Yup from "yup";
 
 export default function CancelDialog() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const userReasons = [
+    {
+      label: "Missing features I need",
+      value: "missingFeatures",
+    },
+    {
+      label: "Switching to an alternative production",
+      value: "altProduct",
+    },
+    {
+      label: "Experiencing technical issues",
+      value: "techIssues",
+    },
+    {
+      label: "Too expensive",
+      value: "tooExpensive",
+    },
+    {
+      label: "Other",
+      value: "other",
+    },
+  ];
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,33 +48,73 @@ export default function CancelDialog() {
     setOpen(false);
   };
 
+  const handleCancellation = (values) => {
+    console.log("User Reasons: ", values);
+    setOpen(false);
+  };
+
   return (
-    <div>
+    <Unstable_Grid2>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
+        Cancel Subscription
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: { borderRadius: "20px", padding: "1rem" },
+        }}
+      >
+        <DialogTitle>
+          <Typography variant="h5">Cancel Subscription</Typography>
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
+          <Formik
+            onSubmit={(values) => handleCancellation(values)}
+            initialValues={{ userReasons: [] }}
+            validationSchema={Yup.object({
+              userReasons: Yup.array().min(1, "Please select at least one reason."),
+            })}
+          >
+            {({ values, errors, touched }) => {
+              return (
+                <Form>
+                  <DialogContentText>
+                    <FormControl component="fieldset" style={{ display: "flex" }}>
+                      <FormLabel component="legend">
+                        We are sad to see you go! Please select a reason for leaving.
+                      </FormLabel>
+                      <FormGroup>
+                        {userReasons.map((opt) => (
+                          <Field
+                            type="checkbox"
+                            component={CheckboxWithLabel}
+                            name="userReasons"
+                            key={opt.value}
+                            value={opt.value}
+                            Label={{ label: opt.label }}
+                          />
+                        ))}
+                      </FormGroup>
+                    </FormControl>
+                    {touched.userReasons && errors.userReasons && (
+                      <Typography variant="subtitle2" color="red">
+                        {errors.userReasons}
+                      </Typography>
+                    )}
+                  </DialogContentText>
+                  <DialogActions sx={{ marginTop: "1rem" }}>
+                    <Button variant="outlined" onClick={handleClose}>
+                      Nevermind
+                    </Button>
+                    <Button type="submit">Cancel Subscription</Button>
+                  </DialogActions>
+                </Form>
+              );
+            }}
+          </Formik>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
-        </DialogActions>
       </Dialog>
-    </div>
+    </Unstable_Grid2>
   );
 }

@@ -128,18 +128,7 @@ const Home = (props: BillingProps) => {
       />
 
       {billing?.activePricingPlan?.type !== planTypes.ENTERPRISE.type && <EnterpriseBanner />}
-      <Unstable_Grid2 sx={{ textAlign: "center" }}>
-        <Button
-          variant="outlined"
-          sx={{
-            marginTop: "1rem",
-            backgroundColor: "transparent",
-            color: "#181818",
-            borderColor: "#C8C8C8",
-          }}
-        >
-          Cancel Subscription
-        </Button>
+      <Unstable_Grid2 sx={{ textAlign: "center", marginTop: "2rem" }}>
         <CancelDialog />
       </Unstable_Grid2>
     </Container>

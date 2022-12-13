@@ -7,10 +7,13 @@ import {
   getAllBillingPlans,
   retrieveStripeCustomer,
 } from "../../store/legacy/billing/billing.actions";
-
 import { loadUserInfo } from "../../store/legacy/user/user.actions";
+
 import { connect } from "react-redux";
-const Billing = ({ user }) => {
+const Billing = ({ user, loadUserInfo }) => {
+  useEffect(() => {
+    loadUserInfo();
+  }, []);
   const initializePricing = async () => {
     await retrieveStripeCustomer();
     await getUsageMetrics();
@@ -37,8 +40,8 @@ const mapStateToProps = (state: any) => {
 };
 
 export default connect(mapStateToProps, {
-  loadUserInfo,
   getUsageMetrics,
   retrieveStripeCustomer,
+  loadUserInfo,
   getAllBillingPlans,
 })(Billing);

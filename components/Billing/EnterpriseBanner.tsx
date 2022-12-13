@@ -61,19 +61,14 @@ const EnterpriseBanner = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            spacing={"1rem"}
             container
             flexDirection={"column"}
           >
-            <Unstable_Grid2>
-              <Typography variant="h2">Custom</Typography>
-              <Typography variant="subtitle2">Reach out for a quote</Typography>
-            </Unstable_Grid2>
-            <Unstable_Grid2>
-              <Button onClick={handleEnterpriseContact} color={"primary"}>
-                Contact Us
-              </Button>
-            </Unstable_Grid2>
+            <Typography variant="h2">Custom</Typography>
+            <Typography variant="subtitle2">Reach out for a quote</Typography>
+            <Button onClick={handleEnterpriseContact} sx={{ width: "70%", marginTop: "1rem" }}>
+              Contact Us
+            </Button>
           </Unstable_Grid2>
         </Unstable_Grid2>
       </Card>

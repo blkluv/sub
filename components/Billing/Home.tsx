@@ -26,6 +26,7 @@ import type { MetricsState } from "../../store/legacy/metrics/types";
 import { PinataDialogTitle } from "../shared/Dialog";
 import { planTypes } from "../../constants/planTypes";
 import EnterpriseBanner from "./EnterpriseBanner";
+import CancelDialog from "./CancelDialog";
 
 interface BillingProps {
   data: any;
@@ -139,6 +140,7 @@ const Home = (props: BillingProps) => {
         >
           Cancel Subscription
         </Button>
+        <CancelDialog />
       </Unstable_Grid2>
     </Container>
   );

@@ -1,25 +1,14 @@
-import gravatar from "gravatar";
 // import { fetchApiKeys } from "../apiKeys/apikeys.actions";
-import { LOAD_USER, User } from "./types";
+import { LOAD_USER } from "./types";
 import { api } from "../fakeAxios";
 import { doLogOut } from "../../slices/authSlice";
 
-export const loadUserInfo = (user: User) => async (dispatch: any) => {
-  console.log("loading user info", user);
+export const loadUserInfo = () => async (dispatch: any) => {
+  //  console.log("loading user info", user);
   try {
     const res = await api.get("users/checkForSession");
-    let avatar = localStorage.getItem("pinata-avatar");
-    if (!avatar) {
-      avatar = await gravatar.url(user.email, {
-        s: "200", //size of image
-        r: "pg", //rating of image - no adult content
-        d: "mm", //return default image if no gravatar found
-      });
-      localStorage.setItem("pinata-avatar", avatar);
-    }
     const userInfo = {
-      ...user,
-      avatar,
+      user: res.data.userInformation,
       featureFlags: res?.data?.userInformation?.feature_flags?.feature_flags,
       scheduledToBeCancelledAt: res?.data?.userInformation?.scheduledToBeCancelledAt,
     };

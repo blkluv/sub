@@ -28,7 +28,12 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
       }}
     >
       <CardContent sx={{ height: "100%" }}>
-        <Unstable_Grid2 container flexDirection={"column"} gap={"1rem"}>
+        <Unstable_Grid2
+          container
+          flexDirection={"column"}
+          // gap={"1rem"}
+          justifyContent={"space-between"}
+        >
           <Unstable_Grid2>
             <Unstable_Grid2>
               <Image height={32} width={32} src="/pinniedark.png" alt="Pinata logo" />
@@ -39,69 +44,70 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
             <Typography variant="h4">{plan.nickname}</Typography>
             <Typography variant="subtitle2">{plan.subtitle}</Typography>
           </Unstable_Grid2>
+
           <Unstable_Grid2>
             <Typography variant="h2">{plan.type == 0 ? "Free" : "$" + plan.price}</Typography>
             <Typography variant="subtitle2">
               {plan.type == 0 ? "For a lifetime" : "/month"}{" "}
             </Typography>
-            <Unstable_Grid2 sx={{ textAlign: "center" }}>
-              {currentPlan?.type !== plan.type && nextPlan?.type !== plan.type && (
-                <Button onClick={() => action(plan)} sx={{ marginTop: 2, width: "90%" }}>
-                  Select Plan
-                </Button>
-              )}
-              {currentPlan?.type === plan.type && (
-                <Button
-                  disabled={currentPlan?.type === plan.type}
-                  sx={{
-                    marginTop: 2,
-                    width: "90%",
-                    ":disabled": {
-                      backgroundColor: "white",
-                    },
-                  }}
-                >
-                  Current Plan
-                </Button>
-              )}
-              {nextPlan?.type === plan.type && currentPlan?.type !== plan.type && (
-                <Button disabled={nextPlan?.type === plan.type} sx={{ marginTop: 2, width: "90%" }}>
-                  Your Next Plan
-                </Button>
-              )}
-              {currentPlan?.type === plan.type && nextPlan && nextPlan.type !== plan.type && (
-                <>
-                  <Button
-                    sx={{ backgroundColor: "white", color: "#2a40d7", marginTop: 2, width: "90%" }}
-                    onClick={() => action(plan)}
-                  >
-                    Keep Current Plan
-                  </Button>
-                  <Typography variant="caption" sx={{ marginTop: 2 }}>
-                    Your plan will be downgraded
-                  </Typography>
-                </>
-              )}
-            </Unstable_Grid2>
-          </Unstable_Grid2>
-          <Unstable_Grid2>
-            {plan?.features?.length > 0 &&
-              plan.features.map((feature, index) => {
-                return (
-                  <Unstable_Grid2 container gap={".5rem"} key={`feature_${index}`}>
-                    <CheckIcon />
-                    <Typography variant="subtitle2">{feature}</Typography>
-                  </Unstable_Grid2>
-                );
-              })}
-            {/* {disabled && (
-                <Unstable_Grid2 sx={{ marginTop: "2rem" }}>
+            <Unstable_Grid2>
+              {plan?.features?.length > 0 &&
+                plan.features.map((feature, index) => {
+                  return (
+                    <Unstable_Grid2 container gap={".5rem"} key={`feature_${index}`}>
+                      <CheckIcon />
+                      <Typography variant="subtitle2">{feature}</Typography>
+                    </Unstable_Grid2>
+                  );
+                })}
+              {disabled && (
+                <Unstable_Grid2>
                   <Typography variant="subtitle2">
                     This plan is not valid for Submarine.me
                   </Typography>
                 </Unstable_Grid2>
-              )} */}
-            {/* do not allow user click one more time to the already chosen plan */}
+              )}
+            </Unstable_Grid2>
+          </Unstable_Grid2>
+
+          <Unstable_Grid2 sx={{ textAlign: "center" }}>
+            {currentPlan?.type !== plan.type && nextPlan?.type !== plan.type && (
+              <Button onClick={() => action(plan)} sx={{ marginTop: 2, width: "90%" }}>
+                Select Plan
+              </Button>
+            )}
+            {currentPlan?.type === plan.type && (
+              <Button
+                disabled={currentPlan?.type === plan.type}
+                sx={{
+                  marginTop: 2,
+                  width: "90%",
+                  ":disabled": {
+                    backgroundColor: "white",
+                  },
+                }}
+              >
+                Current Plan
+              </Button>
+            )}
+            {nextPlan?.type === plan.type && currentPlan?.type !== plan.type && (
+              <Button disabled={nextPlan?.type === plan.type} sx={{ marginTop: 2, width: "90%" }}>
+                Your Next Plan
+              </Button>
+            )}
+            {currentPlan?.type === plan.type && nextPlan && nextPlan.type !== plan.type && (
+              <>
+                <Button
+                  sx={{ backgroundColor: "white", color: "#2a40d7", marginTop: 2, width: "90%" }}
+                  onClick={() => action(plan)}
+                >
+                  Keep Current Plan
+                </Button>
+                <Typography variant="caption" sx={{ marginTop: 2 }}>
+                  Your plan will be downgraded
+                </Typography>
+              </>
+            )}
           </Unstable_Grid2>
         </Unstable_Grid2>
       </CardContent>

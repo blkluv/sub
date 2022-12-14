@@ -32,15 +32,16 @@ const EnterpriseBanner = () => {
             flexDirection={"column"}
             spacing={"1rem"}
           >
-            <Unstable_Grid2>
-              <Image height={32} width={32} src="/pinniedark.png" alt="Pinata logo" />
-              <Image height={32} width={46} src="/submarine.png" alt="Submarine.me logo" />
+            <Unstable_Grid2 container justifyContent={"center"} alignItems={"center"} gap={".5rem"}>
+              <Image height={46} width={30} src="/pinniedark.png" alt="Pinata logo" />
+              <Typography variant="h6">+</Typography>
+              <Image height={38} width={45} src="/submarine.png" alt="Submarine.me logo" />
             </Unstable_Grid2>
-            <Unstable_Grid2>
+            <Unstable_Grid2 marginTop={"1rem"}>
               <Typography variant="h4">Enterprise</Typography>
             </Unstable_Grid2>
             <Unstable_Grid2>
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
                 For serious projects, brands, and organizations<br></br>that require
                 enterprise-grade features, custom<br></br>packaging, and 1:1 support.
               </Typography>
@@ -65,7 +66,9 @@ const EnterpriseBanner = () => {
             flexDirection={"column"}
           >
             <Typography variant="h2">Custom</Typography>
-            <Typography variant="subtitle2">Reach out for a quote</Typography>
+            <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
+              Reach out for a quote
+            </Typography>
             <Button onClick={handleEnterpriseContact} sx={{ width: "70%", marginTop: "1rem" }}>
               Contact Us
             </Button>

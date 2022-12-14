@@ -55,6 +55,10 @@ export default function CancelDialog({
       value: "tooExpensive",
     },
     {
+      label: "No longer needed",
+      value: "noLongerNeeded",
+    },
+    {
       label: "Other",
       value: "other",
     },

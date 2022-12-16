@@ -5,13 +5,14 @@ import { SubmarinedContent } from "../../types/SubmarinedContent";
 import ImageWrapper from "./MediaWrappers/ImageWrapper";
 import { Box } from "@mui/material";
 import DownloadFile from "./MediaWrappers/DownloadFile";
+import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
-  name: string;
+  fileInfo: MetadataUnlockInfo;
 }
 
-const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplayProps) => {
+const SingleMediaDisplay = ({ url, submarinedContent, fileInfo }: SingleMediaDisplayProps) => {
   const [fileType, setFileType] = useState<string>("");
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
       }}
     >
       {fileType == "video" || fileType == "audio" ? (
-        <EmbeddedPlayer url={url} />
+        <EmbeddedPlayer submarinedContent={submarinedContent} fileInfo={fileInfo} />
       ) : fileType == "image" ? (
         <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
       ) : (

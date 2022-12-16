@@ -13,6 +13,7 @@
     "update-managed-types": "swagger-typescript-api -p ./types/pinata-managed.json -o ./types/managed -n api.ts"
   },
   "dependencies": {
+    "@cloudflare/stream-react": "^1.8.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",

@@ -30,15 +30,37 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
       <CardContent sx={{ height: "100%" }}>
         <Unstable_Grid2 container flexDirection={"column"}>
           <Unstable_Grid2>
-            <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
-              <Image height={46} width={30} src="/pinniedark.png" alt="Pinata logo" />
-              {plan.type !== 0 && (
-                <>
-                  <Typography variant="h6">+</Typography>
-                  <Image height={38} width={45} src="/submarine.png" alt="Submarine.me logo" />
-                </>
-              )}
-            </Unstable_Grid2>
+            {currentPlan?.type === plan.type ? (
+              <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
+                <Image height={46} width={30} src="/pinnie-white.png" alt="Pinata logo" />
+                {plan.type !== 0 && (
+                  <>
+                    <Typography variant="h6">+</Typography>
+                    <Image
+                      height={38}
+                      width={45}
+                      src="/submarine-white.png"
+                      alt="Submarine.me logo"
+                    />
+                  </>
+                )}
+              </Unstable_Grid2>
+            ) : (
+              <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
+                <Image height={46} width={30} src="/pinnie-dark.png" alt="Pinata logo" />
+                {plan.type !== 0 && (
+                  <>
+                    <Typography variant="h6">+</Typography>
+                    <Image
+                      height={38}
+                      width={45}
+                      src="/submarine-dark.png"
+                      alt="Submarine.me logo"
+                    />
+                  </>
+                )}
+              </Unstable_Grid2>
+            )}
           </Unstable_Grid2>
 
           <Unstable_Grid2>

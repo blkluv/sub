@@ -33,9 +33,9 @@ const EnterpriseBanner = () => {
             spacing={"1rem"}
           >
             <Unstable_Grid2 container justifyContent={"center"} alignItems={"center"} gap={".5rem"}>
-              <Image height={46} width={30} src="/pinniedark.png" alt="Pinata logo" />
+              <Image height={46} width={30} src="/pinnie-dark.png" alt="Pinata logo" />
               <Typography variant="h6">+</Typography>
-              <Image height={38} width={45} src="/submarine.png" alt="Submarine.me logo" />
+              <Image height={38} width={45} src="/submarine-dark.png" alt="Submarine.me logo" />
             </Unstable_Grid2>
             <Unstable_Grid2 marginTop={"1rem"}>
               <Typography variant="h4">Enterprise</Typography>

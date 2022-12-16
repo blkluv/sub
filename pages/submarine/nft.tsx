@@ -5,11 +5,12 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import ContractAddressETH from "../../components/Submarine/SelectLockType/NFT/ETH/ContractAddress";
 import ContractAddressSolana from "../../components/Submarine/SelectLockType/NFT/Solana/ContractAddress";
+import ContractAddressFlow from "../../components/Submarine/SelectLockType/NFT/Flow/ContractAddress";
 
 const Nft = () => {
   // implementation differs based on the blockchain selected.
   // since we are outside Formik state here, we need to useState.
-  const [blockchain, setBlockchain] = useState(BlockchainOptions.Ethereum);
+  const [blockchain, setBlockchain] = useState(BlockchainOptions.Ethereum); // TODO - BUG WHEN EDITING
 
   const [unlockInfo, setUnlockInfo] = useState<UnlockInfoNFT>(ContractAddressETH.unlockInfo);
   const [unlockInfoSchema, setUnlockInfoSchema] = useState(ContractAddressETH.unlockInfoSchema);
@@ -25,6 +26,12 @@ const Nft = () => {
     switch (blockchain) {
       case BlockchainOptions.Solana:
         setContractAddress(() => ContractAddressSolana);
+        break;
+      case BlockchainOptions.Ethereum:
+        setContractAddress(() => ContractAddressETH);
+        break;
+      case BlockchainOptions.Flow:
+        setContractAddress(() => ContractAddressFlow);
         break;
       default:
         setContractAddress(() => ContractAddressETH);

@@ -4,7 +4,6 @@ import FormikTextfield from "../../../../Form/FormikTextfield";
 import InformationCircleIconStyled from "../../../../Form/InformationCircleIconStyled";
 import TokenIdDialog from "../../TokenIdDialog";
 import * as Yup from "yup";
-import { ethers } from "ethers";
 import { BlockchainOptions, UnlockInfoETH } from "../../../../../types/UnlockInfo";
 
 type ContractAddressType = React.FC & { unlockInfoSchema: Yup.ObjectSchema<any> } & {
@@ -14,12 +13,7 @@ const ContractAddress: ContractAddressType = () => {
   const [tokenIdDialogOpen, setTokenIdDialogOpen] = useState(false);
   return (
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
-      <FormikTextfield
-        type="text"
-        name="unlockInfo.contract"
-        label="Contract Address ETH"
-        required
-      />
+      <FormikTextfield type="text" name="unlockInfo.contract" label="Contract Address" required />
       <FormikTextfield
         type="text"
         name="unlockInfo.tokenId"
@@ -45,8 +39,13 @@ ContractAddress.unlockInfoSchema = Yup.object().shape({
   tokenId: Yup.number().typeError("Token id must be a number"),
   contract: Yup.string()
     .required("Required")
-    .test("address-is-valid", "Not a valid address.", (value) => ethers.utils.isAddress(value)),
+    .test(
+      "address-is-valid",
+      "Not a valid address.",
+      (value) => value?.startsWith("0x") && value?.length === 18
+    ),
 });
+// value.startsWith("0x") &&
 ContractAddress.unlockInfo = {
   type: "nft",
   blockchain: BlockchainOptions.Ethereum,

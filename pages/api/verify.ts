@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ethers } from "ethers";
 import { verifyMessage } from "ethers/lib/utils";
 import { v4 as uuidv4 } from "uuid";

@@ -51,19 +51,29 @@ export enum BlockchainOptions {
 
 type SharedNFTTypes = {
   type: "nft";
-  network: string;
-  blockchain: BlockchainOptions;
 };
 export interface UnlockInfoETH extends SharedNFTTypes {
+  blockchain: BlockchainOptions.Ethereum;
+  network: string;
   contract: string;
   tokenId?: string;
 }
 export interface UnlockInfoSolana extends SharedNFTTypes {
+  blockchain: BlockchainOptions.Solana;
+  network: string;
   mintAddress: string;
   updateAuthority: string;
 }
+
+export enum FlowNetwork {
+  Mainnet = "Mainnet",
+  Testnet = "Testnet",
+}
 export interface UnlockInfoFlow extends SharedNFTTypes {
+  blockchain: BlockchainOptions.Flow;
+  network: FlowNetwork;
   contract: string;
+  tokenId?: string;
 }
 
 export type UnlockInfoLocation = {
@@ -72,5 +82,5 @@ export type UnlockInfoLocation = {
   type: "location";
   distance: string;
 };
-export type UnlockInfoNFT = UnlockInfoETH | UnlockInfoSolana;
+export type UnlockInfoNFT = UnlockInfoETH | UnlockInfoSolana | UnlockInfoFlow;
 export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;

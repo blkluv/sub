@@ -1,4 +1,5 @@
 import * as fcl from "@onflow/fcl";
+import { FlowNetwork } from "../types/UnlockInfo";
 
 const submarineInfo = {
   "app.detail.icon": "https://app.submarine.me/submarine.png",
@@ -22,11 +23,13 @@ const mainnetConfig = {
   ...submarineInfo,
 };
 
-fcl.config({
-  ...mainnetConfig,
-});
-// fcl.config({
-//   testnetConfig
-// });
+const configMap = {
+  [FlowNetwork.Mainnet]: mainnetConfig,
+  [FlowNetwork.Testnet]: testnetConfig,
+};
 
-export default fcl;
+export const getFcl = (network: FlowNetwork) => {
+  const config = configMap[network];
+  fcl.config({ ...config });
+  return fcl;
+};

@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   } else if (req.method === "GET") {
     let user = null;
     try {
-      user = await getUserSession(req);
+      user = await getUserSession(req).catch();
       if (!user) {
         return res.status(401).send("Unauthorized");
       }
@@ -124,7 +124,8 @@ export default async function handler(req, res) {
       console.log(user);
       console.log(error);
       const { response: fetchResponse } = error;
-      return res.status(fetchResponse?.status || 500).json(error.data);
+      res.status(fetchResponse?.status || 500).json(JSON.stringify(fetchResponse.data.error));
+      return;
     }
   } else {
     return res

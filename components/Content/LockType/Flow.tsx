@@ -1,19 +1,21 @@
-import MapIcon from "@mui/icons-material/Map";
-import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
+import { Typography } from "@mui/material";
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
-import { UnlockInfoFlow, UnlockInfoLocation, UnlockInfoNFT } from "../../../types/UnlockInfo";
+import { FlowNetwork, UnlockInfoFlow } from "../../../types/UnlockInfo";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import BaseLockType from "./LockTypeContainer";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
-import fcl from "../../../flow/fcl";
+import { getFcl } from "../../../flow/fcl";
 import { useEffect, useState } from "react";
 const FlowUnlock = ({ fileInfo }) => {
   interface LocationProps {
     fileInfo: MetadataUnlockInfo;
   }
-  // const [flowUser, setFlowUser] = useState();
-  // useEffect(() => fcl.currentUser.subscribe(setFlowUser), []);
+  const [fcl, setFcl] = useState(getFcl(FlowNetwork.Mainnet));
+  useEffect(() => {
+    setFcl(getFcl(fileInfo.unlockInfo.network));
+  }, [fileInfo.unlockInfo.network]);
+
   const verify = async (): Promise<SubmarinedContent> => {
     return new Promise(async (resolve, reject) => {
       const unlockInfo = fileInfo.unlockInfo as UnlockInfoFlow;
@@ -27,15 +29,25 @@ const FlowUnlock = ({ fileInfo }) => {
         contract: string;
         id: string;
       } = await ky.get(`/api/flow/verify?contract=${contract}`).json();
-      await fcl.authenticate();
+      await fcl.reauthenticate();
       const message = getMessagetoSign(payload?.contract, payload?.id);
       const encoded = Buffer.from(message).toString("hex");
       const currentUser = fcl.currentUser();
-      const signature = await currentUser.signUserMessage(encoded);
+      const signature = await currentUser
+        .signUserMessage(encoded)
+        .catch(() => reject("Error signing message"));
 
-      console.log({ signature });
       if (!signature.message) {
-        const content = await ky.post("/api/flow/verify", { json: signature }).json();
+        try {
+          const content: SubmarinedContent = await ky
+            .post("/api/flow/verify", {
+              json: { signature, shortId: window.location.pathname.split("/")[1] },
+            })
+            .json();
+          resolve(content);
+        } catch (err) {
+          err.response.text().then(reject);
+        }
       }
       // Request authorization from the user's wallet.
       // This will open a pop-up window that allows the

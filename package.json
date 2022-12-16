@@ -40,7 +40,6 @@
     "dotenv": "^16.0.0",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.6.4",
-    "flow-catalog": "^0.1.1",
     "formik": "^2.2.9",
     "formik-mui": "^5.0.0-alpha.0",
     "gravatar": "^1.8.2",

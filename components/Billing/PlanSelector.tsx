@@ -233,7 +233,7 @@ const PlanSelector = ({
         !!billing?.billing_plans?.length && (
           <Unstable_Grid2 container spacing={"1rem"}>
             {billing?.billing_plans.map((pricing: BillingPlan) => (
-              <Unstable_Grid2 key={pricing.id} sm={3} xs={12}>
+              <Unstable_Grid2 key={pricing.id} xs={12} sm={6} md={3}>
                 <CardPricing
                   disabled={pricing.type === planTypes.FREE.type}
                   plan={pricing}

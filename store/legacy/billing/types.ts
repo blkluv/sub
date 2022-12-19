@@ -24,6 +24,8 @@ export interface Plan {
   type: number;
   video_streaming_minutes_streamed_limit: number;
   video_streaming_minutes_stored_limit: number;
+  submarine: boolean;
+  authNFT: boolean;
 }
 
 export interface BillingPlan extends Plan {

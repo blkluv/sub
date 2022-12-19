@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
-import { Button, Card, CardContent, ListItem, Tooltip, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography, Unstable_Grid2 } from "@mui/material";
 import { BillingPlan, Plan } from "../../../store/legacy/billing/types";
+import CheckIcon from "@mui/icons-material/Check";
+import Image from "next/image";
 
 interface CardPricingProps {
   plan: BillingPlan;
@@ -11,80 +13,132 @@ interface CardPricingProps {
 }
 
 const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPricingProps) => {
-  const SelectedPlanCard =
-    currentPlan?.type === plan.type
-      ? styled(Card)`
-          border: 6px solid;
-          border-image-slice: 1;
-          border-image-source: linear-gradient(120deg, var(--purple), orange);
-        `
-      : Card;
   return (
-    <ListItem>
-      <SelectedPlanCard
-        sx={{ height: "100%", width: "100%", backgroundColor: disabled ? "#eeeeee" : "white" }}
-      >
-        <CardContent sx={{ height: "100%" }}>
-          <div className="d-flex h-100 flex-column align-items-center justify-content-between">
-            <div className="text-center">
-              <Typography variant="h4">{plan.nickname}</Typography>
-              <Typography variant="caption">{plan.subtitle}</Typography>
-              <p className="d-flex flex-column text-muted text-weight-700 text-center mh-25">
-                <span style={{ fontSize: "4em" }}>${plan.price}</span>
-                <span style={{ fontSize: "1em" }}>/month</span>
-              </p>
-              <div className="d-flex flex-column align-items-center">
-                <ul className="font-size-16 list-unstyled text-left">
-                  {plan?.features?.length > 0 &&
-                    plan.features.map((feature, index) => {
-                      return (
-                        <li key={`feature_${index}`} className="mb-1">
-                          <div className="d-flex align-items-center">
-                            <i className="fas fa-check mr-3 text-primary align-self-baseline mt-1" />
-                            <span>{feature}</span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  {disabled && (
-                    <li style={{ marginTop: "3rem" }}>
-                      <div className="text-center">
-                        <i className="fas fa-check mr-3 text-primary " />
-                        <span>
-                          <br />
-                          <strong>This plan is not valid for Submarine.me</strong>
-                        </span>
-                      </div>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </div>
+    <Card
+      sx={{
+        padding: "3rem .5rem",
+        height: "100%",
+        width: "100%",
+        backgroundColor: currentPlan?.type === plan.type ? "#2a40d7" : "white",
+        color: currentPlan?.type === plan.type ? "white" : "#56DB99",
+        "& .MuiTypography-root": {
+          color: currentPlan?.type === plan.type ? "white" : "black",
+        },
+        boxShadow: "4px 12px 40px rgba(0, 0, 0, 0.09)",
+      }}
+    >
+      <CardContent sx={{ height: "100%" }}>
+        <Unstable_Grid2 container flexDirection={"column"}>
+          <Unstable_Grid2>
+            {currentPlan?.type === plan.type ? (
+              <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
+                <Image height={46} width={30} src="/pinnie-white.png" alt="Pinata logo" />
+                {plan.type !== 0 && (
+                  <>
+                    <Typography variant="h6">+</Typography>
+                    <Image
+                      height={38}
+                      width={45}
+                      src="/submarine-white.png"
+                      alt="Submarine.me logo"
+                    />
+                  </>
+                )}
+              </Unstable_Grid2>
+            ) : (
+              <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
+                <Image height={46} width={30} src="/pinnie-dark.png" alt="Pinata logo" />
+                {plan.type !== 0 && (
+                  <>
+                    <Typography variant="h6">+</Typography>
+                    <Image
+                      height={38}
+                      width={45}
+                      src="/submarine-dark.png"
+                      alt="Submarine.me logo"
+                    />
+                  </>
+                )}
+              </Unstable_Grid2>
+            )}
+          </Unstable_Grid2>
+
+          <Unstable_Grid2>
+            <Typography sx={{ color: "#00adb5" }} variant="h4">
+              {plan.nickname}
+            </Typography>
+            <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
+              {plan.subtitle}
+            </Typography>
+          </Unstable_Grid2>
+
+          <Unstable_Grid2>
+            <Typography variant="h2">{"$" + plan.price}</Typography>
+            <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
+              {plan.type == 0 ? "For a lifetime" : "/month"}{" "}
+            </Typography>
+            <Unstable_Grid2>
+              {plan?.features?.length > 0 &&
+                plan.features.map((feature, index) => {
+                  return (
+                    <Unstable_Grid2 container gap={".5rem"} key={`feature_${index}`}>
+                      <CheckIcon />
+                      <Typography variant="subtitle2">{feature}</Typography>
+                    </Unstable_Grid2>
+                  );
+                })}
+              {disabled && (
+                <Unstable_Grid2>
+                  <Typography variant="subtitle2">
+                    This plan is not valid for Submarine.me
+                  </Typography>
+                </Unstable_Grid2>
+              )}
+            </Unstable_Grid2>
+          </Unstable_Grid2>
+
+          <Unstable_Grid2 sx={{ textAlign: "center" }}>
             {currentPlan?.type !== plan.type && nextPlan?.type !== plan.type && (
-              <Button onClick={() => action(plan)} size="large" sx={{ marginTop: 2 }}>
-                Select {plan.nickname}
+              <Button onClick={() => action(plan)} sx={{ marginTop: 2, width: "90%" }}>
+                Select Plan
               </Button>
             )}
-            {/* do not allow user click one more time to the already chosen plan */}
+            {currentPlan?.type === plan.type && (
+              <Button
+                disabled={currentPlan?.type === plan.type}
+                sx={{
+                  marginTop: 2,
+                  width: "90%",
+                  ":disabled": {
+                    backgroundColor: "white",
+                  },
+                }}
+              >
+                Current Plan
+              </Button>
+            )}
             {nextPlan?.type === plan.type && currentPlan?.type !== plan.type && (
-              <Button disabled={nextPlan?.type === plan.type} size="large" sx={{ marginTop: 2 }}>
+              <Button disabled={nextPlan?.type === plan.type} sx={{ marginTop: 2, width: "90%" }}>
                 Your Next Plan
               </Button>
             )}
             {currentPlan?.type === plan.type && nextPlan && nextPlan.type !== plan.type && (
-              <>
+              <Unstable_Grid2 container sx={{ justifyContent: "center" }}>
+                <Button
+                  sx={{ backgroundColor: "white", color: "#2a40d7", marginTop: 2, width: "90%" }}
+                  onClick={() => action(plan)}
+                >
+                  Keep Current Plan
+                </Button>
                 <Typography variant="caption" sx={{ marginTop: 2 }}>
                   Your plan will be downgraded
                 </Typography>
-                <Button size="large" onClick={() => action(plan)}>
-                  Keep my current plan
-                </Button>
-              </>
+              </Unstable_Grid2>
             )}
-          </div>
-        </CardContent>
-      </SelectedPlanCard>
-    </ListItem>
+          </Unstable_Grid2>
+        </Unstable_Grid2>
+      </CardContent>
+    </Card>
   );
 };
 

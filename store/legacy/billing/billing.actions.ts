@@ -159,7 +159,7 @@ export const getAllBillingPlans = () => async (dispatch: any) => {
       let subtitle = "";
       switch (plan.type) {
         case planTypes.FREE.type: {
-          subtitle = "Welcome to Pinata";
+          subtitle = "Perfect plan for starters";
           break;
         }
         case planTypes.PICNIC.type: {
@@ -184,18 +184,17 @@ export const getAllBillingPlans = () => async (dispatch: any) => {
           `${plan.gateway_count_limit.toLocaleString()} ${
             plan.gateway_count_limit > 1 ? "gateways" : "gateway"
           } `,
-        plan.bandwidth_limit_gb > 0 &&
-          `${plan.bandwidth_limit_gb.toLocaleString()} GB gateway bandwidth`,
-        plan.req_count_limit > 0 &&
-          `${plan.req_count_limit.toLocaleString()} gateway content requests`,
-        plan.link_shortening_requests_limit > 0 &&
-          `${plan.link_shortening_requests_limit.toLocaleString()} shortened link requests`,
-        plan.video_streaming_minutes_stored_limit > 0 &&
-          `${plan.video_streaming_minutes_stored_limit.toLocaleString()} video minutes stored`,
-        plan.video_streaming_minutes_streamed_limit > 0 &&
-          `${plan.video_streaming_minutes_streamed_limit.toLocaleString()} video minutes streamed`,
-        plan.image_resize_requests_limit > 0 &&
-          `${plan.image_resize_requests_limit.toLocaleString()} image resize requests`,
+        // plan.bandwidth_limit_gb > 0 &&
+        //   `${plan.bandwidth_limit_gb.toLocaleString()} GB gateway bandwidth`,
+        plan.req_count_limit > 0 && `${plan.req_count_limit.toLocaleString()} requests`,
+        // plan.link_shortening_requests_limit > 0 &&
+        //   `${plan.link_shortening_requests_limit.toLocaleString()} shortened link requests`,
+        // plan.video_streaming_minutes_stored_limit > 0 &&
+        //   `${plan.video_streaming_minutes_stored_limit.toLocaleString()} video minutes stored`,
+        // plan.video_streaming_minutes_streamed_limit > 0 &&
+        //   `${plan.video_streaming_minutes_streamed_limit.toLocaleString()} video minutes streamed`,
+        // plan.image_resize_requests_limit > 0 &&
+        //   `${plan.image_resize_requests_limit.toLocaleString()} image resize requests`,
       ].filter(Boolean);
 
       const subtitlePlan = {

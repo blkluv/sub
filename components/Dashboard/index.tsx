@@ -149,16 +149,7 @@ const Dashboard = () => {
         >
           <Unstable_Grid2 container direction={"column"}>
             <Typography variant="h1">Submarined Files</Typography>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: (theme) => theme.palette.grey[700],
-                fontWeight: 300,
-                marginTop: "0.5em",
-              }}
-            >
-              Find your recently submarined content below
-            </Typography>
+            <Typography variant="body2">Find your recently submarined content below</Typography>
           </Unstable_Grid2>
           <Button
             sx={{

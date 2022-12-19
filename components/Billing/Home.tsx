@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
-import { Button, Container, Dialog, DialogActions, DialogContent, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Typography,
+  Unstable_Grid2,
+} from "@mui/material";
 import UsageCard from "./UsageCard";
 import PlanSelector from "./PlanSelector";
 import {
@@ -18,6 +26,7 @@ import type { MetricsState } from "../../store/legacy/metrics/types";
 import { PinataDialogTitle } from "../shared/Dialog";
 import { planTypes } from "../../constants/planTypes";
 import EnterpriseBanner from "./EnterpriseBanner";
+import CancelDialog from "./CancelDialog";
 
 interface BillingProps {
   data: any;
@@ -119,6 +128,13 @@ const Home = (props: BillingProps) => {
       />
 
       {billing?.activePricingPlan?.type !== planTypes.ENTERPRISE.type && <EnterpriseBanner />}
+      <Unstable_Grid2 sx={{ textAlign: "center", marginTop: "2rem" }}>
+        <CancelDialog
+          billing={billing}
+          changePlan={changePlan}
+          scheduleUsageMetrics={scheduleUsageMetrics}
+        />
+      </Unstable_Grid2>
     </Container>
   );
 };

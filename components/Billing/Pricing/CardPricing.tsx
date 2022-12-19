@@ -73,7 +73,7 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
           </Unstable_Grid2>
 
           <Unstable_Grid2>
-            <Typography variant="h2">{plan.type == 0 ? "Free" : "$" + plan.price}</Typography>
+            <Typography variant="h2">{"$" + plan.price}</Typography>
             <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
               {plan.type == 0 ? "For a lifetime" : "/month"}{" "}
             </Typography>

@@ -76,9 +76,9 @@ export default function CancelDialog({
     setLoading(true);
     try {
       const changePlanRes: ChangePlanRes = await changePlan(billing.billing_plans[0]);
-      // if (!changePlanRes.nextPlan) {
-      //   scheduleUsageMetrics();
-      // }
+      if (!changePlanRes.nextPlan) {
+        scheduleUsageMetrics();
+      }
     } catch (error) {
     } finally {
       setLoading(false);

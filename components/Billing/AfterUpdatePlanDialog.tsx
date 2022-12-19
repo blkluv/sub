@@ -301,10 +301,10 @@ export const AfterUpdatePlanDialog = (props: AfterUpdatePlanDialogProps) => {
 
   const planImg =
     newPlan?.nickname === "Picnic"
-      ? picnicImg
+      ? "/picnicplan.png"
       : newPlan?.nickname === "Fiesta"
-      ? fiestaImg
-      : carnivalImg;
+      ? "/fiestaplan.png"
+      : "/carnivalplan.png";
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={"md"}>
@@ -430,8 +430,8 @@ export const AfterUpdatePlanDialog = (props: AfterUpdatePlanDialogProps) => {
           still confused? Here are the <Link href={"https://docs.pinata.cloud/"}>docs</Link> :){" "}
         </Typography>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => router.push("/pinmanager")}>Start Exploring</Button>
+      <DialogActions sx={{ padding: "1rem" }}>
+        <Button onClick={() => router.push("/")}>Start Exploring</Button>
       </DialogActions>
     </Dialog>
   );

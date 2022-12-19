@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { connect } from "react-redux";
 // import { useLocation } from "react-router-dom";
-import { Grid, Alert, Unstable_Grid2, Button } from "@mui/material";
+import { Grid, Alert, Unstable_Grid2, Button, Typography } from "@mui/material";
 import CardPricing from "./Pricing/CardPricing";
 //import BillingAddressModal from "./BillingAddressModal";
 import AddCardModal from "./AddCardModal";
@@ -198,8 +198,8 @@ const PlanSelector = ({
 
   const getChangePlanText = useMemo(() => {
     return (
-      <>
-        <p>
+      <Unstable_Grid2 container sx={{ gap: "1rem" }}>
+        <Typography>
           {!billing?.activePricingPlan?.isLegacy && planToChangeTo?.type === planTypes.FREE.type
             ? `By downgrading your plan, any dedicated gateways you've created will be removed and you won't be able to access them.`
             : billing?.activePricingPlan?.isLegacy
@@ -210,15 +210,15 @@ const PlanSelector = ({
           {planToChangeTo?.type === planTypes.FREE.type
             ? "Also the payments methods will be removed at the end of the billing period."
             : ""}
-        </p>
+        </Typography>
         {billing?.nextBillingDate && billing?.activePricingPlan?.type !== planToChangeTo?.type && (
-          <p>
+          <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
             This change will take effect on <strong>{billing?.nextBillingDate}</strong>. Please
             continue to enjoy the features of the{" "}
             <strong>{billing?.activePricingPlan?.nickname}</strong> until then.
-          </p>
+          </Typography>
         )}
-      </>
+      </Unstable_Grid2>
     );
   }, [billing?.activePricingPlan, billing?.nextBillingDate, planToChangeTo]);
 

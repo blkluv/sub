@@ -86,12 +86,12 @@ const Home = (props: BillingProps) => {
             Pinata&apos;s Pricing is Changing
           </PinataDialogTitle>
           <DialogContent dividers>
-            <p>
+            <Typography variant="body1">
               As we mentioned in our email to all customers, Pinata&apos;s pricing is changing.
               These changes are to support continued growth and development as well as help
               customers better manage their usage. No one likes a surprise bill so we&apos;ve
               created a tiered pricing system that makes everything more predictable.
-            </p>
+            </Typography>
             <Typography>
               <strong>You need to select a new plan</strong>
             </Typography>

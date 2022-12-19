@@ -11,6 +11,7 @@ import {
   Grid,
   IconButton,
   Alert,
+  Typography,
 } from "@mui/material";
 import { MetricLimitData } from "../../store/legacy/metrics/types";
 import { metricLimitInfo } from "../../constants/planTypes";
@@ -64,7 +65,7 @@ const ConfirmationModal = ({
       )}
 
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        {title}
+        <Typography variant="h5">{title}</Typography>
         <IconButton
           className="p-0"
           aria-label="close"
@@ -77,7 +78,7 @@ const ConfirmationModal = ({
       <DialogContent dividers>
         {loading && loadingText && (
           <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <p>{loadingText}</p>
+            <Typography>{loadingText}</Typography>
           </Box>
         )}
         {loading ? (
@@ -92,19 +93,19 @@ const ConfirmationModal = ({
           <Grid container>
             {content && (
               <Grid item xs={12}>
-                {content}
+                <Typography> {content}</Typography>
               </Grid>
             )}
             {modalContent && (
               <Grid item xs={12}>
-                {modalContent}
+                <Typography>{modalContent}</Typography>
               </Grid>
             )}
           </Grid>
         )}
       </DialogContent>
-      <DialogActions>
-        <Button fullWidth onClick={action} color={confirmButtonColor} disabled={isDisabled}>
+      <DialogActions sx={{ padding: "1rem" }}>
+        <Button onClick={action} color={confirmButtonColor} disabled={isDisabled}>
           {confirmButtonText}
         </Button>
         <Button

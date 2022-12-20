@@ -83,9 +83,20 @@ const NFT = ({ fileInfo }) => {
                     sx={{
                       width: "90%",
                       maxWidth: "300px",
+                      borderRadius: 1000,
+                      ...(fileInfo?.customizations?.buttonShape === "square" && {
+                        borderRadius: 2,
+                      }),
                       backgroundColor: (theme) => theme.palette.primary.light,
-                      color: "black",
-                      "&:hover": { backgroundColor: (theme) => theme.palette.grey[300] },
+                      ...(fileInfo?.customizations.buttonColor &&
+                        fileInfo?.customizations?.buttonColor?.hex && {
+                          backgroundColor: fileInfo.customizations.buttonColor.hex,
+                        }),
+                      color: "#000000",
+                      ...(fileInfo?.customizations?.buttonTextColor &&
+                        fileInfo?.customizations?.buttonTextColor.hex && {
+                          color: fileInfo.customizations.buttonTextColor.hex,
+                        }),
                     }}
                     disabled={!connector.ready}
                     key={connector.id}

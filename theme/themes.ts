@@ -230,6 +230,10 @@ const createModeTheme = (variant: "light" | "dark", baseTheme: Theme) => {
             padding: "10px 20px",
             gap: "10px",
             width: "fit-content",
+            "&:hover": {
+              backgroundColor: baseTheme.palette.primary.light,
+              color: baseTheme.palette.primary.dark,
+            },
           },
         },
       },

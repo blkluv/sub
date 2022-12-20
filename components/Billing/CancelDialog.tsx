@@ -108,7 +108,9 @@ export default function CancelDialog({
         }}
       >
         <DialogTitle>
-          <Typography variant="h5">Cancel Subscription</Typography>
+          <Typography component="p" variant="h5">
+            Cancel Subscription
+          </Typography>
         </DialogTitle>
         <DialogContent>
           <Formik
@@ -121,30 +123,28 @@ export default function CancelDialog({
             {({ values, errors, touched }) => {
               return (
                 <Form>
-                  <DialogContentText>
-                    <FormControl component="fieldset" style={{ display: "flex" }}>
-                      <FormLabel component="legend">
-                        We are sad to see you go! Please select a reason for leaving.
-                      </FormLabel>
-                      <FormGroup>
-                        {userReasons.map((opt) => (
-                          <Field
-                            type="checkbox"
-                            component={CheckboxWithLabel}
-                            name="userReasons"
-                            key={opt.value}
-                            value={opt.value}
-                            Label={{ label: opt.label }}
-                          />
-                        ))}
-                      </FormGroup>
-                    </FormControl>
-                    {touched.userReasons && errors.userReasons && (
-                      <Typography variant="subtitle2" color="red">
-                        {errors.userReasons}
-                      </Typography>
-                    )}
-                  </DialogContentText>
+                  <FormControl style={{ display: "flex" }}>
+                    <FormLabel component="legend">
+                      We are sad to see you go! Please select a reason for leaving.
+                    </FormLabel>
+                    <FormGroup>
+                      {userReasons.map((opt) => (
+                        <Field
+                          type="checkbox"
+                          component={CheckboxWithLabel}
+                          name="userReasons"
+                          key={opt.value}
+                          value={opt.value}
+                          Label={{ label: opt.label }}
+                        />
+                      ))}
+                    </FormGroup>
+                  </FormControl>
+                  {touched.userReasons && errors.userReasons && (
+                    <Typography variant="subtitle2" color="red">
+                      {errors.userReasons}
+                    </Typography>
+                  )}
                   <DialogActions sx={{ marginTop: "1rem" }}>
                     <Button variant="outlined" onClick={handleClose}>
                       Nevermind

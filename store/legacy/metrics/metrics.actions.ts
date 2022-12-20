@@ -3,6 +3,7 @@ import { metricsApi } from "../fakeAxios";
 import { MetricsActionsTypes, UsageStatus, UsageMetrics, Metrics } from "./types";
 
 export const getUsageMetrics = () => async (dispatch: any, getState: any) => {
+  console.log("Here function ");
   const {
     billing: { activePricingPlan },
   } = getState();

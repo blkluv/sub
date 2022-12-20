@@ -1,10 +1,19 @@
 import { MenuItem } from "@mui/material";
 import { Field, useFormikContext } from "formik";
-import { BlockchainOptions } from "../../../../types/UnlockInfo";
+import { BlockchainOptions, UnlockInfoNFT } from "../../../../types/UnlockInfo";
 import { Select } from "formik-mui";
+import { MetadataUnlockInfo } from "../SubmarineFileForm";
+import { useEffect } from "react";
 
 const BlockchainSelector = ({ setBlockchain }) => {
-  const { setFieldValue, setFieldTouched } = useFormikContext();
+  const { setFieldValue, setFieldTouched, values } = useFormikContext<MetadataUnlockInfo>();
+  //@ts-ignore
+  const unlockInfo: UnlockInfoNFT = values.unlockInfo;
+  const selectedBlockchain = unlockInfo.blockchain;
+
+  useEffect(() => {
+    setBlockchain(selectedBlockchain);
+  }, [selectedBlockchain]);
   return (
     <Field
       inputProps={{

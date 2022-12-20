@@ -42,7 +42,6 @@ const handler = async (req, res) => {
           network,
           tokenId
         );
-        console.log({ hasNFT });
         if (hasNFT) {
           const { submarine_cid } = info;
           const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
@@ -81,13 +80,10 @@ async function verifyNFTOwnershipOnFlowBlockchain(
   tokenId?: string
 ): Promise<boolean> {
   const fcl = getFcl(network);
-  console.log({ network });
-  console.log({ a: getScript(network) });
   const result = await fcl.query({
     cadence: getScript(network),
     args: (arg, t) => [arg(address, t.Address)],
   });
-  console.log({ result, contractAddress });
   const catalog = result[contractAddress];
   if (!tokenId) {
     return !!catalog;

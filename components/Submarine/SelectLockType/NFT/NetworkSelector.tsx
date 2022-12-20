@@ -7,7 +7,7 @@ export const networkOptions = {
   Polygon: ["Mainnet", "Mumbai"],
   Avalanche: ["Mainnet", "Fuji"],
   Solana: ["Mainnet-Beta", "Devnet"],
-  Flow: ["Mainnet", "Testnet"],
+  Flow: ["Mainnet"],
 };
 
 const NetworkSelector = ({ blockchain }) => {

@@ -10,11 +10,11 @@ type ContractAddressType = React.FC & { unlockInfoSchema: Yup.ObjectSchema<any> 
   unlockInfo: UnlockInfoETH;
 };
 const ContractAddress: ContractAddressType = () => {
-  const [tokenIdDialogOpen, setTokenIdDialogOpen] = useState(false);
+  // const [tokenIdDialogOpen, setTokenIdDialogOpen] = useState(false);
   return (
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em" }}>
       <FormikTextfield type="text" name="unlockInfo.contract" label="Contract Address" required />
-      <FormikTextfield
+      {/* <FormikTextfield
         type="text"
         name="unlockInfo.tokenId"
         label="Token ID"
@@ -28,7 +28,7 @@ const ContractAddress: ContractAddressType = () => {
           </span>
         }
       />
-      <TokenIdDialog open={tokenIdDialogOpen} setOpen={setTokenIdDialogOpen} />
+      <TokenIdDialog open={tokenIdDialogOpen} setOpen={setTokenIdDialogOpen} /> */}
     </Unstable_Grid2>
   );
 };

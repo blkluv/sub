@@ -29,7 +29,7 @@ const FlowUnlock = ({ fileInfo }) => {
         contract: string;
         id: string;
       } = await ky.get(`/api/flow/verify?contract=${contract}`).json();
-      await fcl.reauthenticate();
+      await fcl.unauthenticate();
       const message = getMessagetoSign(payload?.contract, payload?.id);
       const encoded = Buffer.from(message).toString("hex");
       const currentUser = fcl.currentUser();
@@ -37,7 +37,7 @@ const FlowUnlock = ({ fileInfo }) => {
         .signUserMessage(encoded)
         .catch(() => reject("Error signing message"));
 
-      if (!signature.message) {
+      if (!signature || !signature.message) {
         try {
           const content: SubmarinedContent = await ky
             .post("/api/flow/verify", {
@@ -46,7 +46,7 @@ const FlowUnlock = ({ fileInfo }) => {
             .json();
           resolve(content);
         } catch (err) {
-          err.response.text().then(reject);
+          err.response.text().then(() => reject("Could not verify NFT ownership"));
         }
       }
       // Request authorization from the user's wallet.

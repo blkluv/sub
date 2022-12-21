@@ -16,7 +16,7 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
   return (
     <Card
       sx={{
-        padding: "3rem .5rem",
+        padding: "2rem .5rem",
         height: "100%",
         width: "100%",
         backgroundColor: currentPlan?.type === plan.type ? "#2a40d7" : "white",
@@ -32,7 +32,7 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
           <Unstable_Grid2>
             {currentPlan?.type === plan.type ? (
               <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
-                <Image height={46} width={30} src="/pinnie-white.png" alt="Pinata logo" />
+                <Image height={46} width={33} src="/pinnie-white.png" alt="Pinata logo" />
                 {plan.type !== 0 && (
                   <>
                     <Typography variant="h6">+</Typography>

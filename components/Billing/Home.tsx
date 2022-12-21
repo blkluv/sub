@@ -73,6 +73,7 @@ const Home = (props: BillingProps) => {
         getUsageMetrics();
       }, 2500);
       setMetricsInterval(updateInterval);
+      setUpdatingPlan(false);
     };
   }, []);
 

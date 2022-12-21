@@ -150,8 +150,6 @@ const PlanSelector = ({
 
   const confirmProfessionalUpgrade = async () => {
     setLoading(true);
-
-    console.log({ user });
     try {
       if (billing.stripe_customer) {
         FullStory.event("Upgrade plan", {

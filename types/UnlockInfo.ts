@@ -82,5 +82,11 @@ export type UnlockInfoLocation = {
   type: "location";
   distance: string;
 };
+
+export type UnlockInfoTwitch = {
+  type: "twitch";
+  broadcasterID: string;
+};
+
 export type UnlockInfoNFT = UnlockInfoETH | UnlockInfoSolana | UnlockInfoFlow;
-export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;
+export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation | UnlockInfoTwitch;

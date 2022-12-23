@@ -9,6 +9,7 @@ import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material
 import ThumbnailImage from "../Form/ThumbnailImage";
 import SolanaProvider from "./LockType/SolanaProvider";
 import FlowUnlock from "./LockType/Flow";
+import Twitch from "./LockType/Twitch";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 interface LockedContentContainerProps {
@@ -44,6 +45,9 @@ const LockedContentContainer = ({
         }
       case "retweet":
         return <Retweet fileInfo={fileInfo} isPreview={isPreview} />;
+      case "twitch":
+        return <Twitch fileInfo={fileInfo} isPreview={isPreview} />;
+
       default:
         return <div>Unknown lock type</div>;
     }

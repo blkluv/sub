@@ -12,8 +12,7 @@ import {
 } from "../../store/selectors/authSelectors";
 import { confirmMFA, doLogin, LOGIN_STATUSES } from "../../store/slices/authSlice";
 import { Auth } from "aws-amplify";
-import { rudderanalytics } from "../../analytics/analytics";
-import { ANALYTICS } from "../../analytics/events";
+import { ANALYTICS } from "../../constants/rudderstack_events";
 
 export default function AuthForm() {
   const loginStatus = useAppSelector(selectAuthStatus);
@@ -54,8 +53,8 @@ export default function AuthForm() {
         const firstName = user.user["custom:firstName"];
         const lastName = user.user["custom:lastName"];
         const id = user.user.sub;
-        rudderanalytics.identify(email, { email, firstName, lastName, id });
-        rudderanalytics.track(ANALYTICS.AUTH.SIGN_UP, { email, firstName, lastName, id });
+        window.rudderanalytics.identify(email, { email, firstName, lastName, id });
+        window.rudderanalytics.track(ANALYTICS.AUTH.SIGN_UP, { email, firstName, lastName, id });
       });
     //sample FullStory SDK calls
     FullStory.setVars("page", {

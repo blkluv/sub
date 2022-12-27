@@ -9,7 +9,7 @@ import ThemeProvider from "../theme/ThemeProvider";
 import { useEffect } from "react";
 import * as FullStory from "@fullstory/browser";
 import { useRouter } from "next/router";
-import { rudderInitialize } from "./rudderInitialize";
+import { rudderInitialize } from "../rudderInitialize";
 
 const INTERCOM_APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID || "f4cld255";
 

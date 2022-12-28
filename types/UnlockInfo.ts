@@ -85,7 +85,7 @@ export type UnlockInfoLocation = {
 
 export type UnlockInfoTwitch = {
   type: "twitch";
-  broadcasterID: string;
+  loginName: string;
 };
 
 export type UnlockInfoNFT = UnlockInfoETH | UnlockInfoSolana | UnlockInfoFlow;

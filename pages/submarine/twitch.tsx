@@ -4,18 +4,20 @@ import SubmarineFileForm, {
 } from "../../components/Submarine/SelectLockType/SubmarineFileForm";
 import Twitch from "../../components/Submarine/SelectLockType/Twitch";
 import { UnlockInfoTwitch } from "../../types/UnlockInfo";
-import { UnlockInfo } from "../../types/UnlockInfo";
 
 import * as Yup from "yup";
 
 const TwitchSub = () => {
   const unlockInfo: UnlockInfoTwitch = {
     type: "twitch",
-    broadcasterID: "",
+    loginName: "",
   };
 
   const unlockInfoSchema = Yup.object().shape({
-    broadcasterID: Yup.string().required("Required"),
+    loginName: Yup.string()
+      .required("Required")
+      .min(4, "Not a valid login name")
+      .max(25, "Not a valid login name"),
   });
 
   return (

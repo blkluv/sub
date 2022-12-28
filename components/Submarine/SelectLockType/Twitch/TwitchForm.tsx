@@ -1,13 +1,13 @@
 import { Typography, Unstable_Grid2 } from "@mui/material";
 import FormikTextfield from "../../../Form/FormikTextfield";
 
-export default function TwitterForm() {
+export default function TwitchForm() {
   return (
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>
-      <Typography variant="h5">Twitch Broadcaster ID</Typography>
+      <Typography variant="h5">Twitch Details</Typography>
       <FormikTextfield
-        name="unlockInfo.broadcasterID"
-        label="Broadcaster ID"
+        name="unlockInfo.loginName"
+        label="Twitch Login Name"
         required
         autoComplete="off"
       />

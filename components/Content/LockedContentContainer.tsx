@@ -46,7 +46,7 @@ const LockedContentContainer = ({
       case "retweet":
         return <Retweet fileInfo={fileInfo} isPreview={isPreview} />;
       case "twitch":
-        return <Twitch fileInfo={fileInfo} isPreview={isPreview} />;
+        return <Twitch fileInfo={fileInfo} />;
 
       default:
         return <div>Unknown lock type</div>;

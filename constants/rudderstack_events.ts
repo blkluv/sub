@@ -1,6 +1,6 @@
 export const ANALYTICS = {
   AUTH: {
-    SIGN_UP: "AUTH.SIGN_UP",
-    LOGIN: "AUTH.LOGIN",
+    SIGN_UP: "AUTH_SIGN_UP",
+    LOGIN: "AUTH_LOGIN",
   },
 };

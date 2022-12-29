@@ -7,17 +7,20 @@ import React, { useEffect } from "react";
 import Alert from "../Alert";
 import { useIntercom } from "react-use-intercom";
 import { Box, Container } from "@mui/material";
+import UpgradeModal from "../Dashboard/UpgradeModal";
+import { getKy } from "../../helpers/ky";
 
 interface Props {
   children: React.ReactNode;
 }
 
-const Layout: React.FC<Props> = ({ children }: Props) => {
+const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
+
+const PrivateLayout: React.FC<Props> = ({ children }: Props) => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const router = useRouter();
-
   const user = useAppSelector(selectUser);
-  const { boot, shutdown, hide, show, update } = useIntercom();
+  const { boot, shutdown } = useIntercom();
 
   useEffect(() => {
     boot({
@@ -38,6 +41,21 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
     }
   }, [isAuthenticated, router.isReady]);
 
+  useEffect(() => {
+    isAuthenticated && checkForPlan();
+  }, [isAuthenticated]);
+
+  const checkForPlan = async () => {
+    if (router.pathname.includes("billing")) {
+      return;
+    }
+
+    const userPlanInfo = await getUserBillingInfo();
+    if (!userPlanInfo || !isValidPaidPlan(userPlanInfo)) {
+      router.push("/billing");
+    }
+  };
+
   // TODO add loading spinner
   const layout = isAuthenticated ? (
     <>
@@ -51,4 +69,31 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
   return layout;
 };
 
-export default Layout;
+export default PrivateLayout;
+
+const isValidPaidPlan = (userPlanInfo) => {
+  if (
+    userPlanInfo?.subscriptionItems[0]?.type === "PROFESSIONAL" ||
+    userPlanInfo?.subscriptionItems[0]?.type === "EXTRA_MANAGED_GATEWAY"
+  ) {
+    return true;
+  }
+
+  if (NEW_PLANS.includes(userPlanInfo?.plan?.nickname)) {
+    return true;
+  }
+
+  return false;
+};
+
+const getUserBillingInfo = async () => {
+  try {
+    const ky = getKy();
+    const res = await ky(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/billing/userStripeCustomer`);
+    const userJson = await res.json();
+    return userJson;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

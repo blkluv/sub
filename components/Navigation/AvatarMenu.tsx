@@ -14,6 +14,7 @@ import Logout from "@mui/icons-material/Logout";
 import { doLogOut } from "../../store/slices/authSlice";
 import { useAppDispatch } from "../../store/hooks";
 import { Unstable_Grid2 } from "@mui/material";
+import router from "next/router";
 
 interface AvatarMenuProps {
   avatarPath: string;
@@ -91,16 +92,17 @@ export default function AvatarMenu({ avatarPath }: AvatarMenuProps) {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {/* TO DO: Add menu functionality  */}
-        {/* <MenuItem>
+        {/*  <MenuItem>
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        <MenuItem>
+         */}
+        <MenuItem onClick={() => router.push("/billing")}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          Settings
-        </MenuItem> */}
+          My Account
+        </MenuItem>
         <MenuItem onClick={handleLogOut}>
           <ListItemIcon>
             <Logout fontSize="small" />

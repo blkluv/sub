@@ -1,11 +1,24 @@
 import React, { useEffect } from "react";
+import Loading from "../../components/Dashboard/Loading";
+import { useRouter } from "next/router";
+import { getKy } from "../../helpers/ky";
 
 const Twitch = () => {
-  return (
-    <>
-      <h1>Loading</h1>
-    </>
-  );
-};
+  const router = useRouter();
+  const ky = getKy();
 
+  useEffect(() => {
+    const hash = window.location.hash.substring(1);
+    var params = {};
+    hash.split("&").map((hk) => {
+      let temp = hk.split("=");
+      params[temp[0]] = temp[1];
+    });
+    console.log(params);
+    const id = localStorage.getItem("twitch-sub-id");
+    router.push(`/${id}?access_token=${params["access_token"]}`);
+  }, []);
+
+  return <Loading />;
+};
 export default Twitch;

@@ -1,14 +1,47 @@
 import { Button, Unstable_Grid2, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import { useState } from "react";
 import BaseLockType from "./LockTypeContainer";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
+import { getKy } from "../../../helpers/ky";
+import { useRouter } from "next/router";
 
 const Twitch = ({ fileInfo }) => {
-  const [hasConnectedTwitch, setHasConnectedTwitch] = useState<boolean>(false);
+  const twitchAuth = async () => {
+    try {
+      localStorage.setItem("twitch-sub-id", window.location.pathname.split("/")[1]);
+      window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_TWITCH_CLIENTID}&redirect_uri=http://${process.env.NEXT_PUBLIC_VERCEL_URL}/twitch&response_type=token&scope=user:read:subscriptions`;
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+      return null;
+    }
+  };
+  const router = useRouter();
+  const { access_token } = router.query;
+  const hasConnectedTwitch = access_token;
 
-  const handleVerification = () => {
-    return console.log("Verify the user is subscribed to the Twitch channel.");
+  const handleVerification = async (): Promise<SubmarinedContent> => {
+    return new Promise<SubmarinedContent>(async (resolve, reject) => {
+      const { access_token } = router.query;
+      if (!access_token) {
+        reject("Could not verify subscription");
+      }
+      const ky = getKy();
+      const res = await ky
+        .post("/api/twitch/oauth/verify", {
+          json: {
+            accessToken: access_token,
+            shortId: window.location.pathname.split("/")[1],
+            loginName: fileInfo?.unlockInfo?.loginName,
+          },
+        })
+        .catch((err) => reject("Could not verify subscription"));
+      if (res) {
+        const data: SubmarinedContent = await res.json();
+        resolve(data);
+      }
+      reject("Could not verify subscription");
+    });
   };
   const description = (
     <Typography
@@ -25,19 +58,17 @@ const Twitch = ({ fileInfo }) => {
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
       <Container>
-        {fileInfo?.unlockInfo?.loginName && <Typography>{description}</Typography>}
         {hasConnectedTwitch ? (
-          <Typography>Twitch Connected</Typography>
+          <BaseLockType
+            description={description}
+            fileInfo={fileInfo}
+            lockName={"twitch"}
+            handleVerify={handleVerification}
+          />
         ) : (
-          // <BaseLockType
-          //   description={description}
-          //   fileInfo={fileInfo}
-          //   lockName={"retweet"}
-          //   handleVerify={handleVerification}
-          // />
           <Button
             variant="contained"
-            onClick={() => console.log("Connect Twitch function")}
+            onClick={twitchAuth}
             sx={{
               width: "90%",
               maxWidth: "300px",

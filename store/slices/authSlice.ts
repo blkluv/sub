@@ -9,6 +9,16 @@ import { getKy, setCredentials } from "../../helpers/ky";
 import { Themes } from "../../theme/themes";
 import * as FullStory from "@fullstory/browser";
 
+//https://github.com/aws-amplify/amplify-js/issues/9208
+//@ts-ignore
+const _handleAuthResponse = Auth._handleAuthResponse.bind(Auth);
+//@ts-ignore
+Auth._handleAuthResponse = (url) => {
+  const configuration = Auth.configure();
+  //@ts-ignore
+  if (!url.includes(configuration.oauth.redirectSignIn)) return;
+  return _handleAuthResponse(url);
+};
 Amplify.configure(awsconfig);
 
 export enum LOGIN_STATUSES {

@@ -18,12 +18,14 @@ export const getKy = (): KyInstance => {
   return kyObj;
 };
 
-export const setCredentials = (jwt: string) => {
+export let jwt;
+export const setCredentials = (_jwt: string) => {
+  jwt = _jwt;
   kyObj = ky.extend({
     hooks: {
       beforeRequest: [
         (request) => {
-          request.headers.set("Authorization", `Bearer ${jwt}`);
+          request.headers.set("Authorization", `Bearer ${_jwt}`);
           request.headers.set("source", "login");
         },
       ],

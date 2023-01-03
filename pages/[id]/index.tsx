@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
       method: "GET",
     });
     const data: getContentReturnObject = await res.json();
-    process.env.debug &&
+    process.env.NEXT_PUBLIC_DEBUG &&
       console.log(Date.now() - now, " --> Time spent fetching content from DB (ms)");
     return { props: { data } };
   } catch (error) {

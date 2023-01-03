@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.DEBUG === "true",
+  enabled: process.env.NEXT_PUBLIC_DEBUG === "true",
 });
 
 const nextConfig = {

@@ -2,7 +2,7 @@ import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileFor
 import { UnlockInfo } from "../../types/UnlockInfo";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
-import React from "react";
+import React, { Suspense } from "react";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 
@@ -94,7 +94,7 @@ const LockedContentContainer = ({
         >
           {fileInfo.description || "Description"}
         </Typography>
-        {LockType}
+        <Suspense fallback={<div> loading...</div>}>{LockType}</Suspense>
       </Paper>
     </Container>
   );

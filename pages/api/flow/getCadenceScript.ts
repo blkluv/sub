@@ -1,6 +1,6 @@
 import { FlowNetwork } from "../../../types/UnlockInfo";
 
-// TODO optimize script. It should expect a catalog as param and return just that catalog, not all NFT owned by account.
+// TODO optimize script. It should expect a catalog or contract address as param and return just that catalog, not all NFT owned by account.
 export const getScript = (network: FlowNetwork) => {
   const isMainnet = network === FlowNetwork.Mainnet;
   return `
@@ -63,22 +63,24 @@ pub struct NFT {
     }
 }
 
+pub fun cleanStringForPath(_ input: String): String {
+    return "catalog".concat(String.encodeHex(HashAlgorithm.SHA3_256.hash(input.utf8)))
+}
+
 pub fun main(ownerAddress: Address) : { String : [NFT] } {
     let catalog = NFTCatalog.getCatalog()
     let account = getAuthAccount(ownerAddress)
     let items : [MetadataViews.NFTView] = []
     
     let data : {String : [NFT] } = {}
-
     for key in catalog.keys {
         let contract = catalog[key]
         let contractAddress = contract?.contractAddress!
         if (contractAddress == nil) {
             continue
         }
-        let value = catalog[key]!
-        let tempPathStr = "catalog".concat(key)
-        let tempPublicPath = PublicPath(identifier: tempPathStr)!
+        let value = catalog[key]!        
+        let tempPublicPath = PublicPath(identifier: cleanStringForPath(key))!
         account.link<&{MetadataViews.ResolverCollection}>(
             tempPublicPath,
             target: value.collectionData.storagePath
@@ -88,7 +90,6 @@ pub fun main(ownerAddress: Address) : { String : [NFT] } {
             continue
         }
         let views = NFTRetrieval.getNFTViewsFromCap(collectionIdentifier : key, collectionCap : collectionCap)
-
         let items : [NFT] = []
         for view in views {
             let displayView = view.display
@@ -100,7 +101,6 @@ pub fun main(ownerAddress: Address) : { String : [NFT] } {
                 // Bad NFT. Skipping....
                 continue
             }
-
             items.append(
                 NFT(
                     id: view.id,

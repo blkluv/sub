@@ -33,11 +33,10 @@ export default function AuthForm() {
       }
       try {
         await Auth.confirmSignUp(email, confirmationCode);
-        dispatch(doLogin({ email, password }));
       } catch (error) {
         setInvalidCode(true);
+        return;
       }
-      return;
     }
     if (isMFARequest) {
       if (mfa) {
@@ -62,8 +61,9 @@ export default function AuthForm() {
     setHasRequestedNewCode(true);
     Auth.resendSignUp(email);
   };
+
   return (
-    <Container sx={{ marginTop: "2rem" }} maxWidth="md">
+    <Container sx={{ marginTop: "2rem" }} maxWidth="sm">
       <Unstable_Grid2
         container
         justifyContent={"center"}
@@ -80,7 +80,7 @@ export default function AuthForm() {
             sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}
           >
             <Typography variant="body1">Or&nbsp;</Typography>
-            <Link passHref href="https://app.pinata.cloud">
+            <Link passHref href="/auth/signup">
               <Typography variant="body1" color="primary.main" sx={{ cursor: "pointer" }}>
                 sign up here.
               </Typography>

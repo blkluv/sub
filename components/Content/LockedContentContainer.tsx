@@ -2,16 +2,16 @@ import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileFor
 import { UnlockInfo } from "../../types/UnlockInfo";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
-import React, { Suspense } from "react";
+import React from "react";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
-
-const LocationUnlock = React.lazy(() => import("./LockType/Location"));
-const Solana = React.lazy(() => import("./LockType/Solana"));
-const SolanaProvider = React.lazy(() => import("./LockType/SolanaProvider"));
-const WagmiProvider = React.lazy(() => import("../Wagmi/Provider"));
-const NFT = React.lazy(() => import("./LockType/NFT"));
-const Retweet = React.lazy(() => import("./LockType/Retweet"));
+import loadable from "@loadable/component";
+const LocationUnlock = loadable(() => import("./LockType/Location"));
+const Solana = loadable(() => import("./LockType/Solana"));
+const SolanaProvider = loadable(() => import("./LockType/SolanaProvider"));
+const WagmiProvider = loadable(() => import("../Wagmi/Provider"));
+const NFT = loadable(() => import("./LockType/NFT"));
+const Retweet = loadable(() => import("./LockType/Retweet"));
 
 interface LockedContentContainerProps {
   fileInfo: MetadataUnlockInfo;
@@ -94,7 +94,7 @@ const LockedContentContainer = ({
         >
           {fileInfo.description || "Description"}
         </Typography>
-        <Suspense fallback={<div> loading...</div>}>{LockType}</Suspense>
+        {LockType}
       </Paper>
     </Container>
   );

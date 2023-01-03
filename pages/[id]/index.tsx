@@ -20,10 +20,13 @@ export async function getServerSideProps(context) {
   try {
     const host = process.env.NEXT_PUBLIC_VERCEL_URL;
     const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+    const now = Date.now();
     const res = await ky(`${protocol}://${host}/api/content/${context.query.id}`, {
       method: "GET",
     });
     const data: getContentReturnObject = await res.json();
+    process.env.debug &&
+      console.log(Date.now() - now, " --> Time spent fetching content from DB (ms)");
     return { props: { data } };
   } catch (error) {
     console.log(error);

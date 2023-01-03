@@ -30,3 +30,7 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
 };
 
 export default MyApp;
+
+export function reportWebVitals(metric) {
+  process.env.DEBUG && console.log(metric);
+}

@@ -1,15 +1,18 @@
-import LocationUnlock from "./LockType/Location";
-import Solana from "./LockType/Solana";
-import NFT from "./LockType/NFT";
-import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { UnlockInfo } from "../../types/UnlockInfo";
-import WagmiProvider from "../Wagmi/Provider";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
-import SolanaProvider from "./LockType/SolanaProvider";
+import React from "react";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
+
+const LocationUnlock = React.lazy(() => import("./LockType/Location"));
+const Solana = React.lazy(() => import("./LockType/Solana"));
+const SolanaProvider = React.lazy(() => import("./LockType/SolanaProvider"));
+const WagmiProvider = React.lazy(() => import("../Wagmi/Provider"));
+const NFT = React.lazy(() => import("./LockType/NFT"));
+const Retweet = React.lazy(() => import("./LockType/Retweet"));
+
 interface LockedContentContainerProps {
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;

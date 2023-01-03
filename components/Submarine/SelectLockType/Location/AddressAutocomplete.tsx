@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
+import { useFormikContext } from "formik";
+import { MetadataUnlockInfo } from "../SubmarineFileForm";
 
 // This key was created specifically for the demo in mui.com.
 // You need to create a new one for your application.
@@ -35,13 +37,24 @@ interface StructuredFormatting {
   secondary_text: string;
   main_text_matched_substrings?: readonly MainTextMatchedSubstrings[];
 }
-interface PlaceType {
+export interface PlaceType {
   description: string;
+  place_id: string;
   structured_formatting: StructuredFormatting;
 }
 
 export default function AddressAutocomplete() {
-  const [value, setValue] = React.useState<PlaceType | null>(null);
+  const { setFieldValue, values } = useFormikContext<MetadataUnlockInfo>();
+  if (values.unlockInfo.type !== "location") {
+    throw new Error("Invalid scenario");
+  }
+  const placeSelected = values.unlockInfo.place;
+  const [value, setValue] = React.useState<PlaceType | null>(placeSelected);
+  React.useEffect(() => {
+    if (placeSelected) {
+      setValue(placeSelected);
+    }
+  });
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
   const loaded = React.useRef(false);
@@ -58,6 +71,23 @@ export default function AddressAutocomplete() {
     loaded.current = true;
   }
 
+  React.useEffect(() => {
+    const cb = (res) => {
+      const location = res.geometry.location;
+      const lat = location.lat();
+      const lng = location.lng();
+      setFieldValue("unlockInfo.lat", lat);
+      setFieldValue("unlockInfo.long", lng);
+      setFieldValue("unlockInfo.place", value);
+    };
+    if (!value) {
+      return;
+    }
+    const service = new (window as any).google.maps.places.PlacesService(
+      document.createElement("div")
+    );
+    service.getDetails({ placeId: value.place_id }, cb);
+  }, [value]);
   const fetch = React.useMemo(
     () =>
       debounce((request: { input: string }, callback: (results?: readonly PlaceType[]) => void) => {

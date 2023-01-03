@@ -14,6 +14,7 @@ import {
   Unstable_Grid2,
 } from "@mui/material";
 import AddressAutocomplete from "./AddressAutocomplete";
+import { MetadataUnlockInfo } from "../SubmarineFileForm";
 
 enum LocationType {
   Address = "address",
@@ -23,7 +24,7 @@ enum LocationType {
 const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
   const [googleMapsDialogOpen, setGoogleMapsDialogOpen] = useState(false);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext<MetadataUnlockInfo>();
   const detectLocation = async (e) => {
     e.preventDefault();
     setGettingLocation(true);
@@ -52,8 +53,11 @@ const LocationForm = () => {
     setLocationType(event.target.value as LocationType);
   };
 
-  const [locationType, setLocationType] = useState(LocationType.LatLong);
-  const [addressOptions, setAddressOptions] = useState([]);
+  const [locationType, setLocationType] = useState(
+    values?.unlockInfo?.type === "location" && values?.unlockInfo?.lat
+      ? LocationType.LatLong
+      : LocationType.Address
+  );
   return (
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>
       <Unstable_Grid2

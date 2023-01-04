@@ -8,8 +8,8 @@ import {
   Unstable_Grid2,
 } from "@mui/material";
 import { useState } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
+// import FormControl from "@material-ui/core/FormControl";
+// import FormGroup from "@material-ui/core/FormGroup";
 import { CheckboxWithLabel } from "formik-material-ui";
 import { Formik, Form, Field } from "formik";
 import { FormLabel, Typography } from "@mui/material";
@@ -123,7 +123,7 @@ export default function CancelDialog({
             {({ values, errors, touched }) => {
               return (
                 <Form>
-                  <FormControl style={{ display: "flex" }}>
+                  {/* <FormControl style={{ display: "flex" }}>
                     <FormLabel component="legend">
                       We are sad to see you go! Please select a reason for leaving.
                     </FormLabel>
@@ -139,7 +139,7 @@ export default function CancelDialog({
                         />
                       ))}
                     </FormGroup>
-                  </FormControl>
+                  </FormControl> */}
                   {touched.userReasons && errors.userReasons && (
                     <Typography variant="subtitle2" color="red">
                       {errors.userReasons}

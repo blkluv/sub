@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { AppProps } from "next/app";
 import { wrapper } from "../store/store";
 import { IntercomProvider } from "react-use-intercom";
-import ThemeProvider from "../theme/ThemeProvider";
+import { ThemeProvider } from "../theme/ThemeProvider";
 import "../styles/pinataCustomStyles.css";
 import { useEffect } from "react";
 import * as FullStory from "@fullstory/browser";

@@ -5,12 +5,11 @@ import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
-import { Button, createTheme, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
+import { Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
 import { WalletDisconnectButton, WalletMultiButton } from "@solana/wallet-adapter-material-ui";
-import styled from "@emotion/styled";
+
 import { useTheme } from "@emotion/react";
 
-import { ThemeProvider } from "@mui/material";
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
   const signData = async (): Promise<SubmarinedContent> => {

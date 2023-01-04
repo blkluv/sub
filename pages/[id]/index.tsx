@@ -15,7 +15,8 @@ const Content = () => {
     data && `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
   const router = useRouter();
   const { id } = router.query;
-  const [error, setError] = useState(false);
+
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!id) {
       return;
@@ -26,12 +27,14 @@ const Content = () => {
       .then(async (data) => {
         const body = await data.json();
         setData(body);
+        setLoading(false);
       })
       .catch(() => {
-        setError(true);
+        setLoading(false);
       });
   }, [id]);
-  if (!data) {
+
+  if (loading) {
     return (
       <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
         <Unstable_Grid2
@@ -50,7 +53,7 @@ const Content = () => {
   return (
     <PublicLayout fileInfo={data}>
       <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
-        <MainLandingContent missing={error} fileInfo={data} gatewayUrl={gatewayUrl} />
+        <MainLandingContent missing={!data} fileInfo={data} gatewayUrl={gatewayUrl} />
       </Box>
     </PublicLayout>
   );

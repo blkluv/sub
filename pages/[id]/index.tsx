@@ -9,24 +9,32 @@ import PublicLayout from "../../components/Layout/PublicLayout";
 import { getContentReturnObject } from "../api/content/[shortId]";
 
 const Content = () => {
-  const [data, setData] = useState<(getContentReturnObject & { error: any }) | null>();
+  const [data, setData] = useState<getContentReturnObject | null>();
 
   const gatewayUrl =
     data && `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
   const router = useRouter();
   const { id } = router.query;
+
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!id) {
       return;
     }
     ky(`/api/content/${id}`, {
       method: "GET",
-    }).then(async (data) => {
-      const body = await data.json();
-      setData(body);
-    });
+    })
+      .then(async (data) => {
+        const body = await data.json();
+        setData(body);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [id]);
-  if (!data) {
+
+  if (loading) {
     return (
       <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
         <Unstable_Grid2
@@ -45,7 +53,7 @@ const Content = () => {
   return (
     <PublicLayout fileInfo={data}>
       <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
-        <MainLandingContent missing={data.error} fileInfo={data} gatewayUrl={gatewayUrl} />
+        <MainLandingContent missing={!data} fileInfo={data} gatewayUrl={gatewayUrl} />
       </Box>
     </PublicLayout>
   );

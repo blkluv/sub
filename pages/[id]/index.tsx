@@ -9,12 +9,13 @@ import PublicLayout from "../../components/Layout/PublicLayout";
 import { getContentReturnObject } from "../api/content/[shortId]";
 
 const Content = () => {
-  const [data, setData] = useState<(getContentReturnObject & { error: any }) | null>();
+  const [data, setData] = useState<getContentReturnObject | null>();
 
   const gatewayUrl =
     data && `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
   const router = useRouter();
   const { id } = router.query;
+  const [error, setError] = useState(false);
   useEffect(() => {
     if (!id) {
       return;
@@ -27,7 +28,7 @@ const Content = () => {
         setData(body);
       })
       .catch(() => {
-        setData({ error: true });
+        setError(true);
       });
   }, [id]);
   if (!data) {
@@ -49,7 +50,7 @@ const Content = () => {
   return (
     <PublicLayout fileInfo={data}>
       <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
-        <MainLandingContent missing={data.error} fileInfo={data} gatewayUrl={gatewayUrl} />
+        <MainLandingContent missing={error} fileInfo={data} gatewayUrl={gatewayUrl} />
       </Box>
     </PublicLayout>
   );

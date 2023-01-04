@@ -34,7 +34,6 @@ export default function AuthForm() {
       }
       try {
         await Auth.confirmSignUp(email, confirmationCode);
-        doLoginAndTrackEvent();
       } catch (error) {
         setInvalidCode(true);
       }
@@ -51,9 +50,11 @@ export default function AuthForm() {
     FullStory.setVars("page", {
       userEmail: email,
     });
+
+    doLoginAndTrackEvent({ email, password });
   };
 
-  const doLoginAndTrackEvent = () => {
+  const doLoginAndTrackEvent = ({ email, password }) => {
     dispatch(doLogin({ email, password }))
       .unwrap()
       .then((user) => {
@@ -71,7 +72,6 @@ export default function AuthForm() {
       });
   };
 
-  doLoginAndTrackEvent();
   const [hasRequestedNewCode, setHasRequestedNewCode] = useState(false);
   const handleResendConfirmationCode = async (event) => {
     event.preventDefault();

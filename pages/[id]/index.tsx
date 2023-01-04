@@ -21,10 +21,14 @@ const Content = () => {
     }
     ky(`/api/content/${id}`, {
       method: "GET",
-    }).then(async (data) => {
-      const body = await data.json();
-      setData(body);
-    });
+    })
+      .then(async (data) => {
+        const body = await data.json();
+        setData(body);
+      })
+      .catch(() => {
+        setData({ error: true });
+      });
   }, [id]);
   if (!data) {
     return (

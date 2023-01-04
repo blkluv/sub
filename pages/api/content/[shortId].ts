@@ -35,6 +35,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.log(error);
     const { response: fetchResponse } = error;
-    return res.status(fetchResponse?.status || 500).json(error.data);
+    return res.status(fetchResponse?.status || 404).json(error.data);
   }
 }

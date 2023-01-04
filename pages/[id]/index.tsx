@@ -1,3 +1,4 @@
+import { Container, Unstable_Grid2 } from "@mui/material";
 import { Box } from "@mui/system";
 import ky from "ky";
 import { useRouter } from "next/router";
@@ -26,7 +27,20 @@ const Content = () => {
     });
   }, [id]);
   if (!data) {
-    return <Loading />;
+    return (
+      <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
+        <Unstable_Grid2
+          container
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            width: "100%",
+          }}
+        >
+          <Loading />
+        </Unstable_Grid2>
+      </Box>
+    );
   }
   return (
     <PublicLayout fileInfo={data}>

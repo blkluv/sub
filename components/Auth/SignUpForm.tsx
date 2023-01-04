@@ -9,6 +9,7 @@ import { RadioGroup } from "formik-mui";
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import { setAlert } from "../../store/slices/alertSlice";
+import { ANALYTICS } from "../../constants/rudderstack_events";
 
 const SignUpForm = () => {
   const dispatch = useAppDispatch();
@@ -64,7 +65,19 @@ const SignUpForm = () => {
       },
     };
     try {
-      await Auth.signUp(params);
+      const response = await Auth.signUp(params);
+      const firstName = params.attributes["custom:firstName"];
+      const lastName = params.attributes["custom:lastName"];
+      const user_id = response.userSub;
+      const email = params.username;
+      window.rudderanalytics.identify(email, { email, firstName, lastName, user_id });
+      window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
+        email,
+        firstName,
+        lastName,
+        user_id,
+        first_login: true,
+      });
       dispatch(
         setAlert({
           message: "Account created. Please confirm your email address",

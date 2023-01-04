@@ -34,7 +34,7 @@ export default function AuthForm() {
       }
       try {
         await Auth.confirmSignUp(email, confirmationCode);
-        dispatch(doLogin({ email, password }));
+        doLoginAndTrackEvent();
       } catch (error) {
         setInvalidCode(true);
       }
@@ -47,21 +47,31 @@ export default function AuthForm() {
       }
     }
 
-    dispatch(doLogin({ email, password }))
-      .unwrap()
-      .then((user) => {
-        const firstName = user.user["custom:firstName"];
-        const lastName = user.user["custom:lastName"];
-        const id = user.user.sub;
-        window.rudderanalytics.identify(email, { email, firstName, lastName, id });
-        window.rudderanalytics.track(ANALYTICS.AUTH.SIGN_UP, { email, firstName, lastName, id });
-      });
     //sample FullStory SDK calls
     FullStory.setVars("page", {
       userEmail: email,
     });
   };
 
+  const doLoginAndTrackEvent = () => {
+    dispatch(doLogin({ email, password }))
+      .unwrap()
+      .then((user) => {
+        const firstName = user.user["custom:firstName"];
+        const lastName = user.user["custom:lastName"];
+        const user_id = user.user.sub;
+        window.rudderanalytics.identify(email, { email, firstName, lastName, user_id });
+        window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
+          email,
+          firstName,
+          lastName,
+          user_id,
+          first_login: false,
+        });
+      });
+  };
+
+  doLoginAndTrackEvent();
   const [hasRequestedNewCode, setHasRequestedNewCode] = useState(false);
   const handleResendConfirmationCode = async (event) => {
     event.preventDefault();

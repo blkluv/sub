@@ -32,7 +32,6 @@ const Twitch = ({ fileInfo }) => {
           json: {
             accessToken: access_token,
             shortId: window.location.pathname.split("/")[1],
-            loginName: fileInfo?.unlockInfo?.loginName,
           },
         })
         .catch((err) => reject("Could not verify subscription"));

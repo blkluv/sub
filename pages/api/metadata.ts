@@ -23,7 +23,7 @@ const schema = Joi.object({
     lat: Joi.number().optional().allow(null, ""),
     long: Joi.number().optional().allow(null, ""),
     distance: Joi.number().min(0).max(6000).optional().allow(null, ""),
-    loginName: Joi.string().min(4).max(25).required(),
+    loginName: Joi.string().min(4).max(25).optional().allow(null, ")"),
   }).required(),
   customizations: Joi.object({
     backgroundCid: Joi.string().min(1).max(100).optional().allow(null, ""),

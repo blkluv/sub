@@ -4,8 +4,16 @@ import BaseLockType from "./LockTypeContainer";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { getKy } from "../../../helpers/ky";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { setAlert } from "../../../store/slices/alertSlice";
+import { setSubmarinedContent } from "../../../store/slices/submarinedContentSlice";
+import { useAppDispatch } from "../../../store/hooks";
+import Loading from "../../Dashboard/Loading";
 
 const Twitch = ({ fileInfo }) => {
+  const router = useRouter();
+  const { access_token } = router.query;
+  const dispatch = useAppDispatch();
   const twitchAuth = async () => {
     try {
       localStorage.setItem("twitch-sub-id", window.location.pathname.split("/")[1]);
@@ -16,16 +24,9 @@ const Twitch = ({ fileInfo }) => {
       return null;
     }
   };
-  const router = useRouter();
-  const { access_token } = router.query;
-  const hasConnectedTwitch = access_token;
 
-  const handleVerification = async (): Promise<SubmarinedContent> => {
-    return new Promise<SubmarinedContent>(async (resolve, reject) => {
-      const { access_token } = router.query;
-      if (!access_token) {
-        reject("Could not verify subscription");
-      }
+  useEffect(() => {
+    const handleVerification = async () => {
       const ky = getKy();
       const res = await ky
         .post("/api/twitch/oauth/verify", {
@@ -34,14 +35,21 @@ const Twitch = ({ fileInfo }) => {
             shortId: window.location.pathname.split("/")[1],
           },
         })
-        .catch((err) => reject("Could not verify subscription"));
+        .catch((err) => {
+          console.log(err);
+        });
       if (res) {
         const data: SubmarinedContent = await res.json();
-        resolve(data);
+        dispatch(setSubmarinedContent(data));
+        return;
       }
-      reject("Could not verify subscription");
-    });
-  };
+      dispatch(setAlert({ type: "error", message: "Subscription cannot be verified" }));
+      return;
+    };
+    if (access_token) {
+      handleVerification().catch((err) => console.log(err));
+    }
+  }, [router.query]);
   const description = (
     <Typography
       variant="h6"
@@ -56,15 +64,9 @@ const Twitch = ({ fileInfo }) => {
   );
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
-      <Container>
-        {hasConnectedTwitch ? (
-          <BaseLockType
-            description={description}
-            fileInfo={fileInfo}
-            lockName={"twitch"}
-            handleVerify={handleVerification}
-          />
-        ) : (
+      {access_token ? (
+        <Container>
+          {description}
           <Button
             variant="contained"
             onClick={twitchAuth}
@@ -89,8 +91,10 @@ const Twitch = ({ fileInfo }) => {
           >
             Connect Twitch
           </Button>
-        )}
-      </Container>
+        </Container>
+      ) : (
+        <Loading />
+      )}
     </Unstable_Grid2>
   );
 };

@@ -43,7 +43,7 @@ const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplay
       {fileType == "video" || fileType == "audio" ? (
         <EmbeddedPlayer url={url} />
       ) : fileType == "image" ? (
-        <ImageWrapper url={url} orginialname={submarinedContent.originalname} />
+        <ImageWrapper url={url} originalName={submarinedContent.originalname} />
       ) : (
         <DownloadFile url={url} />
       )}

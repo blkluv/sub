@@ -15,7 +15,7 @@ const Twitch = () => {
       params[temp[0]] = temp[1];
     });
     const id = localStorage.getItem("twitch-sub-id");
-    router.push(`/${id}?access_token=${params["access_token"]}`);
+    router.push(`/${id}?access_token=${params["access_token"]}&state=${params["state"]}`);
   }, []);
 
   return <Loading />;

@@ -1,12 +1,24 @@
 import { getSubmarinedContent } from "../../../../helpers/submarine";
 import { getUserContentCombo } from "../../../../repositories/content";
 import ky from "ky";
+import { v4 as uuidv4 } from "uuid";
+import { withSessionRoute } from "../../../../helpers/withSession";
+
+type Session = {
+  id: string;
+};
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    const { accessToken, shortId } = req.body;
+    const { accessToken, shortId, state } = req.body;
     const clientId = process.env.NEXT_PUBLIC_TWITCH_CLIENTID;
     try {
+      const session: Session = req.session.state;
+      const { id } = session;
+      if (id !== state) {
+        res.status(403).send("This is a forbidden action");
+        return;
+      }
       const info = await getUserContentCombo(shortId).catch((err) => {
         res.status(404).send("User content not found.");
         return;
@@ -61,7 +73,13 @@ const handler = async (req, res) => {
     } catch (error) {
       res.status(500).send(error.message);
     }
+  } else if (req.method === "GET") {
+    const payload: Session = { id: uuidv4() };
+    req.session.state = payload;
+    await req.session.save();
+    res.status(200).json(payload);
+    return;
   }
 };
 
-export default handler;
+export default withSessionRoute(handler);

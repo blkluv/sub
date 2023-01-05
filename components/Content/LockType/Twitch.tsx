@@ -8,15 +8,21 @@ import { useEffect } from "react";
 import { setAlert } from "../../../store/slices/alertSlice";
 import { setSubmarinedContent } from "../../../store/slices/submarinedContentSlice";
 import { useAppDispatch } from "../../../store/hooks";
+import { UnlockInfoTwitch } from "../../../types/UnlockInfo";
 
 const Twitch = ({ fileInfo }) => {
+  const unlockInfo = fileInfo.unlockInfo as UnlockInfoTwitch;
   const router = useRouter();
-  const { access_token } = router.query;
+  const ky = getKy();
+  const { access_token, state } = router.query;
   const dispatch = useAppDispatch();
   const twitchAuth = async () => {
     try {
+      const payload: {
+        id: string;
+      } = await ky.get(`/api/twitch/oauth/verify`).json();
       localStorage.setItem("twitch-sub-id", window.location.pathname.split("/")[1]);
-      window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_TWITCH_CLIENTID}&redirect_uri=http://${process.env.NEXT_PUBLIC_VERCEL_URL}/twitch&response_type=token&scope=user:read:subscriptions`;
+      window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_TWITCH_CLIENTID}&redirect_uri=http://${process.env.NEXT_PUBLIC_VERCEL_URL}/twitch&response_type=token&scope=user:read:subscriptions&force_verify=true&state=${payload.id}`;
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -26,12 +32,12 @@ const Twitch = ({ fileInfo }) => {
 
   useEffect(() => {
     const handleVerification = async () => {
-      const ky = getKy();
       const res = await ky
         .post("/api/twitch/oauth/verify", {
           json: {
             accessToken: access_token,
             shortId: window.location.pathname.split("/")[1],
+            state: state,
           },
         })
         .catch((err) => {

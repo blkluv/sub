@@ -8,8 +8,8 @@ interface AddCardModalProps {
   addCardModalOpen: boolean;
   setAddCardModalOpen: (open: boolean) => void;
   handleAddCard: (cardInfo: any) => void;
-  handleAddCoupon: (coupon: string) => void;
-  allowCoupon: boolean;
+  handleAddCoupon?: (coupon: string) => void;
+  allowCoupon?: boolean;
 }
 
 const AddCardModal = ({

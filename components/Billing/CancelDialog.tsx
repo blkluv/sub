@@ -68,7 +68,6 @@ export default function CancelDialog({
   ];
 
   const handleClickOpen = () => {
-    console.log("Next plan", billing?.nextPlan?.name);
     setOpen(true);
   };
 

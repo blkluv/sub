@@ -149,6 +149,7 @@ export default function CancelDialog({
                     <Button variant="outlined" onClick={handleClose}>
                       Nevermind
                     </Button>
+                    {/* TODO - disable if plan is free */}
                     <Button type="submit">Cancel Subscription</Button>
                   </DialogActions>
                 </Form>

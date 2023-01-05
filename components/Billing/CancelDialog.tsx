@@ -18,6 +18,7 @@ import * as FullStory from "@fullstory/browser";
 import { useAppSelector } from "../../store/hooks";
 import { selectUser } from "../../store/selectors/authSelectors";
 import type { BillingState, Plan } from "../../store/legacy/billing/types";
+import { planTypes } from "../../constants/planTypes";
 
 interface ChangePlanRes {
   plan: Plan;
@@ -37,6 +38,8 @@ export default function CancelDialog({
   const user = useAppSelector(selectUser);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const hasFreePlan =
+    billing?.nextPlan?.name === "Free" || billing?.activePricingPlan?.type === planTypes.FREE.type;
   const userReasons = [
     {
       label: "Missing desired features",
@@ -65,6 +68,7 @@ export default function CancelDialog({
   ];
 
   const handleClickOpen = () => {
+    console.log("Next plan", billing?.nextPlan?.name);
     setOpen(true);
   };
 
@@ -97,7 +101,7 @@ export default function CancelDialog({
 
   return (
     <Unstable_Grid2>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button disabled={hasFreePlan} variant="outlined" onClick={handleClickOpen}>
         Cancel Subscription
       </Button>
       <Dialog

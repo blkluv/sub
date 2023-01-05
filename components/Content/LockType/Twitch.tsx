@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { setAlert } from "../../../store/slices/alertSlice";
 import { setSubmarinedContent } from "../../../store/slices/submarinedContentSlice";
 import { useAppDispatch } from "../../../store/hooks";
-import Loading from "../../Dashboard/Loading";
 
 const Twitch = ({ fileInfo }) => {
   const router = useRouter();
@@ -50,6 +49,7 @@ const Twitch = ({ fileInfo }) => {
       handleVerification().catch((err) => console.log(err));
     }
   }, [router.query]);
+
   const description = (
     <Typography
       variant="h6"
@@ -64,37 +64,33 @@ const Twitch = ({ fileInfo }) => {
   );
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
-      {access_token ? (
-        <Container>
-          {description}
-          <Button
-            variant="contained"
-            onClick={twitchAuth}
-            sx={{
-              width: "90%",
-              maxWidth: "300px",
-              borderRadius: 1000,
-              ...(fileInfo?.customizations?.buttonShape === "square" && {
-                borderRadius: 2,
+      <Container>
+        {description}
+        <Button
+          variant="contained"
+          onClick={twitchAuth}
+          sx={{
+            width: "90%",
+            maxWidth: "300px",
+            borderRadius: 1000,
+            ...(fileInfo?.customizations?.buttonShape === "square" && {
+              borderRadius: 2,
+            }),
+            backgroundColor: (theme) => theme.palette.primary.light,
+            ...(fileInfo?.customizations.buttonColor &&
+              fileInfo?.customizations?.buttonColor?.hex && {
+                backgroundColor: fileInfo.customizations.buttonColor.hex,
               }),
-              backgroundColor: (theme) => theme.palette.primary.light,
-              ...(fileInfo?.customizations.buttonColor &&
-                fileInfo?.customizations?.buttonColor?.hex && {
-                  backgroundColor: fileInfo.customizations.buttonColor.hex,
-                }),
-              color: "#000000",
-              ...(fileInfo?.customizations?.buttonTextColor &&
-                fileInfo?.customizations?.buttonTextColor.hex && {
-                  color: fileInfo.customizations.buttonTextColor.hex,
-                }),
-            }}
-          >
-            Connect Twitch
-          </Button>
-        </Container>
-      ) : (
-        <Loading />
-      )}
+            color: "#000000",
+            ...(fileInfo?.customizations?.buttonTextColor &&
+              fileInfo?.customizations?.buttonTextColor.hex && {
+                color: fileInfo.customizations.buttonTextColor.hex,
+              }),
+          }}
+        >
+          Connect Twitch
+        </Button>
+      </Container>
     </Unstable_Grid2>
   );
 };

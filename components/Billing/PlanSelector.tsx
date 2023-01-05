@@ -30,7 +30,7 @@ interface ChangePlanRes {
 interface PlanSelectorProps {
   data: any;
   billing: BillingState;
-  changePlan: (newPlan: Plan) => Promise<ChangePlanRes>;
+  changePlan: (newPlan: Plan, coupon: string) => Promise<ChangePlanRes>;
   gateways: Gateways;
   user: UserState;
   apiKeys: any;
@@ -59,6 +59,7 @@ const PlanSelector = ({
   const [openCardModal, setOpenCardModal] = useState(false); //Boolean or null if no default
   const [openBillingAddressModal, setOpenBillingAddressModal] = useState(false);
   const [restorePlanModalOpen, setRestorePlanModalOpen] = useState(false);
+  const [allowCoupon, setAllowCoupon] = useState(false); // only picnic plan can use coupon for the duration of January
   const [afterUpdateDialogProps, setAfterUpdateDialogProps] = useState<{
     newPlan: Plan;
     gateways: Gateways;
@@ -66,9 +67,9 @@ const PlanSelector = ({
 
   const dispatch = useAppDispatch();
 
-  const changePlanLocal = async (planToChangeTo: Plan) => {
+  const changePlanLocal = async (planToChangeTo: Plan, coupon?: string) => {
     try {
-      const changePlanRes: ChangePlanRes = await changePlan(planToChangeTo);
+      const changePlanRes: ChangePlanRes = await changePlan(planToChangeTo, coupon);
       if (!changePlanRes.nextPlan) {
         scheduleUsageMetrics();
         setAfterUpdateDialogProps({ newPlan: changePlanRes.plan, gateways });
@@ -88,47 +89,26 @@ const PlanSelector = ({
         setPlanChangeConfirmationOpen(true);
       }
     } catch (error) {
+      dispatch(setAlert({ message: "Error adding card", type: "error" }));
       console.log(error);
     }
   };
-
-  // // Scroll to anchor hash
-  // useEffect(() => {
-  //   const scrollToHashElement = () => {
-  //     const { hash } = window.location;
-  //     const elementToScroll = document.getElementById(hash?.replace("#", ""));
-
-  //     if (!elementToScroll) return;
-
-  //     window.scrollTo({
-  //       top: elementToScroll.offsetTop - 75,
-  //       behavior: "smooth",
-  //     });
-  //   };
-
-  //   scrollToHashElement();
-  //   window.addEventListener("hashchange", scrollToHashElement);
-  //   return window.removeEventListener("hashchange", scrollToHashElement);
-  // }, []);
-
-  // useEffect(() => {
-  //   // check if user came from marketing site and wants to change plan
-  //   if (location?.state?.registerFromMarketing) {
-  //     const currentPlan = billing?.activePricingPlan;
-  //     const desiredPlan = billing?.billing_plans?.find(
-  //       (item) => item.nickname === location?.state?.desiredPlan
-  //     );
-  //     if (desiredPlan && currentPlan) {
-  //       handlePlanChoice(desiredPlan);
-  //       localStorage.removeItem("pinata-registration-plan-selection");
-  //     }
-  //   }
-  // }, []);
+  const handleAddCoupon = async (coupon: string) => {
+    try {
+      dispatch(setAlert({ message: "Adding coupon...", type: "info" }));
+      setOpenCardModal(false);
+      confirmProfessionalUpgrade(coupon);
+    } catch (error) {
+      dispatch(setAlert({ message: "Error adding coupon", type: "error" }));
+      console.log(error);
+    }
+  };
 
   const handlePlanChoice = async (plan: Plan) => {
     setPlanChoice(plan);
     if (!billing.stripe_customer.paymentMethods.length && plan.type !== planTypes.FREE.type) {
       // if there is no payment method -> add credit card
+      plan.type === planTypes.PICNIC.type ? setAllowCoupon(true) : setAllowCoupon(false);
       setOpenCardModal(true);
       return;
     }
@@ -148,15 +128,15 @@ const PlanSelector = ({
     }
   };
 
-  const confirmProfessionalUpgrade = async () => {
+  const confirmProfessionalUpgrade = async (coupon?: string) => {
     setLoading(true);
     try {
-      if (billing.stripe_customer) {
+      if (billing.stripe_customer || coupon) {
         FullStory.event("Upgrade plan", {
           userEmail: user.user.email,
           newPlan: planToChangeTo.name,
         });
-        await changePlanLocal(planToChangeTo);
+        await changePlanLocal(planToChangeTo, coupon);
       }
     } catch (error) {
       console.log(error);
@@ -290,6 +270,8 @@ const PlanSelector = ({
           setAddCardModalOpen={setOpenCardModal}
           addCardModalOpen={openCardModal}
           handleAddCard={handleAddCard}
+          handleAddCoupon={handleAddCoupon}
+          allowCoupon={allowCoupon}
         />
       )}
       {afterUpdateDialogProps !== null && (

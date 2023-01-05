@@ -110,14 +110,17 @@ export const setDefaultCard = (customerId: any, sourceId: any) => async (dispatc
   }
 };
 
-export const changePlan = (newPlan: Plan) => async (dispatch: any) => {
+export const changePlan = (newPlan: Plan, coupon?: string) => async (dispatch: any) => {
   try {
     // await trackEvent("plan-change", {
     //   new_plan_name: newPlan.name,
     // });
-    const { data } = await api.post("billing/changePinataPlan", {
+    const url = coupon ? "billing/changePinataPlanWithCoupon" : "billing/changePinataPlan";
+    const { data } = await api.post(url, {
       desiredPlanId: newPlan.id,
+      coupon,
     });
+
     if (data) {
       if (data?.nextPlan) {
         dispatch(

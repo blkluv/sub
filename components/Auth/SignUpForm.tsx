@@ -1,4 +1,14 @@
-import { Box, Button, Container, FormControl, Typography, Unstable_Grid2 } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControl,
+  FormHelperText,
+  Typography,
+  Unstable_Grid2,
+} from "@mui/material";
+import * as FullStory from "@fullstory/browser";
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { Formik, Form, FormikHelpers, Field } from "formik";
@@ -16,21 +26,12 @@ const SignUpForm = () => {
 
   const validationsRegex: Record<string, RegExp> = {
     // any encoding letters allowed
-    name: /^[a-zA-Z\s]+$/,
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&#%^])[A-Za-z\d$@$!%*?&#%^]{8,}/,
   };
 
   const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required")
-      .matches(validationsRegex.name, "Invalid name"),
-    lastName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required")
-      .matches(validationsRegex.name, "Invalid name"),
+    firstName: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
+    lastName: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .min(8, "Password must contain at least 8 characters")
@@ -40,6 +41,10 @@ const SignUpForm = () => {
         validationsRegex.password,
         "Password must contain at least 8 characters, including UPPER/lowercase, numbers and special characters"
       ),
+    confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
+    isBuilder: Yup.string()
+      .required("Required")
+      .matches(/^(builder|creator)/, "Required"),
   });
 
   const router = useRouter();
@@ -49,7 +54,8 @@ const SignUpForm = () => {
     password: "",
     firstName: "",
     lastName: "",
-    isBuilder: null,
+    isBuilder: "",
+    howToUse: [],
   };
   const onSubmit = async (values, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
     setSubmitting(true);
@@ -71,6 +77,10 @@ const SignUpForm = () => {
           type: "success",
         })
       );
+      FullStory.event("Sign up", {
+        userEmail: values.email,
+        howToUse: values.howToUse,
+      });
       router.push("/");
     } catch (err) {
       setAuthError(err.message);
@@ -78,15 +88,24 @@ const SignUpForm = () => {
     }
   };
 
+  const checkboxOptions = {
+    videos: "Videos",
+    images: "Images",
+    audioFiles: "Audio Files",
+    website: "Website / Web Apps",
+    models: "3D Models",
+    other: "Other",
+  };
+
   return (
-    <Container sx={{ marginTop: "2rem" }} maxWidth="md" fixed>
+    <Container sx={{ marginTop: "2rem" }} maxWidth="xs">
       <Unstable_Grid2
         container
         justifyContent={"center"}
         direction="column"
         alignContent={"center"}
       >
-        <Typography variant="h3" sx={{ marginBottom: "2rem" }}>
+        <Typography variant="h3" sx={{ marginBottom: "2rem", textAlign: "center" }}>
           Register your Pinata account
         </Typography>
         <Formik
@@ -95,7 +114,7 @@ const SignUpForm = () => {
           validationSchema={SignupSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, errors, touched }) => (
+          {({ isSubmitting, values, errors, touched }) => (
             <Form>
               <Unstable_Grid2
                 container
@@ -133,12 +152,42 @@ const SignUpForm = () => {
                   required
                   autoComplete="off"
                 />
+                <FormikTextfield
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  required
+                  autoComplete="off"
+                />
                 <FormControl sx={{ margin: "8px" }}>
                   <FormLabel>Are you a builder or a creator?</FormLabel>
                   <Field component={RadioGroup} row name="isBuilder">
                     <FormControlLabel value="builder" control={<Radio />} label="Builder" />
                     <FormControlLabel value="creator" control={<Radio />} label="Creator" />
+                    {touched.isBuilder && errors.isBuilder && (
+                      <FormHelperText sx={{ color: "red" }}>
+                        {errors.isBuilder && "Required"}
+                      </FormHelperText>
+                    )}
                   </Field>
+                </FormControl>
+
+                <FormControl sx={{ margin: "8px" }}>
+                  <FormLabel>How will you use Submarine.me?</FormLabel>
+                  {Object.entries(checkboxOptions).map(([key, label]) => (
+                    <Field
+                      sx={{ spacing: "0.25 rem", marginBottom: 0 }}
+                      type="checkbox"
+                      name="howToUse"
+                      value={key}
+                      key={key}
+                      as={FormControlLabel}
+                      control={<Checkbox />}
+                      checked={values.howToUse.includes(key)}
+                      label={label}
+                    />
+                  ))}
                 </FormControl>
                 <Box sx={{ marginTop: "1rem" }}>
                   <Button

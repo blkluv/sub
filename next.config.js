@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.NEXT_PUBLIC_DEBUG === "true",
+});
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -16,4 +20,4 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

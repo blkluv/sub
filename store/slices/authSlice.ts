@@ -125,10 +125,7 @@ const getUser = async (): Promise<User> => {
       ...user.attributes,
       gatewayUrl,
     };
-  } catch (err) {
-    const errorMsg = await err.response.json();
-    throw new Error(errorMsg);
-  }
+  } catch (err) {}
   return user.attributes;
 };
 
@@ -138,12 +135,14 @@ const getGatewayUrl = async (): Promise<string> => {
     return gatewayUrl;
   }
   const ky = getKy();
-  const r = await ky("/api/users", {
+  const r = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/gateways?page=1`, {
     method: "GET",
   });
   const re = await r.json();
-  const gw = re.pinata_gateway_subdomain;
-  localStorage.setItem("pinata_gateway_subdomain", gw);
+  const gw = re?.items?.rows?.[0]?.domain;
+  if (gw) {
+    localStorage.setItem("pinata_gateway_subdomain", gw);
+  }
   return gw;
 };
 

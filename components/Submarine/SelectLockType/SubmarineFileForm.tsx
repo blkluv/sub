@@ -1,8 +1,8 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import PrivateLayout from "../../Layout";
 import PreviewModal from "../../Content/PreviewDialog";
-import Layout from "../../Layout";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -133,7 +133,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
   };
 
   return (
-    <Layout>
+    <PrivateLayout>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -220,7 +220,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
           )
         }
       </Formik>
-    </Layout>
+    </PrivateLayout>
   );
 };
 

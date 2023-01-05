@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
+import Pagination from "./Pagination";
 import UpgradeModal from "./UpgradeModal";
 import AppPagination from "./AppPagination";
 
@@ -19,6 +20,7 @@ const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
+  const [offset, setOffset] = useState(0);
   const [data, setData] = useState([]);
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -26,7 +28,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const selectMenuOpen = Boolean(anchorEl);
   const [page, setPage] = useState<number>(1);
   const [count, setCount] = useState<number>(0);
@@ -147,16 +149,7 @@ const Dashboard = () => {
         >
           <Unstable_Grid2 container direction={"column"}>
             <Typography variant="h1">Submarined Files</Typography>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: (theme) => theme.palette.grey[700],
-                fontWeight: 300,
-                marginTop: "0.5em",
-              }}
-            >
-              Find your recently submarined content below
-            </Typography>
+            <Typography variant="body2">Find your recently submarined content below</Typography>
           </Unstable_Grid2>
           <Button
             sx={{
@@ -218,7 +211,6 @@ const Dashboard = () => {
           </>
         )}
       </Unstable_Grid2>
-      {displayUpgradeModal && <UpgradeModal />}
     </>
   );
 };

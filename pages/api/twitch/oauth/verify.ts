@@ -16,7 +16,7 @@ const handler = async (req, res) => {
       const session: Session = req.session.state;
       const { id } = session;
       if (id !== state) {
-        res.status(403).send("This is a forbidden action");
+        res.status(403).send("CSRF Verification failed");
         return;
       }
       const info = await getUserContentCombo(shortId).catch((err) => {

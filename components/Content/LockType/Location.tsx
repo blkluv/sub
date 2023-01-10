@@ -1,8 +1,6 @@
 import MapIcon from "@mui/icons-material/Map";
 import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { getKy } from "../../../helpers/ky";
-import { useAppDispatch } from "../../../store/hooks";
-import { setAlert } from "../../../store/slices/alertSlice";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { UnlockInfoLocation } from "../../../types/UnlockInfo";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";

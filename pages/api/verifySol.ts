@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { withIronSession } from "next-iron-session";
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import bs58 from "bs58";
 import { sign } from "tweetnacl";
@@ -8,16 +7,7 @@ import { getSubmarinedContent } from "../../helpers/submarine";
 import { Sentry } from "../../helpers/sentry";
 import { getUserContentCombo } from "../../repositories/content";
 import { getMessagetoSign } from "../../helpers/messageToSign";
-
-function withSession(handler) {
-  return withIronSession(handler, {
-    password: process.env.SECRET_COOKIE_PASSWORD,
-    cookieName: "web3-auth-session",
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production" ? true : false,
-    },
-  });
-}
+import { withSessionRoute } from "../../helpers/withSession";
 
 function createConnectionConfig(
   network,
@@ -30,13 +20,13 @@ function createConnectionConfig(
   return new Connection(clusterApi, commitment);
 }
 
-export default withSession(async (req, res) => {
+const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const { network, updateAuthority, CID, address, signature, shortId, message, mintAddress } =
         req.body;
 
-      const savedMessage = req.session.get("message-session");
+      const savedMessage = req.session["message-session"];
 
       const fullMessage = getMessagetoSign(updateAuthority, savedMessage.id);
       const signedMessage = new TextEncoder().encode(fullMessage);
@@ -96,7 +86,7 @@ export default withSession(async (req, res) => {
         updateAuthority: req.query.updateAuthority,
         id: uuidv4(),
       };
-      req.session.set("message-session", message);
+      req.session["message-session"] = message;
       await req.session.save();
       return res.json(message);
     } catch (error) {
@@ -109,4 +99,6 @@ export default withSession(async (req, res) => {
       message: "This is the way...wait, no it is not. What are you doing here?",
     });
   }
-});
+};
+
+export default withSessionRoute(handler);

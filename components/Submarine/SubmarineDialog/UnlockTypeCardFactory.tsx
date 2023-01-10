@@ -10,7 +10,7 @@ const UnlockTypeCardFactory = () => {
     "Require a retweet of a specific tweet in order to unlock your submarined content.";
   const locationText =
     "Require someone to verify their current location to unlock your submarined content.";
-  const twitchText = "Require a user to be a subscriber of a Twitch channel";
+  const twitchText = "Require a user to be a subscriber of a Twitch channel.";
 
   return (
     <>

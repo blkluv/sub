@@ -7,7 +7,7 @@ export default function TwitchForm() {
       <Typography variant="h5">Twitch Details</Typography>
       <FormikTextfield
         name="unlockInfo.loginName"
-        label="Twitch Login Name"
+        label="Twitch Username"
         required
         autoComplete="off"
       />

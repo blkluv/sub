@@ -52,8 +52,8 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
           color: (theme) => theme.palette.primary.contrastText,
         }}
       >
-        You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of these coordinates
-        to unlock content:
+        You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of{" "}
+        {unlockInfo.place ? "this location" : "these coordinates"} to unlock content:
       </Typography>
       <Typography
         paragraph
@@ -75,7 +75,10 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
                 color: (theme) => theme.palette.primary.contrastText,
               }}
             >
-              {unlockInfo?.lat}, <br /> {unlockInfo?.long}
+              <>
+                {unlockInfo?.place?.description || unlockInfo?.lat}, <br />
+                {!unlockInfo?.place?.description && unlockInfo?.long}
+              </>
             </Typography>
             <MapIcon
               style={{ marginLeft: "0.5rem" }}

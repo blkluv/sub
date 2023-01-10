@@ -1,3 +1,5 @@
+import { PlaceType } from "../components/Submarine/SelectLockType/Location/AddressAutocomplete";
+
 interface Hsl {
   a: number;
   h: number;
@@ -81,6 +83,13 @@ export type UnlockInfoLocation = {
   long: number;
   type: "location";
   distance: string;
+  place?: PlaceType;
 };
+
+export type UnlockInfoTwitch = {
+  type: "twitch";
+  loginName: string;
+};
+
 export type UnlockInfoNFT = UnlockInfoETH | UnlockInfoSolana | UnlockInfoFlow;
-export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation;
+export type UnlockInfo = UnlockInfoRetweet | UnlockInfoNFT | UnlockInfoLocation | UnlockInfoTwitch;

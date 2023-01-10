@@ -181,9 +181,9 @@ const Dashboard = () => {
             <Link href={"/submarine/location"} passHref>
               <MenuItem onClick={(e) => setAnchorEl(null)}>Location</MenuItem>
             </Link>
-            <MenuItem disabled={true} onClick={(e) => setAnchorEl(null)}>
-              Credit/Debit Card (coming soon)
-            </MenuItem>
+            <Link href={"/submarine/twitch"} passHref>
+              <MenuItem onClick={(e) => setAnchorEl(null)}>Twitch</MenuItem>
+            </Link>
           </Menu>
         </Unstable_Grid2>
         <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(4, 0, 0, 0) }} />

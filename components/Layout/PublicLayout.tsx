@@ -11,7 +11,7 @@ interface Props {
 }
 
 const PublicLayout = ({ children, fileInfo }: Props) => {
-  const gatewayUrl = fileInfo.gatewayUrl;
+  const gatewayUrl = fileInfo?.gatewayUrl;
   return (
     <>
       <Alert />

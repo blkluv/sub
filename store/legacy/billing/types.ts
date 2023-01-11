@@ -6,7 +6,6 @@ export enum BillingActionNames {
   BILLING_PLANS_RETRIEVED = "BILLING_PLANS_RETRIEVED",
   SET_ACTIVE_BILLING_PLAN = "SET_ACTIVE_BILLING_PLAN",
   UPDATE_BILLING_ADDRESS = "UPDATE_BILLING_ADDRESS",
-  SET_STRIPE_COUPON = "SET_STRIPE_COUPON",
 }
 
 export interface Plan {
@@ -95,7 +94,6 @@ export interface PaymentMethod {
 export interface BillingState {
   stripe_customer: {
     paymentMethods: PaymentMethod[];
-    coupon: string;
     subscriptionItems: any[];
     address: any;
   };

@@ -4,7 +4,6 @@ import { BillingActionNames, BillingState } from "./types";
 const initialState: BillingState = {
   stripe_customer: {
     paymentMethods: [],
-    coupon: "",
     subscriptionItems: [],
     address: {
       country: "",
@@ -84,15 +83,6 @@ const reducer = function (
         billing_plans: payload,
       };
 
-    case BillingActionNames.SET_STRIPE_COUPON: {
-      return {
-        ...state,
-        stripe_customer: {
-          ...state.stripe_customer,
-          coupon: payload.coupon,
-        },
-      };
-    }
     default:
       return state;
   }

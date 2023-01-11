@@ -3,6 +3,11 @@ import { getUserContentCombo } from "../../../repositories/content";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 
 export default async function handler(req, res): Promise<SubmarinedContent> {
+  // allow CORS on this method
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
   if (req.method === "POST") {
     try {
       console.log({ bod: req.body });

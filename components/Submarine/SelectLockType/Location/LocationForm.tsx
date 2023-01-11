@@ -1,16 +1,30 @@
-import { InformationCircleIcon } from "@heroicons/react/outline";
-import React, { useState } from "react";
+import { useState } from "react";
 import GoogleMapsCoordsDialog from "../GoogleMapsCoordsDialog";
 import { useFormikContext } from "formik";
 import InformationCircleIconStyled from "../../../Form/InformationCircleIconStyled";
 import FormikTextfield from "../../../Form/FormikTextfield";
-import { Button, Typography, Unstable_Grid2 } from "@mui/material";
-import { TextField } from "formik-mui";
+import {
+  Autocomplete,
+  Button,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+  Unstable_Grid2,
+} from "@mui/material";
+import AddressAutocomplete from "./AddressAutocomplete";
+import { MetadataUnlockInfo } from "../SubmarineFileForm";
+
+enum LocationType {
+  Address = "address",
+  LatLong = "latlong",
+}
 
 const LocationForm = () => {
   const [gettingLocation, setGettingLocation] = useState(false);
   const [googleMapsDialogOpen, setGoogleMapsDialogOpen] = useState(false);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext<MetadataUnlockInfo>();
   const detectLocation = async (e) => {
     e.preventDefault();
     setGettingLocation(true);
@@ -34,6 +48,16 @@ const LocationForm = () => {
     }
   };
 
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // @ts-ignore
+    setLocationType(event.target.value as LocationType);
+  };
+
+  const [locationType, setLocationType] = useState(
+    values?.unlockInfo?.type === "location" && values?.unlockInfo?.lat
+      ? LocationType.LatLong
+      : LocationType.Address
+  );
   return (
     <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>
       <Unstable_Grid2
@@ -45,26 +69,40 @@ const LocationForm = () => {
           {gettingLocation ? "Detecting location..." : "Detect Location"}
         </Button>
       </Unstable_Grid2>
-      <FormikTextfield
-        name="unlockInfo.lat"
-        label="Latitude"
-        required
-        adornment={
-          <span aria-label="button" onClick={() => setGoogleMapsDialogOpen(true)}>
-            <InformationCircleIconStyled />
-          </span>
-        }
-      />
-      <FormikTextfield
-        name="unlockInfo.long"
-        label="Longitude"
-        required
-        adornment={
-          <span aria-label="button" onClick={() => setGoogleMapsDialogOpen(true)}>
-            <InformationCircleIconStyled />
-          </span>
-        }
-      />
+      <RadioGroup row value={locationType} onChange={handleRadioChange}>
+        <FormControlLabel value={LocationType.Address} control={<Radio />} label="Address" />
+        <FormControlLabel
+          value={LocationType.LatLong}
+          control={<Radio />}
+          label="Latitude / Longitude"
+        />
+      </RadioGroup>
+      {locationType === LocationType.Address ? (
+        <AddressAutocomplete />
+      ) : (
+        <>
+          <FormikTextfield
+            name="unlockInfo.lat"
+            label="Latitude"
+            required
+            adornment={
+              <span aria-label="button" onClick={() => setGoogleMapsDialogOpen(true)}>
+                <InformationCircleIconStyled />
+              </span>
+            }
+          />
+          <FormikTextfield
+            name="unlockInfo.long"
+            label="Longitude"
+            required
+            adornment={
+              <span aria-label="button" onClick={() => setGoogleMapsDialogOpen(true)}>
+                <InformationCircleIconStyled />
+              </span>
+            }
+          />
+        </>
+      )}
       <FormikTextfield name="unlockInfo.distance" label="Allowed Range (in miles)" required />
       <GoogleMapsCoordsDialog
         googleMapsDialogOpen={googleMapsDialogOpen}

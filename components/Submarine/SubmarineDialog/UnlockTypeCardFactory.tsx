@@ -10,6 +10,7 @@ const UnlockTypeCardFactory = () => {
     "Require a retweet of a specific tweet in order to unlock your submarined content.";
   const locationText =
     "Require someone to verify their current location to unlock your submarined content.";
+  const twitchText = "Require a user to be a subscriber of a Twitch channel.";
 
   return (
     <>
@@ -40,7 +41,14 @@ const UnlockTypeCardFactory = () => {
           helperText={locationText}
           type="location"
         />
-        <Unstable_Grid2 xs={12} sm={6} lg={3}>
+        <UnlockTypeCard
+          setUnlockType={setUnlockType}
+          title="Twitch"
+          unlockType={unlockType}
+          helperText={twitchText}
+          type="twitch"
+        />
+        {/* <Unstable_Grid2 xs={12} sm={6} lg={3}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Unstable_Grid2 xs={2}>
@@ -55,7 +63,7 @@ const UnlockTypeCardFactory = () => {
               </Unstable_Grid2>
             </CardContent>
           </Card>
-        </Unstable_Grid2>
+        </Unstable_Grid2> */}
       </Unstable_Grid2>
     </>
   );

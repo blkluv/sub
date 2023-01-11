@@ -33,6 +33,11 @@ async function checkErc1155Balance(contract, address, tokenId) {
 }
 
 const handler = async (req, res) => {
+  // allow CORS on this method
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
   if (req.method === "POST") {
     try {
       const {

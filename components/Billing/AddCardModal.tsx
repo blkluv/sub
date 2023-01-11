@@ -1,7 +1,7 @@
 import PaymentMethod from "./PaymentMethod";
 import { Button, Dialog, DialogContent, Radio, RadioGroup, TextField } from "@mui/material";
 import { PinataDialogTitle } from "../shared/Dialog";
-import { FormControlLabel } from "@material-ui/core";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { useState } from "react";
 
 interface AddCardModalProps {

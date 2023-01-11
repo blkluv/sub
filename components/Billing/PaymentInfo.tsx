@@ -24,6 +24,7 @@ import { GatewaysState } from "../../store/legacy/gateways/types";
 import { BillingState, PaymentMethod } from "../../store/legacy/billing/types";
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
+import { AlertType } from "../Alert";
 
 const CARDS_ALLOWED = 5;
 
@@ -56,7 +57,7 @@ function PaymentInfo(props: PaymentInfoProps) {
 
   const dispatch = useAppDispatch();
   const confirmRemoveCard = async (card: { id: any }) => {
-    dispatch(setAlert({ message: "Removing card...", type: "info" }));
+    dispatch(setAlert({ message: "Removing card...", type: AlertType.Info }));
     setRemoveCardModalOpen(false);
     setCardInfo(null);
     await detachStripeSourceFromCustomer(card.id);
@@ -97,7 +98,7 @@ function PaymentInfo(props: PaymentInfoProps) {
   const handleAddCard = async (tokenId: string) => {
     setOpenCardModal(false);
     try {
-      dispatch(setAlert({ message: "Adding card...", type: "info" }));
+      dispatch(setAlert({ message: "Adding card...", type: AlertType.Info }));
       await createStripePaymentSource(tokenId);
     } catch (error) {
       console.log(error);
@@ -110,7 +111,7 @@ function PaymentInfo(props: PaymentInfoProps) {
       dispatch(
         setAlert({
           message: "You cannot remove your card when you have active dedicated gateways",
-          type: "error",
+          type: AlertType.Error,
         })
       );
       return;
@@ -124,7 +125,7 @@ function PaymentInfo(props: PaymentInfoProps) {
     if (paymentMethods.length < CARDS_ALLOWED) {
       setOpenCardModal(true);
     } else {
-      dispatch(setAlert({ message: "You can only add 5 cards", type: "error" }));
+      dispatch(setAlert({ message: "You can only add 5 cards", type: AlertType.Error }));
     }
   };
 

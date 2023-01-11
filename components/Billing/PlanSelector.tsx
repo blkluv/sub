@@ -21,6 +21,7 @@ import { setAlert } from "../../store/slices/alertSlice";
 import { User, UserState } from "../../store/legacy/user/types";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import * as FullStory from "@fullstory/browser";
+import { AlertType } from "../Alert";
 
 interface ChangePlanRes {
   plan: Plan;
@@ -75,6 +76,35 @@ const PlanSelector = ({
         setAfterUpdateDialogProps({ newPlan: changePlanRes.plan, gateways });
       }
     } catch (error) {
+      const err = await error.response.json();
+      const reason = err.error.reason;
+      if (reason === "USER_DOES_NOT_HAVE_STRIPE_CUSTOMER") {
+        dispatch(
+          setAlert({ type: AlertType.Error, message: "Coupon is only valid for new users" })
+        );
+      } else if (reason === "Rate limit exceeded") {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Rate limit exceeded, please wait one minute and retry",
+          })
+        );
+        // NO_COUPON_FOUND
+      } else if (reason === "NO_COUPON_FOUND") {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Coupon not found, please try again",
+          })
+        );
+      } else {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Error changing plan, please try again later",
+          })
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -83,23 +113,22 @@ const PlanSelector = ({
   const handleAddCard = async (tokenId: string) => {
     setOpenCardModal(false);
     try {
-      dispatch(setAlert({ message: "Adding card...", type: "info" }));
+      dispatch(setAlert({ message: "Adding card...", type: AlertType.Info }));
       const stripeRes = await createStripePaymentSource(tokenId);
       if (stripeRes) {
         setPlanChangeConfirmationOpen(true);
       }
     } catch (error) {
-      dispatch(setAlert({ message: "Error adding card", type: "error" }));
+      dispatch(setAlert({ message: "Error adding card", type: AlertType.Error }));
       console.log(error);
     }
   };
   const handleAddCoupon = async (coupon: string) => {
     try {
-      dispatch(setAlert({ message: "Adding coupon...", type: "info" }));
       setOpenCardModal(false);
       confirmProfessionalUpgrade(coupon);
     } catch (error) {
-      dispatch(setAlert({ message: "Error adding coupon", type: "error" }));
+      dispatch(setAlert({ message: "Error adding coupon", type: AlertType.Error }));
       console.log(error);
     }
   };

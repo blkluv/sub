@@ -39,8 +39,11 @@ const SubmarineModal = ({ open, setOpen }) => {
               </Typography>
             </DialogTitle>
             <DialogActions>
-              <IconButton sx={{ "&:hover": { backgroundColor: "transparent" } }}>
-                <CloseIcon onClick={() => setOpen(false)} />
+              <IconButton
+                onClick={() => setOpen(false)}
+                sx={{ "&:hover": { backgroundColor: "transparent" } }}
+              >
+                <CloseIcon />
               </IconButton>
             </DialogActions>
           </Unstable_Grid2>

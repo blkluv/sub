@@ -71,7 +71,7 @@ const PlanSelector = ({
   const changePlanLocal = async (planToChangeTo: Plan, coupon?: string) => {
     try {
       const changePlanRes: ChangePlanRes = await changePlan(planToChangeTo, coupon);
-      if (!changePlanRes.nextPlan) {
+      if (!changePlanRes.nextPlan || coupon) {
         scheduleUsageMetrics();
         setAfterUpdateDialogProps({ newPlan: changePlanRes.plan, gateways });
       }
@@ -303,7 +303,7 @@ const PlanSelector = ({
           allowCoupon={allowCoupon}
         />
       )}
-      {afterUpdateDialogProps !== null && (
+      {afterUpdateDialogProps && (
         <AfterUpdatePlanDialog
           createGateway={createGateway}
           newPlan={afterUpdateDialogProps.newPlan}

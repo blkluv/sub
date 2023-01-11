@@ -139,6 +139,7 @@ export const changePlan = (newPlan: Plan, coupon?: string) => async (dispatch: a
       return data;
     }
   } catch (error) {
+    console.log({ error });
     throw error;
   }
 };

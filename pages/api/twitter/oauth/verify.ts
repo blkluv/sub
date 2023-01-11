@@ -1,12 +1,12 @@
 import { TwitterApi } from "twitter-api-v2";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
-import { getSupabaseClient } from "../../../../helpers/supabase";
+import { withSessionRoute } from "../../../../helpers/withSession";
 import { getUserContentCombo } from "../../../../repositories/content";
-import { getOauthSecret } from "../../../../repositories/twitter";
-import { definitions } from "../../../../types/supabase";
 
-const supabase = getSupabaseClient();
-
+type Session = {
+  oauth_token: string;
+  oauth_secret: string;
+};
 const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
@@ -21,7 +21,9 @@ const handler = async (req, res) => {
         oauth_token: authLink.oauth_token,
         oauth_secret: authLink.oauth_token_secret,
       };
-      await supabase.from<definitions["Twitter"]>("Twitter").insert([obj]);
+      const payload: Session = { ...obj };
+      req.session.twitterOauth = payload;
+      await req.session.save();
       res.json({ url: authLink.url });
     } catch (error) {
       console.log(error);
@@ -29,8 +31,8 @@ const handler = async (req, res) => {
     }
   } else {
     try {
-      const { oauth_token, oauth_verifier, shortId } = req.query;
-      const { oauth_secret } = await getOauthSecret(oauth_token);
+      const { oauth_verifier, shortId } = req.query;
+      const { oauth_token, oauth_secret } = req.session.twitterOauth;
 
       // TS sanity check
       const client = new TwitterApi({
@@ -56,7 +58,6 @@ const handler = async (req, res) => {
           const allRetweetsData = await loggedClient.v2.tweetRetweetedBy(tweetId);
           const allRetweets = await allRetweetsData.data;
           const retweeted = allRetweets.find((r) => r.username === userId.screen_name);
-
           if (!retweeted) {
             console.log("not retweeted");
             return res.status(401).send("Unauthorized, you didn't retweet.");
@@ -77,4 +78,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+export default withSessionRoute(handler);

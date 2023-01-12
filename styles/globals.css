@@ -22,19 +22,3 @@ body::-webkit-scrollbar {
 ::-webkit-scrollbar {
   display: none;
 }
-
-@media screen and (max-width: 480px) {
-  .react-pdf__Page__canvas {
-    margin: 0 auto;
-    width: 100% !important;
-    height: 70% !important;
-  }
-}
-
-@media screen and (min-width: 481px) {
-  .react-pdf__Page__canvas {
-    margin: 0 auto;
-    width: 70% !important;
-    height: 70% !important;
-  }
-}

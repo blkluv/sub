@@ -70,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (error) {
         throw error;
       }
-
+      res.revalidate(`/${obj.shortId}`);
       res.status(200).json({ result: "success" });
     } catch (error) {
       console.log("Error for: ");
@@ -111,6 +111,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw error;
       }
 
+      res.revalidate(`/${obj.shortId}`);
       res.status(200).json({ result: "success" });
     } catch (error) {
       console.log("Error for: ");
@@ -154,6 +155,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw error;
       }
 
+      res.revalidate(`/${id}`);
       return res.status(200).json({ result: "success" });
     }
   } else {

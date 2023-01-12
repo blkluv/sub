@@ -83,7 +83,7 @@ const Twitch = ({ fileInfo }) => {
               borderRadius: 2,
             }),
             backgroundColor: (theme) => theme.palette.primary.light,
-            ...(fileInfo?.customizations.buttonColor &&
+            ...(fileInfo?.customizations?.buttonColor &&
               fileInfo?.customizations?.buttonColor?.hex && {
                 backgroundColor: fileInfo.customizations.buttonColor.hex,
               }),

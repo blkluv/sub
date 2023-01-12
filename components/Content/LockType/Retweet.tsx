@@ -5,9 +5,18 @@ import { TwitterTweetEmbed } from "react-twitter-embed";
 
 import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
+import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import BaseLockType from "./LockTypeContainer";
 
-const Retweet = ({ fileInfo, isPreview }) => {
+interface RetweetProps {
+  fileInfo: MetadataUnlockInfo;
+  isPreview: boolean;
+}
+const Retweet = ({ fileInfo, isPreview }: RetweetProps) => {
+  const router = useRouter();
+  if (fileInfo.unlockInfo.type !== "retweet") {
+    return null;
+  }
   const twitterAuth = async () => {
     try {
       localStorage.setItem("sub-id", window.location.pathname.split("/")[1]);
@@ -21,7 +30,6 @@ const Retweet = ({ fileInfo, isPreview }) => {
       return null;
     }
   };
-  const router = useRouter();
 
   const { oauth_token, oauth_verifier } = router.query;
   const hasConnectedTwitter = oauth_token && oauth_verifier;
@@ -98,7 +106,7 @@ const Retweet = ({ fileInfo, isPreview }) => {
                 borderRadius: 2,
               }),
               backgroundColor: (theme) => theme.palette.primary.light,
-              ...(fileInfo?.customizations.buttonColor &&
+              ...(fileInfo?.customizations?.buttonColor &&
                 fileInfo?.customizations?.buttonColor?.hex && {
                   backgroundColor: fileInfo.customizations.buttonColor.hex,
                 }),

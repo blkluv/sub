@@ -54,7 +54,7 @@ const PlanSelector = ({
 }: PlanSelectorProps) => {
   const [changePlanModalOpen, setChangePlanModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [planToChangeTo, setPlanChoice] = useState<Plan>(null);
+  const [planToChangeTo, setPlanChoice] = useState<Plan | undefined>();
   const [planChoiceConfirmationOpen, setPlanChangeConfirmationOpen] = useState(false);
   const [openCardModal, setOpenCardModal] = useState(false); //Boolean or null if no default
   const [openBillingAddressModal, setOpenBillingAddressModal] = useState(false);
@@ -92,39 +92,6 @@ const PlanSelector = ({
     }
   };
 
-  // // Scroll to anchor hash
-  // useEffect(() => {
-  //   const scrollToHashElement = () => {
-  //     const { hash } = window.location;
-  //     const elementToScroll = document.getElementById(hash?.replace("#", ""));
-
-  //     if (!elementToScroll) return;
-
-  //     window.scrollTo({
-  //       top: elementToScroll.offsetTop - 75,
-  //       behavior: "smooth",
-  //     });
-  //   };
-
-  //   scrollToHashElement();
-  //   window.addEventListener("hashchange", scrollToHashElement);
-  //   return window.removeEventListener("hashchange", scrollToHashElement);
-  // }, []);
-
-  // useEffect(() => {
-  //   // check if user came from marketing site and wants to change plan
-  //   if (location?.state?.registerFromMarketing) {
-  //     const currentPlan = billing?.activePricingPlan;
-  //     const desiredPlan = billing?.billing_plans?.find(
-  //       (item) => item.nickname === location?.state?.desiredPlan
-  //     );
-  //     if (desiredPlan && currentPlan) {
-  //       handlePlanChoice(desiredPlan);
-  //       localStorage.removeItem("pinata-registration-plan-selection");
-  //     }
-  //   }
-  // }, []);
-
   const handlePlanChoice = async (plan: Plan) => {
     setPlanChoice(plan);
     if (!billing.stripe_customer.paymentMethods.length && plan.type !== planTypes.FREE.type) {
@@ -153,10 +120,10 @@ const PlanSelector = ({
     try {
       if (billing.stripe_customer) {
         FullStory.event("Upgrade plan", {
-          userEmail: user.user.email,
-          newPlan: planToChangeTo.name,
+          userEmail: user?.user?.email,
+          newPlan: planToChangeTo?.name,
         });
-        await changePlanLocal(planToChangeTo);
+        await changePlanLocal(planToChangeTo!);
       }
     } catch (error) {
       console.log(error);
@@ -182,10 +149,10 @@ const PlanSelector = ({
   const confirmDowngrade = async () => {
     setLoading(true);
     try {
-      await changePlanLocal(planToChangeTo);
+      await changePlanLocal(planToChangeTo!);
       FullStory.event("Downgrade plan", {
-        userEmail: user.user.email,
-        newPlan: planToChangeTo.name,
+        userEmail: user?.user?.email,
+        newPlan: planToChangeTo?.name,
       });
     } catch (error) {
       console.log(error);
@@ -256,8 +223,8 @@ const PlanSelector = ({
       )}
       {planChoiceConfirmationOpen && (
         <ConfirmationModal
-          title={`Upgrade to ${planToChangeTo.nickname}?`}
-          content={`Are you sure you want to upgrade to the ${planToChangeTo.nickname} plan for $${planToChangeTo.price}/month?`}
+          title={`Upgrade to ${planToChangeTo?.nickname}?`}
+          content={`Are you sure you want to upgrade to the ${planToChangeTo?.nickname} plan for $${planToChangeTo?.price}/month?`}
           modalOpen={planChoiceConfirmationOpen}
           toggleModal={setPlanChangeConfirmationOpen}
           loading={loading}

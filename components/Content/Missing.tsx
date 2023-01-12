@@ -14,7 +14,7 @@ const Missing = () => {
           padding: (theme) => theme.spacing(4),
           margin: (theme) => theme.spacing(4),
           backgroundColor: "white",
-          boxShadow: (theme) => theme.shadows[5],
+          boxShadow: (theme) => theme.shadows![5],
           borderRadius: (theme) => theme.shape.borderRadius,
         }}
       >

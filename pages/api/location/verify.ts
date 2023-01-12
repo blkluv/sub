@@ -2,7 +2,7 @@ import { getSubmarinedContent } from "../../../helpers/submarine";
 import { getUserContentCombo } from "../../../repositories/content";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 
-export default async function handler(req, res): Promise<SubmarinedContent> {
+export default async function handler(req, res): Promise<SubmarinedContent | undefined> {
   // allow CORS on this method
   if (req.method === "OPTIONS") {
     res.status(200).end();
@@ -26,6 +26,9 @@ export default async function handler(req, res): Promise<SubmarinedContent> {
           return res.status(401).send("Not in the right location");
         }
 
+        if (!pinata_submarine_key || !pinata_gateway_subdomain) {
+          return res.status(401).send("No submarine key found");
+        }
         const responseObj = await getSubmarinedContent(
           pinata_submarine_key,
           submarine_cid,

@@ -35,7 +35,10 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
           reject("Wallet does not support message signing!");
         }
 
-        const signatureRaw = await signMessage(message);
+        const signatureRaw = signMessage && (await signMessage(message));
+        if (!signatureRaw || !publicKey) {
+          throw new Error("Signature is null");
+        }
         const signature = bs58.encode(signatureRaw);
 
         const data: SubmarinedContent = await ky
@@ -82,7 +85,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
       borderRadius: 2,
     }),
     backgroundColor: theme.palette.primary.light,
-    ...(fileInfo?.customizations.buttonColor &&
+    ...(fileInfo?.customizations?.buttonColor &&
       fileInfo?.customizations?.buttonColor?.hex && {
         backgroundColor: fileInfo.customizations.buttonColor.hex,
       }),

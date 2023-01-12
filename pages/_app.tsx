@@ -32,5 +32,5 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
 export default MyApp;
 
 export function reportWebVitals(metric) {
-  process.env.NEXT_PUBLIC_DEBUG && console.log(metric);
+  localStorage.getItem("reportWebVitals") === "true" && console.log(metric);
 }

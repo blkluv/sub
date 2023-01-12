@@ -14,7 +14,10 @@ export const selectUser = createSelector([selectAuth], (auth) => auth.user || {}
 export const selectUserAvatar = createSelector([selectUser], (user) => user.avatar || "");
 export const selectAuthError = createSelector([selectAuth], (auth) => auth.errorMsg);
 export const selectAuthStatus = createSelector([selectAuth], (auth) => auth.status);
-export const selectGatewayUrl = createSelector([selectUser], (user) => user.gatewayUrl);
+export const selectGatewayUrl = createSelector(
+  [selectUser],
+  (user) => user.gatewayUrl || "MISSING-GW"
+);
 export const selectTheme = createSelector([selectUser], (user) => {
   // TODO store preferences?
   if (user.theme) {

@@ -1,62 +1,50 @@
-import { Container, Unstable_Grid2 } from "@mui/material";
 import { Box } from "@mui/system";
-import ky from "ky";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import MainLandingContent from "../../components/Content/MainLandingContent";
-import Loading from "../../components/Dashboard/Loading";
 import PublicLayout from "../../components/Layout/PublicLayout";
+import { getAllContentIds, getUserContentCombo } from "../../repositories/content";
 import { getContentReturnObject } from "../api/content/[shortId]";
 
-const Content = () => {
-  const [data, setData] = useState<getContentReturnObject | null>();
-
-  const gatewayUrl =
-    data && `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
-  const router = useRouter();
-  const { id } = router.query;
-
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
-    ky(`/api/content/${id}`, {
-      method: "GET",
-    })
-      .then(async (data) => {
-        const body = await data.json();
-        setData(body);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [id]);
-
-  if (loading) {
-    return (
-      <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
-        <Unstable_Grid2
-          container
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            width: "100%",
-          }}
-        >
-          <Loading />
-        </Unstable_Grid2>
-      </Box>
-    );
-  }
+const Content = ({ data }: { data: getContentReturnObject & { error: any } }) => {
+  const gatewayUrl = `https://${data.gatewayUrl}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
   return (
     <PublicLayout fileInfo={data}>
       <Box sx={{ minHeight: "100vh", width: "100vw", display: "flex" }}>
-        <MainLandingContent missing={!data} fileInfo={data} gatewayUrl={gatewayUrl} />
+        <MainLandingContent fileInfo={data} gatewayUrl={gatewayUrl} />
       </Box>
     </PublicLayout>
   );
 };
+
+export async function getStaticPaths(context) {
+  const ids = await getAllContentIds();
+  return {
+    paths: ids.map((id) => ({ params: { id } })),
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  try {
+    const now = Date.now();
+    const theContent = await getUserContentCombo(params.id);
+    const data = {
+      id: theContent.id,
+      name: theContent.name,
+      description: theContent.description,
+      thumbnail: theContent.thumbnail,
+      submarineCID: theContent.submarine_cid,
+      unlockInfo: theContent.unlock_info,
+      shortId: theContent.short_id,
+      customizations: theContent.customizations,
+      gatewayUrl: theContent.Users.pinata_gateway_subdomain,
+    };
+    process.env.NEXT_PUBLIC_DEBUG &&
+      console.log(Date.now() - now, " --> Time spent fetching content from DB (ms)");
+    return { props: { data } };
+  } catch (error) {
+    console.log(error);
+    return { props: { data: { error: true } } };
+  }
+}
 
 export default Content;

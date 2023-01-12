@@ -33,7 +33,8 @@ export const UnlockTypeCard = ({
               <Unstable_Grid2>
                 <Typography
                   sx={{
-                    color: (theme) => unlockType === type && theme.palette.primary.light,
+                    color: (theme) =>
+                      unlockType === type ? theme.palette.primary.light : undefined,
                     "&:hover": { color: (theme) => theme.palette.primary.light },
                   }}
                   variant="h3"
@@ -45,7 +46,8 @@ export const UnlockTypeCard = ({
                 <Typography
                   variant="body1"
                   sx={{
-                    color: (theme) => unlockType === type && theme.palette.primary.light,
+                    color: (theme) =>
+                      unlockType === type ? theme.palette.primary.light : undefined,
                     "&:hover": { color: (theme) => theme.palette.primary.light },
                   }}
                 >

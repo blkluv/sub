@@ -15,8 +15,10 @@ const NFT = ({ setBlockchain, children }: NFTProps) => {
   const title = "NFT Ownership";
 
   const { values } = useFormikContext<MetadataUnlockInfo>();
-  const unlockInfo = values.unlockInfo.type === "nft" ? values.unlockInfo : null;
-
+  if (values.unlockInfo.type !== "nft") {
+    return null;
+  }
+  const unlockInfo = values.unlockInfo;
   return (
     <LockTypeContainer title={title} description={description}>
       <Unstable_Grid2 container direction={"column"} sx={{ gap: "1em", marginTop: "2em" }}>

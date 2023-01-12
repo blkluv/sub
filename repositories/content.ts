@@ -22,3 +22,14 @@ export const getUserContentCombo = async (shortId): Promise<UserContentCombo> =>
   }
   return Content[0];
 };
+
+export const getAllContentIds = async (): Promise<string[]> => {
+  let { data: Content, error } = await supabase
+    .from<definitions["Content"]>("Content")
+    .select("short_id");
+
+  if (!Content) {
+    throw "Couldn't find content";
+  }
+  return Content.map((c) => c.short_id);
+};

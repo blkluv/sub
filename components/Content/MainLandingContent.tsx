@@ -9,27 +9,23 @@ import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
 import { Box, Unstable_Grid2, useMediaQuery } from "@mui/material";
+import { Customizations } from "../../types/UnlockInfo";
 
-export interface MainLandingContentProps {
-  missing: boolean;
-  fileInfo?: MetadataUnlockInfo;
+export type MainLandingContentProps = {
+  fileInfo: null | MetadataUnlockInfo;
   gatewayUrl: string;
   isPreview?: boolean;
-}
+};
 
 const MainLandingContent = ({
   fileInfo,
   gatewayUrl,
-  missing,
   isPreview = false,
 }: MainLandingContentProps) => {
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
-
   let content;
-  if (missing) {
+  if (!fileInfo) {
     content = <Missing />;
-  } else if (!fileInfo) {
-    content = <Loading />;
   } else if (hasUnlockedContent) {
     content = <UnlockedContentContainer name={fileInfo?.name} />;
   } else {
@@ -59,8 +55,9 @@ const MainLandingContent = ({
             ? `url(${gatewayUrl}/ipfs/${fileInfo?.customizations?.backgroundCid})`
             : "none",
           background:
-            !fileInfo?.customizations?.backgroundCid &&
-            "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
+            (!fileInfo?.customizations?.backgroundCid &&
+              "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)") ||
+            "",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           width: "100%",

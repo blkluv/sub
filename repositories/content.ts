@@ -11,16 +11,12 @@ const supabase = getSupabaseClient();
 
 type UserContentCombo = ContentWithUnlockInfo & { Users: definitions["Users"] };
 
-export const getUserContentCombo = async (shortId): Promise<UserContentCombo> => {
-  let { data: Content, error } = await supabase
+export const getUserContentCombo = async (shortId): Promise<UserContentCombo | null> => {
+  let { data, error } = await supabase
     .from<UserContentCombo>("Content")
     .select(`*, Users (pinata_user_id, pinata_submarine_key, pinata_gateway_subdomain)`)
     .eq("short_id", shortId);
-
-  if (!Content || !Content[0]) {
-    throw "Couldn't find content";
-  }
-  return Content[0];
+  return data && data[0];
 };
 
 export const getAllContentIds = async (): Promise<string[]> => {

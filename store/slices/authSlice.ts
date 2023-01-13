@@ -227,11 +227,11 @@ export const authSlice = createSlice({
       state.status = LOGIN_STATUSES.pending;
     });
     builder.addMatcher(isFulfilledLogin, (state, { payload: { user, status } }) => {
-      state.status = LOGIN_STATUSES.fulfilled;
       if (status === MFA_STATUS.MFA || !user) {
         state.status = LOGIN_STATUSES.MFARequest;
         return;
       }
+      state.status = LOGIN_STATUSES.fulfilled;
 
       const gatewayUrl = `https://${user["gatewayUrl"]}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
       state.user = {

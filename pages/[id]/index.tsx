@@ -15,31 +15,35 @@ const Content = ({ data }: { data: getContentReturnObject & { error: any } }) =>
   );
 };
 
-export async function getStaticPaths(context) {
+export async function getStaticPaths() {
   const ids = await getAllContentIds();
   return {
     paths: ids.map((id) => ({ params: { id } })),
-    fallback: false,
+    fallback: "blocking",
   };
 }
 
 export async function getStaticProps({ params }) {
   try {
     const now = Date.now();
-    const theContent = await getUserContentCombo(params.id);
+    const content = await getUserContentCombo(params.id);
+    if (!content) {
+      return { notFound: true };
+    }
     const data = {
-      id: theContent.id,
-      name: theContent.name,
-      description: theContent.description,
-      thumbnail: theContent.thumbnail,
-      submarineCID: theContent.submarine_cid,
-      unlockInfo: theContent.unlock_info,
-      shortId: theContent.short_id,
-      customizations: theContent.customizations,
-      gatewayUrl: theContent.Users.pinata_gateway_subdomain,
+      id: content.id,
+      name: content.name,
+      description: content.description,
+      thumbnail: content.thumbnail,
+      submarineCID: content.submarine_cid,
+      unlockInfo: content.unlock_info,
+      shortId: content.short_id,
+      customizations: content.customizations,
+      gatewayUrl: content.Users.pinata_gateway_subdomain,
     };
     process.env.NEXT_PUBLIC_DEBUG &&
       console.log(Date.now() - now, " --> Time spent fetching content from DB (ms)");
+
     return { props: { data } };
   } catch (error) {
     console.log(error);

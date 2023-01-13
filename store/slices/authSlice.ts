@@ -227,11 +227,8 @@ export const authSlice = createSlice({
       state.status = LOGIN_STATUSES.pending;
     });
     builder.addMatcher(isFulfilledLogin, (state, { payload: { user, status } }) => {
-      if (!user) {
-        return;
-      }
       state.status = LOGIN_STATUSES.fulfilled;
-      if (status === "MFA") {
+      if (status === MFA_STATUS.MFA || !user) {
         state.status = LOGIN_STATUSES.MFARequest;
         return;
       }

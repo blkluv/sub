@@ -7,7 +7,6 @@ import {
 } from "../../store/legacy/billing/billing.actions";
 
 import AddCardModal from "./AddCardModal";
-// import BillingAddressModal from "./BillingAddressModal";
 import RemoveCardModal from "./RemoveCardModal";
 import {
   CardContent,
@@ -19,13 +18,14 @@ import {
   TableBody,
   Typography,
   Button,
+  Unstable_Grid2,
+  IconButton,
 } from "@mui/material";
 import { GatewaysState } from "../../store/legacy/gateways/types";
 import { BillingState, PaymentMethod } from "../../store/legacy/billing/types";
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
-import { AlertType } from "../Alert";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 const CARDS_ALLOWED = 5;
 
 interface PaymentInfoProps {
@@ -71,24 +71,37 @@ function PaymentInfo(props: PaymentInfoProps) {
         <TableCell>{`${method.exp_month}/${method.exp_year}`}</TableCell>
         <TableCell>
           {method.isActive ? (
-            <span className="text-success">Default</span>
+            <span style={{ color: "#28a745", fontWeight: 600 }}>Default</span>
           ) : (
-            <button
+            <Button
+              sx={{
+                padding: 0,
+                borderRadius: "1rem",
+                fontSize: "0.75rem",
+                height: "1.5rem",
+                width: "6rem",
+              }}
+              size="small"
               onClick={() => setDefaultCard(method.customer, method.id)}
-              className="pinata-link-button p-0"
             >
               Make Default
-            </button>
+            </Button>
           )}
         </TableCell>
         <TableCell>
           {!method.isActive && (
-            <button
+            <IconButton
               onClick={() => handleOpenCardRemovalWindow(method)}
-              className="pinata-link-button"
+              sx={{
+                backgroundColor: "transparent",
+                border: "none",
+                outline: "none",
+                cursor: "pointer",
+                color: "#495057",
+              }}
             >
-              <i className="fas fa-trash"></i>
-            </button>
+              <DeleteIcon />
+            </IconButton>
           )}
         </TableCell>
       </TableRow>
@@ -137,10 +150,15 @@ function PaymentInfo(props: PaymentInfoProps) {
     <>
       <Card>
         <CardContent>
-          <div className="d-flex justify-content-between align-items-center mb-2">
+          <Unstable_Grid2
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            sx={{ marginBottom: "1rem" }}
+          >
             <Typography variant="h6">Payment Info</Typography>
             <Button onClick={handleNewCardModal}>Add Card</Button>
-          </div>
+          </Unstable_Grid2>
           <Table>
             <TableHead>
               <TableRow>
@@ -154,11 +172,6 @@ function PaymentInfo(props: PaymentInfoProps) {
             </TableHead>
             <TableBody>{paymentMethods.map((pm) => renderPaymentMethods(pm))}</TableBody>
           </Table>
-          {/*{Boolean(paymentMethods.length) && (*/}
-          {/*  <button className="btn btn-sm btn-info" onClick={handleBillingAddressModal}>*/}
-          {/*    Update My Billing Address*/}
-          {/*  </button>*/}
-          {/*)}*/}
         </CardContent>
       </Card>
       {openCardModal && (
@@ -168,12 +181,6 @@ function PaymentInfo(props: PaymentInfoProps) {
           handleAddCard={handleAddCard}
         />
       )}
-      {/* {openBillingAddressModal && (
-        <BillingAddressModal
-          setModalOpen={setOpenBillingAddressModal}
-          modalIsOpen={openBillingAddressModal}
-        />
-      )} */}
       {removeCardModalOpen && (
         <RemoveCardModal
           removeCardModalOpen={removeCardModalOpen}

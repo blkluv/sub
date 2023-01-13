@@ -26,6 +26,7 @@ import { BillingState, PaymentMethod } from "../../store/legacy/billing/types";
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { AlertType } from "../Alert";
 const CARDS_ALLOWED = 5;
 
 interface PaymentInfoProps {

@@ -97,6 +97,13 @@ const PlanSelector = ({
             message: "Coupon not found, please try again",
           })
         );
+      } else if (reason === "THE_COUPON_WAS_APPLIED_BEFORE") {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Coupon was already applied",
+          })
+        );
       } else {
         dispatch(
           setAlert({

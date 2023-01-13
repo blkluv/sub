@@ -15,7 +15,7 @@ interface CardPricingProps {
 const Banner = styled(Box)`
   position: absolute;
   bottom: 0.7rem;
-  right: 0.7rem;
+  right: -1rem;
   color: black;
   background-color: #fcf46a;
   border-radius: 0.25rem;
@@ -23,6 +23,7 @@ const Banner = styled(Box)`
   font-weight: 300;
   font-align: center;
   padding: 0 0.25rem 0 0.25rem;
+  paddingright: 0.25rem;
 `;
 const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPricingProps) => {
   const hasCouponBanner = plan.type === 1 && localStorage.getItem("newUser") === "true";

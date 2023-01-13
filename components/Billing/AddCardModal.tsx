@@ -61,6 +61,11 @@ const AddCardModal = ({
             required
             value={coupon}
             onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                coupon && handleAddCoupon(coupon);
+              }
+            }}
             autoFocus
             placeholder="Coupon Code"
           />

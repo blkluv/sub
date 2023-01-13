@@ -25,13 +25,11 @@ const ForgotPasswordForm = () => {
     password: Yup.string()
       .min(8, "Password must contain at least 8 characters")
       .max(50, "Too Long!")
-      .required("Required")
       .matches(
         validationsRegex.password,
         "Password must contain at least 8 characters, including UPPER/lowercase, numbers and special characters"
       ),
     code: Yup.string()
-      .required("Required")
       .matches(/^[0-9]+$/, "Must be only digits")
       .min(6, "Must be exactly 6 digits")
       .max(6, "Must be exactly 6 digits"),
@@ -46,6 +44,7 @@ const ForgotPasswordForm = () => {
     password: "",
   };
   const onSubmit = async (values, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
+    console.log("submit");
     setSubmitting(true);
     try {
       if (codeSent) {
@@ -138,6 +137,7 @@ const ForgotPasswordForm = () => {
                     type="submit"
                     disabled={isSubmitting}
                     sx={{
+                      zIndex: 100,
                       height: "auto",
                       justifyContent: "center",
                       width: "100%",

@@ -1,9 +1,10 @@
-import { Pagination } from "@mui/material";
-import { Document, Page, pdfjs } from "react-pdf";
-import { useState, useEffect } from "react";
+import { Pagination, Box } from "@mui/material";
+import { Document, Page } from "react-pdf";
+import { useState } from "react";
 import { LinearProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const PDF = ({ url }: { url: string }) => {
   const [numPages, setNumPages] = useState<number>(null);
@@ -23,7 +24,11 @@ const PDF = ({ url }: { url: string }) => {
       <Pagination size="small" count={numPages} page={pageNumber} onChange={handleChange} />
       <Document file={url} onLoadSuccess={onDocumentLoadSuccess} loading={<LinearProgress />}>
         <Page
-          loading={<LinearProgress />}
+          loading={
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          }
           pageNumber={pageNumber}
           renderAnnotationLayer={false}
           width={isMobile ? 300 : 900}

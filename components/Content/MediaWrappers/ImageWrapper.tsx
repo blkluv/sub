@@ -28,11 +28,11 @@ const ImageWrapper = ({ url, originalName }: ImageWrapperProps) => {
 
       <Button
         href={url}
-        variant="outlined"
         sx={{
           backgroundColor: "white",
           borderColor: "black",
           color: "black",
+          width: "10em",
           marginTop: "1rem",
         }}
       >

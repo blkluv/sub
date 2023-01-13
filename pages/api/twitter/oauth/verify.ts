@@ -52,6 +52,9 @@ const handler = async (req, res) => {
         const loggedClient = loginResult.client;
         const userId = await loggedClient.v1.verifyCredentials();
         const info = await getUserContentCombo(shortId);
+        if (!info) {
+          return res.status(404).send("No content found");
+        }
         const { unlock_info, submarine_cid } = info;
         const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
         const { type } = unlock_info;

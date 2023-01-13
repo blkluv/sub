@@ -14,7 +14,9 @@ export default async function handler(req, res): Promise<SubmarinedContent | und
       const { userLat, userLong, shortId } = req.body;
 
       const info = await getUserContentCombo(shortId);
-
+      if (!info) {
+        return res.status(404).send("No content found");
+      }
       const { unlock_info, submarine_cid, Users } = info;
       //sanity check for TS
       if (unlock_info.type === "location") {

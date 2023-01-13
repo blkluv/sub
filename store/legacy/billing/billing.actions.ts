@@ -123,7 +123,8 @@ export const changePlan = (newPlan: Plan, coupon?: string) => async (dispatch: a
     });
 
     if (data) {
-      if (data?.nextPlan) {
+      localStorage.removeItem("newUser");
+      if (!coupon && data?.nextPlan) {
         dispatch(
           setAlert({
             message: `Your plan will change to ${newPlan.nickname} at the end of the current billing period`,

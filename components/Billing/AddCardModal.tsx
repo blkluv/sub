@@ -2,7 +2,7 @@ import PaymentMethod from "./PaymentMethod";
 import { Button, Dialog, DialogContent, Radio, RadioGroup, TextField } from "@mui/material";
 import { PinataDialogTitle } from "../shared/Dialog";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface AddCardModalProps {
   addCardModalOpen: boolean;
@@ -19,6 +19,7 @@ const AddCardModal = ({
   handleAddCoupon,
   allowCoupon,
 }: AddCardModalProps) => {
+  const inputRef = useRef();
   const [paymentType, setPaymentType] = useState("card");
   const [coupon, setCoupon] = useState("");
   const handlePaymentTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +60,8 @@ const AddCardModal = ({
             type="text"
             required
             value={coupon}
-            onChange={(e) => setCoupon(e.target.value)}
+            onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+            autoFocus
             placeholder="Coupon Code"
           />
           <Button

@@ -72,6 +72,7 @@ const SignUpForm = () => {
     };
     try {
       await Auth.signUp(params);
+      localStorage.setItem("newUser", "true");
       dispatch(
         setAlert({
           message: "Account created. Please confirm your email address",

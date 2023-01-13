@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Card, CardContent, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Card, CardContent, Typography, Unstable_Grid2 } from "@mui/material";
 import { BillingPlan, Plan } from "../../../store/legacy/billing/types";
 import CheckIcon from "@mui/icons-material/Check";
 import Image from "next/image";
@@ -12,7 +12,20 @@ interface CardPricingProps {
   disabled: boolean;
 }
 
+const Banner = styled(Box)`
+  position: absolute;
+  bottom: 0.7rem;
+  right: 0.7rem;
+  color: black;
+  background-color: #fcf46a;
+  border-radius: 0.25rem;
+  border: 1px solid black;
+  font-weight: 300;
+  font-align: center;
+  padding: 0 0.25rem 0 0.25rem;
+`;
 const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPricingProps) => {
+  const hasCouponBanner = plan.type === 1 && localStorage.getItem("newUser") === "true";
   return (
     <Card
       sx={{
@@ -30,37 +43,38 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
       <CardContent sx={{ height: "100%" }}>
         <Unstable_Grid2 container flexDirection={"column"}>
           <Unstable_Grid2>
-            {currentPlan?.type === plan.type ? (
-              <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
-                <Image height={46} width={33} src="/pinnie-white.png" alt="Pinata logo" />
-                {plan.type !== 0 && (
-                  <>
-                    <Typography variant="h6">+</Typography>
-                    <Image
-                      height={38}
-                      width={45}
-                      src="/submarine-white.png"
-                      alt="Submarine.me logo"
-                    />
-                  </>
-                )}
-              </Unstable_Grid2>
-            ) : (
-              <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
-                <Image height={46} width={30} src="/pinnie-dark.png" alt="Pinata logo" />
-                {plan.type !== 0 && (
-                  <>
-                    <Typography variant="h6">+</Typography>
-                    <Image
-                      height={38}
-                      width={45}
-                      src="/submarine-dark.png"
-                      alt="Submarine.me logo"
-                    />
-                  </>
-                )}
-              </Unstable_Grid2>
+            {hasCouponBanner && (
+              <Box sx={{ position: "relative" }}>
+                <Banner>
+                  <Typography fontSize={14}>
+                    Promo code: <p style={{ display: "inline", fontWeight: 800 }}>SUB30</p>
+                  </Typography>
+                </Banner>
+              </Box>
             )}
+            <Unstable_Grid2 container sx={{ alignItems: "center", gap: ".5rem" }}>
+              <Image
+                height={46}
+                width={33}
+                src={currentPlan?.type === plan.type ? "/pinnie-white.png" : "/pinnie-dark.png"}
+                alt="Pinata logo"
+              />
+              {plan.type !== 0 && (
+                <>
+                  <Typography variant="h6">+</Typography>
+                  <Image
+                    height={38}
+                    width={45}
+                    src={
+                      currentPlan?.type === plan.type
+                        ? "/submarine-white.png"
+                        : "/submarine-dark.png"
+                    }
+                    alt="Submarine.me logo"
+                  />
+                </>
+              )}
+            </Unstable_Grid2>
           </Unstable_Grid2>
 
           <Unstable_Grid2>
@@ -77,6 +91,7 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
             <Typography variant="subtitle2" sx={{ opacity: ".6" }}>
               {plan.type == 0 ? "For a lifetime" : "/month"}{" "}
             </Typography>
+
             <Unstable_Grid2>
               {plan?.features?.length > 0 &&
                 plan.features.map((feature, index) => {
@@ -96,13 +111,13 @@ const CardPricing = ({ plan, action, currentPlan, nextPlan, disabled }: CardPric
               )}
             </Unstable_Grid2>
           </Unstable_Grid2>
-
           <Unstable_Grid2 sx={{ textAlign: "center" }}>
             {currentPlan?.type !== plan.type && nextPlan?.type !== plan.type && (
               <Button onClick={() => action(plan)} sx={{ marginTop: 2, width: "90%" }}>
-                Select Plan
+                {hasCouponBanner ? "FREE 30 DAYS" : "Select Plan"}
               </Button>
             )}
+
             {currentPlan?.type === plan.type && (
               <Button
                 disabled={currentPlan?.type === plan.type}

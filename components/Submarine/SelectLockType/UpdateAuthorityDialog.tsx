@@ -1,16 +1,7 @@
 import Image from "next/image";
 import authority from "./update_authority.png";
 import InformationCircleIconStyled from "../../Form/InformationCircleIconStyled";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-  Unstable_Grid2,
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 export default function UpdateAuthorityDialog({
   updateAuthorityDialogOpen: open,

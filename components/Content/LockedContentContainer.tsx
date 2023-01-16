@@ -1,7 +1,10 @@
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
-import { UnlockInfo } from "../../types/UnlockInfo";
+import { BlockchainOptions, UnlockInfo } from "../../types/UnlockInfo";
 import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
+import FlowUnlock from "./LockType/Flow";
+import Twitch from "./LockType/Twitch";
+
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
 
 import dynamic from "next/dynamic";
@@ -28,12 +31,14 @@ const LockedContentContainer = ({
       case "location":
         return <LocationUnlock fileInfo={fileInfo} />;
       case "nft":
-        if (unlockInfo.blockchain === "Solana") {
+        if (unlockInfo.blockchain === BlockchainOptions.Solana) {
           return (
             <SolanaProvider>
               <Solana fileInfo={fileInfo} />
             </SolanaProvider>
           );
+        } else if (unlockInfo.blockchain === BlockchainOptions.Flow) {
+          return <FlowUnlock fileInfo={fileInfo} />;
         } else if (EVMChains.includes(unlockInfo.blockchain)) {
           return (
             <WagmiProvider>
@@ -43,6 +48,9 @@ const LockedContentContainer = ({
         }
       case "retweet":
         return <Retweet fileInfo={fileInfo} isPreview={isPreview} />;
+      case "twitch":
+        return <Twitch fileInfo={fileInfo} />;
+
       default:
         return <div>Unknown lock type</div>;
     }

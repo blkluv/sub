@@ -1,8 +1,6 @@
-import axios from "axios";
 import { ethers } from "ethers";
 import { verifyMessage } from "ethers/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import { withIronSession } from "next-iron-session";
 import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
 import { getSubmarinedContent } from "../../helpers/submarine";
@@ -13,16 +11,6 @@ import { getUserContentCombo } from "../../repositories/content";
 import { getMessagetoSign } from "../../helpers/messageToSign";
 
 const supabase = getSupabaseClient();
-
-function withSession(handler) {
-  return withIronSession(handler, {
-    password: process.env.SECRET_COOKIE_PASSWORD,
-    cookieName: "web3-auth-session",
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production" ? true : false,
-    },
-  });
-}
 
 async function checkErc721Balance(contract, address) {
   try {
@@ -44,7 +32,12 @@ async function checkErc1155Balance(contract, address, tokenId) {
   }
 }
 
-export default withSession(async (req, res) => {
+const handler = async (req, res) => {
+  // allow CORS on this method
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
   if (req.method === "POST") {
     try {
       const {
@@ -143,8 +136,6 @@ export default withSession(async (req, res) => {
     }
   } else if (req.method === "GET") {
     try {
-      // const message = { contract: req.query.contract, id: uuidv4() };
-      // req.session.set("message-session", message);
       const sessionObject = {
         id: uuidv4(),
         contract: req.query.contract,
@@ -168,4 +159,6 @@ export default withSession(async (req, res) => {
       message: "This is the way...wait, no it is not. What are you doing here?",
     });
   }
-});
+};
+
+export default handler;

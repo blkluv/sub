@@ -10,8 +10,10 @@ interface LocationProps {
   fileInfo: MetadataUnlockInfo;
 }
 const LocationUnlock = ({ fileInfo }: LocationProps) => {
-  const unlockInfo: UnlockInfoLocation =
-    fileInfo.unlockInfo.type === "location" && fileInfo.unlockInfo;
+  if (fileInfo.unlockInfo.type !== "location") {
+    return null;
+  }
+  const unlockInfo: UnlockInfoLocation = fileInfo.unlockInfo;
 
   const verifyLocation = async (): Promise<SubmarinedContent> => {
     return new Promise<SubmarinedContent>((resolve, reject) => {

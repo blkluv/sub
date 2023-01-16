@@ -64,13 +64,18 @@ interface UserMFA {
   mfa: string;
 }
 
+enum MFA_STATUS {
+  MFA = "MFA",
+  OK = "OK",
+}
+
 interface Login {
   user: User;
-  status: "OK";
+  status: MFA_STATUS.OK;
 }
 interface MFA {
   user: null;
-  status: "MFA";
+  status: MFA_STATUS.MFA;
 }
 
 export const confirmMFA = createAsyncThunk("auth/confirmMFA", async ({ mfa }: UserMFA) => {
@@ -96,7 +101,7 @@ export const doLogin = createAsyncThunk(
       // CognitoUser is not serializable so we cannot store it on Redux.
       cognitoUser = res;
       return {
-        status: "MFA",
+        status: MFA_STATUS.MFA,
         user: null,
       };
     } else {
@@ -105,7 +110,7 @@ export const doLogin = createAsyncThunk(
       FullStory.event("Logged in", {
         userEmail: email,
       });
-      return { user, status: "OK" };
+      return { user, status: MFA_STATUS.OK };
     }
   }
 );
@@ -160,7 +165,7 @@ export const refreshGatewayUrl = createAsyncThunk("auth/refreshGatewayUrl", asyn
 export const tryLogin = createAsyncThunk("auth/tryLogin", async (): Promise<Login | MFA> => {
   const user = await getUser();
   const userWithAvatar = await setAvatar(user);
-  return { user: userWithAvatar, status: "OK" };
+  return { user: userWithAvatar, status: MFA_STATUS.OK };
 });
 
 const setAvatar = async (user: User): Promise<User> => {
@@ -173,7 +178,7 @@ const setAvatar = async (user: User): Promise<User> => {
     });
     localStorage.setItem("pinata-avatar", avatar || "");
   }
-  user.avatar = avatar;
+  user.avatar = avatar || undefined;
   return user;
 };
 
@@ -207,7 +212,7 @@ export const authSlice = createSlice({
     });
 
     builder.addCase(doLogOut.fulfilled, (state) => {
-      state.user = null;
+      state.user = undefined;
     });
 
     builder.addCase(refreshGatewayUrl.fulfilled, (state, { payload }) => {
@@ -218,15 +223,15 @@ export const authSlice = createSlice({
     });
 
     builder.addMatcher(isPendingLogin, (state) => {
-      state.errorMsg = null;
+      state.errorMsg = undefined;
       state.status = LOGIN_STATUSES.pending;
     });
     builder.addMatcher(isFulfilledLogin, (state, { payload: { user, status } }) => {
-      state.status = LOGIN_STATUSES.fulfilled;
-      if (status === "MFA") {
+      if (status === MFA_STATUS.MFA || !user) {
         state.status = LOGIN_STATUSES.MFARequest;
         return;
       }
+      state.status = LOGIN_STATUSES.fulfilled;
 
       const gatewayUrl = `https://${user["gatewayUrl"]}.${process.env.NEXT_PUBLIC_GATEWAY_ROOT}.cloud`;
       state.user = {

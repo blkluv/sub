@@ -66,8 +66,15 @@ const handler = async (req, res) => {
       }
 
       const info = await getUserContentCombo(shortId);
+      if (!info) {
+        return res.status(404).send("No content found");
+      }
       const { submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
+
+      if (!pinata_submarine_key || !pinata_gateway_subdomain) {
+        return res.status(401).send("No submarine key found");
+      }
       const responseObj = await getSubmarinedContent(
         pinata_submarine_key,
         submarine_cid,

@@ -122,7 +122,7 @@ const CustomizeLockScreen = () => {
       </Field>
       <Typography variant="h6">Button Color</Typography>
       <Unstable_Grid2 container>
-        {values.customizations.buttonColor && (
+        {values?.customizations?.buttonColor && (
           <IconButton
             sx={{ height: "40px", width: "40px" }}
             onClick={() => setFieldValue("customizations.buttonColor", undefined)}
@@ -133,7 +133,7 @@ const CustomizeLockScreen = () => {
         <Unstable_Grid2 container sx={{ gap: "2em" }}>
           <Card
             sx={{
-              backgroundColor: values.customizations.buttonColor
+              backgroundColor: values?.customizations?.buttonColor
                 ? values.customizations.buttonColor.hex
                 : (theme) => theme.palette.primary.light,
               height: (theme) => theme.spacing(6),
@@ -159,7 +159,7 @@ const CustomizeLockScreen = () => {
             }}
           >
             <ChromePicker
-              color={values.customizations.buttonColor}
+              color={values?.customizations?.buttonColor}
               onChangeComplete={(color) => setFieldValue("customizations.buttonColor", color)}
             />
           </Popover>
@@ -167,7 +167,7 @@ const CustomizeLockScreen = () => {
       </Unstable_Grid2>
       <Typography variant="h6">Button Text Color</Typography>
       <Unstable_Grid2 container>
-        {values.customizations.buttonTextColor && (
+        {values?.customizations?.buttonTextColor && (
           <IconButton
             sx={{ height: "40px", width: "40px" }}
             onClick={() => setFieldValue("customizations.buttonTextColor", undefined)}
@@ -178,7 +178,7 @@ const CustomizeLockScreen = () => {
         <Unstable_Grid2 container sx={{ gap: "2em" }}>
           <Card
             sx={{
-              backgroundColor: values.customizations.buttonTextColor
+              backgroundColor: values?.customizations?.buttonTextColor
                 ? values.customizations.buttonTextColor.hex
                 : (theme) => theme.palette.primary.dark,
               height: (theme) => theme.spacing(6),
@@ -204,7 +204,7 @@ const CustomizeLockScreen = () => {
             }}
           >
             <ChromePicker
-              color={values.customizations.buttonTextColor}
+              color={values?.customizations?.buttonTextColor}
               onChangeComplete={(color) => setFieldValue("customizations.buttonTextColor", color)}
             />
           </Popover>

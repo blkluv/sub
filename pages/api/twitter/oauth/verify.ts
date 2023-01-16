@@ -16,8 +16,8 @@ const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const client = new TwitterApi({
-        appKey: process.env.CONSUMER_KEY,
-        appSecret: process.env.CONSUMER_SECRET,
+        appKey: process.env.CONSUMER_KEY || "",
+        appSecret: process.env.CONSUMER_SECRET || "",
       });
       const authLink = await client.generateAuthLink(
         `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${process.env.CONSUMER_CALLBACK}`
@@ -39,8 +39,8 @@ const handler = async (req, res) => {
 
       // TS sanity check
       const client = new TwitterApi({
-        appKey: process.env.CONSUMER_KEY,
-        appSecret: process.env.CONSUMER_SECRET,
+        appKey: process.env.CONSUMER_KEY || "",
+        appSecret: process.env.CONSUMER_SECRET || "",
         accessToken: oauth_token,
         accessSecret: oauth_secret,
       });
@@ -52,6 +52,9 @@ const handler = async (req, res) => {
         const loggedClient = loginResult.client;
         const userId = await loggedClient.v1.verifyCredentials();
         const info = await getUserContentCombo(shortId);
+        if (!info) {
+          return res.status(404).send("No content found");
+        }
         const { unlock_info, submarine_cid } = info;
         const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
         const { type } = unlock_info;
@@ -67,6 +70,9 @@ const handler = async (req, res) => {
             return res.status(401).send("Unauthorized, you didn't retweet.");
           }
 
+          if (!pinata_submarine_key || !pinata_gateway_subdomain) {
+            return res.status(401).send("No submarine key found");
+          }
           const responseObj = await getSubmarinedContent(
             pinata_submarine_key,
             submarine_cid,

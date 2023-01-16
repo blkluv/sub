@@ -17,7 +17,6 @@ const nextConfig = {
       },
     ],
   },
-  productionBrowserSourceMaps: true,
   transpilePackages: ["@mui/material", "@mui/icons-material"],
   async headers() {
     return [

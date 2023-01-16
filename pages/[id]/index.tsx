@@ -26,7 +26,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   try {
     const now = Date.now();
-    const content = await getUserContentCombo(params.id);
+    const content = await getUserContentCombo(params.id); // N+1 situation, should be improved
     if (!content) {
       return { notFound: true };
     }

@@ -1,15 +1,12 @@
 import SubmarineLogoSvg from "../SubmarineLogoSvg";
-import Loading from "../Dashboard/Loading";
 import CustomLogo from "./CustomLogo";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
-import Missing from "./Missing";
 import LockedContentContainer from "./LockedContentContainer";
 
 import UnlockedContentContainer from "./UnlockedContentContainer";
 import { useAppSelector } from "../../store/hooks";
 import { selectHasUnlockedContent } from "../../store/selectors/submarinedContentSelectors";
-import { Box, Unstable_Grid2, useMediaQuery } from "@mui/material";
-import { Customizations } from "../../types/UnlockInfo";
+import { Box, Unstable_Grid2 } from "@mui/material";
 
 export type MainLandingContentProps = {
   fileInfo: null | MetadataUnlockInfo;
@@ -23,12 +20,11 @@ const MainLandingContent = ({
   isPreview = false,
 }: MainLandingContentProps) => {
   const hasUnlockedContent = useAppSelector(selectHasUnlockedContent);
+
   let content;
-  if (!fileInfo) {
-    content = <Missing />;
-  } else if (hasUnlockedContent) {
+  if (hasUnlockedContent) {
     content = <UnlockedContentContainer name={fileInfo?.name} />;
-  } else {
+  } else if (fileInfo) {
     content = (
       <LockedContentContainer fileInfo={fileInfo} gatewayUrl={gatewayUrl} isPreview={isPreview} />
     );
@@ -37,7 +33,6 @@ const MainLandingContent = ({
     <>
       <Box
         sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4), width: "fit-content" }}
-        style={getCustomFont(fileInfo)}
       >
         {fileInfo?.customizations && fileInfo?.customizations.logoCid ? (
           <CustomLogo logo={fileInfo?.customizations.logoCid} gatewayUrl={gatewayUrl} />
@@ -49,7 +44,6 @@ const MainLandingContent = ({
         container
         justifyContent="center"
         alignItems="center"
-        style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
           backgroundImage: fileInfo?.customizations?.backgroundCid
             ? `url(${gatewayUrl}/ipfs/${fileInfo?.customizations?.backgroundCid})`
@@ -63,6 +57,7 @@ const MainLandingContent = ({
           width: "100%",
           justifyContent: "center",
           borderRadius: isPreview ? "45px" : 0,
+          fontFamily: fileInfo?.customizations?.fontFamily || "Roboto",
         }}
       >
         {content}
@@ -72,16 +67,3 @@ const MainLandingContent = ({
 };
 
 export default MainLandingContent;
-
-const getCustomFont = (fileInfo) => {
-  const fontFamily = fileInfo?.customizations?.fontFamily;
-  return fontFamily ? { fontFamily: `'${fontFamily}', sans-serif` } : {};
-};
-const forcedStyle = (fileInfo, gatewayUrl) => {
-  if (fileInfo && fileInfo?.customizations && fileInfo?.customizations.backgroundCid) {
-    return {
-      backgroundImage: `url(${gatewayUrl}/ipfs/${fileInfo?.customizations.backgroundCid})`,
-    };
-  }
-  return {};
-};

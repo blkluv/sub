@@ -7,19 +7,21 @@ const SharedHead = () => {
   return (
     <>
       <Alert />
-      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></Script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        
-        gtag('config', 'G-LDJ4RPGPGE');`,
-        }}
+      {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"
+        strategy="afterInteractive"
       />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-LDJ4RPGPG');
+        `}
+      </Script>
       <Head>
-        <link rel="icon" href="/submarine.png"></link>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="description" content="Submarine Me - Unlock Exlusive Content With An NFT" />
@@ -36,6 +38,7 @@ const SharedHead = () => {
           content="https://gateway.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
         />
         <title>Submarine Me - By Pinata</title>
+        <link rel="icon" href="/submarine.png"></link>
       </Head>
     </>
   );

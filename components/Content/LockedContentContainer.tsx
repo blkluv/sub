@@ -85,6 +85,7 @@ const LockedContentContainer = ({
         <Typography
           variant="h1"
           sx={{
+            fontFamily: "inherit",
             marginTop: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
           }}
@@ -94,6 +95,7 @@ const LockedContentContainer = ({
         <Typography
           variant="subtitle2"
           sx={{
+            fontFamily: "inherit",
             padding: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
             opacity: ".75",

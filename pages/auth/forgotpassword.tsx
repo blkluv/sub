@@ -2,7 +2,7 @@ import ForgotPasswordForm from "../../components/Auth/ForgotPasswordForm";
 import SharedHead from "../../components/Layout/SharedHead";
 import Navigation from "../../components/Navigation";
 
-const Signup = () => {
+const ForgotPassword = () => {
   return (
     <>
       <SharedHead />
@@ -12,4 +12,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ForgotPassword;

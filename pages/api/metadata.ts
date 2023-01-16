@@ -83,7 +83,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const obj = req.body;
       obj.submarineCID = obj.submarineCID || obj.submarineCid;
       await schema.validateAsync(obj);
-      console.log("validation success");
 
       const theCreationObject: Omit<definitions["Content"], "id"> = {
         name: obj.name,

@@ -10,6 +10,7 @@ interface Props {
   fileInfo?: getContentReturnObject;
 }
 
+// Layout to be used on preview pages only. No Auth.
 const PublicLayout = ({ children, fileInfo }: Props) => {
   const gatewayUrl = fileInfo?.gatewayUrl;
   return (
@@ -49,24 +50,8 @@ const PublicLayout = ({ children, fileInfo }: Props) => {
               : "https://ipfs.submarine.me/ipfs/QmWzia1qwTKT4SdRw3923uxkyT8trBLim75bNKfxtoLzwR?filename=submarine_preview.png"
           }
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:wght@300&family=Open+Sans:wght@300&family=Oswald:wght@300&family=Roboto+Condensed:wght@300&family=Roboto:wght@300&family=Source+Sans+Pro:wght@300&display=swap"
-          rel="stylesheet"
-        ></link>
+
         <title>{fileInfo && fileInfo.name ? fileInfo.name : "Submarine.me"}</title>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDJ4RPGPGE"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          
-          gtag('config', 'G-LDJ4RPGPGE');`,
-          }}
-        />
       </Head>
       {children}
 

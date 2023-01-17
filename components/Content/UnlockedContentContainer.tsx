@@ -11,7 +11,7 @@ const UnlockedContentContainer = ({ fileInfo }) => {
   return submarinedContent.directory ? (
     <Gallery fileInfo={fileInfo} content={submarinedContent} />
   ) : (
-    <SingleMediaDisplay fileInfo={fileInfo} url={url} submarinedContent={submarinedContent} />
+    <SingleMediaDisplay url={url} submarinedContent={submarinedContent} />
   );
 };
 

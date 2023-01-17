@@ -197,7 +197,6 @@ export default function Gallery({ content, fileInfo }: GalleryProps) {
               }}
             >
               <SingleMediaDisplay
-                fileInfo={fileInfo}
                 url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
                 submarinedContent={displayItem}
               />

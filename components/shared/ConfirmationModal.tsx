@@ -67,7 +67,7 @@ const ConfirmationModal = ({
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Typography variant="h5">{title}</Typography>
         <IconButton
-          className="p-0"
+          sx={{ padding: 0 }}
           aria-label="close"
           onClick={() => !loading && toggleModal(false)}
         >

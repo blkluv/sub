@@ -11,6 +11,7 @@ import {
   TableCell,
   TableBody,
   Table,
+  Unstable_Grid2,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { styled } from "@mui/material/styles";
@@ -58,11 +59,11 @@ function CurrentPlanInfo(props: CurrentPlanInfoProps) {
 
   const getMetricColorClass = (metricPercentage: number) => {
     if (metricPercentage >= 100) {
-      return "metric-exceeded";
+      return { backgroundColor: "#f8bdbd !important;" };
     } else if (metricPercentage >= 80) {
-      return "metric-near";
+      return { backgroundColor: "#f8e7be !important;" };
     } else {
-      return "";
+      return {};
     }
   };
 
@@ -95,10 +96,11 @@ function CurrentPlanInfo(props: CurrentPlanInfoProps) {
         return (
           <StripedTableRow
             key={index}
-            className={
-              metricKey !== "gatewayCount" && !currentPlan?.isLegacy
-                ? getMetricColorClass(metric.percentage)
-                : ""
+            sx={
+              (metricKey !== "gatewayCount" &&
+                !currentPlan?.isLegacy &&
+                getMetricColorClass(metric.percentage)) ||
+              {}
             }
           >
             <TableCell>{metric.title}</TableCell>
@@ -127,10 +129,11 @@ function CurrentPlanInfo(props: CurrentPlanInfoProps) {
       return (
         <StripedTableRow
           key={index}
-          className={
-            metricKey !== "gatewayCount" && !currentPlan?.isLegacy
-              ? getMetricColorClass(metric.percentage)
-              : ""
+          sx={
+            (metricKey !== "gatewayCount" &&
+              !currentPlan?.isLegacy &&
+              getMetricColorClass(metric.percentage)) ||
+            {}
           }
         >
           <TableCell>{metric.title}</TableCell>
@@ -160,7 +163,12 @@ function CurrentPlanInfo(props: CurrentPlanInfoProps) {
     <Card>
       <CardContent>
         <Box>
-          <div className="d-flex align-items-center justify-content-between mb-2">
+          <Unstable_Grid2
+            container
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            sx={{ marginBottom: "0.5rem" }}
+          >
             <div>
               <Typography variant="h6">
                 Current Plan:{" "}
@@ -192,35 +200,36 @@ function CurrentPlanInfo(props: CurrentPlanInfoProps) {
               )}
             </div>
             <img
-              className="pinata-current-plan-pinnie"
               // src={require(`../../assets/images/${getPlanIcon}.png`).default} TODO
               style={{
                 position: "absolute",
                 right: "10%",
                 top: "10px",
+                width: "40px",
               }}
               loading="lazy"
             />
-          </div>
+          </Unstable_Grid2>
           {currentPlan?.isLegacy && (
-            <p className="my-4 text-muted w-50 font-size-12">
+            <Typography
+              paragraph
+              sx={{ marginTop: "1rem", marginBottom: "1rem", color: "#6c757d", width: "50%" }}
+            >
               {currentPlan.name === "FREE"
                 ? "Free for up to the first GB and $0.15/GB after that."
                 : currentPlan.name === "INDIVIDUAL"
                 ? "$0.15 per GB stored (1GB free)"
                 : `${currentPlan.price} per month plus $0.15 per GB stored (${currentPlan?.storage_limit_gb}GB free) - Additional gateways are $10 per month each`}
-            </p>
+            </Typography>
           )}
         </Box>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="border-0" sx={{ width: "50%" }}>
-                Account Metrics
-              </TableCell>
-              <TableCell className="border-0">Total Usage</TableCell>
+              <TableCell sx={{ width: "50%", borderWidth: "0px" }}>Account Metrics</TableCell>
+              <TableCell sx={{ borderWidth: "0px" }}>Total Usage</TableCell>
               {!currentPlan?.isLegacy && (
-                <TableCell className="border-0">% of plan limit</TableCell>
+                <TableCell sx={{ borderWidth: "0px" }}>% of plan limit</TableCell>
               )}
             </TableRow>
           </TableHead>
@@ -229,19 +238,19 @@ function CurrentPlanInfo(props: CurrentPlanInfoProps) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="border-0" sx={{ width: "50%" }}>
-                Monthly Metrics
-              </TableCell>
-              <TableCell className="border-0">Monthly Usage</TableCell>
+              <TableCell sx={{ borderWidth: "0px", width: "50%" }}>Monthly Metrics</TableCell>
+              <TableCell sx={{ borderWidth: "0px" }}>Monthly Usage</TableCell>
               {!currentPlan?.isLegacy && (
-                <TableCell className="border-0">% of plan limit</TableCell>
+                <TableCell sx={{ borderWidth: "0px" }}>% of plan limit</TableCell>
               )}
             </TableRow>
           </TableHead>
           <tbody>{renderMetricsList}</tbody>
         </Table>
-        <Alert severity={"info"}>Metrics last updated: {lastUpdatedSec}s ago</Alert>
-        <Alert severity={"warning"}>
+        <Alert sx={{ marginTop: "0.5rem" }} severity={"info"}>
+          Metrics last updated: {lastUpdatedSec}s ago
+        </Alert>
+        <Alert sx={{ marginTop: "0.5rem" }} severity={"warning"}>
           Some metrics might take a few minutes to be reflected here
         </Alert>
       </CardContent>

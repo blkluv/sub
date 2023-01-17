@@ -5,7 +5,7 @@ import BillingHistory from "./BillingHistory";
 import CurrentPlanInfo from "./CurrentPlanInfo";
 import { retrieveStripeCustomer } from "../../store/legacy/billing/billing.actions";
 import { BillingState, Plan } from "../../store/legacy/billing/types";
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography, Unstable_Grid2 } from "@mui/material";
 import { createGateway } from "../../store/legacy/gateways/gateway.actions";
 
 interface UsageCardProps {
@@ -38,29 +38,37 @@ const UsageCard = ({ billing, updatingPlan }: UsageCardProps) => {
   }, []);
 
   return (
-    <Grid
+    <Unstable_Grid2
       container
       sx={{
-        marginBottom: 2,
+        marginTop: "1rem",
         flexWrap: { md: "nowrap" },
-        columnGap: { md: 2 },
+        columnGap: { xs: 0, md: 2 },
+        padding: { xs: 2, md: 0 },
       }}
+      spacing={1}
     >
-      <Grid item xs={12} md={6}>
+      <Unstable_Grid2 xs={12} md={6}>
         {updatingPlan ? (
-          <div className="updating-plan-spinner">
+          <Unstable_Grid2
+            container
+            justifyContent={"center"}
+            alignItems={"center"}
+            direction={"column"}
+            sx={{ height: "100%" }}
+          >
             <Typography>We&apos;re updating your plan</Typography>
             <CircularProgress color="primary" />
-          </div>
+          </Unstable_Grid2>
         ) : (
           <CurrentPlanInfo billing={billing} />
         )}
-      </Grid>
-      <Grid item xs={12} md={6} className="d-flex flex-column justify-content-between">
+      </Unstable_Grid2>
+      <Unstable_Grid2 container xs={12} md={6} direction={"column"}>
         <PaymentInfo openCardModal={openCardModal} setOpenCardModal={setOpenCardModal} />
         <BillingHistory />
-      </Grid>
-    </Grid>
+      </Unstable_Grid2>
+    </Unstable_Grid2>
   );
 };
 

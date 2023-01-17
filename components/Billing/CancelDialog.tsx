@@ -3,13 +3,12 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Unstable_Grid2,
 } from "@mui/material";
 import { useState } from "react";
-// import FormControl from "@material-ui/core/FormControl";
-// import FormGroup from "@material-ui/core/FormGroup";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
 import { CheckboxWithLabel } from "formik-material-ui";
 import { Formik, Form, Field } from "formik";
 import { FormLabel, Typography } from "@mui/material";
@@ -18,6 +17,7 @@ import * as FullStory from "@fullstory/browser";
 import { useAppSelector } from "../../store/hooks";
 import { selectUser } from "../../store/selectors/authSelectors";
 import type { BillingState, Plan } from "../../store/legacy/billing/types";
+import { planTypes } from "../../constants/planTypes";
 
 interface ChangePlanRes {
   plan: Plan;
@@ -37,6 +37,8 @@ export default function CancelDialog({
   const user = useAppSelector(selectUser);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const hasFreePlan =
+    billing?.nextPlan?.name === "Free" || billing?.activePricingPlan?.type === planTypes.FREE.type;
   const userReasons = [
     {
       label: "Missing desired features",
@@ -97,7 +99,7 @@ export default function CancelDialog({
 
   return (
     <Unstable_Grid2>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button disabled={hasFreePlan} variant="outlined" onClick={handleClickOpen}>
         Cancel Subscription
       </Button>
       <Dialog

@@ -21,6 +21,7 @@ import {
   Unstable_Grid2,
 } from "@mui/material";
 import * as Yup from "yup";
+import { AlertType } from "../../Alert";
 
 interface SubmarineProps {
   children: ReactNode;
@@ -115,7 +116,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
         router.push("/");
         dispatch(
           setAlert({
-            type: "success",
+            type: AlertType.Info,
             message: "Created locked content!",
           })
         );
@@ -123,7 +124,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
       .catch(() => {
         dispatch(
           setAlert({
-            type: "error",
+            type: AlertType.Error,
             message: "Failed to create locked content!",
           })
         );

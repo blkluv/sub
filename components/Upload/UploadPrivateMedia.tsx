@@ -17,6 +17,7 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
+import { AlertType } from "../Alert";
 
 enum FileType {
   File = "file",
@@ -56,7 +57,7 @@ const UploadPrivateMedia = () => {
       if (files[i].size > FILE_SIZE_LIMIT) {
         dispatch(
           setAlert({
-            type: "error",
+            type: AlertType.Error,
             message: "File too large, limit is 500mb",
           })
         );

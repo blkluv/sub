@@ -21,6 +21,7 @@ import { setAlert } from "../../store/slices/alertSlice";
 import { User, UserState } from "../../store/legacy/user/types";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import * as FullStory from "@fullstory/browser";
+import { AlertType } from "../Alert";
 
 interface ChangePlanRes {
   plan: Plan;
@@ -30,7 +31,7 @@ interface ChangePlanRes {
 interface PlanSelectorProps {
   data: any;
   billing: BillingState;
-  changePlan: (newPlan: Plan) => Promise<ChangePlanRes>;
+  changePlan: (newPlan: Plan, coupon?: string) => Promise<ChangePlanRes>;
   gateways: Gateways;
   user: UserState;
   apiKeys: any;
@@ -59,6 +60,7 @@ const PlanSelector = ({
   const [openCardModal, setOpenCardModal] = useState(false); //Boolean or null if no default
   const [openBillingAddressModal, setOpenBillingAddressModal] = useState(false);
   const [restorePlanModalOpen, setRestorePlanModalOpen] = useState(false);
+  const [allowCoupon, setAllowCoupon] = useState(false); // only picnic plan can use coupon for the duration of January
   const [afterUpdateDialogProps, setAfterUpdateDialogProps] = useState<{
     newPlan: Plan;
     gateways: Gateways;
@@ -66,14 +68,50 @@ const PlanSelector = ({
 
   const dispatch = useAppDispatch();
 
-  const changePlanLocal = async (planToChangeTo: Plan) => {
+  const changePlanLocal = async (planToChangeTo: Plan, coupon?: string) => {
     try {
-      const changePlanRes: ChangePlanRes = await changePlan(planToChangeTo);
-      if (!changePlanRes.nextPlan) {
+      const changePlanRes: ChangePlanRes = await changePlan(planToChangeTo, coupon);
+      if (!changePlanRes.nextPlan || coupon) {
         scheduleUsageMetrics();
         setAfterUpdateDialogProps({ newPlan: changePlanRes.plan, gateways });
       }
     } catch (error) {
+      const err = await error.response.json();
+      const reason = err.error.reason;
+      if (reason === "USER_DOES_NOT_HAVE_STRIPE_CUSTOMER") {
+        dispatch(
+          setAlert({ type: AlertType.Error, message: "Coupon is only valid for new users" })
+        );
+      } else if (reason === "Rate limit exceeded") {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Rate limit exceeded, please wait one minute and retry",
+          })
+        );
+        // NO_COUPON_FOUND
+      } else if (reason === "NO_COUPON_FOUND") {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Coupon not found, please try again",
+          })
+        );
+      } else if (reason === "THE_COUPON_WAS_APPLIED_BEFORE") {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Coupon was already applied",
+          })
+        );
+      } else {
+        dispatch(
+          setAlert({
+            type: AlertType.Error,
+            message: "Error changing plan, please try again later",
+          })
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -82,12 +120,22 @@ const PlanSelector = ({
   const handleAddCard = async (tokenId: string) => {
     setOpenCardModal(false);
     try {
-      dispatch(setAlert({ message: "Adding card...", type: "info" }));
+      dispatch(setAlert({ message: "Adding card...", type: AlertType.Info }));
       const stripeRes = await createStripePaymentSource(tokenId);
       if (stripeRes) {
         setPlanChangeConfirmationOpen(true);
       }
     } catch (error) {
+      dispatch(setAlert({ message: "Error adding card", type: AlertType.Error }));
+      console.log(error);
+    }
+  };
+  const handleAddCoupon = async (coupon: string) => {
+    try {
+      setOpenCardModal(false);
+      confirmProfessionalUpgrade(coupon);
+    } catch (error) {
+      dispatch(setAlert({ message: "Error adding coupon", type: AlertType.Error }));
       console.log(error);
     }
   };
@@ -96,6 +144,7 @@ const PlanSelector = ({
     setPlanChoice(plan);
     if (!billing.stripe_customer.paymentMethods.length && plan.type !== planTypes.FREE.type) {
       // if there is no payment method -> add credit card
+      plan.type === planTypes.PICNIC.type ? setAllowCoupon(true) : setAllowCoupon(false);
       setOpenCardModal(true);
       return;
     }
@@ -115,15 +164,15 @@ const PlanSelector = ({
     }
   };
 
-  const confirmProfessionalUpgrade = async () => {
+  const confirmProfessionalUpgrade = async (coupon?: string) => {
     setLoading(true);
     try {
-      if (billing.stripe_customer) {
+      if (billing.stripe_customer || coupon) {
         FullStory.event("Upgrade plan", {
           userEmail: user?.user?.email,
           newPlan: planToChangeTo?.name,
         });
-        await changePlanLocal(planToChangeTo!);
+        await changePlanLocal(planToChangeTo!, coupon);
       }
     } catch (error) {
       console.log(error);
@@ -257,9 +306,11 @@ const PlanSelector = ({
           setAddCardModalOpen={setOpenCardModal}
           addCardModalOpen={openCardModal}
           handleAddCard={handleAddCard}
+          handleAddCoupon={handleAddCoupon}
+          allowCoupon={allowCoupon}
         />
       )}
-      {afterUpdateDialogProps !== null && (
+      {afterUpdateDialogProps && (
         <AfterUpdatePlanDialog
           createGateway={createGateway}
           newPlan={afterUpdateDialogProps.newPlan}

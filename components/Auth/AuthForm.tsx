@@ -149,19 +149,22 @@ export default function AuthForm() {
               />
               {loginStatus === LOGIN_STATUSES.needsConfirmation && (
                 <>
-                  <Typography variant="body1" sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}>
-                    Please check your email for a confirmation code.{" "}
-                    <Typography
-                      variant="body1"
-                      color="primary.main"
-                      sx={{
-                        display: "inline",
-                        cursor: hasRequestedNewCode ? "not-allowed" : "pointer",
-                      }}
-                      onClick={handleResendConfirmationCode}
-                    >
-                      {hasRequestedNewCode ? "Code resent!" : "Click to resend."}
-                    </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0), display: "inline-block" }}
+                  >
+                    Please check your email for a confirmation code.
+                  </Typography>{" "}
+                  <Typography
+                    variant="body1"
+                    color="primary.main"
+                    sx={{
+                      display: "inline",
+                      cursor: hasRequestedNewCode ? "not-allowed" : "pointer",
+                    }}
+                    onClick={handleResendConfirmationCode}
+                  >
+                    {hasRequestedNewCode ? "Code resent!" : "Click to resend."}
                   </Typography>
                   <TextField
                     fullWidth

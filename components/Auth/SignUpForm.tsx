@@ -19,6 +19,7 @@ import { RadioGroup } from "formik-mui";
 import { Auth } from "aws-amplify";
 import { setAlert } from "../../store/slices/alertSlice";
 import ConfirmationCode from "./ConfirmationCode";
+import { AlertType } from "../Alert";
 
 const SignUpForm = () => {
   const dispatch = useAppDispatch();
@@ -71,10 +72,11 @@ const SignUpForm = () => {
     };
     try {
       await Auth.signUp(params);
+      localStorage.setItem("newUser", "true");
       dispatch(
         setAlert({
           message: "Account created. Please confirm your email address",
-          type: "success",
+          type: AlertType.Info,
         })
       );
       FullStory.event("Sign up", {

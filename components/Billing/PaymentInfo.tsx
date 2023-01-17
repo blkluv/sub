@@ -7,7 +7,6 @@ import {
 } from "../../store/legacy/billing/billing.actions";
 
 import AddCardModal from "./AddCardModal";
-// import BillingAddressModal from "./BillingAddressModal";
 import RemoveCardModal from "./RemoveCardModal";
 import {
   CardContent,
@@ -19,12 +18,15 @@ import {
   TableBody,
   Typography,
   Button,
+  Unstable_Grid2,
+  IconButton,
 } from "@mui/material";
 import { GatewaysState } from "../../store/legacy/gateways/types";
 import { BillingState, PaymentMethod } from "../../store/legacy/billing/types";
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import { AlertType } from "../Alert";
 const CARDS_ALLOWED = 5;
 
 interface PaymentInfoProps {
@@ -56,7 +58,7 @@ function PaymentInfo(props: PaymentInfoProps) {
 
   const dispatch = useAppDispatch();
   const confirmRemoveCard = async (card: { id: any }) => {
-    dispatch(setAlert({ message: "Removing card...", type: "info" }));
+    dispatch(setAlert({ message: "Removing card...", type: AlertType.Info }));
     setRemoveCardModalOpen(false);
     setCardInfo(null);
     await detachStripeSourceFromCustomer(card.id);
@@ -70,24 +72,37 @@ function PaymentInfo(props: PaymentInfoProps) {
         <TableCell>{`${method.exp_month}/${method.exp_year}`}</TableCell>
         <TableCell>
           {method.isActive ? (
-            <span className="text-success">Default</span>
+            <span style={{ color: "#28a745", fontWeight: 600 }}>Default</span>
           ) : (
-            <button
+            <Button
+              sx={{
+                padding: 0,
+                borderRadius: "1rem",
+                fontSize: "0.75rem",
+                height: "1.5rem",
+                width: "6rem",
+              }}
+              size="small"
               onClick={() => setDefaultCard(method.customer, method.id)}
-              className="pinata-link-button p-0"
             >
               Make Default
-            </button>
+            </Button>
           )}
         </TableCell>
         <TableCell>
           {!method.isActive && (
-            <button
+            <IconButton
               onClick={() => handleOpenCardRemovalWindow(method)}
-              className="pinata-link-button"
+              sx={{
+                backgroundColor: "transparent",
+                border: "none",
+                outline: "none",
+                cursor: "pointer",
+                color: "#495057",
+              }}
             >
-              <i className="fas fa-trash"></i>
-            </button>
+              <DeleteIcon />
+            </IconButton>
           )}
         </TableCell>
       </TableRow>
@@ -97,7 +112,7 @@ function PaymentInfo(props: PaymentInfoProps) {
   const handleAddCard = async (tokenId: string) => {
     setOpenCardModal(false);
     try {
-      dispatch(setAlert({ message: "Adding card...", type: "info" }));
+      dispatch(setAlert({ message: "Adding card...", type: AlertType.Info }));
       await createStripePaymentSource(tokenId);
     } catch (error) {
       console.log(error);
@@ -110,7 +125,7 @@ function PaymentInfo(props: PaymentInfoProps) {
       dispatch(
         setAlert({
           message: "You cannot remove your card when you have active dedicated gateways",
-          type: "error",
+          type: AlertType.Error,
         })
       );
       return;
@@ -124,7 +139,7 @@ function PaymentInfo(props: PaymentInfoProps) {
     if (paymentMethods.length < CARDS_ALLOWED) {
       setOpenCardModal(true);
     } else {
-      dispatch(setAlert({ message: "You can only add 5 cards", type: "error" }));
+      dispatch(setAlert({ message: "You can only add 5 cards", type: AlertType.Error }));
     }
   };
 
@@ -136,10 +151,15 @@ function PaymentInfo(props: PaymentInfoProps) {
     <>
       <Card>
         <CardContent>
-          <div className="d-flex justify-content-between align-items-center mb-2">
+          <Unstable_Grid2
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            sx={{ marginBottom: "1rem" }}
+          >
             <Typography variant="h6">Payment Info</Typography>
             <Button onClick={handleNewCardModal}>Add Card</Button>
-          </div>
+          </Unstable_Grid2>
           <Table>
             <TableHead>
               <TableRow>
@@ -153,11 +173,6 @@ function PaymentInfo(props: PaymentInfoProps) {
             </TableHead>
             <TableBody>{paymentMethods.map((pm) => renderPaymentMethods(pm))}</TableBody>
           </Table>
-          {/*{Boolean(paymentMethods.length) && (*/}
-          {/*  <button className="btn btn-sm btn-info" onClick={handleBillingAddressModal}>*/}
-          {/*    Update My Billing Address*/}
-          {/*  </button>*/}
-          {/*)}*/}
         </CardContent>
       </Card>
       {openCardModal && (
@@ -167,12 +182,6 @@ function PaymentInfo(props: PaymentInfoProps) {
           handleAddCard={handleAddCard}
         />
       )}
-      {/* {openBillingAddressModal && (
-        <BillingAddressModal
-          setModalOpen={setOpenBillingAddressModal}
-          modalIsOpen={openBillingAddressModal}
-        />
-      )} */}
       {removeCardModalOpen && (
         <RemoveCardModal
           removeCardModalOpen={removeCardModalOpen}

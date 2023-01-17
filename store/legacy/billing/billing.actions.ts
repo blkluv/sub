@@ -30,6 +30,7 @@ interface UserStripeConsumer {
 
 import { api } from "../fakeAxios";
 import { planTypes } from "../../../constants/planTypes";
+import { AlertType } from "../../../components/Alert";
 export const retrieveStripeCustomer = () => async (dispatch: any) => {
   try {
     let { data }: { data: UserStripeConsumer } = await api.get(`billing/userStripeCustomer`);
@@ -76,7 +77,7 @@ export const createStripePaymentSource = (sourceId: any) => async (dispatch: any
     const response = await api.post("billing/createStripePaymentSource", {
       sourceId: sourceId,
     });
-    dispatch(setAlert({ message: "Card added!", type: "success" }));
+    dispatch(setAlert({ message: "Card added!", type: AlertType.Info }));
     dispatch({
       type: BillingActionNames.USER_STRIPE_PAYMENT_SOURCE_CREATED,
       payload: response?.data,
@@ -94,7 +95,7 @@ export const detachStripeSourceFromCustomer = (sourceId: any) => async (dispatch
       sourceId: sourceId,
     });
     dispatch(retrieveStripeCustomer());
-    dispatch(setAlert({ message: "Card Removed", type: "success" }));
+    dispatch(setAlert({ message: "Card Removed", type: AlertType.Info }));
   } catch (error) {
     console.log(error);
   }
@@ -103,36 +104,43 @@ export const detachStripeSourceFromCustomer = (sourceId: any) => async (dispatch
 export const setDefaultCard = (customerId: any, sourceId: any) => async (dispatch: any) => {
   try {
     await api.put("billing/updateStripeSource", { customerId, sourceId });
-    dispatch(setAlert({ message: "Default card updated!", type: "success" }));
+    dispatch(setAlert({ message: "Default card updated!", type: AlertType.Info }));
     dispatch(retrieveStripeCustomer());
   } catch (error) {
     console.log(error);
   }
 };
 
-export const changePlan = (newPlan: Plan) => async (dispatch: any) => {
+export const changePlan = (newPlan: Plan, coupon?: string) => async (dispatch: any) => {
   try {
     // await trackEvent("plan-change", {
     //   new_plan_name: newPlan.name,
     // });
-    const { data } = await api.post("billing/changePinataPlan", {
+    const url = coupon ? "billing/changePinataPlanWithCoupon" : "billing/changePinataPlan";
+    const { data } = await api.post(url, {
       desiredPlanId: newPlan.id,
+      coupon,
     });
+
     if (data) {
-      if (data?.nextPlan) {
+      localStorage.removeItem("newUser");
+      if (!coupon && data?.nextPlan) {
         dispatch(
           setAlert({
             message: `Your plan will change to ${newPlan.nickname} at the end of the current billing period`,
-            type: "success",
+            type: AlertType.Info,
           })
         );
       } else {
-        dispatch(setAlert({ message: `Plan updated to ${newPlan.nickname}!`, type: "success" }));
+        dispatch(
+          setAlert({ message: `Plan updated to ${newPlan.nickname}!`, type: AlertType.Info })
+        );
       }
       dispatch(retrieveStripeCustomer());
       return data;
     }
   } catch (error) {
+    console.log({ error });
     throw error;
   }
 };
@@ -221,9 +229,9 @@ export const updateCustomerBillingAddress =
           postalCode: response?.postal_code,
         },
       });
-      dispatch(setAlert({ message: "Billing address updated!", type: "success" }));
+      dispatch(setAlert({ message: "Billing address updated!", type: AlertType.Info }));
     } catch (error) {
-      dispatch(setAlert({ message: "Update Address Error", type: "error" }));
+      dispatch(setAlert({ message: "Update Address Error", type: AlertType.Error }));
       console.log(error);
       throw error;
     }

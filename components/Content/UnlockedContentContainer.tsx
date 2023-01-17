@@ -5,8 +5,7 @@ import SingleMediaDisplay from "./SingleMediaDisplay";
 
 const UnlockedContentContainer = ({ fileInfo }) => {
   const submarinedContent = useAppSelector(selectSubmarinedContent);
-  const url = `${submarinedContent.gateway}/ipfs/${submarinedContent.cid}?accessToken=${submarinedContent.token}&stream=true&mode=hls`;
-  console.log(url);
+  const url = `${submarinedContent.gateway}/ipfs/${submarinedContent.cid}?accessToken=${submarinedContent.token}`;
 
   return submarinedContent.directory ? (
     <Gallery fileInfo={fileInfo} content={submarinedContent} />

@@ -12,8 +12,8 @@ import { loadUserInfo } from "../../store/legacy/user/user.actions";
 import { connect } from "react-redux";
 const Billing = ({ user, loadUserInfo }) => {
   useEffect(() => {
-    loadUserInfo();
-  }, []);
+    user.user && loadUserInfo();
+  }, [user]);
   const initializePricing = async () => {
     await retrieveStripeCustomer();
     await getUsageMetrics();

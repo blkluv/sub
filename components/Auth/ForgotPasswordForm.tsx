@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import { setAlert } from "../../store/slices/alertSlice";
+import { AlertType } from "../Alert";
 
 const ForgotPasswordForm = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const ForgotPasswordForm = () => {
         dispatch(
           setAlert({
             message: "Password changed successfully",
-            type: "success",
+            type: AlertType.Info,
           })
         );
         setSubmitting(false);
@@ -63,7 +64,7 @@ const ForgotPasswordForm = () => {
         dispatch(
           setAlert({
             message: "Confirmation code sent. Please check your email address",
-            type: "success",
+            type: AlertType.Info,
           })
         );
       }

@@ -105,7 +105,9 @@ const Home = (props: BillingProps) => {
         </Dialog>
       )}
       {/* Render Breadcrumbs */}
-      <Typography variant="h3">Billing</Typography>
+      <Typography variant="h3" sx={{ paddingBottom: "0.5rem" }}>
+        Billing
+      </Typography>
       {hasFreePlan && (
         <Typography
           variant="body1"
@@ -113,13 +115,12 @@ const Home = (props: BillingProps) => {
             color: "text.secondary",
             mt: 1,
             paddingLeft: 2,
+            paddingBottom: "1rem",
           }}
         >
           In order to use Submarine.me, please upgrade your free account to a paid Pinata account.
         </Typography>
       )}
-      {(billing?.activePricingPlan?.name || billing?.activePricingPlan?.isLegacy) &&
-        !hasFreePlan && <UsageCard data={data} billing={billing} updatingPlan={updatingPlan} />}
       <PlanSelector
         data={data}
         billing={billing}
@@ -129,6 +130,9 @@ const Home = (props: BillingProps) => {
       />
 
       {billing?.activePricingPlan?.type !== planTypes.ENTERPRISE.type && <EnterpriseBanner />}
+
+      {(billing?.activePricingPlan?.name || billing?.activePricingPlan?.isLegacy) &&
+        !hasFreePlan && <UsageCard data={data} billing={billing} updatingPlan={updatingPlan} />}
       <Unstable_Grid2 sx={{ textAlign: "center", marginTop: "2rem" }}>
         <CancelDialog
           billing={billing}

@@ -6,6 +6,7 @@ import { StripeCardElement } from "@stripe/stripe-js/types/stripe-js/elements/ca
 import { getErrorMessage } from "../../helpers/getErrorMessage";
 import { useAppDispatch } from "../../store/hooks";
 import { setAlert } from "../../store/slices/alertSlice";
+import { AlertType } from "../Alert";
 
 interface CheckoutFormProps {
   handleAddCard: (token: string) => void;
@@ -25,7 +26,7 @@ const CheckoutForm = ({ handleAddCard }: CheckoutFormProps) => {
       const cardElement: StripeCardElement | null = elements?.getElement(CardElement);
       // Use your card Element with other Stripe.js APIs
       if (!cardElement) {
-        setAlert({ message: "Something went wrong", type: "error" });
+        setAlert({ message: "Something went wrong", type: AlertType.Error });
         return;
       }
 
@@ -34,17 +35,17 @@ const CheckoutForm = ({ handleAddCard }: CheckoutFormProps) => {
       if (error) {
         console.log(error);
         const message = getErrorMessage(error);
-        dispatch(setAlert({ message, type: "error" }));
+        dispatch(setAlert({ message, type: AlertType.Error }));
         return;
       }
 
       if (token.id) {
         handleAddCard(token.id);
       } else {
-        dispatch(setAlert({ message: "Invalid Payment Method Submitted", type: "error" }));
+        dispatch(setAlert({ message: "Invalid Payment Method Submitted", type: AlertType.Error }));
       }
     } catch (error) {
-      dispatch(setAlert({ message: e.message, type: "error" }));
+      dispatch(setAlert({ message: e.message, type: AlertType.Error }));
     } finally {
       setIsDisabled(false);
     }

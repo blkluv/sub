@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
+import { AlertType } from "../../components/Alert";
 
 interface AlertState {
   message: string;
-  type: string;
+  type: AlertType | "";
   timeout?: number;
 }
 // Initial state
 const initialState: AlertState = {
-  type: "success",
+  type: AlertType.Info,
   message: "",
   timeout: 0,
 };

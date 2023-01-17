@@ -15,7 +15,8 @@ import {
   Pagination,
 } from "@mui/material";
 import { makeDatePretty } from "../../helpers/makeDatePretty";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DescriptionIcon from "@mui/icons-material/Description";
 interface BillingHistoryProps {
   billingHistory: BillingHistoryInterface[];
   getBillingHistory: any;
@@ -66,7 +67,7 @@ const BillingHistory = ({ billingHistory, getBillingHistory, hasMore }: BillingH
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fas fa-eye"></i>
+            <VisibilityIcon />
           </a>
           <a
             style={{ marginLeft: 10 }}
@@ -74,7 +75,7 @@ const BillingHistory = ({ billingHistory, getBillingHistory, hasMore }: BillingH
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="far fa-file-pdf"></i>
+            <DescriptionIcon />
           </a>
         </TableCell>
       </TableRow>
@@ -93,7 +94,7 @@ const BillingHistory = ({ billingHistory, getBillingHistory, hasMore }: BillingH
 
   if (billingHistory?.length) {
     return (
-      <Card className="m-0">
+      <Card sx={{ marginTop: "1rem" }}>
         <CardContent>
           <Typography variant="h6">Billing History</Typography>
           <Table>

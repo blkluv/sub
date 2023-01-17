@@ -9,6 +9,7 @@ import { setAlert } from "../../../store/slices/alertSlice";
 import { setSubmarinedContent } from "../../../store/slices/submarinedContentSlice";
 import { useAppDispatch } from "../../../store/hooks";
 import { UnlockInfoTwitch } from "../../../types/UnlockInfo";
+import { AlertType } from "../../Alert";
 
 const Twitch = ({ fileInfo }) => {
   const unlockInfo = fileInfo.unlockInfo as UnlockInfoTwitch;
@@ -48,7 +49,7 @@ const Twitch = ({ fileInfo }) => {
         dispatch(setSubmarinedContent(data));
         return;
       }
-      dispatch(setAlert({ type: "error", message: "Subscription cannot be verified" }));
+      dispatch(setAlert({ type: AlertType.Error, message: "Subscription cannot be verified" }));
       return;
     };
     if (access_token) {

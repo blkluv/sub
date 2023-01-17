@@ -82,6 +82,7 @@ const reducer = function (
         ...state,
         billing_plans: payload,
       };
+
     default:
       return state;
   }

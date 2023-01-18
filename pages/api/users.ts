@@ -1,5 +1,6 @@
-import { createAPIKey, getGateways, getUserSession, findAPIKeys } from "../../helpers/user.helpers";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { createAPIKey, getUserSession, findAPIKeys } from "../../helpers/user.helpers";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { definitions } from "../../types/supabase";
 
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
   } else if (req.method === "GET") {
     let user = null;
     try {
-      user = await getUserSession(req);
+      user = await getUserSession(req).catch();
       if (!user) {
         return res.status(401).send("Unauthorized");
       }
@@ -124,11 +125,46 @@ export default async function handler(req, res) {
       console.log(user);
       console.log(error);
       const { response: fetchResponse } = error;
-      return res.status(fetchResponse?.status || 500).json(error.data);
+      res.status(fetchResponse?.status || 500).json(JSON.stringify(fetchResponse.data.error));
+      return;
     }
   } else {
     return res
       .status(501)
       .json({ message: "This is the way...wait, no it is not. What are you doing here?" });
   }
+}
+
+const getGateways = async (req): Promise<Gateways> => {
+  try {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_MANAGED_API}/gateways?page=1`, {
+      headers: {
+        authorization: req.headers.authorization,
+        source: "login",
+      },
+    });
+    console.log(JSON.stringify(res.data));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+interface Row {
+  id: string;
+  domain: string;
+  createdAt: Date;
+  restrict: boolean;
+  customDomains: any[];
+}
+
+interface Items {
+  count: number;
+  rows: Row[];
+}
+
+interface Gateways {
+  status: number;
+  count: number;
+  items: Items;
 }

@@ -1,4 +1,3 @@
-import { withIronSession } from "next-iron-session";
 import { TwitterApi } from "twitter-api-v2";
 import { getSubmarinedContent } from "../../../../helpers/submarine";
 import { getSupabaseClient } from "../../../../helpers/supabase";
@@ -7,17 +6,13 @@ import { getOauthSecret } from "../../../../repositories/twitter";
 import { definitions } from "../../../../types/supabase";
 
 const supabase = getSupabaseClient();
-function withSession(handler) {
-  return withIronSession(handler, {
-    password: process.env.SECRET_COOKIE_PASSWORD,
-    cookieName: "web3-auth-session",
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production",
-    },
-  });
-}
 
-export default withSession(async (req, res) => {
+const handler = async (req, res) => {
+  // allow CORS on this method
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
   if (req.method === "POST") {
     try {
       const client = new TwitterApi({
@@ -85,4 +80,6 @@ export default withSession(async (req, res) => {
       res.status(500).send(error.message);
     }
   }
-});
+};
+
+export default handler;

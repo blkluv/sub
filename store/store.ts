@@ -3,6 +3,10 @@ import { authSlice } from "./slices/authSlice";
 import { createWrapper } from "next-redux-wrapper";
 import { alertSlice } from "./slices/alertSlice";
 import { submarinedContentSlice } from "./slices/submarinedContentSlice";
+import billing from "./legacy/billing/billing.reducer";
+import metrics from "./legacy/metrics/metrics.reducer";
+import gateways from "./legacy/gateways/gateways.reducer";
+import user from "./legacy/user/user.reducer";
 
 const makeStore = () =>
   configureStore({
@@ -14,6 +18,10 @@ const rootReducer = combineReducers({
   [authSlice.name]: authSlice.reducer,
   [alertSlice.name]: alertSlice.reducer,
   [submarinedContentSlice.name]: submarinedContentSlice.reducer,
+  billing,
+  metrics,
+  gateways,
+  user,
 });
 
 export type AppStore = ReturnType<typeof makeStore>;

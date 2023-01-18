@@ -9,6 +9,16 @@ import { getKy, setCredentials } from "../../helpers/ky";
 import { Themes } from "../../theme/themes";
 import * as FullStory from "@fullstory/browser";
 
+//https://github.com/aws-amplify/amplify-js/issues/9208
+//@ts-ignore
+const _handleAuthResponse = Auth._handleAuthResponse.bind(Auth);
+//@ts-ignore
+Auth._handleAuthResponse = (url) => {
+  const configuration = Auth.configure();
+  //@ts-ignore
+  if (!url.includes(configuration.oauth.redirectSignIn)) return;
+  return _handleAuthResponse(url);
+};
 Amplify.configure(awsconfig);
 
 export enum LOGIN_STATUSES {
@@ -115,10 +125,7 @@ const getUser = async (): Promise<User> => {
       ...user.attributes,
       gatewayUrl,
     };
-  } catch (err) {
-    const errorMsg = await err.response.json();
-    throw new Error(errorMsg);
-  }
+  } catch (err) {}
   return user.attributes;
 };
 
@@ -128,12 +135,14 @@ const getGatewayUrl = async (): Promise<string> => {
     return gatewayUrl;
   }
   const ky = getKy();
-  const r = await ky("/api/users", {
+  const r = await ky(`${process.env.NEXT_PUBLIC_MANAGED_API}/gateways?page=1`, {
     method: "GET",
   });
   const re = await r.json();
-  const gw = re.pinata_gateway_subdomain;
-  localStorage.setItem("pinata_gateway_subdomain", gw);
+  const gw = re?.items?.rows?.[0]?.domain;
+  if (gw) {
+    localStorage.setItem("pinata_gateway_subdomain", gw);
+  }
   return gw;
 };
 

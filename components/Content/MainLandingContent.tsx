@@ -12,7 +12,7 @@ import { Box, Unstable_Grid2, useMediaQuery } from "@mui/material";
 
 export interface MainLandingContentProps {
   missing: boolean;
-  fileInfo: MetadataUnlockInfo;
+  fileInfo?: MetadataUnlockInfo;
   gatewayUrl: string;
   isPreview?: boolean;
 }
@@ -43,8 +43,8 @@ const MainLandingContent = ({
         sx={{ position: "absolute", padding: (theme) => theme.spacing(2, 4), width: "fit-content" }}
         style={getCustomFont(fileInfo)}
       >
-        {fileInfo.customizations && fileInfo.customizations.logoCid ? (
-          <CustomLogo logo={fileInfo.customizations.logoCid} gatewayUrl={gatewayUrl} />
+        {fileInfo?.customizations && fileInfo?.customizations.logoCid ? (
+          <CustomLogo logo={fileInfo?.customizations.logoCid} gatewayUrl={gatewayUrl} />
         ) : (
           <SubmarineLogoSvg />
         )}
@@ -55,11 +55,11 @@ const MainLandingContent = ({
         alignItems="center"
         style={forcedStyle(fileInfo, gatewayUrl)}
         sx={{
-          backgroundImage: fileInfo.customizations?.backgroundCid
-            ? `url(${gatewayUrl}/ipfs/${fileInfo.customizations?.backgroundCid})`
+          backgroundImage: fileInfo?.customizations?.backgroundCid
+            ? `url(${gatewayUrl}/ipfs/${fileInfo?.customizations?.backgroundCid})`
             : "none",
           background:
-            !fileInfo.customizations?.backgroundCid &&
+            !fileInfo?.customizations?.backgroundCid &&
             "linear-gradient(161.52deg, #FF6B00 7.31%, #0038FF 98.65%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -81,9 +81,9 @@ const getCustomFont = (fileInfo) => {
   return fontFamily ? { fontFamily: `'${fontFamily}', sans-serif` } : {};
 };
 const forcedStyle = (fileInfo, gatewayUrl) => {
-  if (fileInfo && fileInfo.customizations && fileInfo.customizations.backgroundCid) {
+  if (fileInfo && fileInfo?.customizations && fileInfo?.customizations.backgroundCid) {
     return {
-      backgroundImage: `url(${gatewayUrl}/ipfs/${fileInfo.customizations.backgroundCid})`,
+      backgroundImage: `url(${gatewayUrl}/ipfs/${fileInfo?.customizations.backgroundCid})`,
     };
   }
   return {};

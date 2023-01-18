@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { setAlert } from "../../../store/slices/alertSlice";
 import { setSubmarinedContent } from "../../../store/slices/submarinedContentSlice";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
+import { AlertType } from "../../Alert";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import CustomButton from "../CustomButton";
 
@@ -25,7 +26,7 @@ const BaseLockType = ({ fileInfo, description, handleVerify, lockName }: BaseLoc
       }
       setVerifying(false);
     } catch (err) {
-      dispatch(setAlert({ type: "error", message: err }));
+      dispatch(setAlert({ type: AlertType.Error, message: err }));
       setVerifying(false);
     }
   };

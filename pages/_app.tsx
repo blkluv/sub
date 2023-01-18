@@ -6,7 +6,6 @@ import { AppProps } from "next/app";
 import { wrapper } from "../store/store";
 import { IntercomProvider } from "react-use-intercom";
 import ThemeProvider from "../theme/ThemeProvider";
-
 import { useEffect } from "react";
 import * as FullStory from "@fullstory/browser";
 const INTERCOM_APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID || "f4cld255";
@@ -30,3 +29,7 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
 };
 
 export default MyApp;
+
+export function reportWebVitals(metric) {
+  process.env.NEXT_PUBLIC_DEBUG && console.log(metric);
+}

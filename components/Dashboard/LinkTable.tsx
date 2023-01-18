@@ -16,6 +16,7 @@ import { useState } from "react";
 import DeleteDialog from "./DeleteModal";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { makeDatePretty } from "../../helpers/makeDatePretty";
 
 const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, getThumbnail }) => {
   const [file, setFile] = useState(null);
@@ -112,17 +113,3 @@ const LinkTable = ({ files, copyLink, setOpen, open, handleDelete, loadLinks, ge
 };
 
 export default LinkTable;
-
-const makeDatePretty = (date, locale?): string => {
-  const newDate = new Date(date);
-  const day = newDate.getDate();
-  const month = newDate.getMonth() + 1;
-  const year = newDate.getFullYear();
-
-  switch (locale) {
-    case "en":
-      return `${month}/${day}/${year}`;
-    default:
-      return `${month}/${day}/${year}`;
-  }
-};

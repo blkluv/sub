@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LinkTable from "./LinkTable";
 import Link from "next/link";
+import Pagination from "./Pagination";
 import UpgradeModal from "./UpgradeModal";
 import AppPagination from "./AppPagination";
 
@@ -12,6 +13,7 @@ import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
 import { Button, Divider, Menu, MenuItem, Typography, Unstable_Grid2 } from "@mui/material";
 import SubmarineDialog from "../Submarine/SubmarineDialog/SubmarineDialog";
+import { AlertType } from "../Alert";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -19,6 +21,7 @@ const LIMIT = 5;
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
+  const [offset, setOffset] = useState(0);
   const [data, setData] = useState([]);
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -26,7 +29,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const gatewayUrl = useAppSelector(selectGatewayUrl);
   const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const selectMenuOpen = Boolean(anchorEl);
   const [page, setPage] = useState<number>(1);
   const [count, setCount] = useState<number>(0);
@@ -100,7 +103,7 @@ const Dashboard = () => {
     navigator.clipboard.writeText(`${window.location.origin}/${file.short_id}`);
     dispatch(
       setAlert({
-        type: "success",
+        type: AlertType.Info,
         message: "Share link copied!",
       })
     );
@@ -115,7 +118,7 @@ const Dashboard = () => {
         timeout: 2147483647,
       });
     } catch (error) {
-      dispatch(setAlert({ type: "error", message: "Error deleting link" }));
+      dispatch(setAlert({ type: AlertType.Error, message: "Error deleting link" }));
     }
   };
 
@@ -147,16 +150,7 @@ const Dashboard = () => {
         >
           <Unstable_Grid2 container direction={"column"}>
             <Typography variant="h1">Submarined Files</Typography>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: (theme) => theme.palette.grey[700],
-                fontWeight: 300,
-                marginTop: "0.5em",
-              }}
-            >
-              Find your recently submarined content below
-            </Typography>
+            <Typography variant="body2">Find your recently submarined content below</Typography>
           </Unstable_Grid2>
           <Button
             sx={{
@@ -188,9 +182,9 @@ const Dashboard = () => {
             <Link href={"/submarine/location"} passHref>
               <MenuItem onClick={(e) => setAnchorEl(null)}>Location</MenuItem>
             </Link>
-            <MenuItem disabled={true} onClick={(e) => setAnchorEl(null)}>
-              Credit/Debit Card (coming soon)
-            </MenuItem>
+            <Link href={"/submarine/twitch"} passHref>
+              <MenuItem onClick={(e) => setAnchorEl(null)}>Twitch</MenuItem>
+            </Link>
           </Menu>
         </Unstable_Grid2>
         <Divider sx={{ width: "100%", margin: (theme) => theme.spacing(4, 0, 0, 0) }} />
@@ -218,7 +212,6 @@ const Dashboard = () => {
           </>
         )}
       </Unstable_Grid2>
-      {displayUpgradeModal && <UpgradeModal />}
     </>
   );
 };

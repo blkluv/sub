@@ -13,6 +13,7 @@ import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { setAlert } from "../../store/slices/alertSlice";
 import { Button, Divider, Menu, MenuItem, Typography, Unstable_Grid2 } from "@mui/material";
 import SubmarineDialog from "../Submarine/SubmarineDialog/SubmarineDialog";
+import { AlertType } from "../Alert";
 
 const NEW_PLANS = ["Picnic", "Fiesta", "Carnival", "Enterprise"];
 
@@ -102,7 +103,7 @@ const Dashboard = () => {
     navigator.clipboard.writeText(`${window.location.origin}/${file.short_id}`);
     dispatch(
       setAlert({
-        type: "success",
+        type: AlertType.Info,
         message: "Share link copied!",
       })
     );
@@ -117,7 +118,7 @@ const Dashboard = () => {
         timeout: 2147483647,
       });
     } catch (error) {
-      dispatch(setAlert({ type: "error", message: "Error deleting link" }));
+      dispatch(setAlert({ type: AlertType.Error, message: "Error deleting link" }));
     }
   };
 

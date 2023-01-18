@@ -1,8 +1,7 @@
 import { useState } from "react";
 import * as FullStory from "@fullstory/browser";
-import { Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
-import { Box } from "@mui/system";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {

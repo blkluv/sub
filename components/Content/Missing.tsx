@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { Typography, Unstable_Grid2 as Grid } from "@mui/material";
-import { Container } from "@mui/system";
+import { Typography, Unstable_Grid2 as Grid, Container } from "@mui/material";
 
 const Missing = () => {
   return (

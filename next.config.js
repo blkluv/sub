@@ -25,7 +25,6 @@ const nextConfig = {
       transform: "@mui/icons-material/{{ matches.[1] }}/{{member}}",
     },
   },
-  transpilePackages: ["@mui/material", "@mui/icons-material"],
   async headers() {
     return [
       {

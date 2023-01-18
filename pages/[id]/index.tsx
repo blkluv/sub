@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { Box } from "@mui/material";
 import MainLandingContent from "../../components/Content/MainLandingContent";
 import PublicLayout from "../../components/Layout/PublicLayout";
 import { getAllContentIds, getUserContentCombo } from "../../repositories/content";

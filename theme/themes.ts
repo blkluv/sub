@@ -1,7 +1,7 @@
 //Colors taken from Pinata Figma design https://www.figma.com/file/Uaq250YCGDCK5NzrASJn7k/Pinata-Design-System?node-id=2%3A161
 import { Palette, Theme } from "@mui/material";
 import { Components } from "@mui/material/styles/components";
-import createTheme from "@mui/material/styles/createTheme";
+import { createTheme } from "@mui/material/styles";
 
 const lightColorPalette: Partial<Palette> = {
   mode: "light",

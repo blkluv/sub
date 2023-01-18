@@ -82,7 +82,6 @@ export default function AuthForm() {
     }
   }, []);
 
-  console.log({ loginStatus });
   return (
     <Container sx={{ marginTop: "2rem" }} maxWidth="sm">
       <Unstable_Grid2

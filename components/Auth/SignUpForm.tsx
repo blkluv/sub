@@ -86,6 +86,12 @@ const SignUpForm = () => {
       setShowConfirmationCode(true);
       setCredentials({ email: values.email, password: values.password });
     } catch (err) {
+      dispatch(
+        setAlert({
+          message: err.message,
+          type: AlertType.Error,
+        })
+      );
       setAuthError(err.message);
       setSubmitting(false);
     }

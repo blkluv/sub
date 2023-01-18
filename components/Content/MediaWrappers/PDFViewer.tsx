@@ -15,6 +15,8 @@ const PDFViewer = ({ url }: { url: string }) => {
   const handleClose = () => setOpen(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [jwtExpired, setJwtExpired] = useState<boolean>(false);
+  window.setInterval(() => setJwtExpired(true), 60000);
 
   useEffect(() => {
     pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -56,10 +58,11 @@ const PDFViewer = ({ url }: { url: string }) => {
         </Document>
       </Unstable_Grid2>
       <Unstable_Grid2 container sx={{ justifyContent: "center", alignItems: "center", gap: "1em" }}>
-        <Button sx={{ width: "10em" }} onClick={handleOpen}>
+        <Button disabled={jwtExpired} sx={{ width: "10em" }} onClick={handleOpen}>
           Preview PDF
         </Button>
         <Button
+          disabled={jwtExpired}
           href={url}
           sx={{
             width: "10em",

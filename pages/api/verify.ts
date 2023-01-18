@@ -160,7 +160,7 @@ const handler = async (req, res) => {
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;
-      Sentry.captureException(error);
+      //      Sentry.captureException(error);
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {

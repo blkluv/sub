@@ -4,7 +4,7 @@ import bs58 from "bs58";
 import { sign } from "tweetnacl";
 import { clusterApiUrl, Commitment, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
-import { Sentry } from "../../helpers/sentry";
+// import { Sentry } from "../../helpers/sentry";
 import { getUserContentCombo } from "../../repositories/content";
 import { getMessagetoSign } from "../../helpers/messageToSign";
 import { withSessionRoute } from "../../helpers/withSession";
@@ -84,7 +84,7 @@ const handler = async (req, res) => {
     } catch (error) {
       console.log(error);
       console.log(error.response);
-      Sentry.captureException(error);
+      //      Sentry.captureException(error);
       res.status(500).json(error);
     }
   } else if (req.method === "GET") {

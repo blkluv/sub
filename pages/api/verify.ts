@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
 import { getSubmarinedContent } from "../../helpers/submarine";
-import { Sentry } from "../../helpers/sentry";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { definitions } from "../../types/supabase";
 import { getUserContentCombo } from "../../repositories/content";
@@ -160,7 +159,6 @@ const handler = async (req, res) => {
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;
-      //      Sentry.captureException(error);
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {

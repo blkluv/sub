@@ -16,7 +16,7 @@ const Content = ({ data }: { data: getContentReturnObject & { error: any } }) =>
 };
 
 export async function getStaticPaths() {
-  const ids = await getAllContentIds();
+  const ids = []; //await getAllContentIds();
   return {
     paths: ids.map((id) => ({ params: { id } })),
     fallback: "blocking",

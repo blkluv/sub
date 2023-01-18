@@ -1,6 +1,6 @@
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { BlockchainOptions, UnlockInfo } from "../../types/UnlockInfo";
-import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
 import FlowUnlock from "./LockType/Flow";
 import Twitch from "./LockType/Twitch";

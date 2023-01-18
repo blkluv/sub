@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk, AnyAction, isPending, isFulfilled } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import Auth from "@aws-amplify/auth";
+import { Auth } from "@aws-amplify/auth";
 import Amplify from "@aws-amplify/core";
-// import { Hub } from "@aws-amplify/core";
 import { awsconfig } from "../../constants/awsconfig";
 import gravatar from "gravatar";
 import { getKy, setCredentials } from "../../helpers/ky";

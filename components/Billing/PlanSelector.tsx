@@ -169,7 +169,7 @@ const PlanSelector = ({
     try {
       if (billing.stripe_customer || coupon) {
         FullStory.event("Upgrade plan", {
-          userEmail: user.user.email,
+          userEmail: (user && user.user && user.user.email) || "unknown@gmail.com",
           newPlan: planToChangeTo.name,
         });
         await changePlanLocal(planToChangeTo, coupon);

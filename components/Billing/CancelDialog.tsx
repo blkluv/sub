@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
-import { CheckboxWithLabel } from "formik-material-ui";
+import { CheckboxWithLabel } from "formik-mui";
 import { Formik, Form, Field } from "formik";
 import { FormLabel, Typography } from "@mui/material";
 import * as Yup from "yup";
@@ -125,7 +125,7 @@ export default function CancelDialog({
             {({ values, errors, touched }) => {
               return (
                 <Form>
-                  {/* <FormControl style={{ display: "flex" }}>
+                  <FormControl style={{ display: "flex" }}>
                     <FormLabel component="legend">
                       We are sad to see you go! Please select a reason for leaving.
                     </FormLabel>
@@ -141,7 +141,7 @@ export default function CancelDialog({
                         />
                       ))}
                     </FormGroup>
-                  </FormControl> */}
+                  </FormControl>
                   {touched.userReasons && errors.userReasons && (
                     <Typography variant="subtitle2" color="red">
                       {errors.userReasons}

@@ -1,13 +1,14 @@
 import { InputAdornment } from "@mui/material";
 import { Field, useFormikContext } from "formik";
 import { TextField } from "formik-mui";
+
 const FormikTextfield = ({
   name,
   label,
   required = false,
   type = "text",
   adornment = <></>,
-  maxLength = undefined,
+  maxLength = 500,
   ...props
 }) => {
   const formik = useFormikContext();

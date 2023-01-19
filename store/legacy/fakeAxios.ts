@@ -29,8 +29,8 @@ const buildApi = (baseUrl: string) => {
     },
   };
 };
-export const api = buildApi(process.env.NEXT_PUBLIC_PINATA_API_URL);
-export const managedApi = buildApi(process.env.NEXT_PUBLIC_MANAGED_API);
+export const api = buildApi(process.env.NEXT_PUBLIC_PINATA_API_URL || "");
+export const managedApi = buildApi(process.env.NEXT_PUBLIC_MANAGED_API || "");
 
 // metricsApi does not have "Bearer" in the Authorization header...
 export const metricsApi = {

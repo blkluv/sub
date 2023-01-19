@@ -1,6 +1,6 @@
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import { BlockchainOptions, UnlockInfo } from "../../types/UnlockInfo";
-import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
 import FlowUnlock from "./LockType/Flow";
 import Twitch from "./LockType/Twitch";
@@ -85,6 +85,7 @@ const LockedContentContainer = ({
         <Typography
           variant="h1"
           sx={{
+            fontFamily: "inherit",
             marginTop: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
           }}
@@ -94,6 +95,7 @@ const LockedContentContainer = ({
         <Typography
           variant="subtitle2"
           sx={{
+            fontFamily: "inherit",
             padding: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
             opacity: ".75",

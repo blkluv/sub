@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { json } from "../../erc721";
 import { erc1155 } from "../../erc1155";
 import { getSubmarinedContent } from "../../helpers/submarine";
-import { Sentry } from "../../helpers/sentry";
 import { getSupabaseClient } from "../../helpers/supabase";
 import { definitions } from "../../types/supabase";
 import { getUserContentCombo } from "../../repositories/content";
@@ -75,7 +74,10 @@ const handler = async (req, res) => {
         .select("*")
         .eq("id", messageId);
 
-      const message = Session[0];
+      const message = Session && Session[0];
+      if (!message) {
+        throw "Invalid message ID";
+      }
 
       if (message.used) {
         throw "This signature has already been used";
@@ -115,8 +117,14 @@ const handler = async (req, res) => {
             return res.json(true);
           }
           const info = await getUserContentCombo(shortId);
+          if (!info) {
+            return res.status(404).send("No content found");
+          }
           const { submarine_cid } = info;
           const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
+          if (!pinata_submarine_key || !pinata_gateway_subdomain) {
+            return res.status(401).send("No submarine key found");
+          }
           const responseObj = await getSubmarinedContent(
             pinata_submarine_key,
             submarine_cid,
@@ -151,7 +159,6 @@ const handler = async (req, res) => {
     } catch (error) {
       console.log(error);
       const { response: fetchResponse } = error;
-      Sentry.captureException(error);
       return res.status(fetchResponse?.status || 500).json(error.data);
     }
   } else {

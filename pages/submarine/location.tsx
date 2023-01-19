@@ -6,9 +6,9 @@ import * as Yup from "yup";
 const LocationLock = () => {
   const unlockInfo: UnlockInfoLocation = {
     type: "location",
-    lat: null,
-    long: null,
-    distance: null,
+    lat: 0,
+    long: 0,
+    distance: "",
   };
 
   const unlockInfoSchema = Yup.object().shape({

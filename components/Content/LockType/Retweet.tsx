@@ -35,7 +35,7 @@ const Retweet = ({ fileInfo, isPreview }: RetweetProps) => {
 
   const handleVerification = async (): Promise<SubmarinedContent> => {
     return new Promise<SubmarinedContent>(async (resolve, reject) => {
-      const { oauth_token, oauth_verifier } = router.query;
+      const { oauth_token, oauth_verifier, id } = router.query;
       if (!oauth_token || !oauth_verifier) {
         reject("Could not verify retweet");
       }
@@ -46,11 +46,15 @@ const Retweet = ({ fileInfo, isPreview }: RetweetProps) => {
             window.location.pathname.split("/")[1]
           }`
         )
-        .catch((err) => reject("Could not verify retweet"));
+        .catch((err) => {
+          router.replace(`/${id}`, undefined, { shallow: true });
+          reject("Could not verify retweet");
+        });
       if (res) {
         const data: SubmarinedContent = await res.json();
         resolve(data);
       }
+      router.replace(`/${id}`, undefined, { shallow: true });
       reject("Could not verify retweet");
     });
   };

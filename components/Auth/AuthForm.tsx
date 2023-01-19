@@ -58,9 +58,10 @@ export default function AuthForm() {
     dispatch(doLogin({ email, password }))
       .unwrap()
       .then((user) => {
-        const firstName = user.user["custom:firstName"];
-        const lastName = user.user["custom:lastName"];
-        const user_id = user.user.sub;
+        const daUser = user.user || {};
+        const firstName = daUser["custom:firstName"] || "firstnamenotfound";
+        const lastName = daUser["custom:lastName"] || "lastnamenotfound";
+        const user_id = daUser.sub || "useridnotfound";
         window.rudderanalytics.identify(email, { email, firstName, lastName, user_id });
         window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
           email,

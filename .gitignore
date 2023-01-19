@@ -33,3 +33,4 @@ yarn-error.log*
 .vercel
 
 /analyze
+tsconfig.tsbuildinfo

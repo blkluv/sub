@@ -2,9 +2,8 @@ import { useAppSelector } from "../../store/hooks";
 import { selectSubmarinedContent } from "../../store/selectors/submarinedContentSelectors";
 import Gallery from "./Gallery";
 import SingleMediaDisplay from "./SingleMediaDisplay";
-import { Box, Unstable_Grid2 } from "@mui/material";
 
-const UnlockedContentContainer = ({ name }) => {
+const UnlockedContentContainer = ({ fileInfo }) => {
   const submarinedContent = useAppSelector(selectSubmarinedContent);
   if (!submarinedContent) {
     throw new Error("Missing Submarined Content");
@@ -12,9 +11,9 @@ const UnlockedContentContainer = ({ name }) => {
   const url = `${submarinedContent.gateway}/ipfs/${submarinedContent.cid}?accessToken=${submarinedContent.token}`;
 
   return submarinedContent.directory ? (
-    <Gallery name={name} content={submarinedContent} />
+    <Gallery fileInfo={fileInfo} content={submarinedContent} />
   ) : (
-    <SingleMediaDisplay name={name} url={url} submarinedContent={submarinedContent} />
+    <SingleMediaDisplay url={url} submarinedContent={submarinedContent} />
   );
 };
 

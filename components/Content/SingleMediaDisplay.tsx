@@ -9,10 +9,9 @@ import PDFViewer from "./MediaWrappers/PDFViewer";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
-  name: string;
 }
 
-const SingleMediaDisplay = ({ url, submarinedContent, name }: SingleMediaDisplayProps) => {
+const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps) => {
   const [fileType, setFileType] = useState<string>("");
 
   useEffect(() => {

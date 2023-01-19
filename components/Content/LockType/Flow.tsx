@@ -8,9 +8,6 @@ import { getMessagetoSign } from "../../../helpers/messageToSign";
 import { getFcl } from "../../../flow/fcl";
 import { useEffect, useState } from "react";
 const FlowUnlock = ({ fileInfo }) => {
-  interface LocationProps {
-    fileInfo: MetadataUnlockInfo;
-  }
   const [fcl, setFcl] = useState(getFcl(FlowNetwork.Mainnet));
   useEffect(() => {
     setFcl(getFcl(fileInfo.unlockInfo.network));

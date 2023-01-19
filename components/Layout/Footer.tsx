@@ -1,5 +1,4 @@
 import { Container, Divider, Typography } from "@mui/material";
-import Image from "next/future/image";
 import Grid2 from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const navigation = {

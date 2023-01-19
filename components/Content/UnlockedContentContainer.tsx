@@ -3,14 +3,17 @@ import { selectSubmarinedContent } from "../../store/selectors/submarinedContent
 import Gallery from "./Gallery";
 import SingleMediaDisplay from "./SingleMediaDisplay";
 
-const UnlockedContentContainer = ({ name }) => {
+const UnlockedContentContainer = ({ fileInfo }) => {
   const submarinedContent = useAppSelector(selectSubmarinedContent);
+  if (!submarinedContent) {
+    throw new Error("Missing Submarined Content");
+  }
   const url = `${submarinedContent.gateway}/ipfs/${submarinedContent.cid}?accessToken=${submarinedContent.token}`;
 
   return submarinedContent.directory ? (
-    <Gallery name={name} content={submarinedContent} />
+    <Gallery fileInfo={fileInfo} content={submarinedContent} />
   ) : (
-    <SingleMediaDisplay name={name} url={url} submarinedContent={submarinedContent} />
+    <SingleMediaDisplay url={url} submarinedContent={submarinedContent} />
   );
 };
 

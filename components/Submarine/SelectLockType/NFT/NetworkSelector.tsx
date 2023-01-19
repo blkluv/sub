@@ -2,11 +2,12 @@ import { MenuItem } from "@mui/material";
 import { Field } from "formik";
 import { Select } from "formik-mui";
 
-const networkOptions = {
+export const networkOptions = {
   Ethereum: ["Mainnet", "Goerli"],
   Polygon: ["Mainnet", "Mumbai"],
   Avalanche: ["Mainnet", "Fuji"],
   Solana: ["Mainnet-Beta", "Devnet"],
+  Flow: ["Mainnet"],
 };
 
 const NetworkSelector = ({ blockchain }) => {

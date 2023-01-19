@@ -10,6 +10,7 @@ import Grid2 from "@mui/material/Unstable_Grid2"; // Grid version 2
 export enum AlertType {
   Warning = "warning",
   Error = "error",
+  Info = "info",
 }
 const ExclamationIconStyled = styled(ExclamationIcon)`
   color: ${({ theme }) => theme.palette.warning.main};

@@ -1,15 +1,20 @@
-import LocationUnlock from "./LockType/Location";
-import Solana from "./LockType/Solana";
-import NFT from "./LockType/NFT";
-import Retweet from "./LockType/Retweet";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
-import { UnlockInfo } from "../../types/UnlockInfo";
-import WagmiProvider from "../Wagmi/Provider";
-import { Box, Container, Paper, Typography, Unstable_Grid2 } from "@mui/material";
+import { BlockchainOptions, UnlockInfo } from "../../types/UnlockInfo";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import ThumbnailImage from "../Form/ThumbnailImage";
-import SolanaProvider from "./LockType/SolanaProvider";
+import FlowUnlock from "./LockType/Flow";
+import Twitch from "./LockType/Twitch";
 
 export const EVMChains = ["Ethereum", "Polygon", "Avalanche"];
+
+import dynamic from "next/dynamic";
+const LocationUnlock = dynamic(() => import("./LockType/Location"));
+const Solana = dynamic(() => import("./LockType/Solana"));
+const SolanaProvider = dynamic(() => import("./LockType/SolanaProvider"));
+const WagmiProvider = dynamic(() => import("../Wagmi/Provider"));
+const NFT = dynamic(() => import("./LockType/NFT"));
+const Retweet = dynamic(() => import("./LockType/Retweet"));
+
 interface LockedContentContainerProps {
   fileInfo: MetadataUnlockInfo;
   gatewayUrl: string;
@@ -26,12 +31,14 @@ const LockedContentContainer = ({
       case "location":
         return <LocationUnlock fileInfo={fileInfo} />;
       case "nft":
-        if (unlockInfo.blockchain === "Solana") {
+        if (unlockInfo.blockchain === BlockchainOptions.Solana) {
           return (
             <SolanaProvider>
               <Solana fileInfo={fileInfo} />
             </SolanaProvider>
           );
+        } else if (unlockInfo.blockchain === BlockchainOptions.Flow) {
+          return <FlowUnlock fileInfo={fileInfo} />;
         } else if (EVMChains.includes(unlockInfo.blockchain)) {
           return (
             <WagmiProvider>
@@ -41,6 +48,9 @@ const LockedContentContainer = ({
         }
       case "retweet":
         return <Retweet fileInfo={fileInfo} isPreview={isPreview} />;
+      case "twitch":
+        return <Twitch fileInfo={fileInfo} />;
+
       default:
         return <div>Unknown lock type</div>;
     }
@@ -75,6 +85,7 @@ const LockedContentContainer = ({
         <Typography
           variant="h1"
           sx={{
+            fontFamily: "inherit",
             marginTop: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
           }}
@@ -84,6 +95,7 @@ const LockedContentContainer = ({
         <Typography
           variant="subtitle2"
           sx={{
+            fontFamily: "inherit",
             padding: (theme) => theme.spacing(1),
             color: (theme) => theme.palette.primary.contrastText,
             opacity: ".75",

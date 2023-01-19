@@ -17,6 +17,7 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
+import { AlertType } from "../Alert";
 
 enum FileType {
   File = "file",
@@ -48,13 +49,15 @@ const UploadPrivateMedia = () => {
     setIsUploading(true);
     const FILE_SIZE_LIMIT = 500000000; // 500MB
     const files = e.target.files;
-    console.log("uploading files to private gateway");
+    if (!files) {
+      return;
+    }
     setSelectedFiles(files);
     for (let i = 0; i < files.length; i++) {
       if (files[i].size > FILE_SIZE_LIMIT) {
         dispatch(
           setAlert({
-            type: "error",
+            type: AlertType.Error,
             message: "File too large, limit is 500mb",
           })
         );
@@ -81,7 +84,7 @@ const UploadPrivateMedia = () => {
     });
 
     const resJson: ContentResponseTO = await res.json();
-    setFieldValue("submarineCID", resJson.items[0].cid);
+    setFieldValue("submarineCID", resJson?.items?.[0].cid);
     setFieldValue("shortId", identifier);
     setIsUploading(false);
   };
@@ -99,11 +102,11 @@ const UploadPrivateMedia = () => {
         alert("Only one file allowed at a time");
         return;
       }
-      const files = [];
+      const files: any[] = [];
 
       for (var i = 0; i < ev.dataTransfer.items.length; i++) {
         if (ev.dataTransfer.items[i].kind === "file") {
-          var file = ev.dataTransfer.items[i].getAsFile();
+          const file = ev.dataTransfer.items[i].getAsFile()!;
           files.push(file);
           console.log("... file[" + i + "].name = " + file.name);
         }
@@ -166,8 +169,8 @@ const UploadPrivateMedia = () => {
         {selectedFiles.length > 0 && (
           <Typography variant={"body2"}>
             {uploadType === FileType.File
-              ? selectedFiles[0].name
-              : selectedFiles[0].webkitRelativePath.split("/")[0]}{" "}
+              ? selectedFiles?.[0]?.name
+              : selectedFiles?.[0]?.webkitRelativePath.split("/")[0]}{" "}
             ({selectedFiles.length} files in folder)
           </Typography>
         )}

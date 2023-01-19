@@ -5,19 +5,25 @@ import { getKy } from "../../../helpers/ky";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import { getMessagetoSign } from "../../../helpers/messageToSign";
-import { Button, createTheme, Divider, Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
-import { WalletDisconnectButton, WalletMultiButton } from "@solana/wallet-adapter-material-ui";
-import styled from "@emotion/styled";
-import { useTheme } from "@emotion/react";
+import { Typography, Unstable_Grid2 as Grid2 } from "@mui/material";
+import {
+  WalletDisconnectButton,
+  WalletMultiButton,
+  WalletDialogProvider,
+} from "../../../lib/@solana/wallet-adapter-material-ui/index";
 
-import { ThemeProvider } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { UnlockInfoSolana } from "../../../types/UnlockInfo";
+
 const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { publicKey, signMessage } = useWallet();
   const signData = async (): Promise<SubmarinedContent> => {
     return new Promise(async (resolve, reject) => {
       const { shortId, submarineCID, unlockInfo } = fileInfo;
       if (unlockInfo.type === "nft") {
-        const { updateAuthority, blockchain, tokenId, network, mintAddress } = unlockInfo;
+        // @ts-ignore
+        const unlockInfoSolana: UnlockInfoSolana = unlockInfo;
+        const { updateAuthority, blockchain, network, mintAddress } = unlockInfoSolana;
         const ky = getKy();
         const messageToSign: {
           id: string;
@@ -34,7 +40,10 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
           reject("Wallet does not support message signing!");
         }
 
-        const signatureRaw = await signMessage(message);
+        const signatureRaw = signMessage && (await signMessage(message));
+        if (!signatureRaw || !publicKey) {
+          throw new Error("Signature is null");
+        }
         const signature = bs58.encode(signatureRaw);
 
         const data: SubmarinedContent = await ky
@@ -46,7 +55,6 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
               updateAuthority,
               mintAddress,
               blockchain,
-              tokenId,
               CID: submarineCID,
               shortId: shortId,
               message: messageToSign,
@@ -82,7 +90,7 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
       borderRadius: 2,
     }),
     backgroundColor: theme.palette.primary.light,
-    ...(fileInfo?.customizations.buttonColor &&
+    ...(fileInfo?.customizations?.buttonColor &&
       fileInfo?.customizations?.buttonColor?.hex && {
         backgroundColor: fileInfo.customizations.buttonColor.hex,
       }),
@@ -94,15 +102,17 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   };
 
   return !wallet.connected ? (
-    <Grid2>
-      <Grid2 container direction={"column"} alignContent={"center"} gap={"1rem"}>
-        <WalletMultiButton style={buttonStyle} />
-        {wallet.autoConnect && <WalletDisconnectButton style={buttonStyle} />}
+    <WalletDialogProvider sx={{ ...dialogStyle }}>
+      <Grid2>
+        {description}
+        <Grid2 container direction={"column"} alignContent={"center"} gap={"1rem"}>
+          <WalletMultiButton style={buttonStyle} />
+          {wallet.autoConnect && <WalletDisconnectButton style={buttonStyle} />}
+        </Grid2>
       </Grid2>
-      {description}
-    </Grid2>
+    </WalletDialogProvider>
   ) : (
-    <>
+    <WalletDialogProvider sx={{ ...dialogStyle }}>
       <BaseLockType
         description={description}
         fileInfo={fileInfo}
@@ -110,8 +120,41 @@ const Solana = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
         handleVerify={signData}
       />
       <WalletDisconnectButton />
-    </>
+    </WalletDialogProvider>
   );
 };
 
 export default Solana;
+
+const dialogStyle = {
+  "& .MuiDialog-paper": {
+    width: "80%",
+    maxWidth: "300px",
+    margin: 0,
+    borderRadius: "10px",
+  },
+  "& .MuiList-root": {
+    padding: "0",
+    background: "transparent",
+  },
+  "& .MuiDialogTitle-root": {
+    height: "3rem",
+    color: "#d3d3d3",
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+    lineHeight: "1.5rem",
+  },
+
+  "& .MuiDialogContent-root": {
+    "& .MuiListItem-root": {
+      "& .MuiButton-root": {
+        width: "90%",
+        maxWidth: "300px",
+        backgroundColor: "#FAFAFA",
+        color: "#181838",
+        borderRadius: 1000,
+        marginBottom: "0.5rem",
+      },
+    },
+  },
+};

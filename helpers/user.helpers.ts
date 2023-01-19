@@ -28,7 +28,7 @@ export const getUserSession = async (
   try {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
       headers: {
-        Authorization: req.headers.authorization,
+        Authorization: req.headers.authorization || "",
         source: req.headers.source ? "login" : "",
       },
     });
@@ -74,39 +74,6 @@ export const findAPIKeys = async (req): Promise<Key[]> => {
       }
     );
     return hasKeyResults.data.items;
-  } catch (error) {
-    throw error;
-  }
-};
-export interface Row {
-  id: string;
-  domain: string;
-  createdAt: Date;
-  restrict: boolean;
-  customDomains: any[];
-}
-
-export interface Items {
-  count: number;
-  rows: Row[];
-}
-
-export interface Gateways {
-  status: number;
-  count: number;
-  items: Items;
-}
-
-export const getGateways = async (req): Promise<Gateways> => {
-  try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_MANAGED_API}/gateways?page=1`, {
-      headers: {
-        authorization: req.headers.authorization,
-        source: "login",
-      },
-    });
-    console.log(JSON.stringify(res.data));
-    return res.data;
   } catch (error) {
     throw error;
   }

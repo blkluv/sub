@@ -1,8 +1,6 @@
 import MapIcon from "@mui/icons-material/Map";
-import { Divider, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Divider, Typography, Unstable_Grid2 } from "@mui/material";
 import { getKy } from "../../../helpers/ky";
-import { useAppDispatch } from "../../../store/hooks";
-import { setAlert } from "../../../store/slices/alertSlice";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { UnlockInfoLocation } from "../../../types/UnlockInfo";
 import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
@@ -12,8 +10,10 @@ interface LocationProps {
   fileInfo: MetadataUnlockInfo;
 }
 const LocationUnlock = ({ fileInfo }: LocationProps) => {
-  const unlockInfo: UnlockInfoLocation =
-    fileInfo.unlockInfo.type === "location" && fileInfo.unlockInfo;
+  if (fileInfo.unlockInfo.type !== "location") {
+    return null;
+  }
+  const unlockInfo: UnlockInfoLocation = fileInfo.unlockInfo;
 
   const verifyLocation = async (): Promise<SubmarinedContent> => {
     return new Promise<SubmarinedContent>((resolve, reject) => {
@@ -54,11 +54,10 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
           color: (theme) => theme.palette.primary.contrastText,
         }}
       >
-        You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of these coordinates
-        to unlock content:
+        You have to be within <strong>{unlockInfo?.distance}</strong> mile(s) of{" "}
+        {unlockInfo.place ? "this location" : "these coordinates"} to unlock content:
       </Typography>
-      <Typography
-        paragraph
+      <Box
         sx={{
           color: (theme) => theme.palette.primary.main,
           textDecoration: "underline",
@@ -77,7 +76,10 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
                 color: (theme) => theme.palette.primary.contrastText,
               }}
             >
-              {unlockInfo?.lat}, <br /> {unlockInfo?.long}
+              <>
+                {unlockInfo?.place?.description || unlockInfo?.lat}, <br />
+                {!unlockInfo?.place?.description && unlockInfo?.long}
+              </>
             </Typography>
             <MapIcon
               style={{ marginLeft: "0.5rem" }}
@@ -86,7 +88,7 @@ const LocationUnlock = ({ fileInfo }: LocationProps) => {
             />
           </Unstable_Grid2>
         </a>
-      </Typography>
+      </Box>
     </>
   );
   return (

@@ -1,54 +1,59 @@
-import { Button, Divider, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { getKy } from "../../../helpers/ky";
-import { useAppDispatch } from "../../../store/hooks";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
+import { MetadataUnlockInfo } from "../../Submarine/SelectLockType/SubmarineFileForm";
 import BaseLockType from "./LockTypeContainer";
-
-const NFT = ({ fileInfo }) => {
+import { BlockchainOptions } from "../../../types/UnlockInfo";
+const NFT = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { signMessageAsync } = useSignMessage();
 
   const handleSign = async (): Promise<SubmarinedContent> => {
     return new Promise(async (resolve, reject) => {
+      const { shortId, submarineCID } = fileInfo;
+      const unlockInfo = fileInfo.unlockInfo;
+
       // ts safety check
-      if (fileInfo.unlockInfo.type === "nft") {
-        const { shortId, submarineCID, unlockInfo } = fileInfo;
-        const { contract, blockchain, tokenId, network } = unlockInfo;
-        if (!contract || !blockchain || !network) {
-          reject("Missing unlock info");
-          return;
-        }
-        const ky = getKy();
-        const messageToSign: any = await ky
-          .get(`/api/verify?contract=${contract}&shortId=${shortId}`)
-          .json();
-        const messageData: string = messageToSign.message;
-        const signature = await signMessageAsync({ message: messageData }).catch(() => {
-          reject("Signature failed");
-          return;
-        });
-        try {
-          const content: SubmarinedContent = await ky
-            .post("/api/verify", {
-              json: {
-                address: address,
-                signature,
-                network,
-                contractAddress: contract,
-                blockchain,
-                tokenId,
-                CID: submarineCID,
-                shortId: shortId,
-                messageId: messageToSign.session.id,
-              },
-            })
+      if (unlockInfo.type === "nft") {
+        const { blockchain, network } = unlockInfo;
+        if (blockchain === BlockchainOptions.Ethereum) {
+          const { tokenId, contract } = unlockInfo;
+          if (!contract || !blockchain || !network) {
+            reject("Missing unlock info");
+            return;
+          }
+          const ky = getKy();
+          const messageToSign: any = await ky
+            .get(`/api/verify?contract=${contract}&shortId=${shortId}`)
             .json();
-          resolve(content);
-          return;
-        } catch (err) {
-          reject("Could not verify NFT ownership");
+          const messageData: string = messageToSign.message;
+          const signature = await signMessageAsync({ message: messageData }).catch(() => {
+            reject("Signature failed");
+            return;
+          });
+          try {
+            const content: SubmarinedContent = await ky
+              .post("/api/verify", {
+                json: {
+                  address: address,
+                  signature,
+                  network,
+                  contractAddress: contract,
+                  blockchain,
+                  tokenId,
+                  CID: submarineCID,
+                  shortId: shortId,
+                  messageId: messageToSign.session.id,
+                },
+              })
+              .json();
+            resolve(content);
+            return;
+          } catch (err) {
+            reject("Could not verify NFT ownership");
+          }
         }
       }
     });
@@ -89,7 +94,7 @@ const NFT = ({ fileInfo }) => {
                         borderRadius: 2,
                       }),
                       backgroundColor: (theme) => theme.palette.primary.light,
-                      ...(fileInfo?.customizations.buttonColor &&
+                      ...(fileInfo?.customizations?.buttonColor &&
                         fileInfo?.customizations?.buttonColor?.hex && {
                           backgroundColor: fileInfo.customizations.buttonColor.hex,
                         }),

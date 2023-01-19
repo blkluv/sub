@@ -1,8 +1,8 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import PrivateLayout from "../../Layout";
 import PreviewModal from "../../Content/PreviewDialog";
-import Layout from "../../Layout";
 import { getKy } from "../../../helpers/ky";
 import shortUUID from "short-uuid";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -21,6 +21,7 @@ import {
   Unstable_Grid2,
 } from "@mui/material";
 import * as Yup from "yup";
+import { AlertType } from "../../Alert";
 
 interface SubmarineProps {
   children: ReactNode;
@@ -33,7 +34,7 @@ export interface MetadataUnlockInfo {
   description: string;
   unlockInfo: UnlockInfo;
   thumbnail?: string;
-  customizations?: Customizations;
+  customizations: Customizations | null;
   submarineCID: string;
   shortId: string;
 }
@@ -99,10 +100,9 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
     { setSubmitting }: FormikHelpers<MetadataUnlockInfo>
   ) => {
     setSubmitting(true);
-    const identifier = values.shortId ? values.shortId : shortUUID.generate();
+    values.shortId = values.shortId || shortUUID.generate();
 
     const submarinedContent: MetadataUnlockInfo = {
-      shortId: identifier,
       ...values,
     };
 
@@ -116,7 +116,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
         router.push("/");
         dispatch(
           setAlert({
-            type: "success",
+            type: AlertType.Info,
             message: "Created locked content!",
           })
         );
@@ -124,7 +124,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
       .catch(() => {
         dispatch(
           setAlert({
-            type: "error",
+            type: AlertType.Error,
             message: "Failed to create locked content!",
           })
         );
@@ -133,7 +133,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
   };
 
   return (
-    <Layout>
+    <PrivateLayout>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -189,12 +189,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
                     alignSelf: "flex-start",
                   }}
                 >
-                  <MainLandingContent
-                    missing={false}
-                    fileInfo={props.values}
-                    gatewayUrl={gatewayUrl}
-                    isPreview
-                  />
+                  <MainLandingContent fileInfo={props.values} gatewayUrl={gatewayUrl} isPreview />
                 </Unstable_Grid2>
               </Unstable_Grid2>
               <Unstable_Grid2 container xs={12}>
@@ -220,7 +215,7 @@ const SubmarineFileForm = ({ children, unlockInfoSchema, unlockInfo }: Submarine
           )
         }
       </Formik>
-    </Layout>
+    </PrivateLayout>
   );
 };
 

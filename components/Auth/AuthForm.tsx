@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as FullStory from "@fullstory/browser";
-import { Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
-import { Box } from "@mui/system";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -23,6 +22,7 @@ export default function AuthForm() {
   const [email, setEmail] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [password, setPassword] = useState("");
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const [invalidCode, setInvalidCode] = useState(false);
   const dispatch = useAppDispatch();
@@ -36,8 +36,8 @@ export default function AuthForm() {
         await Auth.confirmSignUp(email, confirmationCode);
       } catch (error) {
         setInvalidCode(true);
+        return;
       }
-      return;
     }
     if (isMFARequest) {
       if (mfa) {
@@ -81,8 +81,28 @@ export default function AuthForm() {
     setHasRequestedNewCode(true);
     Auth.resendSignUp(email);
   };
+
+  useEffect(() => {
+    const credentials = localStorage.getItem("credentials");
+    if (credentials) {
+      const { email, password } = JSON.parse(credentials);
+      setDisableSubmit(true);
+      setEmail(email);
+      setPassword(password);
+      dispatch(doLogin({ email, password }))
+        .unwrap()
+        .then(() => {
+          setDisableSubmit(false);
+        });
+      FullStory.setVars("page", {
+        userEmail: email,
+      });
+      localStorage.removeItem("credentials");
+    }
+  }, []);
+
   return (
-    <Container sx={{ marginTop: "2rem" }} maxWidth="md">
+    <Container sx={{ marginTop: "2rem" }} maxWidth="sm">
       <Unstable_Grid2
         container
         justifyContent={"center"}
@@ -99,7 +119,7 @@ export default function AuthForm() {
             sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}
           >
             <Typography variant="body1">Or&nbsp;</Typography>
-            <Link passHref href="https://app.pinata.cloud">
+            <Link passHref href="/auth/signup">
               <Typography variant="body1" color="primary.main" sx={{ cursor: "pointer" }}>
                 sign up here.
               </Typography>
@@ -147,19 +167,22 @@ export default function AuthForm() {
               />
               {loginStatus === LOGIN_STATUSES.needsConfirmation && (
                 <>
-                  <Typography variant="body1" sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0) }}>
-                    Please check your email for a confirmation code.{" "}
-                    <Typography
-                      variant="body1"
-                      color="primary.main"
-                      sx={{
-                        display: "inline",
-                        cursor: hasRequestedNewCode ? "not-allowed" : "pointer",
-                      }}
-                      onClick={handleResendConfirmationCode}
-                    >
-                      {hasRequestedNewCode ? "Code resent!" : "Click to resend."}
-                    </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ margin: (theme) => theme.spacing(1, 0, 1, 0), display: "inline-block" }}
+                  >
+                    Please check your email for a confirmation code.
+                  </Typography>{" "}
+                  <Typography
+                    variant="body1"
+                    color="primary.main"
+                    sx={{
+                      display: "inline",
+                      cursor: hasRequestedNewCode ? "not-allowed" : "pointer",
+                    }}
+                    onClick={handleResendConfirmationCode}
+                  >
+                    {hasRequestedNewCode ? "Code resent!" : "Click to resend."}
                   </Typography>
                   <TextField
                     fullWidth
@@ -188,14 +211,18 @@ export default function AuthForm() {
           <Box sx={{ marginTop: "1rem" }}>
             <Button
               type="submit"
-              disabled={loginStatus === LOGIN_STATUSES.pending}
+              disabled={loginStatus === LOGIN_STATUSES.pending || disableSubmit}
               sx={{
                 height: "auto",
                 justifyContent: "center",
                 width: "100%",
               }}
             >
-              <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>
+              <span>
+                {loginStatus === LOGIN_STATUSES.pending || disableSubmit
+                  ? "Signing in..."
+                  : "Sign in"}
+              </span>
             </Button>
             <Unstable_Grid2
               container

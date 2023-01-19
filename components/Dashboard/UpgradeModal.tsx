@@ -2,12 +2,11 @@ import { useState } from "react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { useAppDispatch } from "../../store/hooks";
 import { doLogOut } from "../../store/slices/authSlice";
-import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
-import { Box } from "@mui/system";
+import { Button, Box, Modal, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
 
 export default function UpgradeModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const style = {
     position: "absolute" as "absolute",
@@ -19,6 +18,7 @@ export default function UpgradeModal() {
     boxShadow: 24,
     p: 2,
   };
+
   const dispatch = useAppDispatch();
   const handleLogOut = () => {
     dispatch(doLogOut());
@@ -42,7 +42,7 @@ export default function UpgradeModal() {
           Gateway.
         </Typography>
         <Unstable_Grid2 container justifyContent={"flex-end"}>
-          <Link href={"https://app.pinata.cloud"} passHref>
+          <Link href={"/billing"} passHref>
             <Button onClick={() => setOpen(false)}>Go Upgrade Today!</Button>
           </Link>
           <Button onClick={handleLogOut} variant="outlined">

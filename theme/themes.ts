@@ -1,6 +1,7 @@
 //Colors taken from Pinata Figma design https://www.figma.com/file/Uaq250YCGDCK5NzrASJn7k/Pinata-Design-System?node-id=2%3A161
-import { createTheme, Palette, Theme } from "@mui/material";
+import { Palette, Theme } from "@mui/material";
 import { Components } from "@mui/material/styles/components";
+import { createTheme } from "@mui/material/styles";
 
 const lightColorPalette: Partial<Palette> = {
   mode: "light",
@@ -82,12 +83,12 @@ const typography = {
     },
     h3: {
       fontFamily: "Mulish",
-      fontSize: 25,
+      fontSize: 28,
       fontWeight: 900,
       lineHeight: "36px",
     },
     h4: {
-      fontSize: 22,
+      fontSize: 28,
       fontWeight: 600,
       lineHeight: "32px",
     },
@@ -108,8 +109,8 @@ const typography = {
       lineHeight: "24px",
     },
     subtitle2: {
-      fontSize: 16,
-      fontWeight: 200,
+      fontSize: 14,
+      fontWeight: 500,
       lineHeight: "24px",
     },
     body1: {

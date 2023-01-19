@@ -14,7 +14,6 @@
     "update-managed-types": "swagger-typescript-api -p ./types/pinata-managed.json -o ./types/managed -n api.ts"
   },
   "dependencies": {
-    "@cloudflare/stream-react": "^1.8.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -53,8 +52,8 @@
     "next-redux-wrapper": "^8.1.0",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
-    "react-pdf": "^6.2.2",
     "react-dom": "^18.2.0",
+    "react-pdf": "^6.2.2",
     "react-player": "^2.11.0",
     "react-redux": "^8.0.5",
     "react-twitter-embed": "^4.0.4",

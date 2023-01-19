@@ -2,7 +2,7 @@ import { Button, Unstable_Grid2, Dialog, Box } from "@mui/material";
 import { pdfjs } from "react-pdf";
 import { useState, useEffect } from "react";
 import "react-pdf/dist/esm/Page/TextLayer.css";
-import { Download } from "@mui/icons-material";
+import DownloadBttn from "./DownloadBttn";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PDF from "./PDF";
@@ -61,19 +61,7 @@ const PDFViewer = ({ url }: { url: string }) => {
         <Button disabled={jwtExpired} sx={{ width: "10em" }} onClick={handleOpen}>
           Preview PDF
         </Button>
-        <Button
-          disabled={jwtExpired}
-          href={url}
-          sx={{
-            width: "10em",
-            backgroundColor: "white",
-            borderColor: "black",
-            color: "black",
-          }}
-        >
-          <Download />
-          Download
-        </Button>
+        <DownloadBttn url={url} />
       </Unstable_Grid2>
     </Unstable_Grid2>
   );

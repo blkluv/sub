@@ -84,7 +84,7 @@ const Twitch = ({ fileInfo }) => {
     }
   }, [router.query]);
 
-  const handleSubscription = () => {
+  const userSubscription = () => {
     setIsNotSubscribed(false);
     window.open(`https://www.twitch.tv/subs/${fileInfo?.unlockInfo?.loginName}`, "_blank");
   };
@@ -108,7 +108,7 @@ const Twitch = ({ fileInfo }) => {
               <Typography variant="h6" sx={helperTextStyle}>
                 You are not subscribed to this channel. Try subscribing below.
               </Typography>
-              <Button onClick={handleSubscription} sx={customBttnStyle}>
+              <Button onClick={userSubscription} sx={customBttnStyle}>
                 Subscribe to {fileInfo?.unlockInfo?.loginName}
               </Button>
             </>

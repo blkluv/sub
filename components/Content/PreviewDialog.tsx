@@ -31,7 +31,7 @@ export default function PreviewModal({
       aria-describedby="modal-modal-description"
     >
       <Unstable_Grid2 container direction={"column"} sx={{ gap: (theme) => theme.spacing(2) }}>
-        <MainLandingContent missing={false} fileInfo={fileInfo} gatewayUrl={gatewayUrl} />
+        <MainLandingContent fileInfo={fileInfo} gatewayUrl={gatewayUrl} />
       </Unstable_Grid2>
     </Dialog>
   );

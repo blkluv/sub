@@ -4,12 +4,12 @@ import { useAppSelector } from "../../store/hooks";
 import { selectIsAuthenticated, selectUser } from "../../store/selectors/authSelectors";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Alert from "../Alert";
 import { useIntercom } from "react-use-intercom";
-import { Box, Container } from "@mui/material";
-import UpgradeModal from "../Dashboard/UpgradeModal";
+import { Container } from "@mui/material";
 import { getKy } from "../../helpers/ky";
+import { IntercomProvider } from "react-use-intercom";
 
+const INTERCOM_APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID || "f4cld255";
 interface Props {
   children: React.ReactNode;
 }
@@ -69,7 +69,16 @@ const PrivateLayout: React.FC<Props> = ({ children }: Props) => {
   return layout;
 };
 
-export default PrivateLayout;
+const withIntercom = (Component) =>
+  function HOC(props) {
+    return (
+      <IntercomProvider appId={INTERCOM_APP_ID}>
+        <Component {...props} />
+      </IntercomProvider>
+    );
+  };
+
+export default withIntercom(PrivateLayout);
 
 const isValidPaidPlan = (userPlanInfo) => {
   if (

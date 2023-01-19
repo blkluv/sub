@@ -5,6 +5,7 @@ import { SubmarinedContent } from "../../types/SubmarinedContent";
 import ImageWrapper from "./MediaWrappers/ImageWrapper";
 import { Box } from "@mui/material";
 import DownloadFile from "./MediaWrappers/DownloadFile";
+import PDFViewer from "./MediaWrappers/PDFViewer";
 export interface SingleMediaDisplayProps {
   url: string;
   submarinedContent: SubmarinedContent;
@@ -15,6 +16,7 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
 
   useEffect(() => {
     findFileType();
+    console.log(fileType);
   }, [fileType]);
 
   const findFileType = async () => {
@@ -28,6 +30,10 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
       }
       if (content_type.includes("audio")) {
         setFileType("audio");
+      }
+      if (content_type.includes("pdf")) {
+        console.log("here");
+        setFileType("pdf");
       }
     }
   };
@@ -43,6 +49,8 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
         <EmbeddedPlayer url={url} />
       ) : fileType == "image" ? (
         <ImageWrapper url={url} originalName={submarinedContent.originalname} />
+      ) : fileType == "pdf" ? (
+        <PDFViewer url={url} />
       ) : (
         <DownloadFile url={url} />
       )}

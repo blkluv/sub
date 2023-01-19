@@ -24,9 +24,15 @@ export default async function handler(req, res) {
       await axios.get(`${req.body.gatewayURL}?accessToken=${req.body.accessToken}`);
 
       const info = await getUserContentCombo(req.body.shortId);
-
+      if (!info) {
+        return res.status(404).send("No content found");
+      }
       const { submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
+
+      if (!pinata_submarine_key || !pinata_gateway_subdomain) {
+        return res.status(401).send("No submarine key found");
+      }
       const responseObj = await getSubmarinedContent(
         pinata_submarine_key,
         submarine_cid,

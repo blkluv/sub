@@ -31,7 +31,7 @@ interface ChangePlanRes {
 interface PlanSelectorProps {
   data: any;
   billing: BillingState;
-  changePlan: (newPlan: Plan, coupon: string) => Promise<ChangePlanRes>;
+  changePlan: (newPlan: Plan, coupon?: string) => Promise<ChangePlanRes>;
   gateways: Gateways;
   user: UserState;
   apiKeys: any;
@@ -55,7 +55,7 @@ const PlanSelector = ({
 }: PlanSelectorProps) => {
   const [changePlanModalOpen, setChangePlanModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [planToChangeTo, setPlanChoice] = useState<Plan>(null);
+  const [planToChangeTo, setPlanChoice] = useState<Plan | undefined>();
   const [planChoiceConfirmationOpen, setPlanChangeConfirmationOpen] = useState(false);
   const [openCardModal, setOpenCardModal] = useState(false); //Boolean or null if no default
   const [openBillingAddressModal, setOpenBillingAddressModal] = useState(false);
@@ -169,10 +169,10 @@ const PlanSelector = ({
     try {
       if (billing.stripe_customer || coupon) {
         FullStory.event("Upgrade plan", {
-          userEmail: user.user.email,
-          newPlan: planToChangeTo.name,
+          userEmail: (user && user.user && user.user.email) || "unknown@gmail.com",
+          newPlan: planToChangeTo!.name,
         });
-        await changePlanLocal(planToChangeTo, coupon);
+        await changePlanLocal(planToChangeTo!, coupon);
       }
     } catch (error) {
       console.log(error);
@@ -198,10 +198,10 @@ const PlanSelector = ({
   const confirmDowngrade = async () => {
     setLoading(true);
     try {
-      await changePlanLocal(planToChangeTo);
+      await changePlanLocal(planToChangeTo!);
       FullStory.event("Downgrade plan", {
-        userEmail: user.user.email,
-        newPlan: planToChangeTo.name,
+        userEmail: user?.user?.email,
+        newPlan: planToChangeTo?.name,
       });
     } catch (error) {
       console.log(error);
@@ -272,8 +272,8 @@ const PlanSelector = ({
       )}
       {planChoiceConfirmationOpen && (
         <ConfirmationModal
-          title={`Upgrade to ${planToChangeTo.nickname}?`}
-          content={`Are you sure you want to upgrade to the ${planToChangeTo.nickname} plan for $${planToChangeTo.price}/month?`}
+          title={`Upgrade to ${planToChangeTo?.nickname}?`}
+          content={`Are you sure you want to upgrade to the ${planToChangeTo?.nickname} plan for $${planToChangeTo?.price}/month?`}
           modalOpen={planChoiceConfirmationOpen}
           toggleModal={setPlanChangeConfirmationOpen}
           loading={loading}

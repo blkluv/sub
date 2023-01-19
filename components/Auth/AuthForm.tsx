@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as FullStory from "@fullstory/browser";
-import { Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
-import { Box } from "@mui/system";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -22,6 +21,7 @@ export default function AuthForm() {
   const [email, setEmail] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [password, setPassword] = useState("");
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const [invalidCode, setInvalidCode] = useState(false);
   const dispatch = useAppDispatch();
@@ -61,6 +61,25 @@ export default function AuthForm() {
     setHasRequestedNewCode(true);
     Auth.resendSignUp(email);
   };
+
+  useEffect(() => {
+    const credentials = localStorage.getItem("credentials");
+    if (credentials) {
+      const { email, password } = JSON.parse(credentials);
+      setDisableSubmit(true);
+      setEmail(email);
+      setPassword(password);
+      dispatch(doLogin({ email, password }))
+        .unwrap()
+        .then(() => {
+          setDisableSubmit(false);
+        });
+      FullStory.setVars("page", {
+        userEmail: email,
+      });
+      localStorage.removeItem("credentials");
+    }
+  }, []);
 
   return (
     <Container sx={{ marginTop: "2rem" }} maxWidth="sm">
@@ -172,14 +191,18 @@ export default function AuthForm() {
           <Box sx={{ marginTop: "1rem" }}>
             <Button
               type="submit"
-              disabled={loginStatus === LOGIN_STATUSES.pending}
+              disabled={loginStatus === LOGIN_STATUSES.pending || disableSubmit}
               sx={{
                 height: "auto",
                 justifyContent: "center",
                 width: "100%",
               }}
             >
-              <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>
+              <span>
+                {loginStatus === LOGIN_STATUSES.pending || disableSubmit
+                  ? "Signing in..."
+                  : "Sign in"}
+              </span>
             </Button>
             <Unstable_Grid2
               container

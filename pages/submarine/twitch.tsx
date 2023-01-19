@@ -16,7 +16,7 @@ const TwitchSub = () => {
   const unlockInfoSchema = Yup.object().shape({
     loginName: Yup.string()
       .required("Required")
-      .min(4, "Not a valid username")
+      .min(2, "Not a valid username")
       .max(25, "Not a valid username"),
   });
 

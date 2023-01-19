@@ -49,7 +49,7 @@ export default function AddressAutocomplete() {
     throw new Error("Invalid scenario");
   }
   const placeSelected = values.unlockInfo.place;
-  const [value, setValue] = React.useState<PlaceType | null>(placeSelected);
+  const [value, setValue] = React.useState<PlaceType | undefined>(placeSelected);
   React.useEffect(() => {
     if (placeSelected) {
       setValue(placeSelected);
@@ -136,7 +136,7 @@ export default function AddressAutocomplete() {
     <Autocomplete
       id="google-map-demo"
       sx={{ width: 300 }}
-      getOptionLabel={(option) => (typeof option === "string" ? option : option.description)}
+      getOptionLabel={(option) => (typeof option === "string" ? option : option?.description || "")}
       filterOptions={(x) => x}
       options={options}
       autoComplete
@@ -144,7 +144,7 @@ export default function AddressAutocomplete() {
       filterSelectedOptions
       value={value}
       noOptionsText="No locations"
-      onChange={(event: any, newValue: PlaceType | null) => {
+      onChange={(event: any, newValue: PlaceType | undefined) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
       }}
@@ -153,10 +153,10 @@ export default function AddressAutocomplete() {
       }}
       renderInput={(params) => <TextField {...params} label="Add a location" fullWidth />}
       renderOption={(props, option) => {
-        const matches = option.structured_formatting.main_text_matched_substrings || [];
+        const matches = option?.structured_formatting.main_text_matched_substrings || [];
 
         const parts = parse(
-          option.structured_formatting.main_text,
+          option?.structured_formatting.main_text,
           matches.map((match: any) => [match.offset, match.offset + match.length])
         );
 
@@ -177,7 +177,7 @@ export default function AddressAutocomplete() {
                   </Box>
                 ))}
                 <Typography variant="body2" color="text.secondary">
-                  {option.structured_formatting.secondary_text}
+                  {option?.structured_formatting.secondary_text}
                 </Typography>
               </Grid>
             </Grid>

@@ -24,7 +24,7 @@ interface GalleryProps {
   content: SubmarinedContent;
   fileInfo: MetadataUnlockInfo;
 }
-export const iconMapper = (type) => {
+export const iconMapper = (type): string => {
   const map = {
     image: faImage,
     audio: faMusic,
@@ -47,7 +47,7 @@ export const iconMapper = (type) => {
     "application/gzip": faFileDownload,
     "application/zip": faFileDownload,
   };
-  return map[type];
+  return map[type] || "fa-file-o";
 };
 
 export const getType = (type) => {
@@ -55,10 +55,10 @@ export const getType = (type) => {
 };
 
 export default function Gallery({ content, fileInfo }: GalleryProps) {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<any[]>(content.childContent);
   const [offset, setOffset] = useState(0);
   const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
-  const [displayItem, setDisplayItem] = useState(null);
+  const [displayItem, setDisplayItem] = useState(content.childContent[0]);
   const mainThree = ["image", "audio", "video", "zip"];
   const limit = 10;
   const dispatch = useAppDispatch();
@@ -108,13 +108,13 @@ export default function Gallery({ content, fileInfo }: GalleryProps) {
     setDisplayItem(item);
   };
 
-  const getIcon = (filename) => {
+  const getIcon = (filename): string => {
     if (!filename) {
-      return null;
+      return "";
     }
     const extension = filename.substr(filename.lastIndexOf(".") + 1);
     const type = getType(extension);
-    let icon = null;
+    let icon = "";
     if (type && mainThree.includes(type.split("/")?.[0])) {
       icon = iconMapper(type.split("/")[0]);
     } else {
@@ -167,6 +167,7 @@ export default function Gallery({ content, fileInfo }: GalleryProps) {
                       <Unstable_Grid2 container justifyContent={"center"}>
                         <IconButton>
                           <FontAwesomeIcon
+                            // @ts-ignore
                             icon={getIcon(getName(item.originalname))}
                             style={{ fontSize: 60 }}
                           />

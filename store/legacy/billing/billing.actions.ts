@@ -67,7 +67,6 @@ export const retrieveStripeCustomer = () => async (dispatch: any) => {
     }
   } catch (error) {
     console.log({ error });
-    //    Sentry.captureException(error);
     return Promise.reject();
   }
 };

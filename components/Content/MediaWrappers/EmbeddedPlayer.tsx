@@ -5,7 +5,8 @@ export interface EmbeddedPlayerProps {
 }
 
 const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
-  const streamingUrl = `${url}&streaming=true&mode=hls`;
+  const streamingUrl = `${url}&stream=true&mode=hls`;
+
   return (
     <>
       <ReactPlayer
@@ -13,6 +14,11 @@ const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
         controls={true}
         playing={true}
         pip={true}
+        config={{
+          file: {
+            forceHLS: true,
+          },
+        }}
         muted={true}
         stopOnUnmount={true}
         width="100%"

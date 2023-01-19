@@ -1,35 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
+import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 
-const CustomButton = ({ fileInfo, loading = false, lockName, onClick }) => {
+interface CustomButtonProps {
+  fileInfo: MetadataUnlockInfo;
+  loading?: boolean;
+  lockName: string;
+  onClick: () => void;
+}
+const CustomButton = ({ fileInfo, loading = false, lockName, onClick }: CustomButtonProps) => {
   const [styles, setStyles] = useState({});
   useEffect(() => {
     const style = {
       width: "90%",
       maxWidth: "300px",
-      backgroundColor: null,
-      color: null,
-      borderRadius: null,
+      backgroundColor: "#FAFAFA",
+      color: "#181818",
+      borderRadius: 1000,
     };
-    if (fileInfo?.customizations.buttonColor && fileInfo?.customizations?.buttonColor?.hex) {
+    if (fileInfo?.customizations?.buttonColor?.hex) {
       style.backgroundColor = fileInfo.customizations.buttonColor.hex;
-    } else {
-      style.backgroundColor = "#FAFAFA";
     }
 
-    if (
-      fileInfo?.customizations?.buttonTextColor &&
-      fileInfo?.customizations?.buttonTextColor.hex
-    ) {
+    if (fileInfo?.customizations?.buttonTextColor?.hex) {
       style.color = fileInfo.customizations.buttonTextColor.hex;
-    } else {
-      style.color = "#181818";
     }
 
     if (fileInfo?.customizations?.buttonShape === "square") {
       style.borderRadius = 5;
-    } else {
-      style.borderRadius = 1000;
     }
 
     setStyles(style);

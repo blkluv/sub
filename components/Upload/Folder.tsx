@@ -20,7 +20,8 @@ const Folder = ({ onChange }) => {
         directory=""
         // eslint-disable-next-line
         webkitdirectory=""
-        onClick={() => fileInput.current.click()}
+        // @ts-ignore */
+        onClick={() => fileInput?.current?.click()}
       />
       <label
         htmlFor={id}

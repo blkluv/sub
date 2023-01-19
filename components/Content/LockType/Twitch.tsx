@@ -1,5 +1,4 @@
-import { Button, Unstable_Grid2, Typography } from "@mui/material";
-import { Container } from "@mui/system";
+import { Button, Unstable_Grid2, Typography, Container } from "@mui/material";
 import BaseLockType from "./LockTypeContainer";
 import { SubmarinedContent } from "../../../types/SubmarinedContent";
 import { getKy } from "../../../helpers/ky";
@@ -84,7 +83,7 @@ const Twitch = ({ fileInfo }) => {
               borderRadius: 2,
             }),
             backgroundColor: (theme) => theme.palette.primary.light,
-            ...(fileInfo?.customizations.buttonColor &&
+            ...(fileInfo?.customizations?.buttonColor &&
               fileInfo?.customizations?.buttonColor?.hex && {
                 backgroundColor: fileInfo.customizations.buttonColor.hex,
               }),

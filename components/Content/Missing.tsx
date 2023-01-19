@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { Typography, Unstable_Grid2 as Grid } from "@mui/material";
-import { Container } from "@mui/system";
+import { Typography, Unstable_Grid2 as Grid, Container } from "@mui/material";
 
 const Missing = () => {
   return (
@@ -14,7 +13,7 @@ const Missing = () => {
           padding: (theme) => theme.spacing(4),
           margin: (theme) => theme.spacing(4),
           backgroundColor: "white",
-          boxShadow: (theme) => theme.shadows[5],
+          boxShadow: (theme) => theme.shadows![5],
           borderRadius: (theme) => theme.shape.borderRadius,
         }}
       >

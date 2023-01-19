@@ -45,7 +45,9 @@ ContractAddress.unlockInfoSchema = Yup.object().shape({
   tokenId: Yup.number().typeError("Token id must be a number"),
   contract: Yup.string()
     .required("Required")
-    .test("address-is-valid", "Not a valid address.", (value) => ethers.utils.isAddress(value)),
+    .test("address-is-valid", "Not a valid address.", (value: string) =>
+      ethers.utils.isAddress(value)
+    ),
 });
 ContractAddress.unlockInfo = {
   type: "nft",

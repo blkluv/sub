@@ -5,18 +5,27 @@ export interface EmbeddedPlayerProps {
 }
 
 const EmbeddedPlayer = ({ url }: EmbeddedPlayerProps) => {
+  const streamingUrl = `${url}&stream=true&mode=hls`;
+
   return (
-    <ReactPlayer
-      url={url}
-      controls={true}
-      playing={true}
-      pip={true}
-      muted={true}
-      stopOnUnmount={true}
-      width="100%"
-      height="100%"
-      onError={() => console.log("Cannot play this Media")}
-    />
+    <>
+      <ReactPlayer
+        url={streamingUrl}
+        controls={true}
+        playing={true}
+        pip={true}
+        config={{
+          file: {
+            forceHLS: true,
+          },
+        }}
+        muted={true}
+        stopOnUnmount={true}
+        width="100%"
+        height="100%"
+        onError={() => console.log("Cannot play this Media")}
+      />
+    </>
   );
 };
 

@@ -3,7 +3,6 @@ import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import MainLandingContent from "./MainLandingContent";
 import { Unstable_Grid2, Dialog, Paper, IconButton, Button } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 interface PreviewModalProps {
   previewOpen;
   setPreviewOpen;

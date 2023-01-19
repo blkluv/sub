@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { useAppDispatch } from "../../store/hooks";
 import { doLogOut } from "../../store/slices/authSlice";
-import { Button, Modal, Typography, Unstable_Grid2 } from "@mui/material";
-import { Box } from "@mui/system";
+import { Button, Box, Modal, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
-import { getKy } from "../../helpers/ky";
 
 export default function UpgradeModal() {
   const [open, setOpen] = useState(false);

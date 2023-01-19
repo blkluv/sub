@@ -28,7 +28,7 @@ export const getUserSession = async (
   try {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_PINATA_API_URL}/users/checkForSession`, {
       headers: {
-        Authorization: req.headers.authorization,
+        Authorization: req.headers.authorization || "",
         source: req.headers.source ? "login" : "",
       },
     });

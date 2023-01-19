@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
-import { CheckboxWithLabel } from "formik-material-ui";
+import { CheckboxWithLabel } from "formik-mui";
 import { Formik, Form, Field } from "formik";
 import { FormLabel, Typography } from "@mui/material";
 import * as Yup from "yup";
@@ -151,6 +151,7 @@ export default function CancelDialog({
                     <Button variant="outlined" onClick={handleClose}>
                       Nevermind
                     </Button>
+                    {/* TODO - disable if plan is free */}
                     <Button type="submit">Cancel Subscription</Button>
                   </DialogActions>
                 </Form>

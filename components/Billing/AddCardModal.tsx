@@ -63,7 +63,7 @@ const AddCardModal = ({
             onChange={(e) => setCoupon(e.target.value.toUpperCase())}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                coupon && handleAddCoupon(coupon);
+                coupon && handleAddCoupon && handleAddCoupon(coupon);
               }
             }}
             autoFocus
@@ -73,7 +73,7 @@ const AddCardModal = ({
             variant="contained"
             sx={{ marginTop: 2 }}
             disabled={!coupon}
-            onClick={() => coupon && handleAddCoupon(coupon)}
+            onClick={() => coupon && handleAddCoupon && handleAddCoupon(coupon)}
           >
             Add Coupon
           </Button>

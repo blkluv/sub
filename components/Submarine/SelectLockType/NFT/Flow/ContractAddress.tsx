@@ -42,7 +42,7 @@ ContractAddress.unlockInfoSchema = Yup.object().shape({
     .test(
       "address-is-valid",
       "Not a valid address.",
-      (value) => value?.startsWith("0x") && value?.length === 18
+      (value: string) => value?.startsWith("0x") && value?.length === 18
     ),
 });
 // value.startsWith("0x") &&

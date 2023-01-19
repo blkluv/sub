@@ -14,9 +14,8 @@ export default async function handler(req, res) {
       res.status(501).json(error);
     }
   } else if (req.method === "GET") {
-    let user = null;
+    const user = await getUserSession(req).catch();
     try {
-      user = await getUserSession(req).catch();
       if (!user) {
         return res.status(401).send("Unauthorized");
       }
@@ -30,11 +29,11 @@ export default async function handler(req, res) {
         throw error;
       }
 
-      const submarineMeUser = Users[0];
+      const submarineMeUser = Users && Users[0];
       console.log({ userFromPinata: user });
       console.log({ Users });
       console.log({ submarineMeUser });
-      if (!submarineMeUser || Users.length === 0) {
+      if (!submarineMeUser || !submarineMeUser) {
         const APIKeys = await findAPIKeys(req);
         let theAPIKey;
         if (!APIKeys || APIKeys.length < 1) {

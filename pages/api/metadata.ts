@@ -23,7 +23,7 @@ const schema = Joi.object({
     lat: Joi.number().optional().allow(null, ""),
     long: Joi.number().optional().allow(null, ""),
     distance: Joi.number().min(0).max(6000).optional().allow(null, ""),
-    loginName: Joi.string().min(4).max(25).optional().allow(null, ""),
+    loginName: Joi.string().min(2).max(25).optional().allow(null, ""),
     place: Joi.object().optional().allow(null, ""),
   }).required(),
   customizations: Joi.object({
@@ -70,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (error) {
         throw error;
       }
-
+      res.revalidate(`/${obj.shortId}`);
       res.status(200).json({ result: "success" });
     } catch (error) {
       console.log("Error for: ");
@@ -83,7 +83,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const obj = req.body;
       obj.submarineCID = obj.submarineCID || obj.submarineCid;
       await schema.validateAsync(obj);
-      console.log("validation success");
 
       const theCreationObject: Omit<definitions["Content"], "id"> = {
         name: obj.name,
@@ -111,6 +110,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw error;
       }
 
+      res.revalidate(`/${obj.shortId}`);
       res.status(200).json({ result: "success" });
     } catch (error) {
       console.log("Error for: ");
@@ -154,6 +154,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw error;
       }
 
+      res.revalidate(`/${id}`);
       return res.status(200).json({ result: "success" });
     }
   } else {

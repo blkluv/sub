@@ -4,7 +4,6 @@ import bs58 from "bs58";
 import { sign } from "tweetnacl";
 import { clusterApiUrl, Commitment, Connection } from "@solana/web3.js";
 import { getSubmarinedContent } from "../../helpers/submarine";
-import { Sentry } from "../../helpers/sentry";
 import { getUserContentCombo } from "../../repositories/content";
 import { getMessagetoSign } from "../../helpers/messageToSign";
 import { withSessionRoute } from "../../helpers/withSession";
@@ -66,8 +65,15 @@ const handler = async (req, res) => {
       }
 
       const info = await getUserContentCombo(shortId);
+      if (!info) {
+        return res.status(404).send("No content found");
+      }
       const { submarine_cid } = info;
       const { pinata_submarine_key, pinata_gateway_subdomain } = info.Users;
+
+      if (!pinata_submarine_key || !pinata_gateway_subdomain) {
+        return res.status(401).send("No submarine key found");
+      }
       const responseObj = await getSubmarinedContent(
         pinata_submarine_key,
         submarine_cid,
@@ -77,7 +83,6 @@ const handler = async (req, res) => {
     } catch (error) {
       console.log(error);
       console.log(error.response);
-      Sentry.captureException(error);
       res.status(500).json(error);
     }
   } else if (req.method === "GET") {

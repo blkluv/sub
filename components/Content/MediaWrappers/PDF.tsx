@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const PDF = ({ url }: { url: string }) => {
-  const [numPages, setNumPages] = useState<number>(null);
+  const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const handleChange = (event, value) => {
     setPageNumber(value);

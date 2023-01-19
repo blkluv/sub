@@ -6,6 +6,9 @@ export default async function handler(req, res): Promise<string> {
   const { itemId, shortId } = req.body;
   try {
     const info = await getUserContentCombo(shortId);
+    if (!info) {
+      return res.status(404).send("No content found");
+    }
     const { Users } = info;
     const { pinata_submarine_key } = Users;
     const config = {

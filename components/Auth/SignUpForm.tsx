@@ -17,19 +17,21 @@ import * as Yup from "yup";
 import { FormControlLabel, FormLabel, Radio } from "@mui/material";
 import { RadioGroup } from "formik-mui";
 import { Auth } from "aws-amplify";
-import { useRouter } from "next/router";
 import { setAlert } from "../../store/slices/alertSlice";
+import ConfirmationCode from "./ConfirmationCode";
 import { AlertType } from "../Alert";
 
 const SignUpForm = () => {
   const dispatch = useAppDispatch();
   const [authError, setAuthError] = useState("");
 
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const validationsRegex: Record<string, RegExp> = {
     // any encoding letters allowed
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&#%^])[A-Za-z\d$@$!%*?&#%^]{8,}/,
   };
 
+  const [showConfirmationCode, setShowConfirmationCode] = useState(false);
   const SignupSchema = Yup.object().shape({
     firstName: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
     lastName: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
@@ -47,8 +49,6 @@ const SignUpForm = () => {
       .required("Required")
       .matches(/^(builder|creator)/, "Required"),
   });
-
-  const router = useRouter();
 
   const initialValues = {
     email: "",
@@ -83,8 +83,15 @@ const SignUpForm = () => {
         userEmail: values.email,
         howToUse: values.howToUse,
       });
-      router.push("/");
+      setShowConfirmationCode(true);
+      setCredentials({ email: values.email, password: values.password });
     } catch (err) {
+      dispatch(
+        setAlert({
+          message: err.message,
+          type: AlertType.Error,
+        })
+      );
       setAuthError(err.message);
       setSubmitting(false);
     }
@@ -110,115 +117,119 @@ const SignUpForm = () => {
         <Typography variant="h3" sx={{ marginBottom: "2rem", textAlign: "center" }}>
           Register your Pinata account
         </Typography>
-        <Formik
-          initialValues={initialValues}
-          enableReinitialize
-          validationSchema={SignupSchema}
-          onSubmit={onSubmit}
-        >
-          {({ isSubmitting, values, errors, touched }) => (
-            <Form>
-              <Unstable_Grid2
-                container
-                justifyContent={"center"}
-                direction="column"
-                alignContent={"center"}
-              >
-                <FormikTextfield
-                  fullWidth
-                  name="firstName"
-                  label="First Name"
-                  required
-                  autoComplete="off"
-                />
-                <FormikTextfield
-                  fullWidth
-                  name="lastName"
-                  label="Last Name"
-                  required
-                  autoComplete="off"
-                />
-                <FormikTextfield
-                  fullWidth
-                  name="email"
-                  label="Email address"
-                  type="email"
-                  required
-                  autoComplete="off"
-                />
-                <FormikTextfield
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  required
-                  autoComplete="off"
-                />
-                <FormikTextfield
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  required
-                  autoComplete="off"
-                />
-                <FormControl sx={{ margin: "8px" }}>
-                  <FormLabel>Are you a builder or a creator?</FormLabel>
-                  <Field component={RadioGroup} row name="isBuilder">
-                    <FormControlLabel value="builder" control={<Radio />} label="Builder" />
-                    <FormControlLabel value="creator" control={<Radio />} label="Creator" />
-                    {touched.isBuilder && errors.isBuilder && (
-                      <FormHelperText sx={{ color: "red" }}>
-                        {errors.isBuilder && "Required"}
-                      </FormHelperText>
-                    )}
-                  </Field>
-                </FormControl>
+        {showConfirmationCode ? (
+          <ConfirmationCode credentials={credentials} />
+        ) : (
+          <Formik
+            initialValues={initialValues}
+            enableReinitialize
+            validationSchema={SignupSchema}
+            onSubmit={onSubmit}
+          >
+            {({ isSubmitting, values, errors, touched }) => (
+              <Form>
+                <Unstable_Grid2
+                  container
+                  justifyContent={"center"}
+                  direction="column"
+                  alignContent={"center"}
+                >
+                  <FormikTextfield
+                    fullWidth
+                    name="firstName"
+                    label="First Name"
+                    required
+                    autoComplete="off"
+                  />
+                  <FormikTextfield
+                    fullWidth
+                    name="lastName"
+                    label="Last Name"
+                    required
+                    autoComplete="off"
+                  />
+                  <FormikTextfield
+                    fullWidth
+                    name="email"
+                    label="Email address"
+                    type="email"
+                    required
+                    autoComplete="off"
+                  />
+                  <FormikTextfield
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    required
+                    autoComplete="off"
+                  />
+                  <FormikTextfield
+                    fullWidth
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    required
+                    autoComplete="off"
+                  />
+                  <FormControl sx={{ margin: "8px" }}>
+                    <FormLabel>Are you a builder or a creator?</FormLabel>
+                    <Field component={RadioGroup} row name="isBuilder">
+                      <FormControlLabel value="builder" control={<Radio />} label="Builder" />
+                      <FormControlLabel value="creator" control={<Radio />} label="Creator" />
+                      {touched.isBuilder && errors.isBuilder && (
+                        <FormHelperText sx={{ color: "red" }}>
+                          {errors.isBuilder && "Required"}
+                        </FormHelperText>
+                      )}
+                    </Field>
+                  </FormControl>
 
-                <FormControl sx={{ margin: "8px" }}>
-                  <FormLabel>How will you use Submarine.me?</FormLabel>
-                  {Object.entries(checkboxOptions).map(([key, label]) => (
-                    <Field
-                      sx={{ spacing: "0.25 rem", marginBottom: 0 }}
-                      type="checkbox"
-                      name="howToUse"
-                      value={key}
-                      key={key}
-                      as={FormControlLabel}
-                      control={<Checkbox />}
-                      checked={values.howToUse.includes(key)}
-                      label={label}
-                    />
-                  ))}
-                </FormControl>
-                <Box sx={{ marginTop: "1rem" }}>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    sx={{
-                      height: "auto",
-                      justifyContent: "center",
-                      width: "100%",
-                    }}
-                  >
-                    <span>{isSubmitting ? "Signing up..." : "Sign up"}</span>
-                  </Button>
-                  <Typography
-                    variant={"body1"}
-                    color="error"
-                    sx={{
-                      width: "50%",
-                      margin: "0 auto",
-                      marginTop: "1rem",
-                    }}
-                  >
-                    {authError}
-                  </Typography>
-                </Box>
-              </Unstable_Grid2>
-            </Form>
-          )}
-        </Formik>
+                  <FormControl sx={{ margin: "8px" }}>
+                    <FormLabel>How will you use Submarine.me?</FormLabel>
+                    {Object.entries(checkboxOptions).map(([key, label]) => (
+                      <Field
+                        sx={{ spacing: "0.25 rem", marginBottom: 0 }}
+                        type="checkbox"
+                        name="howToUse"
+                        value={key}
+                        key={key}
+                        as={FormControlLabel}
+                        control={<Checkbox />}
+                        checked={values.howToUse.includes(key)}
+                        label={label}
+                      />
+                    ))}
+                  </FormControl>
+                  <Box sx={{ marginTop: "1rem" }}>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      sx={{
+                        height: "auto",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <span>{isSubmitting ? "Signing up..." : "Sign up"}</span>
+                    </Button>
+                    <Typography
+                      variant={"body1"}
+                      color="error"
+                      sx={{
+                        width: "50%",
+                        margin: "0 auto",
+                        marginTop: "1rem",
+                      }}
+                    >
+                      {authError}
+                    </Typography>
+                  </Box>
+                </Unstable_Grid2>
+              </Form>
+            )}
+          </Formik>
+        )}
       </Unstable_Grid2>
     </Container>
   );

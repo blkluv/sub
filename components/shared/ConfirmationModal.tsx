@@ -105,7 +105,7 @@ const ConfirmationModal = ({
         )}
       </DialogContent>
       <DialogActions sx={{ padding: "1rem" }}>
-        <Button onClick={action} color={confirmButtonColor} disabled={isDisabled}>
+        <Button onClick={() => action()} color={confirmButtonColor} disabled={isDisabled}>
           {confirmButtonText}
         </Button>
         <Button

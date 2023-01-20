@@ -9,6 +9,7 @@ import { setSubmarinedContent } from "../../../store/slices/submarinedContentSli
 import { useAppDispatch } from "../../../store/hooks";
 import { UnlockInfoTwitch } from "../../../types/UnlockInfo";
 import { AlertType } from "../../Alert";
+import { useState } from "react";
 
 const Twitch = ({ fileInfo }) => {
   const unlockInfo = fileInfo.unlockInfo as UnlockInfoTwitch;
@@ -16,6 +17,32 @@ const Twitch = ({ fileInfo }) => {
   const ky = getKy();
   const { access_token, state } = router.query;
   const dispatch = useAppDispatch();
+  const [isNotSubscribed, setIsNotSubscribed] = useState<boolean>(false);
+
+  const customBttnStyle = {
+    width: "90%",
+    maxWidth: "300px",
+    borderRadius: 1000,
+    ...(fileInfo?.customizations?.buttonShape === "square" && {
+      borderRadius: 2,
+    }),
+    backgroundColor: (theme) => theme.palette.primary.light,
+    ...(fileInfo?.customizations.buttonColor &&
+      fileInfo?.customizations?.buttonColor?.hex && {
+        backgroundColor: fileInfo.customizations.buttonColor.hex,
+      }),
+    color: "#000000",
+    ...(fileInfo?.customizations?.buttonTextColor &&
+      fileInfo?.customizations?.buttonTextColor.hex && {
+        color: fileInfo.customizations.buttonTextColor.hex,
+      }),
+  };
+
+  const helperTextStyle = {
+    padding: (theme) => theme.spacing(1),
+    color: (theme) => theme.palette.primary.contrastText,
+  };
+
   const twitchAuth = async () => {
     try {
       const payload: {
@@ -49,6 +76,7 @@ const Twitch = ({ fileInfo }) => {
         return;
       }
       dispatch(setAlert({ type: AlertType.Error, message: "Subscription cannot be verified" }));
+      setIsNotSubscribed(true);
       return;
     };
     if (access_token) {
@@ -56,14 +84,13 @@ const Twitch = ({ fileInfo }) => {
     }
   }, [router.query]);
 
+  const userSubscription = () => {
+    setIsNotSubscribed(false);
+    window.open(`https://www.twitch.tv/subs/${fileInfo?.unlockInfo?.loginName}`, "_blank");
+  };
+
   const description = (
-    <Typography
-      variant="h6"
-      sx={{
-        padding: (theme) => theme.spacing(1),
-        color: (theme) => theme.palette.primary.contrastText,
-      }}
-    >
+    <Typography variant="h6" sx={helperTextStyle}>
       Connect your Twitch account and<br></br>verify you are subscribed to{" "}
       {fileInfo?.unlockInfo?.loginName}&apos;s channel.
     </Typography>
@@ -71,31 +98,27 @@ const Twitch = ({ fileInfo }) => {
   return (
     <Unstable_Grid2 container direction={"column"} justifyContent={"center"}>
       <Container>
-        {description}
-        <Button
-          variant="contained"
-          onClick={twitchAuth}
-          sx={{
-            width: "90%",
-            maxWidth: "300px",
-            borderRadius: 1000,
-            ...(fileInfo?.customizations?.buttonShape === "square" && {
-              borderRadius: 2,
-            }),
-            backgroundColor: (theme) => theme.palette.primary.light,
-            ...(fileInfo?.customizations?.buttonColor &&
-              fileInfo?.customizations?.buttonColor?.hex && {
-                backgroundColor: fileInfo.customizations.buttonColor.hex,
-              }),
-            color: "#000000",
-            ...(fileInfo?.customizations?.buttonTextColor &&
-              fileInfo?.customizations?.buttonTextColor.hex && {
-                color: fileInfo.customizations.buttonTextColor.hex,
-              }),
-          }}
+        <Unstable_Grid2
+          container
+          flexDirection={"column"}
+          sx={{ gap: "1em", justifyContent: "center", alignItems: "center" }}
         >
-          Connect Twitch
-        </Button>
+          {isNotSubscribed ? (
+            <>
+              <Typography variant="h6" sx={helperTextStyle}>
+                You are not subscribed to this channel. Try subscribing below.
+              </Typography>
+              <Button onClick={userSubscription} sx={customBttnStyle}>
+                Subscribe to {fileInfo?.unlockInfo?.loginName}
+              </Button>
+            </>
+          ) : (
+            <>{description}</>
+          )}
+          <Button variant="contained" onClick={twitchAuth} sx={customBttnStyle}>
+            Connect Twitch
+          </Button>
+        </Unstable_Grid2>
       </Container>
     </Unstable_Grid2>
   );

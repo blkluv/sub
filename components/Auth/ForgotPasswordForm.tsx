@@ -1,6 +1,4 @@
 import { Box, Button, Container, Typography, Unstable_Grid2 } from "@mui/material";
-import Link from "next/link";
-import * as FullStory from "@fullstory/browser";
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { Formik, Form, FormikHelpers } from "formik";

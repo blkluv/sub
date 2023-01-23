@@ -2,7 +2,7 @@ import { Button, Unstable_Grid2, Dialog, Box } from "@mui/material";
 import { pdfjs } from "react-pdf";
 import { useState, useEffect } from "react";
 import "react-pdf/dist/esm/Page/TextLayer.css";
-import { Download } from "@mui/icons-material";
+import DownloadBttn from "./DownloadBttn";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PDF from "./PDF";
@@ -15,6 +15,8 @@ const PDFViewer = ({ url }: { url: string }) => {
   const handleClose = () => setOpen(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileLandscape = useMediaQuery(`(max-height:641px)`);
+
   const [jwtExpired, setJwtExpired] = useState<boolean>(false);
   window.setInterval(() => setJwtExpired(true), 60000);
 
@@ -54,26 +56,18 @@ const PDFViewer = ({ url }: { url: string }) => {
             </Box>
           }
         >
-          <Page height={isMobile ? 300 : 500} pageNumber={1} renderAnnotationLayer={false}></Page>
+          <Page
+            height={isMobileLandscape ? 200 : isMobile ? 300 : 500}
+            pageNumber={1}
+            renderAnnotationLayer={false}
+          ></Page>
         </Document>
       </Unstable_Grid2>
       <Unstable_Grid2 container sx={{ justifyContent: "center", alignItems: "center", gap: "1em" }}>
         <Button disabled={jwtExpired} sx={{ width: "10em" }} onClick={handleOpen}>
           Preview PDF
         </Button>
-        <Button
-          disabled={jwtExpired}
-          href={url}
-          sx={{
-            width: "10em",
-            backgroundColor: "white",
-            borderColor: "black",
-            color: "black",
-          }}
-        >
-          <Download />
-          Download
-        </Button>
+        <DownloadBttn url={url} />
       </Unstable_Grid2>
     </Unstable_Grid2>
   );

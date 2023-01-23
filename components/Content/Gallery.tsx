@@ -18,10 +18,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import mime from "mime";
 import { IconButton, Paper, Typography, Unstable_Grid2, Button, Box } from "@mui/material";
+import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 
 interface GalleryProps {
   content: SubmarinedContent;
-  name: string;
+  fileInfo: MetadataUnlockInfo;
 }
 export const iconMapper = (type): string => {
   const map = {
@@ -53,7 +54,7 @@ export const getType = (type) => {
   return mime.getType(type);
 };
 
-export default function Gallery({ content, name }: GalleryProps) {
+export default function Gallery({ content, fileInfo }: GalleryProps) {
   const [items, setItems] = useState<any[]>(content.childContent);
   const [offset, setOffset] = useState(0);
   const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
@@ -139,7 +140,7 @@ export default function Gallery({ content, name }: GalleryProps) {
             justifyContent={"center"}
           >
             <Typography variant={"h2"} fontWeight={"bold"}>
-              {name}
+              {fileInfo.name}
             </Typography>
             <Unstable_Grid2
               container
@@ -197,7 +198,6 @@ export default function Gallery({ content, name }: GalleryProps) {
               }}
             >
               <SingleMediaDisplay
-                name={name}
                 url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
                 submarinedContent={displayItem}
               />

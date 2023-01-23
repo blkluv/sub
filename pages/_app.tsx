@@ -12,9 +12,12 @@ import { rudderInitialize } from "../rudderInitialize";
 
 const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
-
   useEffect(() => {
-    FullStory.init({ orgId: process.env.NEXT_PUBLIC_FS_ORG_ID as string });
+    FullStory.init(
+      { orgId: process.env.NEXT_PUBLIC_FS_ORG_ID as string },
+      ({ sessionUrl }) =>
+        localStorage.getItem("debug") === "true" && console.log(`Started session: ${sessionUrl}`)
+    );
   }, []);
 
   const router = useRouter();
@@ -50,5 +53,5 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
 export default MyApp;
 
 export function reportWebVitals(metric) {
-  localStorage.getItem("reportWebVitals") === "true" && console.log(metric);
+  localStorage.getItem("debug") === "true" && console.log(metric);
 }

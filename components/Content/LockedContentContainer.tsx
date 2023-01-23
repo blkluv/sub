@@ -12,7 +12,7 @@ const LocationUnlock = dynamic(() => import("./LockType/Location"));
 const Solana = dynamic(() => import("./LockType/Solana"));
 const SolanaProvider = dynamic(() => import("./LockType/SolanaProvider"));
 const WagmiProvider = dynamic(() => import("../Wagmi/Provider"));
-const NFT = dynamic(() => import("./LockType/NFT"));
+const NFT = dynamic(() => import("./LockType/NFT"), { ssr: false }); // useConnect() hook is not SSR compatible
 const Retweet = dynamic(() => import("./LockType/Retweet"));
 
 interface LockedContentContainerProps {

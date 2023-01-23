@@ -79,10 +79,6 @@ const SignUpForm = () => {
       const email = params.username;
       window.rudderanalytics.identify(email, { email, firstName, lastName, user_id });
       window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
-        email,
-        firstName,
-        lastName,
-        user_id,
         first_login: true,
       });
       localStorage.setItem("newUser", "true");

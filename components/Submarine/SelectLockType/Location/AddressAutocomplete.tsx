@@ -151,7 +151,7 @@ export default function AddressAutocomplete() {
         filterSelectedOptions
         value={value}
         noOptionsText="No locations"
-        onChange={(event: any, newValue: PlaceType | undefined) => {
+        onChange={(event: any, newValue: PlaceType | null) => {
           setOptions(newValue ? [newValue, ...options] : options);
           setValue(newValue);
         }}

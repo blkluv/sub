@@ -10,8 +10,12 @@ const UnlockedContentContainer = ({ fileInfo }) => {
   }
   const url = `${submarinedContent.gateway}/ipfs/${submarinedContent.cid}?accessToken=${submarinedContent.token}`;
 
-  return submarinedContent.directory ? (
+  return submarinedContent.directory && !submarinedContent.html ? (
     <Gallery fileInfo={fileInfo} content={submarinedContent} />
+  ) : submarinedContent.directory && submarinedContent.html ? (
+    window.location.replace(
+      `${submarinedContent.gateway}/ipfs/${submarinedContent.cid}/index.html?accessToken=${submarinedContent.token}`
+    )
   ) : (
     <SingleMediaDisplay url={url} submarinedContent={submarinedContent} />
   );

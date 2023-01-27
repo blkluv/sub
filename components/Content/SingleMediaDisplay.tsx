@@ -16,7 +16,6 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
 
   useEffect(() => {
     findFileType();
-    console.log(fileType);
   }, [fileType]);
 
   const findFileType = async () => {
@@ -32,7 +31,6 @@ const SingleMediaDisplay = ({ url, submarinedContent }: SingleMediaDisplayProps)
         setFileType("audio");
       }
       if (content_type.includes("pdf")) {
-        console.log("here");
         setFileType("pdf");
       }
     }

@@ -18,6 +18,7 @@ import { FormControlLabel, FormLabel, Radio } from "@mui/material";
 import { RadioGroup } from "formik-mui";
 import { Auth } from "aws-amplify";
 import { setAlert } from "../../store/slices/alertSlice";
+import { ANALYTICS } from "../../constants/rudderstack_events";
 import ConfirmationCode from "./ConfirmationCode";
 import { AlertType } from "../Alert";
 
@@ -71,7 +72,15 @@ const SignUpForm = () => {
       },
     };
     try {
-      await Auth.signUp(params);
+      const response = await Auth.signUp(params);
+      const firstName = params.attributes["custom:firstName"];
+      const lastName = params.attributes["custom:lastName"];
+      const userId = response.userSub;
+      const email = params.username;
+      window.rudderanalytics.identify(userId, { email, firstName, lastName });
+      window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
+        first_login: true,
+      });
       localStorage.setItem("newUser", "true");
       dispatch(
         setAlert({

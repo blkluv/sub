@@ -75,9 +75,9 @@ const SignUpForm = () => {
       const response = await Auth.signUp(params);
       const firstName = params.attributes["custom:firstName"];
       const lastName = params.attributes["custom:lastName"];
-      const user_id = response.userSub;
+      const userId = response.userSub;
       const email = params.username;
-      window.rudderanalytics.identify(email, { email, firstName, lastName, user_id });
+      window.rudderanalytics.identify(userId, { email, firstName, lastName });
       window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
         first_login: true,
       });

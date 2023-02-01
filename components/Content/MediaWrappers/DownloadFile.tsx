@@ -1,21 +1,27 @@
-import { Button, Unstable_Grid2 } from "@mui/material";
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { Download } from "@mui/icons-material";
 
 const DownloadFile = ({ url }: { url: string }) => {
+  const [jwtExpired, setJwtExpired] = useState<boolean>(false);
+  window.setInterval(() => setJwtExpired(true), 60000);
+
   return (
-    <Unstable_Grid2
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      sx={{ height: "50%" }}
+    <Button
+      disabled={jwtExpired}
+      href={url}
+      variant="outlined"
+      sx={{
+        a: { color: "#fff", textDecoration: "none" },
+        backgroundColor: "white",
+        borderColor: "black",
+        color: "black",
+        marginTop: "1rem",
+      }}
     >
-      <Button
-        sx={{
-          a: { color: "#fff", textDecoration: "none" },
-        }}
-      >
-        <a href={url}>Content unlocked! Click here to download</a>
-      </Button>
-    </Unstable_Grid2>
+      <Download />
+      Content unlocked! Click here to download
+    </Button>
   );
 };
 export default DownloadFile;

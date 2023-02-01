@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as FullStory from "@fullstory/browser";
-import { Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, Unstable_Grid2 } from "@mui/material";
 import Link from "next/link";
-import { Box } from "@mui/system";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -12,6 +11,7 @@ import {
 } from "../../store/selectors/authSelectors";
 import { confirmMFA, doLogin, LOGIN_STATUSES } from "../../store/slices/authSlice";
 import { Auth } from "aws-amplify";
+import { ANALYTICS } from "../../constants/rudderstack_events";
 
 export default function AuthForm() {
   const loginStatus = useAppSelector(selectAuthStatus);
@@ -22,6 +22,7 @@ export default function AuthForm() {
   const [email, setEmail] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [password, setPassword] = useState("");
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const [invalidCode, setInvalidCode] = useState(false);
   const dispatch = useAppDispatch();
@@ -45,11 +46,27 @@ export default function AuthForm() {
       }
     }
 
-    dispatch(doLogin({ email, password }));
     //sample FullStory SDK calls
     FullStory.setVars("page", {
       userEmail: email,
     });
+
+    doLoginAndTrackEvent({ email, password });
+  };
+
+  const doLoginAndTrackEvent = ({ email, password }) => {
+    dispatch(doLogin({ email, password }))
+      .unwrap()
+      .then((user) => {
+        const daUser = user.user || {};
+        const firstName = daUser["custom:firstName"] || "firstnamenotfound";
+        const lastName = daUser["custom:lastName"] || "lastnamenotfound";
+        const userId = daUser.sub || "useridnotfound";
+        window.rudderanalytics.identify(userId, { email, firstName, lastName });
+        window.rudderanalytics.track(ANALYTICS.AUTH.LOGIN, {
+          first_login: false,
+        });
+      });
   };
 
   const [hasRequestedNewCode, setHasRequestedNewCode] = useState(false);
@@ -61,6 +78,25 @@ export default function AuthForm() {
     setHasRequestedNewCode(true);
     Auth.resendSignUp(email);
   };
+
+  useEffect(() => {
+    const credentials = localStorage.getItem("credentials");
+    if (credentials) {
+      const { email, password } = JSON.parse(credentials);
+      setDisableSubmit(true);
+      setEmail(email);
+      setPassword(password);
+      dispatch(doLogin({ email, password }))
+        .unwrap()
+        .then(() => {
+          setDisableSubmit(false);
+        });
+      FullStory.setVars("page", {
+        userEmail: email,
+      });
+      localStorage.removeItem("credentials");
+    }
+  }, []);
 
   return (
     <Container sx={{ marginTop: "2rem" }} maxWidth="sm">
@@ -172,14 +208,18 @@ export default function AuthForm() {
           <Box sx={{ marginTop: "1rem" }}>
             <Button
               type="submit"
-              disabled={loginStatus === LOGIN_STATUSES.pending}
+              disabled={loginStatus === LOGIN_STATUSES.pending || disableSubmit}
               sx={{
                 height: "auto",
                 justifyContent: "center",
                 width: "100%",
               }}
             >
-              <span>{loginStatus === LOGIN_STATUSES.pending ? "Signing in..." : "Sign in"}</span>
+              <span>
+                {loginStatus === LOGIN_STATUSES.pending || disableSubmit
+                  ? "Signing in..."
+                  : "Sign in"}
+              </span>
             </Button>
             <Unstable_Grid2
               container

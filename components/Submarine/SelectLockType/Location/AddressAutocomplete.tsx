@@ -18,7 +18,7 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
   if (!position) {
     return;
   }
-
+  global.initMap = () => {};
   const script = document.createElement("script");
   script.setAttribute("async", "");
   script.setAttribute("id", id);
@@ -48,13 +48,17 @@ export default function AddressAutocomplete() {
   if (values.unlockInfo.type !== "location") {
     throw new Error("Invalid scenario");
   }
-  const placeSelected = values.unlockInfo.place;
+  const placeSelected = values.unlockInfo.place || null;
   const [value, setValue] = React.useState<PlaceType | null>(placeSelected);
   React.useEffect(() => {
+    if (values.unlockInfo.type !== "location") {
+      throw new Error("Invalid scenario");
+    }
+    const placeSelected = values.unlockInfo?.place;
     if (placeSelected) {
       setValue(placeSelected);
     }
-  });
+  }, [values]);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
   const loaded = React.useRef(false);
@@ -62,7 +66,7 @@ export default function AddressAutocomplete() {
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`,
         document.querySelector("head"),
         "google-maps"
       );
@@ -133,57 +137,61 @@ export default function AddressAutocomplete() {
   }, [value, inputValue, fetch]);
 
   return (
-    <Autocomplete
-      id="google-map-demo"
-      sx={{ width: 300 }}
-      getOptionLabel={(option) => (typeof option === "string" ? option : option.description)}
-      filterOptions={(x) => x}
-      options={options}
-      autoComplete
-      includeInputInList
-      filterSelectedOptions
-      value={value}
-      noOptionsText="No locations"
-      onChange={(event: any, newValue: PlaceType | null) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-      }}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      renderInput={(params) => <TextField {...params} label="Add a location" fullWidth />}
-      renderOption={(props, option) => {
-        const matches = option.structured_formatting.main_text_matched_substrings || [];
+    <>
+      <Autocomplete
+        id="google-map-demo"
+        sx={{ width: 300 }}
+        getOptionLabel={(option) =>
+          typeof option === "string" ? option : option?.description || ""
+        }
+        filterOptions={(x) => x}
+        options={options}
+        autoComplete
+        includeInputInList
+        filterSelectedOptions
+        value={value}
+        noOptionsText="No locations"
+        onChange={(event: any, newValue: PlaceType | null) => {
+          setOptions(newValue ? [newValue, ...options] : options);
+          setValue(newValue);
+        }}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+        renderInput={(params) => <TextField {...params} label="Add a location" fullWidth />}
+        renderOption={(props, option) => {
+          const matches = option?.structured_formatting.main_text_matched_substrings || [];
 
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match: any) => [match.offset, match.offset + match.length])
-        );
+          const parts = parse(
+            option?.structured_formatting.main_text,
+            matches.map((match: any) => [match.offset, match.offset + match.length])
+          );
 
-        return (
-          <li {...props}>
-            <Grid container alignItems="center">
-              <Grid item sx={{ display: "flex", width: 44 }}>
-                <LocationOnIcon sx={{ color: "text.secondary" }} />
+          return (
+            <li {...props}>
+              <Grid container alignItems="center">
+                <Grid item sx={{ display: "flex", width: 44 }}>
+                  <LocationOnIcon sx={{ color: "text.secondary" }} />
+                </Grid>
+                <Grid item sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}>
+                  {parts.map((part, index) => (
+                    <Box
+                      key={index}
+                      component="span"
+                      sx={{ fontWeight: part.highlight ? "bold" : "regular" }}
+                    >
+                      {part.text}
+                    </Box>
+                  ))}
+                  <Typography variant="body2" color="text.secondary">
+                    {option?.structured_formatting.secondary_text}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}>
-                {parts.map((part, index) => (
-                  <Box
-                    key={index}
-                    component="span"
-                    sx={{ fontWeight: part.highlight ? "bold" : "regular" }}
-                  >
-                    {part.text}
-                  </Box>
-                ))}
-                <Typography variant="body2" color="text.secondary">
-                  {option.structured_formatting.secondary_text}
-                </Typography>
-              </Grid>
-            </Grid>
-          </li>
-        );
-      }}
-    />
+            </li>
+          );
+        }}
+      />
+    </>
   );
 }

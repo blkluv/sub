@@ -3,7 +3,6 @@ import { selectGatewayUrl } from "../../store/selectors/authSelectors";
 import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 import MainLandingContent from "./MainLandingContent";
 import { Unstable_Grid2, Dialog, Paper, IconButton, Button } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 interface PreviewModalProps {
   previewOpen;
   setPreviewOpen;
@@ -32,7 +31,7 @@ export default function PreviewModal({
       aria-describedby="modal-modal-description"
     >
       <Unstable_Grid2 container direction={"column"} sx={{ gap: (theme) => theme.spacing(2) }}>
-        <MainLandingContent missing={false} fileInfo={fileInfo} gatewayUrl={gatewayUrl} />
+        <MainLandingContent fileInfo={fileInfo} gatewayUrl={gatewayUrl} />
       </Unstable_Grid2>
     </Dialog>
   );

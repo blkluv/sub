@@ -6,7 +6,7 @@ interface SubmarinedContentState {
   content?: SubmarinedContent;
 }
 const initialState: SubmarinedContentState = {
-  content: null,
+  content: undefined,
 };
 
 export const submarinedContentSlice = createSlice({
@@ -17,7 +17,7 @@ export const submarinedContentSlice = createSlice({
       state.content = action.payload;
     },
     clearSubmarinedContent: (state) => {
-      state.content = null;
+      state.content = undefined;
     },
   },
 

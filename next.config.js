@@ -17,7 +17,14 @@ const nextConfig = {
       },
     ],
   },
-  productionBrowserSourceMaps: true,
+  modularizeImports: {
+    "@mui/material": {
+      transform: "@mui/material/{{member}}",
+    },
+    "@mui/icons-material/?(((\\w*)?/?)*)": {
+      transform: "@mui/icons-material/{{ matches.[1] }}/{{member}}",
+    },
+  },
   async headers() {
     return [
       {
@@ -30,7 +37,7 @@ const nextConfig = {
           {
             key: "Access-Control-Allow-Headers",
             value:
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-SDK-version",
           },
         ],
       },

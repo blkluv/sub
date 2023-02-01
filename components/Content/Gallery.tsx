@@ -18,12 +18,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import mime from "mime";
 import { IconButton, Paper, Typography, Unstable_Grid2, Button, Box } from "@mui/material";
+import { MetadataUnlockInfo } from "../Submarine/SelectLockType/SubmarineFileForm";
 
 interface GalleryProps {
   content: SubmarinedContent;
-  name: string;
+  fileInfo: MetadataUnlockInfo;
 }
-export const iconMapper = (type) => {
+export const iconMapper = (type): string => {
   const map = {
     image: faImage,
     audio: faMusic,
@@ -46,18 +47,18 @@ export const iconMapper = (type) => {
     "application/gzip": faFileDownload,
     "application/zip": faFileDownload,
   };
-  return map[type];
+  return map[type] || "fa-file-o";
 };
 
 export const getType = (type) => {
   return mime.getType(type);
 };
 
-export default function Gallery({ content, name }: GalleryProps) {
-  const [items, setItems] = useState([]);
+export default function Gallery({ content, fileInfo }: GalleryProps) {
+  const [items, setItems] = useState<any[]>(content.childContent);
   const [offset, setOffset] = useState(0);
   const [isDisplaying, setIsDisplaying] = useState<boolean>(false);
-  const [displayItem, setDisplayItem] = useState(null);
+  const [displayItem, setDisplayItem] = useState(content.childContent[0]);
   const mainThree = ["image", "audio", "video", "zip"];
   const limit = 10;
   const dispatch = useAppDispatch();
@@ -107,13 +108,13 @@ export default function Gallery({ content, name }: GalleryProps) {
     setDisplayItem(item);
   };
 
-  const getIcon = (filename) => {
+  const getIcon = (filename): string => {
     if (!filename) {
-      return null;
+      return "";
     }
     const extension = filename.substr(filename.lastIndexOf(".") + 1);
     const type = getType(extension);
-    let icon = null;
+    let icon = "";
     if (type && mainThree.includes(type.split("/")?.[0])) {
       icon = iconMapper(type.split("/")[0]);
     } else {
@@ -127,91 +128,99 @@ export default function Gallery({ content, name }: GalleryProps) {
   };
 
   return (
-    <Paper sx={{ p: (theme) => theme.spacing(5), borderRadius: "20px", borderColor: "green" }}>
-      <Unstable_Grid2 container>
-        {!isDisplaying ? (
-          <Unstable_Grid2
-            container
-            sx={{
-              width: "100%",
-              margin: "auto",
-            }}
-            justifyContent={"center"}
-          >
-            <Typography variant={"h2"} fontWeight={"bold"}>
-              {name}
-            </Typography>
-            <Unstable_Grid2
-              container
-              sx={{
-                width: "100%",
-                margin: "auto",
-                marginTop: "1rem",
-              }}
-              justifyContent={"center"}
-            >
-              {items.map((item) => (
-                <Unstable_Grid2 xs={4} key={item.id}>
-                  <Unstable_Grid2
-                    container
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    alignContent={"center"}
-                  >
-                    <Box
-                      sx={{ textAlign: "center" }}
-                      key={item.id}
-                      onClick={() => displaySingleMedia(item)}
-                    >
-                      <Unstable_Grid2 container justifyContent={"center"}>
-                        <IconButton>
-                          <FontAwesomeIcon
-                            icon={getIcon(getName(item.originalname))}
-                            style={{ fontSize: 60 }}
-                          />
-                        </IconButton>
+    <>
+      {content.html ? (
+        window.location.replace(
+          `${content.gateway}/ipfs/${content.cid}/index.html?accessToken=${content.token}`
+        )
+      ) : (
+        <Paper sx={{ p: (theme) => theme.spacing(5), borderRadius: "20px", borderColor: "green" }}>
+          <Unstable_Grid2 container>
+            {!isDisplaying ? (
+              <Unstable_Grid2
+                container
+                sx={{
+                  width: "100%",
+                  margin: "auto",
+                }}
+                justifyContent={"center"}
+              >
+                <Typography variant={"h2"} fontWeight={"bold"}>
+                  {fileInfo.name}
+                </Typography>
+                <Unstable_Grid2
+                  container
+                  sx={{
+                    width: "100%",
+                    margin: "auto",
+                    marginTop: "1rem",
+                  }}
+                  justifyContent={"center"}
+                >
+                  {items.map((item) => (
+                    <Unstable_Grid2 xs={4} key={item.id}>
+                      <Unstable_Grid2
+                        container
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        alignContent={"center"}
+                      >
+                        <Box
+                          sx={{ textAlign: "center" }}
+                          key={item.id}
+                          onClick={() => displaySingleMedia(item)}
+                        >
+                          <Unstable_Grid2 container justifyContent={"center"}>
+                            <IconButton>
+                              <FontAwesomeIcon
+                                // @ts-ignore
+                                icon={getIcon(getName(item.originalname))}
+                                style={{ fontSize: 60 }}
+                              />
+                            </IconButton>
+                          </Unstable_Grid2>
+                          <Typography variant={"body2"}>{getName(item.originalname)}</Typography>
+                        </Box>
                       </Unstable_Grid2>
-                      <Typography variant={"body2"}>{getName(item.originalname)}</Typography>
-                    </Box>
-                  </Unstable_Grid2>
+                    </Unstable_Grid2>
+                  ))}
                 </Unstable_Grid2>
-              ))}
-            </Unstable_Grid2>
+              </Unstable_Grid2>
+            ) : (
+              <Unstable_Grid2
+                container
+                flexDirection={"column"}
+                alignItems={"center"}
+                gap={"2rem"}
+                position={"relative"}
+              >
+                <Unstable_Grid2
+                  container
+                  sx={{
+                    position: "relative",
+                    height: "60vh",
+                    width: "60vw",
+                    justifyContent: "center",
+                  }}
+                >
+                  <SingleMediaDisplay
+                    url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
+                    submarinedContent={displayItem}
+                  />
+                </Unstable_Grid2>
+                <Button sx={{ bottom: "-10%" }} onClick={() => setIsDisplaying(false)}>
+                  Back
+                </Button>
+              </Unstable_Grid2>
+            )}
           </Unstable_Grid2>
-        ) : (
-          <Unstable_Grid2
-            container
-            flexDirection={"column"}
-            alignItems={"center"}
-            gap={"2rem"}
-            position={"relative"}
-          >
-            <Unstable_Grid2
-              container
-              sx={{
-                position: "relative",
-                height: "60vh",
-                width: "60vw",
-                justifyContent: "center",
-              }}
-            >
-              <SingleMediaDisplay
-                name={name}
-                url={`${content.gateway}${displayItem.uri}?accessToken=${content.token}`}
-                submarinedContent={displayItem}
-              />
-            </Unstable_Grid2>
-            <Button sx={{ bottom: "-10%" }} onClick={() => setIsDisplaying(false)}>
-              Back
-            </Button>
-          </Unstable_Grid2>
-        )}
-      </Unstable_Grid2>
-      {content.totalItems > items.length && (
-        <Box>
-          <Pagination handlePageChange={handlePageChange} />
-        </Box>
+          {content.totalItems > items.length && (
+            <Box>
+              <Pagination handlePageChange={handlePageChange} />
+            </Box>
+          )}
+        </Paper>
       )}
-    </Paper>
+    </>
   );
 }

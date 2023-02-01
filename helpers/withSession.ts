@@ -2,7 +2,7 @@ import { withIronSessionApiRoute, withIronSessionSsr } from "iron-session/next";
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from "next";
 
 const sessionOptions = {
-  password: process.env.SECRET_COOKIE_PASSWORD,
+  password: process.env.SECRET_COOKIE_PASSWORD || "",
   cookieName: "web3-auth-session",
 };
 

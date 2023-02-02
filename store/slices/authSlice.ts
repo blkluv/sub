@@ -89,6 +89,7 @@ export const confirmMFA = createAsyncThunk("auth/confirmMFA", async ({ mfa }: Us
 export const doLogOut = createAsyncThunk("auth/logout", async () => {
   Auth.signOut();
   localStorage.removeItem("pinata_gateway_subdomain");
+  localStorage.removeItem("newUser");
 });
 
 export const doLogin = createAsyncThunk(

@@ -52,7 +52,6 @@ const handler = async (req, res) => {
       });
       if (loginResult) {
         const loggedClient = loginResult.client;
-        const userId = await loggedClient.v1.verifyCredentials();
         const info = await getUserContentCombo(shortId);
         if (!info) {
           return res.status(404).send("No content found");
@@ -65,7 +64,7 @@ const handler = async (req, res) => {
           const tweetId = tweetUrl.split("status/")[1].split("?")[0];
           const allRetweetsData = await loggedClient.v2.tweetRetweetedBy(tweetId);
           const allRetweets = await allRetweetsData.data;
-          const retweeted = allRetweets.find((r) => r.username === userId.screen_name);
+          const retweeted = allRetweets.find((r) => r.username === loginResult.screenName);
           if (!retweeted) {
             console.log("not retweeted");
             return res.status(401).send("Unauthorized, you didn't retweet.");

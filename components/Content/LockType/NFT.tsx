@@ -18,8 +18,14 @@ const NFT = ({ fileInfo }: { fileInfo: MetadataUnlockInfo }) => {
       // ts safety check
       if (unlockInfo.type === "nft") {
         const { blockchain, network } = unlockInfo;
-        if (blockchain === BlockchainOptions.Ethereum) {
+
+        if (
+          blockchain === BlockchainOptions.Ethereum ||
+          blockchain === BlockchainOptions.Polygon ||
+          blockchain === BlockchainOptions.Avalanche
+        ) {
           const { tokenId, contract } = unlockInfo;
+
           if (!contract || !blockchain || !network) {
             reject("Missing unlock info");
             return;

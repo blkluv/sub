@@ -55,7 +55,7 @@ type SharedNFTTypes = {
   type: "nft";
 };
 export interface UnlockInfoETH extends SharedNFTTypes {
-  blockchain: BlockchainOptions.Ethereum;
+  blockchain: BlockchainOptions.Ethereum | BlockchainOptions.Polygon | BlockchainOptions.Avalanche;
   network: string;
   contract: string;
   tokenId?: string;

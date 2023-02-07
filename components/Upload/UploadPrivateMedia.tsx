@@ -47,7 +47,7 @@ const UploadPrivateMedia = () => {
   const dispatch = useAppDispatch();
   const onFileChange = async (e: HTMLInputEvent, type) => {
     setIsUploading(true);
-    const FILE_SIZE_LIMIT = 500000000; // 500MB
+    const FILE_SIZE_LIMIT = 2000000000; // 2000MB
     const files = e.target.files;
     if (!files) {
       return;

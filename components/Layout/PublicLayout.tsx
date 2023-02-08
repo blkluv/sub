@@ -3,7 +3,6 @@ import Head from "next/head";
 import React from "react";
 import { getContentReturnObject } from "../../pages/api/content/[shortId]";
 import Alert from "../Alert";
-import Pinnie from "../Pinnie";
 
 interface Props {
   children: React.ReactNode;
@@ -54,10 +53,6 @@ const PublicLayout = ({ children, fileInfo }: Props) => {
         <title>{fileInfo && fileInfo.name ? fileInfo.name : "Submarine.me"}</title>
       </Head>
       {children}
-
-      <Box sx={{ position: "fixed", bottom: "15px", right: "15px", zIndex: 10 }}>
-        <Pinnie />
-      </Box>
     </>
   );
 };

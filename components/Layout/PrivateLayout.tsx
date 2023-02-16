@@ -91,6 +91,9 @@ const isValidPaidPlan = (userPlanInfo) => {
   if (NEW_PLANS.includes(userPlanInfo?.plan?.nickname)) {
     return true;
   }
+  if (userPlanInfo.plan.name === "Enterprise") {
+    return true;
+  }
 
   return false;
 };

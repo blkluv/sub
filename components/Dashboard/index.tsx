@@ -51,6 +51,9 @@ const Dashboard = () => {
       return true;
     }
 
+    if (userPlanInfo.plan.name === "Enterprise") {
+      return true;
+    }
     return false;
   };
 
